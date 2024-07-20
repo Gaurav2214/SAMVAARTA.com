@@ -1,0 +1,318 @@
+*, html, body {
+  margin: 0;
+  padding: 0; }
+
+*, html, body {
+  margin: 0;
+  padding: 0; }
+
+.input-box {
+  background: #FFF;
+  border: 1px solid #DEDEDE;
+  padding: 16px 24px;
+  width: 100%;
+  border-radius: 36px; }
+  @media screen and (min-width: 1000px) {
+    .input-box {
+      border-radius: 36px; } }
+  @media screen and (min-width: 1000px) {
+    .input-box {
+      padding: 12px 20px; } }
+
+@media screen and (max-width: 1000px) {
+  .desktop-view {
+    display: none !important; } }
+
+@media screen and (min-width: 1000px) {
+  .mobile-view {
+    display: none !important; } }
+
+.hide {
+  display: none !important; }
+
+.btn, .btn-vote {
+  padding: 10px 16px;
+  background: #ED1C24;
+  color: #fff;
+  border: 1px solid #ED1C24;
+  border-radius: 40px;
+  width: auto;
+  font-family: "Montserrat", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 15px;
+  text-align: center;
+  transition: all ease 0.5s; }
+  .btn:hover, .btn:focus, .btn-vote:hover, .btn-vote:focus {
+    background: #fff;
+    color: #ED1C24; }
+
+.btn-invert {
+  padding: 10px 16px;
+  background: #ED1C24;
+  color: #fff;
+  border: 1px solid #ED1C24;
+  border-radius: 40px;
+  width: auto;
+  font-family: "Montserrat", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 15px;
+  text-align: center;
+  transition: all ease 0.5s;
+  background: #fff;
+  color: #ED1C24; }
+  .btn-invert:hover, .btn-invert:focus {
+    background: #fff;
+    color: #ED1C24; }
+  .btn-invert:hover, .btn-invert:focus {
+    background: #ED1C24;
+    color: #fff; }
+
+.btn-invert-gray {
+  padding: 10px 16px;
+  background: #736E6E;
+  color: #fff;
+  border: 1px solid #736E6E;
+  border-radius: 40px;
+  width: auto;
+  font-family: "Montserrat", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 15px;
+  text-align: center;
+  transition: all ease 0.5s;
+  background: #fff;
+  color: #736E6E; }
+  .btn-invert-gray:hover, .btn-invert-gray:focus {
+    background: #fff;
+    color: #736E6E; }
+  .btn-invert-gray:hover, .btn-invert-gray:focus {
+    background: #736E6E;
+    color: #fff; }
+  .btn-invert-gray:hover, .btn-invert-gray:focus {
+    background: #ED1C24;
+    color: #FFF;
+    border-color: #ED1C24; }
+  .btn-invert-gray:focus {
+    outline: none; }
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1120px;
+  padding-left: 24px;
+  padding-right: 24px; }
+
+* {
+  word-wrap: break-word; }
+
+html, body {
+  width: 100%;
+  font-size: 16px;
+  font-family: "Montserrat", sans-serif;
+  overflow: hidden;
+  overflow-y: auto; }
+
+header, footer, aside, main, section, fieldset, nav {
+  display: block; }
+
+ul, ol {
+  list-style: none; }
+
+img,
+picture,
+source {
+  display: inline-block; }
+
+a {
+  text-decoration: none;
+  cursor: pointer; }
+
+button,
+[role="button"] {
+  cursor: pointer; }
+
+::-moz-selection {
+  background: #ED1C24;
+  color: #FFF; }
+
+::selection {
+  background: #ED1C24;
+  color: #FFF; }
+
+#maincontent {
+  position: relative;
+  z-index: 99; }
+  @media screen and (max-width: 1000px) {
+    #maincontent {
+      z-index: 2; } }
+
+.login-module {
+  margin-top: 40px; }
+  .login-module__inner {
+    max-width: 900px; }
+  .login-module__main {
+    -ms-display: flex;
+    -webkit-display: flex;
+    display: flex;
+    -ms-justify-content: space-around;
+    justify-content: space-around;
+    -ms-align-items: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 40px; }
+    .login-module__main--left {
+      padding: 40px;
+      background: #fd7702;
+      min-height: 480px;
+      width: 45%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column; }
+      .login-module__main--left .upload-photo {
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+        position: relative; }
+        .login-module__main--left .upload-photo img {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          background: #FFF; }
+        .login-module__main--left .upload-photo span {
+          display: inline-block;
+          margin-top: 10px;
+          font-size: 11px;
+          line-height: 18px;
+          font-family: "Montserrat", sans-serif;
+          font-weight: 600;
+          color: #FFF; }
+        .login-module__main--left .upload-photo .file-upload {
+          position: absolute;
+          z-index: 100;
+          left: 0;
+          width: 80px;
+          height: 80px;
+          top: 0;
+          opacity: 0;
+          cursor: pointer; }
+      .login-module__main--left .desc {
+        margin-top: 25px;
+        text-align: center; }
+        .login-module__main--left .desc h2 {
+          font-size: 40px;
+          line-height: 48px;
+          font-family: "Open Sans", sans-serif;
+          font-weight: 700;
+          color: #FFF;
+          font-size: 26px;
+          line-height: 38px; }
+        .login-module__main--left .desc p {
+          margin-top: 10px;
+          font-size: 10px;
+          line-height: 15px;
+          font-family: "Montserrat", sans-serif;
+          font-weight: 500;
+          color: #FFF; }
+    .login-module__main--right {
+      width: 55%; }
+      .login-module__main--right .login-form {
+        box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 0 50px;
+        background: #fff; }
+        .login-module__main--right .login-form .heading {
+          text-align: center;
+          margin-top: 15px;
+          padding-top: 15px; }
+        .login-module__main--right .login-form h2 {
+          font-size: 20px;
+          line-height: 32px;
+          font-family: "Open Sans", sans-serif;
+          font-weight: 500;
+          color: #262626; }
+        .login-module__main--right .login-form p {
+          font-size: 14px;
+          line-height: 17px;
+          font-family: "Montserrat", sans-serif;
+          font-weight: 500;
+          color: #808080;
+          margin-top: 6px; }
+        .login-module__main--right .login-form form {
+          margin-top: 24px; }
+
+.input-section-main {
+  -ms-display: flex;
+  -webkit-display: flex;
+  display: flex;
+  -ms-justify-content: space-between;
+  justify-content: space-between;
+  -ms-align-items: flex-start;
+  align-items: flex-start;
+  flex-direction: row;
+  gap: 15px; }
+
+.form-elm-section {
+  -ms-display: flex;
+  -webkit-display: flex;
+  display: flex;
+  -ms-justify-content: space-between;
+  justify-content: space-between;
+  -ms-align-items: flex-start;
+  align-items: flex-start;
+  flex-direction: row;
+  position: relative;
+  flex-direction: column;
+  margin-bottom: 15px; }
+  .form-elm-section label {
+    font-size: 14px;
+    line-height: 22px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    color: #262626; }
+  .form-elm-section .input_txt_box {
+    width: -webkit-fill-available;
+    padding: 6px 10px;
+    border: 1px solid #e0e0e0;
+    display: block;
+    transition: all 1s ease;
+    font-size: 14px;
+    line-height: 21px;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 500;
+    color: #262626;
+    border-radius: 4px;
+    margin-top: 5px;
+    outline: none; }
+  .form-elm-section .error.validation {
+    position: absolute;
+    top: 55px;
+    color: #ED1C24;
+    font-size: 10px; }
+  .form-elm-section.input_sec_num .input_txt_box {
+    padding-left: 60px; }
+    .form-elm-section.input_sec_num .input_txt_box::before {
+      content: "";
+      border: 1px solid #ccc;
+      display: block; }
+  .form-elm-section.input_sec_num select {
+    border: none;
+    position: absolute;
+    top: 36px;
+    left: 5px;
+    outline: none; }
+    .form-elm-section.input_sec_num select:hover, .form-elm-section.input_sec_num select:focus {
+      border: none; }
+  .form-elm-section.input_sec_center {
+    align-items: center;
+    padding-bottom: 24px; }
+  .form-elm-section .btn {
+    border-radius: 4px;
+    background: #004080;
+    border: none;
+    padding: 10px 20px; }
+    .form-elm-section .btn:hover, .form-elm-section .btn:focus {
+      background: #2a4c6f;
+      color: #fff; }
+

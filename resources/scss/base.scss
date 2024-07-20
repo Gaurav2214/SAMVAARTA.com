@@ -1,0 +1,151 @@
+@import "reset.scss";
+
+.login-module {
+    margin-top: rem(40);
+    &__inner {
+        max-width: rem(900);
+    }
+    &__main {
+        @include set-flex-box($jc: space-around, $ai: center);
+        gap: rem(40);
+        &--left {
+            padding: rem(40);
+            background: #fd7702;
+            min-height: rem(480);
+            width: 45%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            .upload-photo {
+                display: flex;
+                flex-direction: column;
+                cursor: pointer;
+                position: relative;
+                img {
+                    width: rem(80);
+                    height: rem(80);
+                    border-radius: 50%;
+                    background: $clr-1;
+                }
+                span {
+                    display: inline-block;
+                    margin-top: rem(10);
+                    @include desc-7();
+                }
+                .file-upload {
+                    position: absolute;
+                    z-index: 100;
+                    left: 0;
+                    width: rem(80);
+                    height: rem(80);
+                    top: 0;
+                    opacity: 0;
+                    cursor: pointer;
+                }
+            }
+            .desc {
+                margin-top: rem(25);
+                text-align: center;
+                h2 {
+                    @include heading-1();
+                    @include set-typography(26, 38);
+                }
+                p {
+                    margin-top: rem(10);
+                    @include desc-8();
+                }
+            }
+        }
+        &--right {
+            width: 55%;
+            .login-form {
+                @include insert-box-shadow();
+                padding: 0 rem(50);
+                background: #fff;
+                .heading {
+                    text-align: center;
+                    margin-top: 15px;
+                    padding-top: 15px;
+                }
+                h2 {
+                    @include heading-3();
+                }
+                p {
+                    @include desc-2();
+                    margin-top: rem(6);
+                }
+                form {
+                    margin-top: rem(24);
+                }
+            }
+        }
+    }
+}
+.input-section-main {
+    @include set-flex-box();
+    gap: rem(15);    
+}
+.form-elm-section {
+    @include set-flex-box();
+    position: relative;
+    flex-direction: column;
+    margin-bottom: rem(15);
+    label {
+        @include desc-6();  
+    }
+    .input_txt_box {
+        width: -webkit-fill-available;
+        padding: rem(6) rem(10);
+        border: 1px solid #e0e0e0;
+        display: block;
+        transition: all 1s ease;
+        @include desc-5();
+        border-radius: rem(4);
+        margin-top: rem(5);
+        outline: none;
+    }
+    .error {
+        &.validation{
+            position: absolute;
+            top: rem(55);
+            color: $primary;
+            font-size: rem(10);
+        }
+    }
+    &.input_sec_num {
+        .input_txt_box {
+            padding-left: rem(60);
+            &::before {
+                content: "";
+                border: 1px solid #ccc;
+                display: block;
+            }
+        }
+        select {
+            border: none;
+            position: absolute;
+            top: rem(36);
+            left: rem(5);
+            outline: none;
+            &:hover,
+            &:focus {
+                border: none;
+            }
+        }
+    }
+    &.input_sec_center {
+        align-items: center;
+        padding-bottom: rem(24);
+    }
+    .btn {
+        border-radius: rem(4);
+        background: $clr-30;
+        border: none;
+        padding: rem(10) rem(20);
+        @include hover {
+            background: #2a4c6f;
+            color: #fff;
+        }
+    }
+}
