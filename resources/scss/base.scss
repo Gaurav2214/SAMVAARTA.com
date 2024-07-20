@@ -59,7 +59,8 @@
         }
         &--right {
             width: 55%;
-            .login-form {
+            .login-form,
+            .reg-form {
                 @include insert-box-shadow();
                 padding: 0 rem(50);
                 background: #fff;
@@ -76,23 +77,33 @@
                     margin-top: rem(6);
                 }
                 form {
-                    margin-top: rem(24);
+                    margin-top: rem(20);
+                }
+                .reg-login-toggle {
+                    margin: rem(15) 0;
+                    padding-bottom: rem(10);
+                    @include set-typography(12, 15);
+                    .login-link, .signup-link {
+                        color: #1a73e9;
+                        cursor: pointer;
+                    }
                 }
             }
+            
         }
     }
 }
 .input-section-main {
     @include set-flex-box();
-    gap: rem(15);    
+    gap: rem(15);
 }
 .form-elm-section {
     @include set-flex-box();
     position: relative;
     flex-direction: column;
-    margin-bottom: rem(15);
+    margin-bottom: rem(14);
     label {
-        @include desc-6();  
+        @include desc-6();
     }
     .input_txt_box {
         width: -webkit-fill-available;
@@ -106,7 +117,7 @@
         outline: none;
     }
     .error {
-        &.validation{
+        &.validation {
             position: absolute;
             top: rem(55);
             color: $primary;
@@ -137,6 +148,10 @@
     &.input_sec_center {
         align-items: center;
         padding-bottom: rem(24);
+    }
+    &.btn-container {
+        padding-bottom: rem(15);
+        margin-bottom: 0;
     }
     .btn {
         border-radius: rem(4);
