@@ -249,8 +249,9 @@ Samvaarta.common = (() => {
     };
 })();
 
+
 Samvaarta.model = (() => {
-    const open_pop = (custom_function, add_class, head) => {
+    const open_pop = (custom_function, add_class, head, close, href) => {
         var modelBoxes = document.querySelectorAll(".model-box");
         var model_id = modelBoxes.length === 0 ? 1 : modelBoxes.length + 1;
 
@@ -259,6 +260,9 @@ Samvaarta.model = (() => {
         if (add_class) {
             xtra_cls += add_class;
         }
+        if (!href) {
+			href = '';
+		}
 
         var append_str = "";
         var close_txt = "";
@@ -274,7 +278,7 @@ Samvaarta.model = (() => {
             xtra_cls +
             '" style="display:none;">' +
             close_txt +
-            '<div class="model-wrapper"><div class="model-content clearfix" id="model_content_' +
+            '<div class="model-wrapper"><div class="model-content" id="model_content_' +
             model_id +
             '"><span class="pre_loader" id="pre_loader_' +
             model_id +
@@ -290,13 +294,23 @@ Samvaarta.model = (() => {
             '<div id="l2_overlay_bx_' + model_id + '" class="model-bg "></div>'
         );
 
-        custom_function(head);
-
         var wrapperDiv = document.createElement("div");
         wrapperDiv.className = "model-box";
         wrapperDiv.id = "wrapper_" + model_id;
         popupElement.parentNode.insertBefore(wrapperDiv, popupElement);
         wrapperDiv.appendChild(popupElement);
+
+        var modelElement = document.getElementById(obj_id);
+		if (modelElement) {
+			modelElement.style.display = 'table';
+		}
+		try {
+			if (href && custom_function) {
+				custom_function(href, model_id);
+			} else if (custom_function) {
+				custom_function(model_id);
+			}
+		} catch (e) { }
 
         return model_id;
     };
@@ -327,9 +341,28 @@ Samvaarta.model = (() => {
         }
     };
 
+    var showSuccessMessage = function (msg, commonStyle, popupClass = "") {
+		Samvaarta.model.close_pop(1);
+		if (!msg) { msg = 'Success'; }
+		var extraMsg = '';
+		if (/<\/?[a-z][\s\S]*>/i.test(msg)) {
+			extraMsg = msg;
+			msg = '';
+		}
+
+		Samvaarta.model.open_pop('', 'modal-confirm layer-out ' + popupClass, 1);
+		$('#model_content_1').html(extraMsg);
+		setTimeout(function () {
+			if ($('.modal-confirm.layer-out').length) {
+				//Samvaarta.model.close_pop(1);
+			}
+		}, 25000);
+	}
+
     return {
         open_pop: open_pop,
         close_pop: close_pop,
+        showSuccessMessage: showSuccessMessage,
     };
 })();
 
@@ -440,6 +473,18 @@ Samvaarta.system = (() => {
         document.querySelector('.login-link')?.addEventListener('click', () => {
             createLoginForm();
         })
+    }
+
+    const successReg = (id) => {
+        const msg = `
+            <figure class="">
+                <img alt="" src="" width="80" height="80" />
+            </figure>
+            <h3>Your profile is undes review.</h3>
+            <h4>A confirmation will be sent to your email ID <span>${id}</span></h4>
+        `;
+        //document.querySelector('model_content_1').innerHTML = msg;
+        return msg;
     }
 
     var loginUser = () => {
@@ -584,67 +629,33 @@ Samvaarta.system = (() => {
         if (valError) {
             return false;
         } else {
-            var paramObject = {
-                url: apiUrl + "auth/register",
-                type: "POST",
-                data: {
-                    email: reg_email,
-                    name: reg_name,
-                    password: reg_pwd,
-                    phone: reg_phone,
-                    linkedin: reg_linkedin,
-                    role: reg_role,
-                },
+            // var paramObject = {
+            //     url: apiUrl + "auth/register",
+            //     type: "POST",
+            //     data: {
+            //         email: reg_email,
+            //         name: reg_name,
+            //         password: reg_pwd,
+            //         phone: reg_phone,
+            //         linkedin: reg_linkedin,
+            //         role: reg_role,
+            //     },
+            // };
+
+            const ajaxSuccessCall = (response) => {
+                console.log(response);
             };
 
-            var ajaxSuccessCall = function (response) {
-                document.querySelector(".showloader").style.display = "none";
-                document.getElementById("login-form").style.display = "block";
-                document.getElementById("registration-form").style.display =
-                    "none";
-                var mainInfoElements = document.querySelectorAll(".main_info");
-                mainInfoElements.forEach(function (el) {
-                    el.remove();
-                });
-                var prependElement = document.querySelector(".p-xl-5.p-3");
-                var infoDiv = document.createElement("div");
-                infoDiv.className = "info_bg oauth-log-info";
-                infoDiv.innerHTML =
-                    'We have sent you a verification email at <span class="bold">' +
-                    reg_email +
-                    "</span>. Please verify your email.";
-                prependElement.insertBefore(infoDiv, prependElement.firstChild);
-                setTimeout(function () {
-                    infoDiv.style.display = "none";
-                }, 8000);
-                Samvaarta.common.setLocalStorage(
-                    "oauthUserData",
-                    response.data,
-                    1
-                );
-                sendVerificationMail(response);
+            const ajaxErrorCall = (response) => {
+                console.log(response);
             };
 
-            var ajaxErrorCall = function (response) {
-                document.querySelector(".showloader").style.display = "none";
-                if (response.response) {
-                    if (
-                        response.response.data.message === "Email already taken"
-                    ) {
-                        document.getElementById("reg_main_err").innerHTML =
-                            Samvaarta.messageLog[7];
-                    } else {
-                        document.getElementById("reg_main_err").innerHTML =
-                            response.response.data.message;
-                    }
-                }
-            };
-
-            Samvaarta.common.hitAjaxApi(
-                paramObject,
-                ajaxSuccessCall,
-                ajaxErrorCall
-            );
+            // Samvaarta.common.hitAjaxApi(
+            //     paramObject,
+            //     ajaxSuccessCall,
+            //     ajaxErrorCall
+            // );
+            Samvaarta.model.showSuccessMessage(successReg(reg_email));
         }
     };
 
@@ -772,3 +783,4 @@ document.addEventListener('readystatechange', event => {
     }
 
 });
+

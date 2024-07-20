@@ -13,8 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('outer');
-});
+Route::get('/', function () {return view('outer');});
 Route::get('/dashboard', function () { return view('dashboard'); });
+Route::get('/list', function () { return view('list'); });
 
