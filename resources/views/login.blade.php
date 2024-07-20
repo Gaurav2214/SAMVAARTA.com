@@ -13,9 +13,6 @@
                 </div>
             </div>
             <div class="login-module__main--right">
-                
-                
-
             </div>
         </div>
     </div>

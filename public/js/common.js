@@ -236,7 +236,7 @@ Samvaarta.common = function () {
   };
 }();
 Samvaarta.model = function () {
-  var open_pop = function open_pop(custom_function, add_class, head) {
+  var open_pop = function open_pop(custom_function, add_class, head, close, href) {
     var modelBoxes = document.querySelectorAll(".model-box");
     var model_id = modelBoxes.length === 0 ? 1 : modelBoxes.length + 1;
     var obj_id = "model_" + head;
@@ -244,20 +244,33 @@ Samvaarta.model = function () {
     if (add_class) {
       xtra_cls += add_class;
     }
+    if (!href) {
+      href = '';
+    }
     var append_str = "";
     var close_txt = "";
     close_txt = close === "N" ? "" : '<a onclick="Samvaarta.model.close_pop(1);" class="close" style="z-index:9999">&#10005;</a>';
-    append_str = '<div id="' + obj_id + '" class="model-container ' + xtra_cls + '" style="display:none;">' + close_txt + '<div class="model-wrapper"><div class="model-content clearfix" id="model_content_' + model_id + '"><span class="pre_loader" id="pre_loader_' + model_id + '"><span class="loader">&nbsp;</span>Loading...</span></div></div></div>';
+    append_str = '<div id="' + obj_id + '" class="model-container ' + xtra_cls + '" style="display:none;">' + close_txt + '<div class="model-wrapper"><div class="model-content" id="model_content_' + model_id + '"><span class="pre_loader" id="pre_loader_' + model_id + '"><span class="loader">&nbsp;</span>Loading...</span></div></div></div>';
     document.body.insertAdjacentHTML("beforeend", append_str);
     var popupElement = document.getElementById(obj_id);
     popupElement.style.display = "block";
     document.body.insertAdjacentHTML("beforeend", '<div id="l2_overlay_bx_' + model_id + '" class="model-bg "></div>');
-    custom_function(head);
     var wrapperDiv = document.createElement("div");
     wrapperDiv.className = "model-box";
     wrapperDiv.id = "wrapper_" + model_id;
     popupElement.parentNode.insertBefore(wrapperDiv, popupElement);
     wrapperDiv.appendChild(popupElement);
+    var modelElement = document.getElementById(obj_id);
+    if (modelElement) {
+      modelElement.style.display = 'table';
+    }
+    try {
+      if (href && custom_function) {
+        custom_function(href, model_id);
+      } else if (custom_function) {
+        custom_function(model_id);
+      }
+    } catch (e) {}
     return model_id;
   };
   var close_pop = function close_pop(obj) {
@@ -278,9 +291,29 @@ Samvaarta.model = function () {
       }
     }
   };
+  var showSuccessMessage = function showSuccessMessage(msg, commonStyle) {
+    var popupClass = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
+    Samvaarta.model.close_pop(1);
+    if (!msg) {
+      msg = 'Success';
+    }
+    var extraMsg = '';
+    if (/<\/?[a-z][\s\S]*>/i.test(msg)) {
+      extraMsg = msg;
+      msg = '';
+    }
+    Samvaarta.model.open_pop('', 'modal-confirm layer-out ' + popupClass, 1);
+    $('#model_content_1').html(extraMsg);
+    setTimeout(function () {
+      if ($('.modal-confirm.layer-out').length) {
+        //Samvaarta.model.close_pop(1);
+      }
+    }, 25000);
+  };
   return {
     open_pop: open_pop,
-    close_pop: close_pop
+    close_pop: close_pop,
+    showSuccessMessage: showSuccessMessage
   };
 }();
 Samvaarta.system = function () {
@@ -302,6 +335,11 @@ Samvaarta.system = function () {
     (_document$querySelect2 = document.querySelector('.login-link')) === null || _document$querySelect2 === void 0 || _document$querySelect2.addEventListener('click', function () {
       createLoginForm();
     });
+  };
+  var successReg = function successReg(id) {
+    var msg = "\n            <figure class=\"\">\n                <img alt=\"\" src=\"\" width=\"80\" height=\"80\" />\n            </figure>\n            <h3>Your profile is undes review.</h3>\n            <h4>A confirmation will be sent to your email ID <span>".concat(id, "</span></h4>\n        ");
+    //document.querySelector('model_content_1').innerHTML = msg;
+    return msg;
   };
   var loginUser = function loginUser() {
     var reg_email = document.getElementById("oauth_log_email").value;
@@ -411,48 +449,32 @@ Samvaarta.system = function () {
     if (valError) {
       return false;
     } else {
-      var paramObject = {
-        url: apiUrl + "auth/register",
-        type: "POST",
-        data: {
-          email: reg_email,
-          name: reg_name,
-          password: reg_pwd,
-          phone: reg_phone,
-          linkedin: reg_linkedin,
-          role: reg_role
-        }
-      };
+      // var paramObject = {
+      //     url: apiUrl + "auth/register",
+      //     type: "POST",
+      //     data: {
+      //         email: reg_email,
+      //         name: reg_name,
+      //         password: reg_pwd,
+      //         phone: reg_phone,
+      //         linkedin: reg_linkedin,
+      //         role: reg_role,
+      //     },
+      // };
+
       var ajaxSuccessCall = function ajaxSuccessCall(response) {
-        document.querySelector(".showloader").style.display = "none";
-        document.getElementById("login-form").style.display = "block";
-        document.getElementById("registration-form").style.display = "none";
-        var mainInfoElements = document.querySelectorAll(".main_info");
-        mainInfoElements.forEach(function (el) {
-          el.remove();
-        });
-        var prependElement = document.querySelector(".p-xl-5.p-3");
-        var infoDiv = document.createElement("div");
-        infoDiv.className = "info_bg oauth-log-info";
-        infoDiv.innerHTML = 'We have sent you a verification email at <span class="bold">' + reg_email + "</span>. Please verify your email.";
-        prependElement.insertBefore(infoDiv, prependElement.firstChild);
-        setTimeout(function () {
-          infoDiv.style.display = "none";
-        }, 8000);
-        Samvaarta.common.setLocalStorage("oauthUserData", response.data, 1);
-        sendVerificationMail(response);
+        console.log(response);
       };
       var ajaxErrorCall = function ajaxErrorCall(response) {
-        document.querySelector(".showloader").style.display = "none";
-        if (response.response) {
-          if (response.response.data.message === "Email already taken") {
-            document.getElementById("reg_main_err").innerHTML = Samvaarta.messageLog[7];
-          } else {
-            document.getElementById("reg_main_err").innerHTML = response.response.data.message;
-          }
-        }
+        console.log(response);
       };
-      Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
+
+      // Samvaarta.common.hitAjaxApi(
+      //     paramObject,
+      //     ajaxSuccessCall,
+      //     ajaxErrorCall
+      // );
+      Samvaarta.model.showSuccessMessage(successReg(reg_email));
     }
   };
   var checkLoginStatus = function checkLoginStatus() {
