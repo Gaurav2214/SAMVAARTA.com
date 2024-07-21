@@ -1,19 +1,28 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
 */
+Route::post('/login', 'Auth\LoginController@login');
+Route::post('/register', 'Auth\RegisterController@apiregister');
+Route::post('/forgot/password','Auth\ForgotPasswordController@forgot_password');
+Route::post('/reset/password', 'Auth\ResetPasswordController@reset_password');
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+Route::group(['middleware' => ['auth:api']], function() {
+	Route::group(['prefix' => 'profile'], function() {
+		Route::get('/', 'UserResource\ProfileController@index');
+		Route::post('/', 'UserResource\ProfileController@update');
+		Route::post('/password', 'UserResource\ProfileController@password');
+	});
+	Route::get('/logout', 'UserResource\ProfileController@logout');
+});
+
+Route::group(['prefix' => 'admin'], function () {
+	Route::get('users/listing', 'Resource\UserResource@listing');
+	Route::get('user/activate/{id}', 'Resource\UserResource@activate');
+	Route::get('user/show/{id}', 'Resource\UserResource@show');
+	Route::post('user/update/{id}', 'Resource\UserResource@edit');
 });
