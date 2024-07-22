@@ -116,8 +116,15 @@ class LoginController extends Controller
 
                             $token = $user->createToken('User Login')->accessToken;
 
-                            $response = ['token' => $token];
-                            return response($response, 200);
+                            $refresh_token = $user->refreshToken;
+                            $data=[
+                                'token_type' => 'Bearer',
+                                'access_token' => $token ,
+                                'refresh_token' => $refresh_token
+                            ];
+                           
+
+                            return response($data, 200);
                         } else {
                             $response = ["message" => "Password mismatch"];
                             return response($response, 422);
