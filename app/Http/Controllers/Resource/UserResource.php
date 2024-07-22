@@ -138,7 +138,7 @@ class UserResource extends Controller
         } catch (ModelNotFoundException $e) {
             return response()->json(['success' =>'false','message'=>"User not found!"]);
         } catch (Exception $e) {
-            return response()->json(['success' =>'false','message'=>"Whoops! something went wrong.");
+            return response()->json(['success' =>'false','message'=>"Whoops! something went wrong."]);
         }
     }
 
