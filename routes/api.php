@@ -13,11 +13,11 @@ Route::post('/reset/password', 'Auth\ResetPasswordController@reset_password');
 
 Route::group(['middleware' => ['auth:api']], function() {
 	Route::group(['prefix' => 'profile'], function() {
-		Route::get('/', 'UserResource\ProfileController@index');
-		Route::post('/', 'UserResource\ProfileController@update');
-		Route::post('/password', 'UserResource\ProfileController@password');
+		Route::get('/', 'Resource\ProfileController@index');
+		Route::post('/update', 'Resource\ProfileController@update');
+		Route::post('/password', 'Resource\ProfileController@password');
 	});
-	Route::get('/logout', 'UserResource\ProfileController@logout');
+	Route::get('/logout', 'Resource\ProfileController@logout');
 });
 
 Route::group(['prefix' => 'admin'], function () {
