@@ -22,6 +22,7 @@ Samvaarta.messageLog = {
   8: "Please select your role"
 };
 var valError = true;
+var apiUrl = 'http://127.0.0.1:8000/';
 Samvaarta.globalVar = Samvaarta.globalVar || {
   errorValueInFlow: "",
   is_Loggedin: 0
@@ -449,32 +450,26 @@ Samvaarta.system = function () {
     if (valError) {
       return false;
     } else {
-      // var paramObject = {
-      //     url: apiUrl + "auth/register",
-      //     type: "POST",
-      //     data: {
-      //         email: reg_email,
-      //         name: reg_name,
-      //         password: reg_pwd,
-      //         phone: reg_phone,
-      //         linkedin: reg_linkedin,
-      //         role: reg_role,
-      //     },
-      // };
-
+      var paramObject = {
+        url: apiUrl + "api/register",
+        type: "POST",
+        data: {
+          email: reg_email,
+          name: reg_name,
+          password: reg_pwd,
+          phone: reg_phone,
+          linkedin: reg_linkedin,
+          user_type: reg_role
+        }
+      };
       var ajaxSuccessCall = function ajaxSuccessCall(response) {
         console.log(response);
+        Samvaarta.model.showSuccessMessage(successReg(response));
       };
       var ajaxErrorCall = function ajaxErrorCall(response) {
         console.log(response);
       };
-
-      // Samvaarta.common.hitAjaxApi(
-      //     paramObject,
-      //     ajaxSuccessCall,
-      //     ajaxErrorCall
-      // );
-      Samvaarta.model.showSuccessMessage(successReg(reg_email));
+      Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
     }
   };
   var checkLoginStatus = function checkLoginStatus() {
