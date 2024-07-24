@@ -108,7 +108,7 @@ Samvaarta.common = function () {
       case "oauth_log_password":
         if (password == "") {
           error = Samvaarta.messageLog[5];
-        } else if (password.length < 7) {
+        } else if (password.length < 6) {
           error = Samvaarta.messageLog[6];
         } else if (password.length > 20) {
           error = Samvaarta.messageLog[6];
@@ -319,8 +319,10 @@ Samvaarta.model = function () {
 }();
 Samvaarta.system = function () {
   var createRegForm = function createRegForm() {
-    var regForm = "\n        <div class=\"reg-form\">\n            <div class=\"heading\">\n                <h2>Create an account to get started</h2>\n                <p>Kindly fill in your details to create an account</p>\n            </div>\n            <form class=\"authentication-form\">\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"oauth_log_name\"> Name</label>\n                    <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_name\" class=\"input_txt_box\" value=\"\">\n\n                    <p id=\"oauth_log_name_err\" class=\"validation error\"></p>\n                </div>\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"oauth_log_email\"> Email Id</label>\n                    <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_email\" class=\"input_txt_box\" value=\"\">\n                    <p id=\"oauth_log_email_err\" class=\"validation error\"></p>\n                </div>\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"oauth_log_password\"> Password</label>\n                    <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"password\" id=\"oauth_log_password\" class=\"input_txt_box\" value=\"\">\n                    <p id=\"oauth_log_password_err\" class=\"validation error\"></p>\n                </div>\n                <div class=\"form-elm-section input_sec_num \">\n                    <label for=\"oauth_log_number\"> Phone No</label>\n                    <select>\n                        <option value=\"+91\">+91</option>\n                        <option value=\"+91\">+01</option>\n                        <option value=\"+91\">+31</option>\n                        <option value=\"+91\">+11</option>\n                        <option value=\"+91\">+90</option>\n                    </select>\n                    <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_number\" class=\"input_txt_box\" value=\"\">\n                    <p id=\"oauth_log_number_err\" class=\"validation error\"></p>\n                </div>\n                <div class=\"input-section-main\">\n                    <div class=\"form-elm-section input_sec \">\n                        <label for=\"oauth_log_lnurl\"> LinkedIn URL</label>\n                        <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_lnurl\" class=\"input_txt_box\" value=\"\">\n                        <p id=\"oauth_log_lnurl_err\" class=\"validation error\"></p>\n                    </div>\n                    <div class=\"form-elm-section input_sec_role \">\n                        <label for=\"oauth_log_role\"> Role</label>\n                        <select class=\"input_txt_box\" id=\"oauth_log_role\">\n                            <option value=\"\">Select your Role</option>\n                            <option value=\"admin\">Admin</option>\n                            <option value=\"teacher\">Trainer</option>\n                            <option value=\"user\">User</option>\n                        </select>\n                        <p id=\"oauth_log_role_err\" class=\"validation error\"></p>\n                    </div>\n                </div>\n                <div class=\"form-elm-section input_sec_center btn-container\">\n                    <button class=\"btn\" type=\"button\" onclick=\"Samvaarta.system.userRegistration()\">Submit</button>\n                </div>\n            </form>\n            <p class=\"reg-login-toggle\">Already have the Samvaarta account?\n                <a role=\"button\" tabindex=\"0\" rel=\"noreferrer nofollow\" class=\"login-link\">Log in</a>\n            </p>\n        </div>\n        ";
-    document.querySelector('.login-module__main--right').innerHTML = regForm;
+    var regForm = "\n        <div class=\"reg-form\">\n            <div class=\"heading\">\n                <h2>Create an account to get started</h2>\n                <p>Kindly fill in your details to create an account</p>\n            </div>\n            <form class=\"authentication-form\">\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"oauth_log_name\"> Name</label>\n                    <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_name\" class=\"input_txt_box\" value=\"\">\n\n                    <p id=\"oauth_log_name_err\" class=\"validation error\"></p>\n                </div>\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"oauth_log_email\"> Email Id</label>\n                    <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_email\" class=\"input_txt_box\" value=\"\">\n                    <p id=\"oauth_log_email_err\" class=\"validation error\"></p>\n                </div>\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"oauth_log_password\"> Password</label>\n                    <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"password\" id=\"oauth_log_password\" class=\"input_txt_box\" value=\"\">\n                    <p id=\"oauth_log_password_err\" class=\"validation error\"></p>\n                </div>\n                <div class=\"form-elm-section input_sec_num \">\n                    <label for=\"oauth_log_number\"> Phone No</label>\n                    <select>\n                        <option value=\"+91\">+91</option>\n                        <option value=\"+91\">+01</option>\n                        <option value=\"+91\">+31</option>\n                        <option value=\"+91\">+11</option>\n                        <option value=\"+91\">+90</option>\n                    </select>\n                    <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_number\" class=\"input_txt_box\" value=\"\">\n                    <p id=\"oauth_log_number_err\" class=\"validation error\"></p>\n                </div>\n                <div class=\"input-section-main\">\n                    <div class=\"form-elm-section input_sec \">\n                        <label for=\"oauth_log_lnurl\"> LinkedIn URL</label>\n                        <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_lnurl\" class=\"input_txt_box\" value=\"\">\n                        <p id=\"oauth_log_lnurl_err\" class=\"validation error\"></p>\n                    </div>\n                    <div class=\"form-elm-section input_sec_role \">\n                        <label for=\"oauth_log_role\"> Role</label>\n                        <select class=\"input_txt_box\" id=\"oauth_log_role\">\n                            <option value=\"\">Select your Role</option>\n                            <option value=\"admin\">Admin</option>\n                            <option value=\"trainer\">Trainer</option>\n                            <option value=\"user\">User</option>\n                        </select>\n                        <p id=\"oauth_log_role_err\" class=\"validation error\"></p>\n                    </div>\n                </div>\n                <div class=\"form-elm-section input_sec_center btn-container\">\n                    <button class=\"btn\" type=\"button\" onclick=\"Samvaarta.system.userRegistration()\">Submit</button>\n                </div>\n            </form>\n            <p class=\"reg-login-toggle\">Already have the Samvaarta account?\n                <a role=\"button\" tabindex=\"0\" rel=\"noreferrer nofollow\" class=\"login-link\">Log in</a>\n            </p>\n        </div>\n        ";
+    if (document.querySelector('.login-module__main--right')) {
+      document.querySelector('.login-module__main--right').innerHTML = regForm;
+    }
     showFormToggle();
   };
   var createLoginForm = function createLoginForm() {
@@ -337,8 +339,16 @@ Samvaarta.system = function () {
       createLoginForm();
     });
   };
+  var changePassword = function changePassword() {};
+  var editProfile = function editProfile() {};
+  var logout = function logout() {
+    Samvaarta.common.deleteLocalStorage('oauthUserData');
+    Samvaarta.globalVar.is_loggedin = 0;
+    window.location.href = '/';
+    //window.location.reload(true);
+  };
   var successReg = function successReg(id) {
-    var msg = "\n            <figure class=\"\">\n                <img alt=\"\" src=\"\" width=\"80\" height=\"80\" />\n            </figure>\n            <h3>Your profile is undes review.</h3>\n            <h4>A confirmation will be sent to your email ID <span>".concat(id, "</span></h4>\n        ");
+    var msg = "\n            <figure class=\"\">\n                <img alt=\"/images/\" src=\"/images/user-default.svg\" width=\"80\" height=\"80\" />\n            </figure>\n            <h3>Your profile is undes review.</h3>\n            <h4>A confirmation will be sent to your email ID <span>".concat(id, "</span></h4>\n        ");
     //document.querySelector('model_content_1').innerHTML = msg;
     return msg;
   };
@@ -362,7 +372,7 @@ Samvaarta.system = function () {
       return false;
     } else {
       var paramObject = {
-        url: apiUrl + "auth/login",
+        url: apiUrl + "api/login",
         type: "POST",
         data: {
           email: reg_email,
@@ -375,7 +385,7 @@ Samvaarta.system = function () {
         Samvaarta.common.setLocalStorage("oauthUserData", response, 1);
         window.loginCallback ? loginCallback(response) : false;
         Samvaarta.globalVar.is_loggedin = 1;
-        window.location.href = "dashboard.html";
+        window.location.href = "/dashboard";
       };
       var ajaxErrorCall = function ajaxErrorCall(response) {
         $(".showloader").hide();
@@ -464,7 +474,7 @@ Samvaarta.system = function () {
       };
       var ajaxSuccessCall = function ajaxSuccessCall(response) {
         console.log(response);
-        Samvaarta.model.showSuccessMessage(successReg(response));
+        Samvaarta.model.showSuccessMessage(successReg(reg_email));
       };
       var ajaxErrorCall = function ajaxErrorCall(response) {
         console.log(response);
@@ -474,15 +484,21 @@ Samvaarta.system = function () {
   };
   var checkLoginStatus = function checkLoginStatus() {
     var userData = Samvaarta.common.getLocalStorage("oauthUserData");
-    displayUserInfo(userData);
+    if (userData) {
+      //window.location.href = '/dashboard';
+      Samvaarta.globalVar.is_loggedin = 1;
+      displayUserInfo(userData);
+    } else {
+      Samvaarta.system.createRegForm();
+    }
   };
   var displayUserInfo = function displayUserInfo(data) {
     if (data) {
-      var username = data.user.name;
-      $(".loggedin-user").removeClass("hide");
-      $(".init-login").addClass("hide");
-      var userData = "\n\t\t\t\t<div class=\"d-flex align-items-center\">\n\t\t\t\t\t<div class=\"flex-shrink-0\">\n\t\t\t\t\t<img src=\"assets/images/avatars/img-8.jpg\" class=\"avatar avatar-xs rounded-circle me-2\" alt=\"\" />\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"flex-grow-1 ms-1 lh-base\">\n\t\t\t\t\t<span class=\"fw-semibold fs-13 d-block line-height-normal\">".concat(username, "</span>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t\n\t\t\t\t<div class=\"header-user-nav\">\n\t\t\t\t\t<div class=\"hvr_bx\">\n\t\t\t\t\t\t<ul>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<a onclick=\"Samvaarta.system.editProfile()\" tabindex=\"0\" role=\"button\" href=\"javascript:void(0);\">\n\t\t\t\t\t\t\t\t\t<i class=\"fa fa-pencil\"></i>Account\n\t\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t</li>\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<li class=\"change-password\">\n\t\t\t\t\t\t\t\t<a href=\"javascript:void(0);\" tabindex=\"0\" role=\"button\" onclick=\"Samvaarta.system.changePassword()\">\n\t\t\t\t\t\t\t\t\t<i class=\"fa fa-key\"></i>Change Password\n\t\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<a href=\"javascript:void(0);\" tabindex=\"0\" role=\"button\" onclick=\"Samvaarta.system.logout()\">\n\t\t\t\t\t\t\t\t\t<i class=\"fa fa-power-off\"></i>Logout\n\t\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t</ul>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t");
-      $(".navbar-nav .dropdown-toggle").html(userData);
+      Samvaarta.globalVar.is_loggedin = 1;
+      var username = data.data.first_name;
+      document.querySelector('.dashboard__header--welcome span').innerHTML = username;
+      var userData = "\n\t\t\t\t<div class=\"d-flex align-items-center\">\n\t\t\t\t\t<div class=\"flex-shrink-0\">\n\t\t\t\t\t<img width=\"20\" height=\"20\" src=\"/images/user-default.svg\" class=\"avatar\" alt=\"\" />\n\t\t\t\t\t</div>\t\t\t\t\t\n\t\t\t\t</div>\n\t\t\t\t\n\t\t\t\t<div class=\"header-user-nav\">\n\t\t\t\t\t<div class=\"hvr_bx\">\n\t\t\t\t\t\t<ul>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<a onclick=\"Samvaarta.system.editProfile()\" tabindex=\"0\" role=\"button\" href=\"javascript:void(0);\">\n\t\t\t\t\t\t\t\t\t<i class=\"fa fa-pencil\"></i>Account\n\t\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t</li>\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<li class=\"change-password\">\n\t\t\t\t\t\t\t\t<a href=\"javascript:void(0);\" tabindex=\"0\" role=\"button\" onclick=\"Samvaarta.system.changePassword()\">\n\t\t\t\t\t\t\t\t\t<i class=\"fa fa-key\"></i>Change Password\n\t\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<a href=\"javascript:void(0);\" tabindex=\"0\" role=\"button\" onclick=\"Samvaarta.system.logout()\">\n\t\t\t\t\t\t\t\t\t<i class=\"fa fa-power-off\"></i>Logout\n\t\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t</ul>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t";
+      $(".dashboard__header--loggedin-user").html(userData);
       //$('.main-header__inner--logo').css('width','585px');
       if ($(".account-setting").length) {
         $("#user_name").val(username);
@@ -534,13 +550,16 @@ Samvaarta.system = function () {
     checkLoginStatus: checkLoginStatus,
     verifyEmail: verifyEmail,
     forgetPassword: forgetPassword,
-    createRegForm: createRegForm
+    createRegForm: createRegForm,
+    logout: logout,
+    changePassword: changePassword,
+    editProfile: editProfile
   };
 }();
 document.addEventListener('readystatechange', function (event) {
   // When HTML/DOM elements are ready:
   if (event.target.readyState === "interactive") {
-    Samvaarta.system.createRegForm();
+    Samvaarta.system.checkLoginStatus();
   }
   if (event.target.readyState === "complete") {}
 });
