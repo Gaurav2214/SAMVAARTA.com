@@ -405,3 +405,6 @@ button,
     transition: .5s;
     opacity: 1; }
 
+.dashboard__header {
+  display: block; }
+

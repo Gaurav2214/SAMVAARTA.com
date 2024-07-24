@@ -1,1 +1,5 @@
-<h2>dashboard</h2>
+<section class="dashboard">
+    <header class="dashboard__header container">
+    
+    </header>
+</section>
