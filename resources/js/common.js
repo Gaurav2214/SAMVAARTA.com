@@ -114,7 +114,7 @@ Samvaarta.common = (() => {
             case "oauth_log_password":
                 if (password == "") {
                     error = Samvaarta.messageLog[5];
-                } else if (password.length < 7) {
+                } else if (password.length < 6) {
                     error = Samvaarta.messageLog[6];
                 } else if (password.length > 20) {
                     error = Samvaarta.messageLog[6];
@@ -415,7 +415,7 @@ Samvaarta.system = (() => {
                         <select class="input_txt_box" id="oauth_log_role">
                             <option value="">Select your Role</option>
                             <option value="admin">Admin</option>
-                            <option value="teacher">Trainer</option>
+                            <option value="trainer">Trainer</option>
                             <option value="user">User</option>
                         </select>
                         <p id="oauth_log_role_err" class="validation error"></p>
@@ -430,7 +430,9 @@ Samvaarta.system = (() => {
             </p>
         </div>
         `;
-        document.querySelector('.login-module__main--right').innerHTML = regForm;
+        if(document.querySelector('.login-module__main--right')){
+            document.querySelector('.login-module__main--right').innerHTML = regForm;
+        }
         showFormToggle();
     };
 
@@ -476,10 +478,19 @@ Samvaarta.system = (() => {
         })
     }
 
+    const changePassword = () =>{}
+	const editProfile = () =>{}
+	const logout = () => {
+		Samvaarta.common.deleteLocalStorage('oauthUserData');
+		Samvaarta.globalVar.is_loggedin = 0;
+		window.location.href = '/';
+		//window.location.reload(true);
+	}
+
     const successReg = (id) => {
         const msg = `
             <figure class="">
-                <img alt="" src="" width="80" height="80" />
+                <img alt="/images/" src="/images/user-default.svg" width="80" height="80" />
             </figure>
             <h3>Your profile is undes review.</h3>
             <h4>A confirmation will be sent to your email ID <span>${id}</span></h4>
@@ -515,7 +526,7 @@ Samvaarta.system = (() => {
             return false;
         } else {
             var paramObject = {
-                url: apiUrl + "auth/login",
+                url: apiUrl + "api/login",
                 type: "POST",
                 data: {
                     email: reg_email,
@@ -528,7 +539,7 @@ Samvaarta.system = (() => {
                 Samvaarta.common.setLocalStorage("oauthUserData", response, 1);
                 window.loginCallback ? loginCallback(response) : false;
                 Samvaarta.globalVar.is_loggedin = 1;
-                window.location.href = "dashboard.html";
+                window.location.href = "/dashboard";
             };
 
             var ajaxErrorCall = (response) => {
@@ -645,7 +656,7 @@ Samvaarta.system = (() => {
 
             const ajaxSuccessCall = (response) => {
                 console.log(response);
-                Samvaarta.model.showSuccessMessage(successReg(response));
+                Samvaarta.model.showSuccessMessage(successReg(reg_email));
 
             };
 
@@ -663,22 +674,25 @@ Samvaarta.system = (() => {
 
     var checkLoginStatus = () => {
         var userData = Samvaarta.common.getLocalStorage("oauthUserData");
-        displayUserInfo(userData);
+        if(userData){
+            //window.location.href = '/dashboard';
+            Samvaarta.globalVar.is_loggedin = 1;
+            displayUserInfo(userData);
+        } else{
+            Samvaarta.system.createRegForm();
+        }
     };
 
     var displayUserInfo = (data) => {
         if (data) {
-            let username = data.user.name;
-            $(".loggedin-user").removeClass("hide");
-            $(".init-login").addClass("hide");
+            Samvaarta.globalVar.is_loggedin = 1;
+            let username = data.data.first_name;
+            document.querySelector('.dashboard__header--welcome span').innerHTML = username;
             let userData = `
 				<div class="d-flex align-items-center">
 					<div class="flex-shrink-0">
-					<img src="assets/images/avatars/img-8.jpg" class="avatar avatar-xs rounded-circle me-2" alt="" />
-					</div>
-					<div class="flex-grow-1 ms-1 lh-base">
-					<span class="fw-semibold fs-13 d-block line-height-normal">${username}</span>
-					</div>
+					<img width="20" height="20" src="/images/user-default.svg" class="avatar" alt="" />
+					</div>					
 				</div>
 				
 				<div class="header-user-nav">
@@ -703,7 +717,7 @@ Samvaarta.system = (() => {
 					</div>
 				</div>
 			`;
-            $(".navbar-nav .dropdown-toggle").html(userData);
+            $(".dashboard__header--loggedin-user").html(userData);
             //$('.main-header__inner--logo').css('width','585px');
             if ($(".account-setting").length) {
                 $("#user_name").val(username);
@@ -770,14 +784,17 @@ Samvaarta.system = (() => {
         verifyEmail: verifyEmail,
         forgetPassword: forgetPassword,
         createRegForm: createRegForm,
+        logout: logout,
+        changePassword: changePassword,
+        editProfile: editProfile,
     };
 })();
 
 document.addEventListener('readystatechange', event => {
 
     // When HTML/DOM elements are ready:
-    if (event.target.readyState === "interactive") {
-        Samvaarta.system.createRegForm();
+    if (event.target.readyState === "interactive") {        
+        Samvaarta.system.checkLoginStatus();
     }
 
     if (event.target.readyState === "complete") {

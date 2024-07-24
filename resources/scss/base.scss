@@ -187,7 +187,7 @@
         max-width: rem(450);
         width: 100%;
         background: #fff;
-        box-shadow: 0 0 8px rgba(0, 0, 0, .5);
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
         padding: rem(30);
         position: absolute;
         top: 50%;
@@ -198,29 +198,29 @@
         line-height: 1.4em;
         border-radius: rem(4);
         min-height: rem(220);
-        &.modal-confirm{
+        &.modal-confirm {
             display: flex;
             justify-content: center;
             align-items: center;
         }
-        .model-content{
+        .model-content {
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            figure{
-                img{
+            figure {
+                img {
                     border-radius: 50%;
                 }
             }
-            h3{
+            h3 {
                 margin-top: rem(10);
                 @include desc-5();
             }
-            h4{
+            h4 {
                 margin-top: rem(6);
                 @include desc-3();
-                span{
+                span {
                     font-weight: 700;
                 }
             }
@@ -231,13 +231,87 @@
         top: rem(18);
         right: rem(18);
         cursor: pointer;
-        transition: .5s;        
+        transition: 0.5s;
         opacity: 1;
     }
 }
 
-.dashboard{
-    &__header{
-        display: block;
+.dashboard {
+    &__header {
+        position: relative;
+        z-index: 2;
+        background: #fff;
+        transition: all ease 0.5s;
+        @include insert-box-shadow();
+        &--auth-detail {
+            @include set-flex-box($ai:center);
+            height: rem(55);
+        }
+        &--welcome {
+        }
+        &--loggedin-user {
+            position: relative;
+            @include hover() {
+                .header-user-nav {
+                    display: block;
+                    top: rem(28);
+                }
+            }
+            .header-user-nav {
+                background: $clr-1;
+                @include insert-box-shadow();
+                border-radius: rem(10);
+                position: absolute;
+                top: rem(-9999);
+                z-index: 99;
+                right: 0;
+                width: rem(190);
+                padding: rem(20);
+                .hvr_bx {
+                    ul {
+                        li {
+                            padding-top: rem(10);
+                            a {
+                                @include desc-2();
+                                @include hover() {
+                                    color: $primary;
+                                }
+                            }
+                            i.fa {
+                                width: 20px;
+                                height: 18px;
+                                display: inline-block;
+                                vertical-align: middle;
+                                margin-right: 8px;
+                            }
+                            .fa-key {
+                                background: url(/images/create-pwd-icon.svg) 0 0
+                                    no-repeat;
+                            }
+                            .fa-pencil {
+                                background: url(/images/edit-icon.svg) 0 0
+                                    no-repeat;
+                            }
+                            .fa-power-off {
+                                background: url(/images/logout-icon.svg) 0 0
+                                    no-repeat;
+                            }
+                            &:first-child {
+                                padding-top: 0;
+                            }
+                        }
+                    }
+                }
+            }
+            &:before {
+                content: "";
+                position: absolute;
+                width: 100%;
+                padding: rem(20);
+            }
+        }
+    }
+    &__elements {
+        height: rem(500);
     }
 }
