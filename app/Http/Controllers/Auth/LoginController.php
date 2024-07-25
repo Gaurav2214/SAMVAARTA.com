@@ -142,7 +142,7 @@ class LoginController extends Controller
 
 
             }catch(ModelNotFoundException $e){
-                return response()->json(['error' =>'Woops']);
+                return response()->json(['error' =>'Woops','status'=>'false']);
             }
 
         }else{
