@@ -119,16 +119,21 @@ class RegisterController extends Controller
        if (!$validator->fails())
        {
         try {
-	        $User = $this->create($request->all());	       		
+	        $User = $this->create($request->all());	   
+            
+            if($request->hasFile('avatar')) {
+				$User->avatar = asset('storage/'.$request->avatar->store('user/profile'));
+				$User->save();
+			}
 			
 			if($User){
                 return response()->json(['success' =>'A Profile is under review. <br />A Confirmation will be sent to your email id on '.$request['email']]);
             }else{
-                return response()->json(['error' =>'Please try again']);
+                return response()->json(['error' =>'Please try again','status'=>'false']);
             }	
 
 		} catch (Exception $e) {
-			return response()->json(['error' => trans('form.whoops')], 500);
+			return response()->json(['error' => trans('form.whoops'),'status'=>'false'], 500);
 		}
 
        }else{

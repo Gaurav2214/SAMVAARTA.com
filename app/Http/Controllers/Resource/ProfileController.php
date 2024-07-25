@@ -59,8 +59,9 @@ class ProfileController extends Controller
 
 		$User = $request->user();
 
-		if($request->has('action')){
+		if($request->action=="profile"){
 
+			exit;
             $validator =Validator::make($request->all(), [
                     'name' => 'required|string|max:255',
                     'phone'  => 'required|unique:users,phone,'.$User->id,		
@@ -82,6 +83,10 @@ class ProfileController extends Controller
 				if($request->has('phone')){
 					$User->phone = $request->phone;
 				}
+
+				if($request->hasFile('avatar')) {
+					$User->avatar = asset('storage/'.$request->avatar->store('user/profile'));
+				}
 				
 				$User->save();
 				return response()->json(['success' =>'true','message'=>'A Profile is has been successfully updated','data'=>$User]);
@@ -89,26 +94,35 @@ class ProfileController extends Controller
 
 			} catch (Exception $e) {
 				
-					return response()->json(['error' => trans('form.whoops')], 500);
+					return response()->json(['error' => trans('form.whoops'),'status'=>'false'], 500);
 				
 			}
         }else{
             return $validator->errors();
         }
-		}else if($request->has('action_password')){
-			$this->validate($request, [
-		                'password' => 'required|confirmed|min:6',
-		                'password_old' => 'required',
-			]);
-			if(Hash::check($request->password_old, $User->password))
-			{
-				$User->password = bcrypt($request->password);
-				$User->save();
+		}else if($request->action=="password"){
+			$validator =Validator::make($request->all(), [
+					'password' => 'required|confirmed|min:6',
+					'password_old' => 'required',
+			]);    
 
-				return response()->json(['message' => trans('Password Updated')]);
-					
+			if (!$validator->fails())
+			{
+				
+				if(Hash::check($request->password_old, $User->password))
+				{
+					$User->password = bcrypt($request->password);
+					$User->save();
+
+					return response()->json(['message' => ('Password Updated'),'status'=>'true']);
+						
+				}else{
+					return response()->json(['error' => 'Password did not matched','status'=>'false']);
+				}
+			}else{
+				return $validator->errors();
 			}
-		}	
+		}
 	}
 
 	/**
