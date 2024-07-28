@@ -61,7 +61,6 @@ class ProfileController extends Controller
 
 		if($request->action=="profile"){
 
-			exit;
             $validator =Validator::make($request->all(), [
                     'name' => 'required|string|max:255',
                     'phone'  => 'required|unique:users,phone,'.$User->id,		
