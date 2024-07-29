@@ -244,7 +244,7 @@
         transition: all ease 0.5s;
         @include insert-box-shadow();
         &--auth-detail {
-            @include set-flex-box($ai:center);
+            @include set-flex-box($ai: center);
             height: rem(55);
         }
         &--welcome {
@@ -312,6 +312,40 @@
         }
     }
     &__elements {
-        height: rem(500);
+        &--inner {
+            height: rem(500);
+            border: 1px solid #ccc;
+            border-radius: rem(12);
+            padding: rem(20);
+            margin-top: rem(24);
+            ul {
+                @include set-flex-box();
+                li {
+                    @include desc-2();
+                    gap: rem(5);
+                    width: rem(132);
+                    padding: rem(14) rem(18);
+                    border-radius: rem(12);
+                    @include insert-box-shadow();
+                    background: #f8fcff;
+                    line-height: rem(20);
+                    text-align: center;
+                    cursor: pointer;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    a {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        width: rem(90);
+                        gap: rem(5);
+                        color: $clr-4;
+                    }
+                }
+            }
+        }
     }
 }

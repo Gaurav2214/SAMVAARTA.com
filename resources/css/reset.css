@@ -104,6 +104,24 @@
   padding-left: 24px;
   padding-right: 24px; }
 
+.sprite-icon {
+  background: url(/images/sprite-icons.png) 0 0 no-repeat;
+  width: 20px;
+  height: 20px;
+  display: inline-block; }
+  .sprite-icon.coversation {
+    background-position: -156px -68px; }
+  .sprite-icon.objectives {
+    background-position: -53px -68px; }
+  .sprite-icon.outcomes {
+    background-position: -117px -70px; }
+  .sprite-icon.comments {
+    background-position: -183px -70px; }
+  .sprite-icon.upload {
+    background-position: -25px -68px; }
+  .sprite-icon.ethics {
+    background-position: -85px -68px; }
+
 * {
   word-wrap: break-word; }
 
