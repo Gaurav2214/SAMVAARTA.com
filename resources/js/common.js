@@ -7,14 +7,18 @@ Samvaarta.messageLog = {
     6: "Password length must be 6-20",
     7: "You have already registered with Us, Please signin",
     8: "Please select your role",
+    9: "Entered passwords do not match",
+    10: 'Please enter a new password',
+    11: 'Password has been changed successfully.',
 };
 
 var valError = true;
-var apiUrl = 'http://127.0.0.1:8000/';
+var apiUrl = "http://127.0.0.1:8000/";
 
 Samvaarta.globalVar = Samvaarta.globalVar || {
     errorValueInFlow: "",
     is_Loggedin: 0,
+    oauthToken:'',
 };
 
 Samvaarta.common = (() => {
@@ -111,13 +115,32 @@ Samvaarta.common = (() => {
         var error = "";
         password = password.replace(/ /g, "");
         switch (key) {
-            case "oauth_log_password":
+            case "oauth_log_pswd":
+            case "oauth_curr_password":
+            case "oauth_frgt_pswd_password":
+            case "oauth_verify_registration_password":
+            case "oauth_registration_password":
                 if (password == "") {
                     error = Samvaarta.messageLog[5];
                 } else if (password.length < 6) {
                     error = Samvaarta.messageLog[6];
                 } else if (password.length > 20) {
                     error = Samvaarta.messageLog[6];
+                }
+                break;
+            case "oauth_new_password1":
+                if (password == "") {
+                    error = Samvaarta.messageLog[10];
+                } else if (password.length < 6) {
+                    error = Samvaarta.messageLog[6];
+                } else if (password.length > 20) {
+                    error = Samvaarta.messageLog[6];
+                }
+                break;
+            case "oauth_new_password2":
+                var newpass = document.getElementById("oauth_new_password1").value;
+                if (password != newpass) {
+                    error = Samvaarta.messageLog[9];
                 }
         }
         return error;
@@ -181,6 +204,9 @@ Samvaarta.common = (() => {
             oauth_log_password: validatePassword,
             oauth_log_number: validatePhone,
             oauth_log_role: validateName,
+            oauth_curr_password: validatePassword,
+            oauth_new_password1: validatePassword,
+            oauth_new_password2: validatePassword
         };
 
         // Iterate through the validation functions
@@ -194,7 +220,6 @@ Samvaarta.common = (() => {
                             error_val;
                         document.getElementById(key + "_err").style.display =
                             "block";
-                        //document.getElementById(key).classList.add("error");
                         valError = true;
                         Samvaarta.globalVar.errorValueInFlow = error_val;
 
@@ -250,7 +275,6 @@ Samvaarta.common = (() => {
     };
 })();
 
-
 Samvaarta.model = (() => {
     const open_pop = (custom_function, add_class, head, close, href) => {
         var modelBoxes = document.querySelectorAll(".model-box");
@@ -262,8 +286,8 @@ Samvaarta.model = (() => {
             xtra_cls += add_class;
         }
         if (!href) {
-			href = '';
-		}
+            href = "";
+        }
 
         var append_str = "";
         var close_txt = "";
@@ -302,16 +326,16 @@ Samvaarta.model = (() => {
         wrapperDiv.appendChild(popupElement);
 
         var modelElement = document.getElementById(obj_id);
-		if (modelElement) {
-			modelElement.style.display = 'table';
-		}
-		try {
-			if (href && custom_function) {
-				custom_function(href, model_id);
-			} else if (custom_function) {
-				custom_function(model_id);
-			}
-		} catch (e) { }
+        if (modelElement) {
+            modelElement.style.display = "table";
+        }
+        try {
+            if (href && custom_function) {
+                custom_function(href, model_id);
+            } else if (custom_function) {
+                custom_function(model_id);
+            }
+        } catch (e) {}
 
         return model_id;
     };
@@ -343,22 +367,28 @@ Samvaarta.model = (() => {
     };
 
     var showSuccessMessage = function (msg, commonStyle, popupClass = "") {
-		Samvaarta.model.close_pop(1);
-		if (!msg) { msg = 'Success'; }
-		var extraMsg = '';
-		if (/<\/?[a-z][\s\S]*>/i.test(msg)) {
-			extraMsg = msg;
-			msg = '';
-		}
+        Samvaarta.model.close_pop(1);
+        if (!msg) {
+            msg = "Success";
+        }
+        var extraMsg = "";
+        if (/<\/?[a-z][\s\S]*>/i.test(msg)) {
+            extraMsg = msg;
+            msg = "";
+        }
 
-		Samvaarta.model.open_pop('', 'modal-confirm layer-out ' + popupClass, 1);
-		$('#model_content_1').html(extraMsg);
-		setTimeout(function () {
-			if ($('.modal-confirm.layer-out').length) {
-				//Samvaarta.model.close_pop(1);
-			}
-		}, 25000);
-	}
+        Samvaarta.model.open_pop(
+            "",
+            "modal-confirm layer-out " + popupClass,
+            1
+        );
+        $("#model_content_1").html(extraMsg);
+        setTimeout(function () {
+            if ($(".modal-confirm.layer-out").length) {
+                //Samvaarta.model.close_pop(1);
+            }
+        }, 25000);
+    };
 
     return {
         open_pop: open_pop,
@@ -430,8 +460,9 @@ Samvaarta.system = (() => {
             </p>
         </div>
         `;
-        if(document.querySelector('.login-module__main--right')){
-            document.querySelector('.login-module__main--right').innerHTML = regForm;
+        if (document.querySelector(".login-module__main--right")) {
+            document.querySelector(".login-module__main--right").innerHTML =
+                regForm;
         }
         showFormToggle();
     };
@@ -465,27 +496,135 @@ Samvaarta.system = (() => {
             </p>
         </div>
         `;
-        document.querySelector('.login-module__main--right').innerHTML = loginForm;
+        document.querySelector(".login-module__main--right").innerHTML =
+            loginForm;
         showFormToggle();
     };
 
     const showFormToggle = () => {
-        document.querySelector('.signup-link')?.addEventListener('click', () => {
-            createRegForm();
-        })
-        document.querySelector('.login-link')?.addEventListener('click', () => {
+        document
+            .querySelector(".signup-link")
+            ?.addEventListener("click", () => {
+                createRegForm();
+            });
+        document.querySelector(".login-link")?.addEventListener("click", () => {
             createLoginForm();
-        })
-    }
+        });
+    };
 
-    const changePassword = () =>{}
-	const editProfile = () =>{}
-	const logout = () => {
-		Samvaarta.common.deleteLocalStorage('oauthUserData');
-		Samvaarta.globalVar.is_loggedin = 0;
-		window.location.href = '/';
-		//window.location.reload(true);
-	}
+    var showChangePassword = function (lid) {
+        let changePwd = `
+            <div id="reset-pwd" class="password-change">
+                <div class="showloader"></div>
+                <h2>Change Password</h2>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form method="post" id="targetform"> 
+                        <div class="form-elm-section input_sec ">									
+                            <i class="lg_sprite oauth-eye-slash show-pwd" aria-hidden="true" data-testid="show-password">
+                            </i>
+                            <label for="oauth_curr_password">
+                                Current Password
+                            </label>
+                            <input required="" data-id="" placeholder="" name="" type="password" id="oauth_curr_password" class="input_txt_box " value=""> 
+							
+									<p id="oauth_curr_password_err" class="error validation">
+									</p>
+								</div> <div class="form-elm-section input_sec ">
+									
+									<i class="lg_sprite oauth-eye-slash show-pwd" aria-hidden="true" data-testid="show-password">
+									</i>
+                                    <label for="oauth_new_password1">
+                                        New Password
+                                    </label>
+									<input required="" data-id="" placeholder="" name="" type="password" id="oauth_new_password1" class="input_txt_box " value=""> 
+									<p id="oauth_new_password1_err" class="error validation"></p>
+								</div> 
+                                <div class="form-elm-section input_sec ">									
+									<i class="lg_sprite oauth-eye-slash show-pwd" aria-hidden="true" data-testid="show-password">
+									</i>
+                                    <label for="oauth_new_password2">
+                                        Confirm New Password
+                                    </label>
+									<input required="" data-id="" placeholder="" name="" type="password" id="oauth_new_password2" class="input_txt_box " value=""> 
+									<p id="oauth_new_password2_err" class="error validation"></p>
+								</div>
+                                <p class="error" id="main_password_err"></p><div class="form-elm-section"><input type="button" onclick="Samvaarta.system.passwordUpdated(1);" class="btn submit-button2" name="submit_new_password" value="Continue"></div></form></div></div></div>
+        `;
+        $("#model_content_" + lid).html(changePwd);
+    };
+
+    const changePassword = () => {
+        Samvaarta.model.open_pop(showChangePassword, "", 1);
+    };
+    const passwordUpdated = () => {
+        var paswrd = document.getElementById("oauth_curr_password").value;
+        var new_paswrd = document.getElementById("oauth_new_password1").value;
+        var cnfm_paswrd = document.getElementById("oauth_new_password2").value;
+        var errorElements = document.querySelectorAll(".error");
+        errorElements.forEach(function (el) {
+            el.innerHTML = "";
+        });
+
+        var inputElements = document.querySelectorAll(
+            "#reset-pwd .input_txt_box"
+        );
+        for (let i = 0; i < inputElements.length; i++) {
+            if (
+                inputElements[i].type !== "button" &&
+                inputElements[i].type !== "checkbox"
+            ) {
+                Samvaarta.common.removeRequiredFields(inputElements[i]);
+                if (valError) {
+                    return false;
+                }
+            }
+        }
+        if (valError) {
+            return false;
+        } else {
+            var paramObject = {
+                url: apiUrl + "/api/profile/update",
+                type: "POST",
+                data: {
+                    current_password: paswrd,
+                    password: new_paswrd,
+                    password_confirmation: cnfm_paswrd,
+                    action: "password",
+                },
+                headers: { Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}` },
+            };
+
+            function ajaxSuccessCall(data) {
+                Samvaarta.model.close_pop(1);
+                Samvaarta.model.showSuccessMessage(
+                    `<h2>Thank You</h2><p>${Samvaarta.messageLog[11]}</p>`,
+                    "y"
+                );                
+            }
+            function ajaxErrorCall(data) {
+                $(".showloader").hide();
+                if (data.responseJSON.code != 200) {
+                    $("#oauth_new_password2_err")
+                        .html(data.responseJSON.message)
+                        .show();
+                } else {
+                    Samvaarta.model.close_pop(1);
+                }                
+            }
+            Samvaarta.common.hitAjaxApi(
+                paramObject,
+                ajaxSuccessCall,
+                ajaxErrorCall
+            );
+        }
+    };
+    const editProfile = () => {};
+    const logout = () => {
+        Samvaarta.common.deleteLocalStorage("oauthUserData");
+        Samvaarta.globalVar.is_loggedin = 0;
+        window.location.href = "/";
+    };
 
     const successReg = (id) => {
         const msg = `
@@ -497,9 +636,32 @@ Samvaarta.system = (() => {
         `;
         //document.querySelector('model_content_1').innerHTML = msg;
         return msg;
-    }
+    };
 
-    var loginUser = () => {
+    const getUserData = (response) => {
+        var paramObject = {
+            url: apiUrl + "api/profile",
+            type: "GET",
+            data: {},
+            headers: { Authorization: `Bearer ${response.access_token}` },
+        };
+        var ajaxSuccessCall = (response) => {
+            Samvaarta.common.setLocalStorage("oauthUserData", response, 1);
+            window.location.href = "/dashboard";
+        };
+
+        var ajaxErrorCall = (response) => {
+            console.log(response);
+        };
+
+        Samvaarta.common.hitAjaxApi(
+            paramObject,
+            ajaxSuccessCall,
+            ajaxErrorCall
+        );
+    };
+
+    const loginUser = () => {
         var reg_email = document.getElementById("oauth_log_email").value;
         var reg_pwd = document.getElementById("oauth_log_password").value;
         var errorElements = document.querySelectorAll(".error");
@@ -534,12 +696,8 @@ Samvaarta.system = (() => {
                 },
             };
             var ajaxSuccessCall = (response) => {
-                var response = response.data;
-                displayUserInfo(response);
-                Samvaarta.common.setLocalStorage("oauthUserData", response, 1);
-                window.loginCallback ? loginCallback(response) : false;
-                Samvaarta.globalVar.is_loggedin = 1;
-                window.location.href = "/dashboard";
+                Samvaarta.common.setLocalStorage('AccessToken', response.data, 1);
+                getUserData(response.data);
             };
 
             var ajaxErrorCall = (response) => {
@@ -657,7 +815,6 @@ Samvaarta.system = (() => {
             const ajaxSuccessCall = (response) => {
                 console.log(response);
                 Samvaarta.model.showSuccessMessage(successReg(reg_email));
-
             };
 
             const ajaxErrorCall = (response) => {
@@ -674,20 +831,28 @@ Samvaarta.system = (() => {
 
     var checkLoginStatus = () => {
         var userData = Samvaarta.common.getLocalStorage("oauthUserData");
-        if(userData){
-            //window.location.href = '/dashboard';
+        if (userData) {
             Samvaarta.globalVar.is_loggedin = 1;
             displayUserInfo(userData);
-        } else{
-            Samvaarta.system.createRegForm();
+            window.loginCallback ? loginCallback(response) : false;
+        } else {
+            if (window.location.pathname !== "/") {
+                window.location.href = "/";
+                Samvaarta.system.createRegForm();
+            } else {
+                Samvaarta.system.createRegForm();
+            }
         }
     };
 
     var displayUserInfo = (data) => {
         if (data) {
+            Samvaarta.globalVar.oauthToken = Samvaarta.common.getLocalStorage('AccessToken');
             Samvaarta.globalVar.is_loggedin = 1;
-            let username = data.data.first_name;
-            document.querySelector('.dashboard__header--welcome span').innerHTML = username;
+            let username = data.data.name;
+            document.querySelector(
+                ".dashboard__header--welcome span"
+            ).innerHTML = username;
             let userData = `
 				<div class="d-flex align-items-center">
 					<div class="flex-shrink-0">
@@ -787,19 +952,16 @@ Samvaarta.system = (() => {
         logout: logout,
         changePassword: changePassword,
         editProfile: editProfile,
+        passwordUpdated: passwordUpdated,
     };
 })();
 
-document.addEventListener('readystatechange', event => {
-
+document.addEventListener("readystatechange", (event) => {
     // When HTML/DOM elements are ready:
-    if (event.target.readyState === "interactive") {        
+    if (event.target.readyState === "interactive") {
         Samvaarta.system.checkLoginStatus();
     }
 
     if (event.target.readyState === "complete") {
-
     }
-
 });
-

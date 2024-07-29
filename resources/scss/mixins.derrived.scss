@@ -40,6 +40,12 @@
     font-weight: $bold;
     color: $clr-4;
   }
+  @mixin heading-6() {
+    @include set-typography($fs: 18, $lh: 26);
+    font-family: $font-openSans;
+    font-weight: $bold;
+    color: $clr-4;
+  }
   
   
   
