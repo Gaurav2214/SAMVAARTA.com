@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Resource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-
+use Illuminate\Support\Facades\Validator;
 use Route;
 use Exception;
 
 use App\User;
+use App\Models\TrainerLearnerMapping;
 
 class UserResource extends Controller
 {
@@ -18,9 +19,27 @@ class UserResource extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     public function __construct(Request $request)
+	{		
+		$this->middleware('auth');		
+	}
+
     public function listing()
     {
-        $Users = User::orderBy('id', 'DESC')->get();
+        $Users = User::where(['user_type'=>'user'])->orderBy('id', 'DESC')->get();
+        return response()->json(['success' =>'true','data'=>$Users,'count'=>count($Users)]);
+    }
+
+    public function trainer_listing()
+    {
+        $Users = User::where(['user_type'=>'trainer'])->orderBy('id', 'DESC')->get();
+        return response()->json(['success' =>'true','data'=>$Users,'count'=>count($Users)]);
+    }
+
+    public function admin_listing()
+    {
+        $Users = User::where(['user_type'=>'admin'])->orderBy('id', 'DESC')->get();
         return response()->json(['success' =>'true','data'=>$Users,'count'=>count($Users)]);
     }
 
@@ -179,6 +198,62 @@ class UserResource extends Controller
             $User->save();
             return response()->json(['success' =>'true','message'=>"User has been successfulle activated"]);
         }
+    }
+
+    public function assign_trainer(Request $request){
+        $validator =Validator::make($request->all(), [
+            'user_id' => 'required',
+            'trainer_id'  => 'required',	
+        ]);    
+
+        if (!$validator->fails())
+        {
+            $User = User::where('id',$request->user_id)->where('user_type','user')->first();
+            $Trainer = User::where('id',$request->trainer_id)->where('user_type','trainer')->first();
+
+            if(empty($User)){
+                return response()->json(['success' =>'false','message'=>"Unable to found User"]);
+            }
+
+            if(empty($Trainer)){
+                return response()->json(['success' =>'false','message'=>"Unable to found Trainer"]);
+            }
+            
+            if($User['status']!='1'){
+                return response()->json(['success' =>'false','message'=>"User not activated, please activate the user first."]);
+            }
+
+            if($Trainer['status']!='1'){
+                return response()->json(['success' =>'false','message'=>"Trainer not activated, please activate the user first."]);
+            }
+
+            $user_id = $User['id'];
+            $trainer_id = $Trainer['id'];
+
+
+            $trainermapping=TrainerLearnerMapping::where('user_id',$user_id)->where('status','1')->first();
+
+            if(!empty($trainermapping)){
+                return response()->json(['success' =>'false','message'=>"Tainer is already assigned"]);
+            }
+
+
+            $Admin = $request->user();
+
+            TrainerLearnerMapping::create([
+                'user_id'       => $user_id,
+                'trainer_id'    => $trainer_id,
+                'status'        => 1,
+                'assign_by'     => $Admin['id']
+            ]);
+
+
+            return response()->json(['success' =>'true','message'=>"Successfully assigned for trainer"]);
+
+        }else{
+            return $validator->errors();
+        }
+
     }
     
    
