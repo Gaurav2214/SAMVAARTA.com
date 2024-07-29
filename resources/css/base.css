@@ -407,6 +407,13 @@ button,
       flex-direction: column; }
       .model-box .model-container .model-content figure img {
         border-radius: 50%; }
+      .model-box .model-container .model-content h2 {
+        margin-top: 10px;
+        font-size: 18px;
+        line-height: 26px;
+        font-family: "Open Sans", sans-serif;
+        font-weight: 700;
+        color: #262626; }
       .model-box .model-container .model-content h3 {
         margin-top: 10px;
         font-size: 14px;
@@ -423,6 +430,10 @@ button,
         color: #808080; }
         .model-box .model-container .model-content h4 span {
           font-weight: 700; }
+      .model-box .model-container .model-content .password-change {
+        width: 100%; }
+        .model-box .model-container .model-content .password-change form {
+          margin-top: 20px; }
   .model-box .model-container .close {
     position: absolute;
     top: 18px;
