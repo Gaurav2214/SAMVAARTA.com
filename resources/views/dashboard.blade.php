@@ -30,14 +30,46 @@
             </div>
         </header>
         <div class="dashboard__elements">
-            <ul>
-                <li>Conversational details</li>
-                <li>Learning Objective</li>
-                <li>Learning Outcomes</li>
-                <li>Managers Comment</li>
-                <li>Uploading Documents</li>
-                <li>Code of ethics</li>
-            </ul>
+            <div class="container dashboard__elements--inner">
+                <ul>
+                    <li>
+                        <a href="">
+                            <span class="coversation sprite-icon"></span>
+                            Conversational details
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <span class="objectives sprite-icon"></span>
+                            Learning Objective
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <span class="outcomes sprite-icon"></span>
+                            Learning Outcomes
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <span class="comments sprite-icon"></span>
+                            Managers Comment
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <span class="upload sprite-icon"></span>
+                            Uploading Documents
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <span class="ethics sprite-icon"></span>
+                            Code of ethics
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </section>
     @include('footer')

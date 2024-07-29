@@ -40,10 +40,33 @@
     &:focus{
       outline: none;
     }
-  }
-
-  
+  }  
 
   .container {
     @include container;
+  }
+
+  .sprite-icon{
+    background: url(/images/sprite-icons.png) 0 0 no-repeat;
+    width: rem(20);
+    height: rem(20);
+    display: inline-block;
+    &.coversation{
+      background-position: -156px -68px;
+    }
+    &.objectives{
+      background-position: -53px -68px;
+    }
+    &.outcomes{
+      background-position: -117px -70px;
+    }
+    &.comments{
+      background-position: -183px -70px;
+    }
+    &.upload{
+      background-position: -25px -68px;
+    }
+    &.ethics{
+      background-position: -85px -68px;
+    }
   }
