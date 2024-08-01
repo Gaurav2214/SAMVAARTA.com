@@ -46,27 +46,26 @@
     @include container;
   }
 
-  .sprite-icon{
-    background: url(/images/sprite-icons.png) 0 0 no-repeat;
+  .sprite-icon{    
     width: rem(20);
     height: rem(20);
     display: inline-block;
     &.coversation{
-      background-position: -156px -68px;
+      background: url(/images/conversation.png) 0 0 no-repeat;
     }
     &.objectives{
-      background-position: -53px -68px;
+      background: url(/images/objective.png) 0 0 no-repeat;
     }
     &.outcomes{
-      background-position: -117px -70px;
+      background: url(/images/outcomes.png) 0 0 no-repeat;
     }
     &.comments{
-      background-position: -183px -70px;
+      background: url(/images/comments.png) 0 0 no-repeat;
     }
     &.upload{
-      background-position: -25px -68px;
+      background: url(/images/upload.png) 0 0 no-repeat;
     }
     &.ethics{
-      background-position: -85px -68px;
+      background: url(/images/ethics.png) 0 0 no-repeat;
     }
   }

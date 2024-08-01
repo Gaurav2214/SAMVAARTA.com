@@ -833,6 +833,9 @@ Samvaarta.system = (() => {
         var userData = Samvaarta.common.getLocalStorage("oauthUserData");
         if (userData) {
             Samvaarta.globalVar.is_loggedin = 1;
+            if (window.location.pathname === "/") {
+                window.location.href = "/dashboard";
+            }
             displayUserInfo(userData);
             window.loginCallback ? loginCallback(response) : false;
         } else {
@@ -956,10 +959,23 @@ Samvaarta.system = (() => {
     };
 })();
 
+const dashboardTab = () => {
+    const elm = document.querySelector('.dashboard__elements--inner');
+    if(elm){
+        $('body').on('click', '.dashboard__elements--inner li', (event) => {
+            if(!event.currentTarget.classList.contains('active')){
+                $('.dashboard__elements--inner li').removeClass('active');
+                event.currentTarget.classList.add('active');                
+            } 
+        })
+    }
+}
+
 document.addEventListener("readystatechange", (event) => {
     // When HTML/DOM elements are ready:
     if (event.target.readyState === "interactive") {
         Samvaarta.system.checkLoginStatus();
+        dashboardTab();
     }
 
     if (event.target.readyState === "complete") {
