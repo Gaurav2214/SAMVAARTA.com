@@ -32,41 +32,84 @@
         <div class="dashboard__elements">
             <div class="container dashboard__elements--inner">
                 <ul>
-                    <li>
-                        <a href="">
-                            <span class="coversation sprite-icon"></span>
-                            Conversational details
-                        </a>
+                    <li class="active">
+                        <div class="dashboard__elements--item">
+                            <h2>
+                                <img alt="" src="/images/conversation.png" width="25" height="25" />
+                                Conversational details
+                            </h2>
+                        </div>
+                        <div class="details">
+                            <h3>Conversational Details</h3>
+                            <textarea name="" id="" cols="30" rows="10"></textarea>
+                            <button class="btn">Submit</button>
+                        </div>
                     </li>
                     <li>
-                        <a href="">
-                            <span class="objectives sprite-icon"></span>
-                            Learning Objective
-                        </a>
+                        <div class="dashboard__elements--item">
+                            <h2>
+                                <img alt="" src="/images/objective.png" width="25" height="25" />
+                                Learning Objective
+                            </h2>
+                        </div>
+
+                        <div class="details">
+                            <h3>Learning Objective</h3>
+                            <textarea name="" id="" cols="30" rows="10"></textarea>
+                            <button class="btn">Submit</button>
+                        </div>
                     </li>
                     <li>
-                        <a href="">
-                            <span class="outcomes sprite-icon"></span>
-                            Learning Outcomes
-                        </a>
+                        <div class="dashboard__elements--item">
+                            <h2>
+                                <img alt="" src="/images/outcomes.png" width="25" height="25" />
+                                Learning Outcomes
+                            </h2>
+                        </div>
+                        <div class="details">
+                            <h3>Learning Outcomes</h3>
+                            <textarea name="" id="" cols="30" rows="10"></textarea>
+                            <button class="btn">Submit</button>
+                        </div>
                     </li>
                     <li>
-                        <a href="">
-                            <span class="comments sprite-icon"></span>
-                            Managers Comment
-                        </a>
+                        <div class="dashboard__elements--item">
+                            <h2>
+                                <img alt="" src="/images/comments.png" width="25" height="25" />
+                                Managers Comment
+                            </h2>
+                        </div>
+                        <div class="details">
+                            <h3>Managers Comment</h3>
+                            <textarea name="" id="" cols="30" rows="10"></textarea>
+                            <button class="btn">Submit</button>
+                        </div>
                     </li>
                     <li>
-                        <a href="">
-                            <span class="upload sprite-icon"></span>
-                            Uploading Documents
-                        </a>
+                        <div class="dashboard__elements--item">
+                            <h2>
+                                <img alt="" src="/images/upload.png" width="25" height="25" />
+                                Uploading Documents
+                            </h2>
+                        </div>
+                        <div class="details">
+                            <h3>Upload Documents</h3>
+                            <textarea name="" id="" cols="30" rows="10"></textarea>
+                            <button class="btn">Submit</button>
+                        </div>
                     </li>
                     <li>
-                        <a href="">
-                            <span class="ethics sprite-icon"></span>
-                            Code of ethics
-                        </a>
+                        <div class="dashboard__elements--item">
+                            <h2>
+                                <img alt="" src="/images/ethics.png" width="25" height="25" />
+                                Code of ethics
+                            </h2>
+                        </div>
+                        <div class="details">
+                            <h3>Code of ethics</h3>
+                            <textarea name="" id="" cols="30" rows="10"></textarea>
+                            <button class="btn">Submit</button>
+                        </div>
                     </li>
                 </ul>
             </div>

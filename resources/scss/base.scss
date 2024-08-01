@@ -228,9 +228,9 @@
                     font-weight: 700;
                 }
             }
-            .password-change{
+            .password-change {
                 width: 100%;
-                form{
+                form {
                     margin-top: rem(20);
                 }
             }
@@ -330,29 +330,68 @@
             margin-top: rem(24);
             ul {
                 @include set-flex-box();
+                position: relative;
                 li {
-                    @include desc-2();
-                    gap: rem(5);
-                    width: rem(132);
-                    padding: rem(14) rem(18);
-                    border-radius: rem(12);
-                    @include insert-box-shadow();
-                    background: #f8fcff;
-                    line-height: rem(20);
-                    text-align: center;
-                    cursor: pointer;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    a {
+                    .dashboard__elements--item {
+                        gap: rem(5);
+                        width: rem(132);
+                        padding: rem(14) rem(18);
+                        border-radius: rem(12);
+                        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+                        background: #f8fcff;
+                        line-height: rem(20);
+                        text-align: center;
+                        cursor: pointer;
                         display: flex;
                         flex-direction: column;
                         justify-content: center;
                         align-items: center;
-                        width: rem(90);
-                        gap: rem(5);
-                        color: $clr-4;
+                        h2 {
+                            @include desc-2();
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            width: rem(90);
+                            gap: rem(5);
+                            color: $clr-4;
+                        }
+                        &:hover {
+                            @include insert-box-shadow();
+                            background: rgb(250, 235, 215);
+                        }
+                    }
+                    .details{
+                        display: none;
+                        margin-top: rem(35);
+                        position: absolute;
+                        width: 100%;
+                        left: 0;
+                        h3{
+                            text-align: center;
+                        }
+                        textarea{
+                            margin-top: rem(30);
+                            border-radius: rem(12);
+                            border: 1px solid #ccc;
+                            width: -webkit-fill-available;
+                            resize: none;
+                            outline: none;
+                            padding: rem(20);
+                        }
+                        .btn{
+                            margin-top: rem(15);
+                        }
+
+                    }
+                    &.active {
+                        .dashboard__elements--item {
+                            @include insert-box-shadow();
+                            background: rgb(250, 235, 215);
+                        }
+                        .details{
+                            display: block;
+                        }
                     }
                 }
             }

@@ -97,19 +97,18 @@
   padding-right: 24px; }
 
 .sprite-icon {
-  background: url(/images/sprite-icons.png) 0 0 no-repeat;
   width: 20px;
   height: 20px;
   display: inline-block; }
   .sprite-icon.coversation {
-    background-position: -156px -68px; }
+    background: url(/images/conversation.png) 0 0 no-repeat; }
   .sprite-icon.objectives {
-    background-position: -53px -68px; }
+    background: url(/images/objective.png) 0 0 no-repeat; }
   .sprite-icon.outcomes {
-    background-position: -117px -70px; }
+    background: url(/images/outcomes.png) 0 0 no-repeat; }
   .sprite-icon.comments {
-    background-position: -183px -70px; }
+    background: url(/images/comments.png) 0 0 no-repeat; }
   .sprite-icon.upload {
-    background-position: -25px -68px; }
+    background: url(/images/upload.png) 0 0 no-repeat; }
   .sprite-icon.ethics {
-    background-position: -85px -68px; }
+    background: url(/images/ethics.png) 0 0 no-repeat; }
