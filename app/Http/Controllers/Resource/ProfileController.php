@@ -59,7 +59,7 @@ class ProfileController extends Controller
 
 		$User = $request->user();
 
-		if($request->action=="profile"){
+		if($request->action=="profile" || $request->action==""){
 
             $validator =Validator::make($request->all(), [
                     'name' => 'required|string|max:255',

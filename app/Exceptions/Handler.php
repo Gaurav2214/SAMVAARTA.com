@@ -12,8 +12,15 @@ class Handler extends ExceptionHandler
      *
      * @var array<int, class-string<Throwable>>
      */
+
+
     protected $dontReport = [
-        //
+        \Illuminate\Auth\AuthenticationException::class,
+        \Illuminate\Auth\Access\AuthorizationException::class,
+        \Symfony\Component\HttpKernel\Exception\HttpException::class,
+        \Illuminate\Database\Eloquent\ModelNotFoundException::class,
+        \Illuminate\Session\TokenMismatchException::class,
+        \Illuminate\Validation\ValidationException::class,
     ];
 
     /**
@@ -21,11 +28,16 @@ class Handler extends ExceptionHandler
      *
      * @var array<int, string>
      */
-    protected $dontFlash = [
+    /*protected $dontFlash = [
         'current_password',
         'password',
         'password_confirmation',
-    ];
+    ];*/
+    
+    public function report(Throwable $exception)
+    {
+        parent::report($exception);
+    }
 
     /**
      * Register the exception handling callbacks for the application.
