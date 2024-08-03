@@ -14,14 +14,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {return view('outer');});
-Route::get('/dashboard', function () { return view('dashboard'); });
+Route::get('/dashboard', 'UserController@dashboard');
+Route::get('/myaccount', 'UserController@myaccount');
+Route::get('/change-password', 'UserController@change_password');
+
 Route::get('/list', function () { return view('list'); });
 
 
 Route::group(['prefix' => 'admin'], function () {
-  Route::get('/login', 'AdminAuth\LoginController@showLoginForm')->name('login');
+  Route::get('/login', 'AdminAuth\LoginController@showLoginForm')->name('admin_login');
   Route::post('/login', 'AdminAuth\LoginController@login');
-  Route::post('/logout', 'AdminAuth\LoginController@logout')->name('logout');
+  Route::post('/logout', 'AdminAuth\LoginController@logout')->name('admin_logout');
+  /*
 
   Route::get('/register', 'AdminAuth\RegisterController@showRegistrationForm')->name('register');
   Route::post('/register', 'AdminAuth\RegisterController@register');
@@ -30,13 +34,16 @@ Route::group(['prefix' => 'admin'], function () {
   Route::post('/password/reset', 'AdminAuth\ResetPasswordController@reset')->name('password.email');
   Route::get('/password/reset', 'AdminAuth\ForgotPasswordController@showLinkRequestForm')->name('password.reset');
   Route::get('/password/reset/{token}', 'AdminAuth\ResetPasswordController@showResetForm');
+  */
 });
 
 Route::group(['prefix' => 'trainer'], function () {
-  Route::get('/login', 'TrainerAuth\LoginController@showLoginForm')->name('login');
+  Route::get('/login', 'TrainerAuth\LoginController@showLoginForm')->name('trainer-login');
   Route::post('/login', 'TrainerAuth\LoginController@login');
-  Route::post('/logout', 'TrainerAuth\LoginController@logout')->name('logout');
+  Route::post('/logout', 'TrainerAuth\LoginController@logout')->name('trainer-logout');
 
+
+   /*
   Route::get('/register', 'TrainerAuth\RegisterController@showRegistrationForm')->name('register');
   Route::post('/register', 'TrainerAuth\RegisterController@register');
 
@@ -44,6 +51,7 @@ Route::group(['prefix' => 'trainer'], function () {
   Route::post('/password/reset', 'TrainerAuth\ResetPasswordController@reset')->name('password.email');
   Route::get('/password/reset', 'TrainerAuth\ForgotPasswordController@showLinkRequestForm')->name('password.reset');
   Route::get('/password/reset/{token}', 'TrainerAuth\ResetPasswordController@showResetForm');
+  */
 });
 
 Route::group(['prefix' => 'user'], function () {

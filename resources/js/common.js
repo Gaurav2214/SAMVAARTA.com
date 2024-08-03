@@ -867,12 +867,12 @@ Samvaarta.system = (() => {
 					<div class="hvr_bx">
 						<ul>
 							<li>
-								<a onclick="Samvaarta.system.editProfile()" tabindex="0" role="button" href="javascript:void(0);">
+								<a onclick="/myaccount" tabindex="0" role="button" href="javascript:void(0);">
 									<i class="fa fa-pencil"></i>Account
 								</a>
 							</li>							
 							<li class="change-password">
-								<a href="javascript:void(0);" tabindex="0" role="button" onclick="Samvaarta.system.changePassword()">
+								<a href="javascript:void(0);" tabindex="0" role="button" onclick="/change-password">
 									<i class="fa fa-key"></i>Change Password
 								</a>
 							</li>
