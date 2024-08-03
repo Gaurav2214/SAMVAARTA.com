@@ -584,7 +584,7 @@ Samvaarta.system = (() => {
             return false;
         } else {
             var paramObject = {
-                url: apiUrl + "/api/profile/update",
+                url: apiUrl + "api/profile/update",
                 type: "POST",
                 data: {
                     current_password: paswrd,
@@ -592,7 +592,7 @@ Samvaarta.system = (() => {
                     password_confirmation: cnfm_paswrd,
                     action: "password",
                 },
-                headers: { Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}` },
+                headers: { Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,"Accept":'application/json' },
             };
 
             function ajaxSuccessCall(data) {
