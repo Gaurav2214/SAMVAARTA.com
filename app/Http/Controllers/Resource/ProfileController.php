@@ -9,6 +9,7 @@ use Setting;
 use Hash;
 use App\User;
 use Illuminate\Support\Facades\Validator;
+use Exception;
 
 class ProfileController extends Controller
 {
@@ -58,6 +59,7 @@ class ProfileController extends Controller
 		/* */
 
 		$User = $request->user();
+
 
 		if($request->action=="profile" || $request->action==""){
 

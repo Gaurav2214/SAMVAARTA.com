@@ -404,16 +404,17 @@ Samvaarta.system = function () {
         }
       };
       var paramObject = {
-        url: apiUrl + "/api/profile/update",
+        url: apiUrl + "api/profile/update",
         type: "POST",
         data: {
-          current_password: paswrd,
+          password_old: paswrd,
           password: new_paswrd,
           password_confirmation: cnfm_paswrd,
           action: "password"
         },
         headers: {
-          Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token)
+          Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
+          Accept:"application/json"
         }
       };
       Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
