@@ -1071,19 +1071,19 @@ Samvaarta.system = (() => {
                 userTypreDescription = `
                 <li>
                     <a tabindex="0" role="button" href="/user-details">
-                        <i class="fa fa-pencil"></i>User Detail
+                    <i class="fa fa-info-circle" aria-hidden="true"></i>User Detail
                     </a>
                 </li>	`;
             } else if (userType === "admin") {
                 userTypreDescription = `
                 <li>
                     <a tabindex="0" role="button" href="/user-details">
-                        <i class="fa fa-pencil"></i>User Detail
+                    <i class="fa fa-info-circle" aria-hidden="true"></i>User Detail
                     </a>
                 </li>
                 <li>
                     <a tabindex="0" role="button" href="/trainer-details">
-                        <i class="fa fa-pencil"></i>Trainer Detail
+                    <i class="fa fa-info-circle" aria-hidden="true"></i>Trainer Detail
                     </a>
                 </li>	
                 `;
@@ -1100,12 +1100,12 @@ Samvaarta.system = (() => {
 						<ul>
                             <li>
                                 <a tabindex="0" role="button" href="/dashboard">
-                                    <i class="fa fa-pencil"></i>Dashboard
+                                <i class="fa fa-tachometer" aria-hidden="true"></i>Dashboard
                                 </a>
                             </li>	
 							<li>
 								<a tabindex="0" role="button" href="/myaccount">
-									<i class="fa fa-pencil"></i>Account
+									<i class="fa fa-pencil"></i>Edit Profile
 								</a>
 							</li>							
 							<li class="change-password">
