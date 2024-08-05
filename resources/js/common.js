@@ -8,8 +8,9 @@ Samvaarta.messageLog = {
     7: "You have already registered with Us, Please signin",
     8: "Please select your role",
     9: "Entered passwords do not match",
-    10: 'Please enter a new password',
-    11: 'Password has been changed successfully.',
+    10: "Please enter a new password",
+    11: "Password has been changed successfully.",
+    12: "Your Profile has been updated successfully.",
 };
 
 var valError = true;
@@ -18,7 +19,7 @@ var apiUrl = "http://127.0.0.1:8000/";
 Samvaarta.globalVar = Samvaarta.globalVar || {
     errorValueInFlow: "",
     is_Loggedin: 0,
-    oauthToken:'',
+    oauthToken: "",
 };
 
 Samvaarta.common = (() => {
@@ -138,7 +139,9 @@ Samvaarta.common = (() => {
                 }
                 break;
             case "oauth_new_password2":
-                var newpass = document.getElementById("oauth_new_password1").value;
+                var newpass = document.getElementById(
+                    "oauth_new_password1"
+                ).value;
                 if (password != newpass) {
                     error = Samvaarta.messageLog[9];
                 }
@@ -206,7 +209,7 @@ Samvaarta.common = (() => {
             oauth_log_role: validateName,
             oauth_curr_password: validatePassword,
             oauth_new_password1: validatePassword,
-            oauth_new_password2: validatePassword
+            oauth_new_password2: validatePassword,
         };
 
         // Iterate through the validation functions
@@ -261,6 +264,22 @@ Samvaarta.common = (() => {
         }
     };
 
+    const dateMonthYear = (timestampVal) => {
+        const timestamp = timestampVal;
+
+        // Create a Date object
+        const date = new Date(timestamp);
+
+        // Extract year, month, and day
+        const year = date.getFullYear();
+        const month = date.toLocaleString("default", { month: "long" }); // 'long' for full month name
+        const day = date.getDate();
+
+        // Format the date as "Month Day, Year"
+        const formattedDate = `${month} ${day}, ${year}`;
+        return formattedDate;
+    };
+
     return {
         isNull: isNull,
         isBlank: isBlank,
@@ -272,6 +291,7 @@ Samvaarta.common = (() => {
         deleteLocalStorage: deleteLocalStorage,
         encodeHTML: encodeHTML,
         removeRequiredFields: removeRequiredFields,
+        dateMonthYear : dateMonthYear,
     };
 })();
 
@@ -587,12 +607,15 @@ Samvaarta.system = (() => {
                 url: apiUrl + "api/profile/update",
                 type: "POST",
                 data: {
-                    current_password: paswrd,
+                    password_old: paswrd,
                     password: new_paswrd,
                     password_confirmation: cnfm_paswrd,
                     action: "password",
                 },
-                headers: { Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,"Accept":'application/json' },
+                headers: {
+                    Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+                    Accept: "application/json",
+                },
             };
 
             function ajaxSuccessCall(data) {
@@ -600,7 +623,7 @@ Samvaarta.system = (() => {
                 Samvaarta.model.showSuccessMessage(
                     `<h2>Thank You</h2><p>${Samvaarta.messageLog[11]}</p>`,
                     "y"
-                );                
+                );
             }
             function ajaxErrorCall(data) {
                 $(".showloader").hide();
@@ -610,7 +633,7 @@ Samvaarta.system = (() => {
                         .show();
                 } else {
                     Samvaarta.model.close_pop(1);
-                }                
+                }
             }
             Samvaarta.common.hitAjaxApi(
                 paramObject,
@@ -619,7 +642,181 @@ Samvaarta.system = (() => {
             );
         }
     };
-    const editProfile = () => {};
+    const editProfile = () => {
+        let getOuathData = Samvaarta.common.getLocalStorage("oauthUserData");
+        getOuathData = getOuathData.data;
+        let profileDetail = `
+        <h2 class="align-center">Edit Profile</h2>
+        <div class="edit-profile__inner marg-t20">
+            <div class="edit-profile__inner--left photo-upload-container">
+                <div class="circle">
+                    <img width="128" height="128" class="profile-pic" src="${
+                        getOuathData.avatar
+                            ? getOuathData.avatar
+                            : "/images/default-face.jpg"
+                    }">
+
+                </div>
+                <div class="p-image">
+                    <i class="fa fa-camera upload-button"></i>
+                    <input class="file-upload" type="file" accept="image/*" />
+                </div>
+            </div>
+
+            <div class="edit-profile__inner--right">
+                <div class="form-elm-section input_sec ">
+                    <label for="b2boauth_email">
+                        Email ID
+                    </label>
+                    <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_email" class="input_txt_box readonly valid" value="${
+                        getOuathData.email
+                    }" readonly="true" title="">
+                    <p id="oauth_log_email_err" class="error"></p>
+                </div>
+
+                <div class="input-section-main">
+                    <div class="form-elm-section input_sec ">
+                        <label for="oauth_log_name">
+                            Name
+                        </label>
+                        <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_name" class="input_txt_box valid" value="${
+                            getOuathData.name
+                        }" maxlength="45" title="">
+                        <p id="oauth_log_name_err" class="error">
+                        </p>
+                    </div>
+                    <div class="form-elm-section input_sec ">
+                        <label for="oauth_coach_name">
+                            Coach Name
+                        </label>
+                        <input required="" data-id="" placeholder="" name="" type="text" id="oauth_coach_name" class="input_txt_box valid" value="${
+                            getOuathData?.coach ? getOuathData?.coach : ""
+                        }" maxlength="45" title="" readonly="true">
+                        <p id="oauth_coach_name_err" class="error">
+                        </p>
+                    </div>
+                </div>
+                <div class="input-section-main">
+                <div class="form-elm-section input_sec ">
+                    <label for="oauth_doj">
+                        Date of Joining
+                    </label>
+                    <input required="" data-id="" readonly="true" placeholder="" name="" type="text" id="oauth_doj" class="input_txt_box valid" value="${Samvaarta.common.dateMonthYear(getOuathData.created_at)}" maxlength="45" title="">
+                    <p id="oauth_doj_err" class="error">
+                    </p>
+                </div>
+                <div class="form-elm-section input_sec ">
+                    <label for="oauth_experience">
+                        Experience
+                    </label>
+                    <input required="" data-id="" placeholder="" name="" type="text" id="oauth_experience" class="input_txt_box valid" value="" maxlength="45" title="">
+                    <p id="oauth_experience_err" class="error">
+                    </p>
+                </div>
+                </div>
+                <div class="input-section-main">
+                    <div class="form-elm-section input_sec ">
+                        <label for="oauth_log_lnurl"> LinkedIn URL</label>
+                        <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_lnurl" class="input_txt_box" value="${getOuathData?.linkedin_url}">
+                        <p id="oauth_log_lnurl_err" class="validation error"></p>
+                    </div>
+                    <div class="form-elm-section input_sec_role ">
+                        <label for="oauth_log_role"> Role</label>
+                        <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_role" class="input_txt_box" value="${getOuathData?.user_type}">
+
+                        <p id="oauth_log_role_err" class="validation error"></p>
+                    </div>
+                </div>
+                <div class="form-elm-section input_sec_num ">
+                    <label for="oauth_log_number"> Phone No</label>
+                    <select>
+                        <option value="+91">+91</option>
+                        <option value="+91">+01</option>
+                        <option value="+91">+31</option>
+                        <option value="+91">+11</option>
+                        <option value="+91">+90</option>
+                    </select>
+                    <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_number" class="input_txt_box" value="${getOuathData?.phone}">
+                    <p id="oauth_log_number_err" class="validation error"></p>
+                </div>
+                <div class="form-elm-section marg-t20">
+                    <input type="button" class="btn submit-button2" name="submit_profile" onclick="Samvaarta.system.userEditProfileUpdated(1);" value="Update Profile Details">
+                </div>
+            </div>
+        </div>
+        `;
+        document.querySelector("#edit-profile").innerHTML = profileDetail;
+        photoUploadView();
+    };
+
+    const userEditProfileUpdated = () => {
+        var reg_name = document.getElementById("oauth_log_name").value;
+        var reg_email = document.getElementById("oauth_log_email").value;
+        var coachName = document.getElementById("oauth_coach_name").value;
+        var reg_phone = document.getElementById("oauth_log_number").value;
+        var reg_linkedin = document.getElementById("oauth_log_lnurl").value;
+        var reg_role = document.getElementById("oauth_log_role").value;
+        var reg_avatar = document.querySelector(".profile-pic").src;
+        var errorElements = document.querySelectorAll(".error");
+        errorElements.forEach(function (el) {
+            el.innerHTML = "";
+        });
+
+        var inputElements = document.querySelectorAll(
+            ".edit-profile__inner .input_txt_box"
+        );
+        for (let i = 0; i < inputElements.length; i++) {
+            if (
+                inputElements[i].type !== "button" &&
+                inputElements[i].type !== "checkbox"
+            ) {
+                Samvaarta.common.removeRequiredFields(inputElements[i]);
+                if (valError) {
+                    return false;
+                }
+            }
+        }
+
+        if (valError) {
+            return false;
+        } else {
+            var paramObject = {
+                url: apiUrl + "api/profile/update",
+                type: "POST",
+                data: {
+                    email: reg_email,
+                    name: reg_name,
+                    phone: reg_phone,
+                    linkedin: reg_linkedin,
+                    user_type: reg_role,
+                    avatar: reg_avatar,
+                    action:"update"
+                },
+                headers: {
+                    Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+                    Accept: "application/json",
+                },
+            };
+
+            const ajaxSuccessCall = (response) => {
+                Samvaarta.model.showSuccessMessage(
+                    `<h2>Thank You</h2><p class="marg-t20">${Samvaarta.messageLog[12]}</p>`,
+                    "y"
+                );
+            };
+
+            const ajaxErrorCall = (response) => {
+                console.log(response);
+            };
+
+            Samvaarta.common.hitAjaxApi(
+                paramObject,
+                ajaxSuccessCall,
+                ajaxErrorCall
+            );
+        }
+    }
+
     const logout = () => {
         Samvaarta.common.deleteLocalStorage("oauthUserData");
         Samvaarta.globalVar.is_loggedin = 0;
@@ -696,14 +893,23 @@ Samvaarta.system = (() => {
                 },
             };
             var ajaxSuccessCall = (response) => {
-                Samvaarta.common.setLocalStorage('AccessToken', response.data, 1);
-                getUserData(response.data);
+                if (response.data.error) {
+                    $("#oauth_log_password_err")
+                        .html(response.data.error)
+                        .show();
+                } else {
+                    Samvaarta.common.setLocalStorage(
+                        "AccessToken",
+                        response.data,
+                        1
+                    );
+                    getUserData(response.data);
+                }
             };
 
             var ajaxErrorCall = (response) => {
-                $(".showloader").hide();
                 if (response.response) {
-                    $("#b2boauth_log_main_err").html(
+                    $("#oauth_log_password_err").html(
                         response.response.data.message
                     );
                 }
@@ -776,6 +982,7 @@ Samvaarta.system = (() => {
         var reg_phone = document.getElementById("oauth_log_number").value;
         var reg_linkedin = document.getElementById("oauth_log_lnurl").value;
         var reg_role = document.getElementById("oauth_log_role").value;
+        var reg_avatar = document.querySelector(".profile-pic").value;
         var errorElements = document.querySelectorAll(".error");
         errorElements.forEach(function (el) {
             el.innerHTML = "";
@@ -809,6 +1016,7 @@ Samvaarta.system = (() => {
                     phone: reg_phone,
                     linkedin: reg_linkedin,
                     user_type: reg_role,
+                    avatar: reg_avatar,
                 },
             };
 
@@ -850,12 +1058,36 @@ Samvaarta.system = (() => {
 
     var displayUserInfo = (data) => {
         if (data) {
-            Samvaarta.globalVar.oauthToken = Samvaarta.common.getLocalStorage('AccessToken');
+            Samvaarta.globalVar.oauthToken =
+                Samvaarta.common.getLocalStorage("AccessToken");
             Samvaarta.globalVar.is_loggedin = 1;
             let username = data.data.name;
+            let userType = data.data.user_type;
+            let userTypreDescription = "";
             document.querySelector(
                 ".dashboard__header--welcome span"
             ).innerHTML = username;
+            if (userType === "trainer") {
+                userTypreDescription = `
+                <li>
+                    <a tabindex="0" role="button" href="/user-details">
+                        <i class="fa fa-pencil"></i>User Detail
+                    </a>
+                </li>	`;
+            } else if (userType === "admin") {
+                userTypreDescription = `
+                <li>
+                    <a tabindex="0" role="button" href="/user-details">
+                        <i class="fa fa-pencil"></i>User Detail
+                    </a>
+                </li>
+                <li>
+                    <a tabindex="0" role="button" href="/trainer-details">
+                        <i class="fa fa-pencil"></i>Trainer Detail
+                    </a>
+                </li>	
+                `;
+            }
             let userData = `
 				<div class="d-flex align-items-center">
 					<div class="flex-shrink-0">
@@ -866,16 +1098,22 @@ Samvaarta.system = (() => {
 				<div class="header-user-nav">
 					<div class="hvr_bx">
 						<ul>
+                            <li>
+                                <a tabindex="0" role="button" href="/dashboard">
+                                    <i class="fa fa-pencil"></i>Dashboard
+                                </a>
+                            </li>	
 							<li>
-								<a onclick="/myaccount" tabindex="0" role="button" href="javascript:void(0);">
+								<a tabindex="0" role="button" href="/myaccount">
 									<i class="fa fa-pencil"></i>Account
 								</a>
 							</li>							
 							<li class="change-password">
-								<a href="javascript:void(0);" tabindex="0" role="button" onclick="/change-password">
+								<a href="/change-password" tabindex="0" role="button">
 									<i class="fa fa-key"></i>Change Password
 								</a>
 							</li>
+                            ${userTypreDescription}
 							<li>
 								<a href="javascript:void(0);" tabindex="0" role="button" onclick="Samvaarta.system.logout()">
 									<i class="fa fa-power-off"></i>Logout
@@ -885,17 +1123,8 @@ Samvaarta.system = (() => {
 					</div>
 				</div>
 			`;
+
             $(".dashboard__header--loggedin-user").html(userData);
-            //$('.main-header__inner--logo').css('width','585px');
-            if ($(".account-setting").length) {
-                $("#user_name").val(username);
-                $("#user_email").val(data.user.email);
-                $("#display_name").val(username);
-                $(".prettyprint").html(data.user.api_key);
-            }
-            if ($(".dashboard-setting").length) {
-                $(".page-title h3 span").html(username);
-            }
         }
     };
 
@@ -956,26 +1185,53 @@ Samvaarta.system = (() => {
         changePassword: changePassword,
         editProfile: editProfile,
         passwordUpdated: passwordUpdated,
+        userEditProfileUpdated: userEditProfileUpdated
     };
 })();
 
 const dashboardTab = () => {
-    const elm = document.querySelector('.dashboard__elements--inner');
-    if(elm){
-        $('body').on('click', '.dashboard__elements--inner li', (event) => {
-            if(!event.currentTarget.classList.contains('active')){
-                $('.dashboard__elements--inner li').removeClass('active');
-                event.currentTarget.classList.add('active');                
-            } 
-        })
+    const elm = document.querySelector(".dashboard__elements--inner");
+    if (elm) {
+        $("body").on("click", ".dashboard__elements--inner li", (event) => {
+            if (!event.currentTarget.classList.contains("active")) {
+                $(".dashboard__elements--inner li").removeClass("active");
+                event.currentTarget.classList.add("active");
+            }
+        });
     }
-}
+};
+
+const photoUploadView = () => {
+    var readURL = function (input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $(".profile-pic").attr("src", e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    };
+
+    $(".file-upload").on("change", function () {
+        readURL(this);
+    });
+
+    $(".upload-button").on("click", function () {
+        $(".file-upload").click();
+    });
+};
 
 document.addEventListener("readystatechange", (event) => {
     // When HTML/DOM elements are ready:
     if (event.target.readyState === "interactive") {
         Samvaarta.system.checkLoginStatus();
         dashboardTab();
+        photoUploadView();
+        if (document.querySelector("#edit-profile")) {
+            Samvaarta.system.editProfile();
+        }
     }
 
     if (event.target.readyState === "complete") {

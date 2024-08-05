@@ -101,7 +101,8 @@
     @include set-flex-box();
     position: relative;
     flex-direction: column;
-    margin-bottom: rem(14);
+    margin-bottom: rem(16);
+    width: 100%;
     label {
         @include desc-6();
     }
@@ -119,7 +120,7 @@
     .error {
         &.validation {
             position: absolute;
-            top: rem(55);
+            top: rem(62);
             color: $primary;
             font-size: rem(10);
         }
@@ -158,6 +159,7 @@
         background: $clr-30;
         border: none;
         padding: rem(10) rem(20);
+        cursor: pointer;
         @include hover {
             background: #2a4c6f;
             color: #fff;
@@ -245,7 +247,18 @@
         opacity: 1;
     }
 }
-
+.align-center{
+    text-align: center;
+}
+.marg-t10{
+    margin-top: rem(10);
+}
+.marg-t20{
+    margin-top: rem(20);
+}
+.marg-t30{
+    margin-top: rem(30);
+}
 .dashboard {
     &__header {
         position: relative;
@@ -328,6 +341,11 @@
             border-radius: rem(12);
             padding: rem(20);
             margin-top: rem(24);
+            &.form-container-pop{
+                border: none;
+                height: auto;
+                max-width: rem(600);
+            }
             ul {
                 @include set-flex-box();
                 position: relative;
@@ -397,4 +415,68 @@
             }
         }
     }
+}
+
+.photo-upload-container{
+    position: relative;
+    .profile-pic {
+        width: rem(128);
+        max-height: rem(128);
+        border-radius: 50%;
+    }
+    .circle {    
+        width: rem(128);
+        height: rem(128);
+        border: 2px solid rgba(255, 255, 255, 0.2);  
+        @include insert-box-shadow();  
+        border-radius: rem(12);
+    }
+    img {
+        max-width: 100%;
+        width: rem(128);
+        height: auto;
+    }
+    .p-image {
+        position: absolute;
+        top: rem(14);
+        left: 0;
+        transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+        z-index: 1;
+        width: rem(128);
+        height: rem(128);
+        cursor: pointer;
+    }
+    .file-upload{
+        opacity: 0;
+        width: rem(128);
+        height: rem(128);
+        cursor: pointer;
+    }
+    .p-image:hover {
+        transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+    }
+    .upload-button {
+        position: absolute;
+        right: 0;
+        bottom: rem(16);        
+    }
+
+    .upload-button:hover {
+        transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+        color: #999;
+    }
+}
+
+.edit-profile{
+    &__inner{
+        @include set-flex-box();
+        &--left{
+            width: 30%;
+        }
+        &--right{
+            width: 70%;
+        }
+        
+    }  
+      
 }

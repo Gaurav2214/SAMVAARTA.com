@@ -306,7 +306,8 @@ button,
   flex-direction: row;
   position: relative;
   flex-direction: column;
-  margin-bottom: 14px; }
+  margin-bottom: 16px;
+  width: 100%; }
   .form-elm-section label {
     font-size: 14px;
     line-height: 22px;
@@ -329,7 +330,7 @@ button,
     outline: none; }
   .form-elm-section .error.validation {
     position: absolute;
-    top: 55px;
+    top: 62px;
     color: #ED1C24;
     font-size: 10px; }
   .form-elm-section.input_sec_num .input_txt_box {
@@ -356,7 +357,8 @@ button,
     border-radius: 4px;
     background: #004080;
     border: none;
-    padding: 10px 20px; }
+    padding: 10px 20px;
+    cursor: pointer; }
     .form-elm-section .btn:hover, .form-elm-section .btn:focus {
       background: #2a4c6f;
       color: #fff; }
@@ -441,6 +443,18 @@ button,
     transition: 0.5s;
     opacity: 1; }
 
+.align-center {
+  text-align: center; }
+
+.marg-t10 {
+  margin-top: 10px; }
+
+.marg-t20 {
+  margin-top: 20px; }
+
+.marg-t30 {
+  margin-top: 30px; }
+
 .dashboard__header {
   position: relative;
   z-index: 2;
@@ -512,6 +526,10 @@ button,
   border-radius: 12px;
   padding: 20px;
   margin-top: 24px; }
+  .dashboard__elements--inner.form-container-pop {
+    border: none;
+    height: auto;
+    max-width: 600px; }
   .dashboard__elements--inner ul {
     -ms-display: flex;
     -webkit-display: flex;
@@ -579,3 +597,61 @@ button,
       background: antiquewhite; }
     .dashboard__elements--inner ul li.active .details {
       display: block; }
+
+.photo-upload-container {
+  position: relative; }
+  .photo-upload-container .profile-pic {
+    width: 128px;
+    max-height: 128px;
+    border-radius: 50%; }
+  .photo-upload-container .circle {
+    width: 128px;
+    height: 128px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 12px; }
+  .photo-upload-container img {
+    max-width: 100%;
+    width: 128px;
+    height: auto; }
+  .photo-upload-container .p-image {
+    position: absolute;
+    top: 14px;
+    left: 0;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 1;
+    width: 128px;
+    height: 128px;
+    cursor: pointer; }
+  .photo-upload-container .file-upload {
+    opacity: 0;
+    width: 128px;
+    height: 128px;
+    cursor: pointer; }
+  .photo-upload-container .p-image:hover {
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+  .photo-upload-container .upload-button {
+    position: absolute;
+    right: 0;
+    bottom: 16px; }
+  .photo-upload-container .upload-button:hover {
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    color: #999; }
+
+.edit-profile__inner {
+  -ms-display: flex;
+  -webkit-display: flex;
+  display: flex;
+  -ms-justify-content: space-between;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  -ms-align-items: flex-start;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+  -ms-flex-direction: row;
+  -webkit-flex-direction: row;
+  flex-direction: row; }
+  .edit-profile__inner--left {
+    width: 30%; }
+  .edit-profile__inner--right {
+    width: 70%; }
