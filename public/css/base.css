@@ -494,12 +494,6 @@ button,
           display: inline-block;
           vertical-align: middle;
           margin-right: 8px; }
-        .dashboard__header--loggedin-user .header-user-nav .hvr_bx ul li .fa-key {
-          background: url(/images/create-pwd-icon.svg) 0 0 no-repeat; }
-        .dashboard__header--loggedin-user .header-user-nav .hvr_bx ul li .fa-pencil {
-          background: url(/images/edit-icon.svg) 0 0 no-repeat; }
-        .dashboard__header--loggedin-user .header-user-nav .hvr_bx ul li .fa-power-off {
-          background: url(/images/logout-icon.svg) 0 0 no-repeat; }
         .dashboard__header--loggedin-user .header-user-nav .hvr_bx ul li:first-child {
           padding-top: 0; }
     .dashboard__header--loggedin-user:before {

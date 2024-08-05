@@ -32,5 +32,15 @@ class UserController extends Controller
         return view('change_password');
     }
 
+    public function user_details()
+    {   
+        return view('user_details');
+    }
+
+    public function trainer_details()
+    {   
+        return view('trainer_details');
+    }
+
 
 }
