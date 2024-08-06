@@ -603,7 +603,11 @@ button,
     height: 128px;
     border: 2px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
-    border-radius: 12px; }
+    border-radius: 12px;
+    position: relative; }
+    .login-module__main .photo-upload-container .circle {
+      border: none;
+      box-shadow: none; }
   .photo-upload-container img {
     max-width: 100%;
     width: 128px;
@@ -628,6 +632,8 @@ button,
     position: absolute;
     right: 0;
     bottom: 16px; }
+    .login-module__main .photo-upload-container .upload-button {
+      right: 20px; }
   .photo-upload-container .upload-button:hover {
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     color: #999; }
