@@ -481,7 +481,7 @@ Samvaarta.system = function () {
           linkedin: reg_linkedin,
           user_type: reg_role,
           avatar: reg_avatar,
-          action: "update"
+          action: "profile"
         },
         headers: {
           Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
@@ -616,7 +616,7 @@ Samvaarta.system = function () {
     var reg_phone = document.getElementById("oauth_log_number").value;
     var reg_linkedin = document.getElementById("oauth_log_lnurl").value;
     var reg_role = document.getElementById("oauth_log_role").value;
-    var reg_avatar = document.querySelector(".profile-pic").value;
+    var reg_avatar = document.querySelector(".profile-pic").src;
     var errorElements = document.querySelectorAll(".error");
     errorElements.forEach(function (el) {
       el.innerHTML = "";

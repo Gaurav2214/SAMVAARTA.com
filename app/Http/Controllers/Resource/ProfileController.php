@@ -90,7 +90,7 @@ class ProfileController extends Controller
 				}
 				
 				$User->save();
-				return response()->json(['success' =>'true','message'=>'A Profile is has been successfully updated','data'=>$User]);
+				return response()->json(['success' =>'true','message'=>'Profile has been successfully updated','data'=>$User]);
 				
 
 			} catch (Exception $e) {

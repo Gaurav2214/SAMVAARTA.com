@@ -306,19 +306,7 @@
                                 display: inline-block;
                                 vertical-align: middle;
                                 margin-right: 8px;
-                            }
-                            // .fa-key {
-                            //     background: url(/images/create-pwd-icon.svg) 0 0
-                            //         no-repeat;
-                            // }
-                            // .fa-pencil {
-                            //     background: url(/images/edit-icon.svg) 0 0
-                            //         no-repeat;
-                            // }
-                            // .fa-power-off {
-                            //     background: url(/images/logout-icon.svg) 0 0
-                            //         no-repeat;
-                            // }
+                            }                            
                             &:first-child {
                                 padding-top: 0;
                             }
@@ -430,6 +418,11 @@
         border: 2px solid rgba(255, 255, 255, 0.2);  
         @include insert-box-shadow();  
         border-radius: rem(12);
+        position: relative;
+        .login-module__main &{
+            border: none;
+            box-shadow: none;
+        }
     }
     img {
         max-width: 100%;
@@ -458,7 +451,10 @@
     .upload-button {
         position: absolute;
         right: 0;
-        bottom: rem(16);        
+        bottom: rem(16);     
+        .login-module__main &{
+            right: rem(20);
+        }   
     }
 
     .upload-button:hover {
