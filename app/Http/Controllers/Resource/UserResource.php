@@ -27,13 +27,13 @@ class UserResource extends Controller
 
     public function listing()
     {
-        $Users = User::where(['user_type'=>'user'])->orderBy('id', 'DESC')->get();
+        $Users = User::with(['trainer'])->where(['user_type'=>'user'])->orderBy('id', 'DESC')->get();
         return response()->json(['success' =>'true','data'=>$Users,'count'=>count($Users)]);
     }
 
     public function trainer_listing()
     {
-        $Users = User::where(['user_type'=>'trainer'])->orderBy('id', 'DESC')->get();
+        $Users = User::with(['users'])->where(['user_type'=>'trainer'])->orderBy('id', 'DESC')->get();
         return response()->json(['success' =>'true','data'=>$Users,'count'=>count($Users)]);
     }
 

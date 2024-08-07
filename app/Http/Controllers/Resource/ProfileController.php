@@ -40,7 +40,11 @@ class ProfileController extends Controller
 			$User->device_id = $request->device_id;
 		}
 		$User->save();
-		$User = $request->user();             
+		if($User->user_type=="user"){
+			$User = User::with('trainer')->find($User->id);             
+		}else if($User->user_type=="trainer"){
+			$User = User::with('users')->find($User->id);             
+		}
         return $User;
 	
 		
