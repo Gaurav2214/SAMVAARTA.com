@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
+use App\Models\TrainerLearnerMapping;
 
 class User extends Authenticatable
 {
@@ -42,4 +43,15 @@ class User extends Authenticatable
     {
         $this->notify(new UserResetPassword($token));
     }
+
+    public function trainer()
+    {
+        return $this->belongsToMany(User::class,'trainer_learner_mapping','id','trainer_id')->where('users.status',1);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class,'trainer_learner_mapping','trainer_id','id');
+    }
+
 }
