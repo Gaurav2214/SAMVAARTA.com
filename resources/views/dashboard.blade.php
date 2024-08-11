@@ -13,7 +13,14 @@
                 </div>
                 <div class="details">
                     <h3>Conversational Details</h3>
-                    <textarea name="" id="" cols="30" rows="10"></textarea>
+                    <p>You are documenting the interaction of the day and uploading documents to support your effort</p>
+                    <div id="" class="details--items previous">
+                        <h3>Previous Interactions</h3>
+                    </div>
+                    <div id="" class="details--items current">
+                        <h3>Current Interactions</h3>
+                    </div>
+                    <!-- <textarea name="" id="" cols="30" rows="10"></textarea> -->
                     <div class="form-elm-section marg-t10">
                         <button class="btn">Submit</button>
                     </div>
@@ -44,6 +51,7 @@
                 </div>
                 <div class="details">
                     <h3>Learning Outcomes</h3>
+                    <p>Please express yourself as how you plan to see yourself at the end of the interaction period in terms of how you will be experiencing</p>
                     <textarea name="" id="" cols="30" rows="10"></textarea>
                     <div class="form-elm-section marg-t10">
                         <button class="btn">Submit</button>
@@ -59,6 +67,7 @@
                 </div>
                 <div class="details">
                     <h3>Managers Comment</h3>
+                    <p>The coach will share his perspective on the progress made based on the interactions</p>
                     <textarea name="" id="" cols="30" rows="10"></textarea>
                     <div class="form-elm-section marg-t10">
                         <button class="btn">Submit</button>
@@ -89,7 +98,23 @@
                 </div>
                 <div class="details">
                     <h3>Code of ethics</h3>
-                    <textarea name="" id="" cols="30" rows="10"></textarea>
+                    <p>CoE refers to the responsible behavior that will be displayed by partied involved during the interaction period</p>
+                    <div class="details--items">
+                        <h3>Coachee’s Code of Ethics</h3>
+                        <ul class="list-view">
+                            <li>I shall be sharing the details truthfully without any fear</li>
+                            <li>I commit to implement my commitments made in the interaction</li>
+                            <li>The responsibility of my growth life within me</li>
+                        </ul>
+                    </div>
+                    <div class="details--items">
+                        <h3>The coach / Mentor has agreed to the following</h3>
+                        <ul class="list-view">
+                            <li>The coach will be 100% invested  in you during the interaction</li>
+                            <li>The coach’s  role will be to ask you question to help you explore</li>
+                            <li>The coach maintain the confidentiality of the interaction……</li>
+                        </ul>
+                    </div>
                     <div class="form-elm-section marg-t10">
                         <button class="btn">Submit</button>
                     </div>
