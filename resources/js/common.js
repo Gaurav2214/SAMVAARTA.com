@@ -644,106 +644,106 @@ Samvaarta.system = (() => {
     };
     const editProfile = () => {
         let getOuathData = Samvaarta.common.getLocalStorage("oauthUserData");
-        getOuathData = getOuathData.data;
+        getOuathData = getOuathData.data.data?.name ? getOuathData.data.data : getOuathData.data;
         let profileDetail = `
-        <h2 class="align-center">Edit Profile</h2>
-        <div class="edit-profile__inner marg-t20">
-            <div class="edit-profile__inner--left photo-upload-container">
-                <div class="circle">
-                    <img width="128" height="128" class="profile-pic" src="${
-                        getOuathData.avatar
-                            ? getOuathData.avatar
-                            : "/images/default-face.jpg"
-                    }">
+            <h2 class="align-center">Edit Profile</h2>
+            <div class="edit-profile__inner marg-t20">
+                <div class="edit-profile__inner--left photo-upload-container">
+                    <div class="circle">
+                        <img width="128" height="128" class="profile-pic" src="${
+                            getOuathData.avatar
+                                ? getOuathData.avatar
+                                : "/images/default-face.jpg"
+                        }">
 
-                </div>
-                <div class="p-image">
-                    <i class="fa fa-camera upload-button"></i>
-                    <input class="file-upload" type="file" accept="image/*" />
-                </div>
-            </div>
-
-            <div class="edit-profile__inner--right">
-                <div class="form-elm-section input_sec ">
-                    <label for="b2boauth_email">
-                        Email ID
-                    </label>
-                    <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_email" class="input_txt_box readonly valid" value="${
-                        getOuathData.email
-                    }" readonly="true" title="">
-                    <p id="oauth_log_email_err" class="error"></p>
+                    </div>
+                    <div class="p-image">
+                        <i class="fa fa-camera upload-button"></i>
+                        <input class="file-upload" type="file" accept="image/*" />
+                    </div>
                 </div>
 
-                <div class="input-section-main">
+                <div class="edit-profile__inner--right">
                     <div class="form-elm-section input_sec ">
-                        <label for="oauth_log_name">
-                            Name
+                        <label for="b2boauth_email">
+                            Email ID
                         </label>
-                        <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_name" class="input_txt_box valid" value="${
-                            getOuathData.name
-                        }" maxlength="45" title="">
-                        <p id="oauth_log_name_err" class="error">
+                        <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_email" class="input_txt_box readonly valid" value="${
+                            getOuathData.email
+                        }" readonly="true" title="">
+                        <p id="oauth_log_email_err" class="error"></p>
+                    </div>
+
+                    <div class="input-section-main">
+                        <div class="form-elm-section input_sec ">
+                            <label for="oauth_log_name">
+                                Name
+                            </label>
+                            <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_name" class="input_txt_box valid" value="${
+                                getOuathData.name
+                            }" maxlength="45" title="">
+                            <p id="oauth_log_name_err" class="error">
+                            </p>
+                        </div>
+                        <div class="form-elm-section input_sec ">
+                            <label for="oauth_coach_name">
+                                Coach Name
+                            </label>
+                            <input required="" data-id="" placeholder="" name="" type="text" id="oauth_coach_name" class="input_txt_box valid" value="${
+                                getOuathData?.coach ? getOuathData?.coach : ""
+                            }" maxlength="45" title="" readonly="true">
+                            <p id="oauth_coach_name_err" class="error">
+                            </p>
+                        </div>
+                    </div>
+                    <div class="input-section-main">
+                    <div class="form-elm-section input_sec ">
+                        <label for="oauth_doj">
+                            Date of Joining
+                        </label>
+                        <input required="" data-id="" readonly="true" placeholder="" name="" type="text" id="oauth_doj" class="input_txt_box valid" value="${Samvaarta.common.dateMonthYear(getOuathData.created_at)}" maxlength="45" title="">
+                        <p id="oauth_doj_err" class="error">
                         </p>
                     </div>
                     <div class="form-elm-section input_sec ">
-                        <label for="oauth_coach_name">
-                            Coach Name
+                        <label for="oauth_experience">
+                            Experience
                         </label>
-                        <input required="" data-id="" placeholder="" name="" type="text" id="oauth_coach_name" class="input_txt_box valid" value="${
-                            getOuathData?.coach ? getOuathData?.coach : ""
-                        }" maxlength="45" title="" readonly="true">
-                        <p id="oauth_coach_name_err" class="error">
+                        <input required="" data-id="" placeholder="" name="" type="text" id="oauth_experience" class="input_txt_box valid" value="" maxlength="45" title="">
+                        <p id="oauth_experience_err" class="error">
                         </p>
                     </div>
-                </div>
-                <div class="input-section-main">
-                <div class="form-elm-section input_sec ">
-                    <label for="oauth_doj">
-                        Date of Joining
-                    </label>
-                    <input required="" data-id="" readonly="true" placeholder="" name="" type="text" id="oauth_doj" class="input_txt_box valid" value="${Samvaarta.common.dateMonthYear(getOuathData.created_at)}" maxlength="45" title="">
-                    <p id="oauth_doj_err" class="error">
-                    </p>
-                </div>
-                <div class="form-elm-section input_sec ">
-                    <label for="oauth_experience">
-                        Experience
-                    </label>
-                    <input required="" data-id="" placeholder="" name="" type="text" id="oauth_experience" class="input_txt_box valid" value="" maxlength="45" title="">
-                    <p id="oauth_experience_err" class="error">
-                    </p>
-                </div>
-                </div>
-                <div class="input-section-main">
-                    <div class="form-elm-section input_sec ">
-                        <label for="oauth_log_lnurl"> LinkedIn URL</label>
-                        <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_lnurl" class="input_txt_box" value="${getOuathData?.linkedin_url}">
-                        <p id="oauth_log_lnurl_err" class="validation error"></p>
                     </div>
-                    <div class="form-elm-section input_sec_role ">
-                        <label for="oauth_log_role"> Role</label>
-                        <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_role" class="input_txt_box" value="${getOuathData?.user_type}">
+                    <div class="input-section-main">
+                        <div class="form-elm-section input_sec ">
+                            <label for="oauth_log_lnurl"> LinkedIn URL</label>
+                            <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_lnurl" class="input_txt_box" value="${getOuathData?.linkedin_url}">
+                            <p id="oauth_log_lnurl_err" class="validation error"></p>
+                        </div>
+                        <div class="form-elm-section input_sec_role ">
+                            <label for="oauth_log_role"> Role</label>
+                            <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_role" class="input_txt_box" value="${getOuathData?.user_type}">
 
-                        <p id="oauth_log_role_err" class="validation error"></p>
+                            <p id="oauth_log_role_err" class="validation error"></p>
+                        </div>
                     </div>
-                </div>
-                <div class="form-elm-section input_sec_num ">
-                    <label for="oauth_log_number"> Phone No</label>
-                    <select>
-                        <option value="+91">+91</option>
-                        <option value="+91">+01</option>
-                        <option value="+91">+31</option>
-                        <option value="+91">+11</option>
-                        <option value="+91">+90</option>
-                    </select>
-                    <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_number" class="input_txt_box" value="${getOuathData?.phone}">
-                    <p id="oauth_log_number_err" class="validation error"></p>
-                </div>
-                <div class="form-elm-section marg-t20">
-                    <input type="button" class="btn submit-button2" name="submit_profile" onclick="Samvaarta.system.userEditProfileUpdated(1);" value="Update Profile Details">
+                    <div class="form-elm-section input_sec_num ">
+                        <label for="oauth_log_number"> Phone No</label>
+                        <select>
+                            <option value="+91">+91</option>
+                            <option value="+91">+01</option>
+                            <option value="+91">+31</option>
+                            <option value="+91">+11</option>
+                            <option value="+91">+90</option>
+                        </select>
+                        <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_number" class="input_txt_box" value="${getOuathData?.phone}">
+                        <p id="oauth_log_number_err" class="validation error"></p>
+                    </div>
+                    <div class="form-elm-section marg-t20">
+                        <input type="button" class="btn submit-button2" name="submit_profile" onclick="Samvaarta.system.userEditProfileUpdated(1);" value="Update Profile Details">
+                    </div>
                 </div>
             </div>
-        </div>
         `;
         document.querySelector("#edit-profile").innerHTML = profileDetail;
         photoUploadView();
@@ -803,6 +803,7 @@ Samvaarta.system = (() => {
                     `<h2>Thank You</h2><p class="marg-t20">${Samvaarta.messageLog[12]}</p>`,
                     "y"
                 );
+                Samvaarta.common.setLocalStorage("oauthUserData", response, 1);
             };
 
             const ajaxErrorCall = (response) => {
@@ -1056,13 +1057,44 @@ Samvaarta.system = (() => {
         }
     };
 
+    const adminDashboard = () => {
+        let trainerdata = '';
+        var paramObject = {
+            url: apiUrl + "api/admin/trainer/listing",
+            type: "GET",
+            data: {},
+            headers: {
+                Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+                Accept: "application/json",
+            },
+        };
+
+        const ajaxSuccessCall = (response) => {
+            console.log(response);
+            trainerdata = response;
+            return trainerdata;
+        };
+
+        const ajaxErrorCall = (response) => {
+            console.log(response);
+        };
+
+        Samvaarta.common.hitAjaxApi(
+            paramObject,
+            ajaxSuccessCall,
+            ajaxErrorCall
+        );
+
+        return trainerdata;
+    }
+
     var displayUserInfo = (data) => {
+        let userDetails = data.data.data?.name ? data.data.data : data.data;
         if (data) {
-            Samvaarta.globalVar.oauthToken =
-                Samvaarta.common.getLocalStorage("AccessToken");
+            Samvaarta.globalVar.oauthToken = Samvaarta.common.getLocalStorage("AccessToken");
             Samvaarta.globalVar.is_loggedin = 1;
-            let username = data.data.name;
-            let userType = data.data.user_type;
+            let username = userDetails.name.split(' ')[0];
+            let userType = userDetails.user_type;
             let userTypreDescription = "";
             document.querySelector(
                 ".dashboard__header--welcome span"
@@ -1087,6 +1119,7 @@ Samvaarta.system = (() => {
                     </a>
                 </li>	
                 `;
+                //$('.dashboard__elements--inner').html(adminDashboard());
             }
             let userData = `
 				<div class="d-flex align-items-center">

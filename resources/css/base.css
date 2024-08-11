@@ -574,8 +574,38 @@ button,
       position: absolute;
       width: 100%;
       left: 0; }
-      .dashboard__elements--inner ul li .details h3 {
-        text-align: center; }
+      .dashboard__elements--inner ul li .details > h3 {
+        font-size: 28px;
+        line-height: 40px;
+        font-family: "Open Sans", sans-serif;
+        font-weight: 700;
+        color: #262626; }
+      .dashboard__elements--inner ul li .details p {
+        font-size: 14px;
+        line-height: 17px;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 500;
+        color: #808080;
+        margin-top: 5px; }
+      .dashboard__elements--inner ul li .details--items {
+        margin-top: 20px; }
+        .dashboard__elements--inner ul li .details--items h3 {
+          font-size: 18px;
+          line-height: 26px;
+          font-family: "Open Sans", sans-serif;
+          font-weight: 700;
+          color: #262626; }
+        .dashboard__elements--inner ul li .details--items .list-view {
+          display: block;
+          list-style-position: inside;
+          margin-top: 10px; }
+          .dashboard__elements--inner ul li .details--items .list-view li {
+            list-style-type: decimal;
+            font-size: 14px;
+            line-height: 21px;
+            font-family: "Open Sans", sans-serif;
+            font-weight: 500;
+            color: #262626; }
       .dashboard__elements--inner ul li .details textarea {
         margin-top: 30px;
         border-radius: 12px;
@@ -591,6 +621,17 @@ button,
       background: antiquewhite; }
     .dashboard__elements--inner ul li.active .details {
       display: block; }
+  .dashboard__elements--inner.activate-list {
+    border: none; }
+    .dashboard__elements--inner.activate-list__container {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center; }
+    .dashboard__elements--inner.activate-list__item {
+      display: block; }
+      .dashboard__elements--inner.activate-list__item.head {
+        background: #fd7702; }
 
 .photo-upload-container {
   position: relative; }

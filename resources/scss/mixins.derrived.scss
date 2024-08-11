@@ -35,7 +35,7 @@
   }
   
   @mixin heading-5() {
-    @include set-typography($fs: 32, $lh: 47);
+    @include set-typography($fs: 28, $lh: 40);
     font-family: $font-openSans;
     font-weight: $bold;
     color: $clr-4;
