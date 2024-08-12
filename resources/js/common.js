@@ -1010,6 +1010,9 @@ Samvaarta.system = (() => {
             var paramObject = {
                 url: apiUrl + "api/register",
                 type: "POST",
+                headers: {
+                    Accept: "application/json"
+                  },
                 data: {
                     email: reg_email,
                     name: reg_name,
@@ -1017,7 +1020,7 @@ Samvaarta.system = (() => {
                     phone: reg_phone,
                     linkedin: reg_linkedin,
                     user_type: reg_role,
-                    avatar: reg_avatar,
+                    //avatar: reg_avatar,
                 },
             };
 
