@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Redirect;
 use Hash;
 use Illuminate\Validation\Rule;
+use Exception;
+
 
 
 class RegisterController extends Controller

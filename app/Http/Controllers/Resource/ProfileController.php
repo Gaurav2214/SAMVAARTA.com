@@ -69,7 +69,7 @@ class ProfileController extends Controller
 
             $validator =Validator::make($request->all(), [
                     'name' => 'required|string|max:255',
-                    'phone'  => 'required|max:15',		
+                    'phone'  => 'required|max:15',
                     'linkedin_url'=>'url',
             ]);    
 
