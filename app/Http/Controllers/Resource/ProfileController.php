@@ -10,6 +10,7 @@ use Hash;
 use App\User;
 use Illuminate\Support\Facades\Validator;
 use Exception;
+use Storage;
 
 class ProfileController extends Controller
 {
@@ -89,8 +90,21 @@ class ProfileController extends Controller
 					$User->phone = $request->phone;
 				}
 
-				if($request->hasFile('avatar')) {
-					$User->avatar = asset('storage/'.$request->avatar->store('user/profile'));
+				if($request->has('avatar')) {
+					//$User->avatar = asset('storage/'.$request->avatar->store('user/profile'));
+
+					$base64_image = $request->avatar;
+
+					if (preg_match('/^data:image\/(\w+);base64,/', $base64_image)) {
+						$data = substr($base64_image, strpos($base64_image, ',') + 1);
+
+						$image_name= "users/user-".time().".jpg";
+
+						$data = base64_decode($data);
+						Storage::disk('public')->put($image_name, $data);
+						$User->avatar =asset('storage/'.$image_name);
+					}
+
 				}
 				
 				$User->save();
