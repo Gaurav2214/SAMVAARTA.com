@@ -646,8 +646,8 @@ Samvaarta.system = function () {
           password: reg_pwd,
           phone: reg_phone,
           linkedin: reg_linkedin,
-          user_type: reg_role,
-         // avatar: reg_avatar
+          user_type: reg_role
+          //avatar: reg_avatar,
         }
       };
       var ajaxSuccessCall = function ajaxSuccessCall(response) {
