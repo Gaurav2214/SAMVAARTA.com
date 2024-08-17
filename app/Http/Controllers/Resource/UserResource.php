@@ -183,20 +183,28 @@ class UserResource extends Controller
         }
     }
 
-    public function activate($id){
+    public function activate(Request $request,$id){
         if(empty($id)){
            return response()->json(['success' =>'false','message'=>"User Id is required"]);
         }
 
+        $status =(int)$request->status;
+
         $User = User::find($id);
+
+        
         if(empty($User)){
             return response()->json(['success' =>'false','message'=>"User is not exists"]);
-        }else if($User['status']=='1'){
+        }else if($status =="1" && $User['status']=='1'){
             return response()->json(['success' =>'false','message'=>"User has been already activated"]);
+        }else if($status =="2" && $User['status']=='2'){
+            return response()->json(['success' =>'false','message'=>"User has been already rejected"]);
+        }else if($status =="0" && $User['status']=='0'){
+            return response()->json(['success' =>'false','message'=>"User has been already deactivated"]);
         }else{
-            $User->status='1';
+            $User->status= $status;
             $User->save();
-            return response()->json(['success' =>'true','message'=>"User has been successfulle activated"]);
+            return response()->json(['success' =>'true','message'=>"User has been successfulle ".( $status==1?'activated':'rejected')]);
         }
     }
 
