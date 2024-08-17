@@ -1,7 +1,28 @@
 @import "reset.scss";
 
+.login-header {
+    @include insert-box-shadow();
+    background: linear-gradient(
+        180deg,
+        #eff5ff 0%,
+        rgba(239, 245, 255, 0) 100%
+    );
+    .container {
+        max-width: rem(900);
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        height: rem(74);
+        a {
+            line-height: 0;
+        }
+    }
+}
 .login-module {
     margin-top: rem(40);
+    @include breakpointmax($end-small) {
+        margin-top: rem(32);
+    }
     &__inner {
         max-width: rem(900);
     }
@@ -10,13 +31,14 @@
         gap: rem(40);
         &--left {
             padding: rem(40);
-            background: #fd7702;
+            background: $clr-29;
             min-height: rem(480);
             width: 45%;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            border-radius: rem(8);
             .upload-photo {
                 display: flex;
                 flex-direction: column;
@@ -64,6 +86,10 @@
                 @include insert-box-shadow();
                 padding: 0 rem(50);
                 background: #fff;
+                border-radius: rem(8);
+                @include breakpointmax($end-small) {
+                    padding: 0 rem(16);
+                }
                 .heading {
                     text-align: center;
                     margin-top: 15px;
@@ -71,10 +97,16 @@
                 }
                 h2 {
                     @include heading-3();
+                    @include breakpointmax($end-small) {
+                        @include set-typography(18, 26);
+                    }
                 }
                 p {
                     @include desc-2();
                     margin-top: rem(6);
+                    @include breakpointmax($end-small) {
+                        @include set-typography(12, 16);
+                    }
                 }
                 form {
                     margin-top: rem(20);
@@ -83,6 +115,9 @@
                     margin: rem(15) 0;
                     padding-bottom: rem(10);
                     @include set-typography(12, 15);
+                    @include breakpointmax($end-small) {
+                        padding-bottom: rem(20);
+                    }
                     .login-link,
                     .signup-link {
                         color: #1a73e9;
@@ -91,11 +126,29 @@
                 }
             }
         }
+        @include breakpointmax($end-small) {
+            flex-direction: column;
+            &--left {
+                width: 100%;
+            }
+            &--right {
+                width: 100%;
+            }
+        }
     }
 }
 .input-section-main {
     @include set-flex-box();
     gap: rem(15);
+    @include breakpointmax($end-small) {
+        flex-direction: column;
+        gap: 0;
+    }
+    @include breakpoint($end-small) {
+        .form-elm-section{
+            width: 49%;
+        }
+    }
 }
 .form-elm-section {
     @include set-flex-box();
@@ -108,6 +161,7 @@
     }
     .input_txt_box {
         width: -webkit-fill-available;
+        width: -moz-available;
         padding: rem(6) rem(10);
         border: 1px solid #e0e0e0;
         display: block;
@@ -120,7 +174,7 @@
     .error {
         &.validation {
             position: absolute;
-            top: rem(62);
+            top: rem(55);
             color: $primary;
             font-size: rem(10);
         }
@@ -155,13 +209,17 @@
         margin-bottom: 0;
     }
     .btn {
-        border-radius: rem(4);
-        background: $clr-30;
+        border-radius: rem(20);
+        background: $clr-29;
         border: none;
-        padding: rem(10) rem(20);
         cursor: pointer;
+        padding: 11px 25px;
+        margin-top: rem(10);
+        @include breakpointmax($end-small) {
+            width: 100%;
+        }
         @include hover {
-            background: #2a4c6f;
+            background: #d57521;
             color: #fff;
         }
     }
@@ -247,16 +305,16 @@
         opacity: 1;
     }
 }
-.align-center{
+.align-center {
     text-align: center;
 }
-.marg-t10{
+.marg-t10 {
     margin-top: rem(10);
 }
-.marg-t20{
+.marg-t20 {
     margin-top: rem(20);
 }
-.marg-t30{
+.marg-t30 {
     margin-top: rem(30);
 }
 .dashboard {
@@ -266,14 +324,20 @@
         background: #fff;
         transition: all ease 0.5s;
         @include insert-box-shadow();
+        background: linear-gradient(
+            180deg,
+            #eff5ff 0%,
+            rgba(239, 245, 255, 0) 100%
+        );
         &--auth-detail {
             @include set-flex-box($ai: center);
-            height: rem(55);
+            height: rem(74);
         }
         &--welcome {
         }
         &--loggedin-user {
             position: relative;
+            cursor: pointer;
             @include hover() {
                 .header-user-nav {
                     display: block;
@@ -306,12 +370,17 @@
                                 display: inline-block;
                                 vertical-align: middle;
                                 margin-right: 8px;
-                            }                            
+                            }
                             &:first-child {
                                 padding-top: 0;
                             }
                         }
                     }
+                }
+            }
+            .flex-shrink-0 {
+                img {
+                    border-radius: 50%;
                 }
             }
             &:before {
@@ -324,12 +393,11 @@
     }
     &__elements {
         &--inner {
-            height: rem(500);
-            border: 1px solid #ccc;
+            min-height: rem(500);
             border-radius: rem(12);
             padding: rem(20);
-            margin-top: rem(24);
-            &.form-container-pop{
+            margin-top: rem(10);
+            &.form-container-pop {
                 border: none;
                 height: auto;
                 max-width: rem(600);
@@ -367,35 +435,35 @@
                             background: rgb(250, 235, 215);
                         }
                     }
-                    .details{
+                    .details {
                         display: none;
                         margin-top: rem(35);
                         position: absolute;
                         width: 100%;
                         left: 0;
-                        &>h3{
+                        & > h3 {
                             @include heading-5();
                         }
-                        p{
+                        p {
                             @include desc-2();
                             margin-top: rem(5);
-                        } 
-                        &--items{
+                        }
+                        &--items {
                             margin-top: rem(20);
-                            h3{
+                            h3 {
                                 @include heading-6();
                             }
-                            .list-view{                                
+                            .list-view {
                                 display: block;
-                                list-style-position:inside;
+                                list-style-position: inside;
                                 margin-top: rem(10);
-                                li{
+                                li {
                                     list-style-type: decimal;
                                     @include desc-5();
                                 }
                             }
-                        }                       
-                        textarea{
+                        }
+                        textarea {
                             margin-top: rem(30);
                             border-radius: rem(12);
                             border: 1px solid #ccc;
@@ -404,56 +472,144 @@
                             outline: none;
                             padding: rem(20);
                         }
-                        .btn{
+                        .btn {
                             margin-top: rem(15);
                         }
-
                     }
                     &.active {
                         .dashboard__elements--item {
                             @include insert-box-shadow();
                             background: rgb(250, 235, 215);
                         }
-                        .details{
+                        .details {
                             display: block;
                         }
                     }
                 }
             }
-            &.activate-list{
-                 border: none;
-                 &__container{
+            &.activate-list {
+                border: none;
+                &__container {
                     display: flex;
                     flex-direction: column;
                     justify-content: flex-start;
                     align-items: center;
-                 }
-                 &__item{
+                }
+                &__item {
                     display: block;
-                    &.head{
-                        background: #fd7702;
+                    &.head {
+                        background: $clr-29;
                     }
-                 }
+                }
+            }
+            .show-user-details {
+                .userName {
+                    text-align: center;
+                    @include heading-3();
+                }
+                &__inner {
+                    @include set-flex-box($jc: flex-start);
+                    flex-wrap: wrap;
+                    margin-top: rem(24);
+                    gap: rem(32);
+                    .detail-items {
+                        width: rem(350);
+                        ul {
+                            flex-direction: column;
+                            gap: rem(6);
+                            li {
+                                @include desc-5();
+                                &.profile-img {
+                                    img {
+                                        border-radius: rem(6);
+                                    }
+                                }
+                                &.role {
+                                    span {
+                                        text-transform: capitalize;
+                                    }
+                                }
+                                span {
+                                    color: #736e6e;
+                                }
+                            }                            
+                        }
+                        &:last-of-type{
+                            ul{
+                            }
+                        }
+                    }
+                }
+            }
+            .user-dashboard-info {
+                ul{
+                    justify-content: flex-start;
+                    padding: rem(8) rem(14);
+                    gap: rem(10);
+                    border: 1px solid #ccc;
+                    border-top: none;
+                    li{
+                        &:first-of-type(){
+                            width: 5%;
+                        }
+                        &:nth-child(2){
+                            width: 15%;
+                        }
+                        &:nth-child(3){
+                            width: 30%;
+                        }
+                        &:nth-child(4){
+                            width: 30%;
+                        }
+                        &:nth-child(5){
+                            width: 6%;
+                            text-align: center;
+                        }
+                    }
+                    &:last-of-type(){
+                        border-radius: 0 0 rem(6) rem(6);
+                    }
+                    &:not(:first-of-type){
+                        cursor: pointer;
+                        @include hover(){
+                            background: linear-gradient(180deg, #eff5ff 0%, rgba(239, 245, 255, 0) 100%);
+                        }
+                    }
+                }
+                &__head-list{
+                    background: $clr-29;
+                    @include insert-box-shadow();                    
+                    color: #fff;
+                    border-radius: rem(4);
+                }
             }
         }
     }
 }
 
-.photo-upload-container{
+.component-divider {
+    border-image: linear-gradient(90deg, #fff, #ccc, #fff);
+    border-image-slice: 1;
+    border-top: 1px solid #ccc;
+    padding-top: rem(24);
+    margin-top: rem(24);
+}
+
+.photo-upload-container {
     position: relative;
     .profile-pic {
         width: rem(128);
         max-height: rem(128);
         border-radius: 50%;
     }
-    .circle {    
+    .circle {
         width: rem(128);
         height: rem(128);
-        border: 2px solid rgba(255, 255, 255, 0.2);  
-        @include insert-box-shadow();  
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        @include insert-box-shadow();
         border-radius: rem(12);
         position: relative;
-        .login-module__main &{
+        .login-module__main & {
             border: none;
             box-shadow: none;
         }
@@ -467,46 +623,190 @@
         position: absolute;
         top: rem(14);
         left: 0;
-        transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         z-index: 1;
         width: rem(128);
         height: rem(128);
         cursor: pointer;
     }
-    .file-upload{
+    .file-upload {
         opacity: 0;
         width: rem(128);
         height: rem(128);
         cursor: pointer;
     }
     .p-image:hover {
-        transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     .upload-button {
         position: absolute;
         right: 0;
-        bottom: rem(16);     
-        .login-module__main &{
+        bottom: rem(16);
+        .login-module__main & {
             right: rem(20);
-        }   
+        }
     }
 
     .upload-button:hover {
-        transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         color: #999;
     }
 }
 
-.edit-profile{
-    &__inner{
+.edit-profile {
+    &__inner {
         @include set-flex-box();
-        &--left{
+        &--left {
             width: 30%;
         }
-        &--right{
+        &--right {
             width: 70%;
         }
-        
-    }  
-      
+    }
 }
+
+.skeleton {
+    padding: 15px;
+    width: 300px;
+    background: #fff;
+    border-radius: rem(16);
+    display: flex;
+    @include insert-box-shadow();
+    margin: 0 auto;
+    justify-content: inherit;
+  
+    &.smalls {
+      height: rem(74);
+  
+      @include breakpointmax($end-small) {
+        height: rem(55);
+      }
+  
+      &.up-down {
+        flex-direction: column;
+        width: auto;
+        height: auto;
+  
+        .skeleton__right {
+          order: 1;
+        }
+  
+        .skeleton__left {
+          width: 90%;
+  
+          .line.h18 {
+            margin-top: rem(15);
+          }
+        }
+      }
+    }
+  
+    &.mediums {
+      width: rem(360);
+    }
+  
+    &__right {
+      order: 2;
+  
+      .square {
+        height: rem(100);
+        width: rem(100);
+        border-radius: 8px;
+        background: rgba(130, 130, 130, 0.2);
+        background: -webkit-gradient(linear, left top, right top, color-stop(8%, rgba(130, 130, 130, 0.2)), color-stop(18%, rgba(130, 130, 130, 0.3)), color-stop(33%, rgba(130, 130, 130, 0.2)));
+        background: linear-gradient(to right, rgba(130, 130, 130, 0.2) 8%, rgba(130, 130, 130, 0.3) 18%, rgba(130, 130, 130, 0.2) 33%);
+        background-size: 800px 100px;
+        animation: wave-squares 1s infinite ease-out;
+        will-change: transform;
+        transform: translateZ(0);
+  
+        @include breakpointmax($end-small) {
+          height: rem(62);
+          width: rem(62);
+        }
+      }
+    }
+  
+    &__left {
+      order: 1;
+      padding-right: 15px;
+      width: calc(100% - 95px);
+  
+      .line {
+        height: 12px;
+        margin-bottom: 6px;
+        border-radius: 10px;
+        background: rgba(130, 130, 130, 0.2);
+        background: -webkit-gradient(linear, left top, right top, color-stop(8%, rgba(130, 130, 130, 0.2)), color-stop(18%, rgba(130, 130, 130, 0.3)), color-stop(33%, rgba(130, 130, 130, 0.2)));
+        background: linear-gradient(to right, rgba(130, 130, 130, 0.2) 8%, rgba(130, 130, 130, 0.3) 18%, rgba(130, 130, 130, 0.2) 33%);
+        background-size: 800px 100px;
+        animation: wave-lines 1s infinite ease-out;
+        will-change: transform;
+        transform: translateZ(0);
+  
+        &:not(:first-child) {
+          margin-top: rem(15);
+        }
+  
+        &.w40 {
+          width: 40%;
+        }
+  
+        &.h18 {
+          height: 18px;
+        }
+  
+        &.h12 {
+          height: rem(12);
+          margin-top: rem(6);
+        }     
+  
+        &.lbtn {
+          margin-top: rem(25);
+        }
+      }
+      .line-space {
+        height: rem(10);
+      }
+    }
+    &.large{
+      min-height: rem(140);
+      width: auto;
+      padding: rem(24);
+      box-shadow: none;
+      .skeleton__left {
+        width: 60%;
+      }
+      .skeleton__right {
+        width: 40%;
+        display: flex;
+        justify-content: center;
+        gap: rem(20);
+        .circle{
+          border-radius: 50%;
+        }
+      }
+    }
+    &.large-square{
+      display: flex;
+      flex-direction: column;
+      box-shadow: none;
+      .skeleton__right{
+        order: 1;
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        .square.circle{
+          border-radius: 50%;
+        }
+      }
+      .skeleton__left{
+        order: 2;
+        margin-top: rem(35);
+      }
+    }
+    &.no-shadow{
+        box-shadow: none;
+        padding-left: 0;
+    }
+  }

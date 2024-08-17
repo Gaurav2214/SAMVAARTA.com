@@ -1,7 +1,15 @@
+<header class="login-header">
+    <div class="container">
+        <a href="/">
+            <img width="103" height="60" src="https://goalsnu.com/images/goalnu-logo.png" alt="" />
+        </a>
+    </div>
+</header>
+
 <section class="login-module">
     <div class="login-module__inner container">
         <div class="login-module__main">
-            <div class="login-module__main--left photo-upload-container">
+            <div class="login-module__main--left photo-upload-container desktop-view">
                 <div class="circle">
                     <img width="128" height="128" class="profile-pic" src="/images/default-face.jpg" />
                     <div class="p-image">
