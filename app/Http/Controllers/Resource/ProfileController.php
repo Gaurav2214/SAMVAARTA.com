@@ -90,9 +90,36 @@ class ProfileController extends Controller
 					$User->phone = $request->phone;
 				}
 
+				if($request->has('user_code')){
+					$User->user_code = $request->user_code;
+				}
+
+				if($request->has('date_of_joining')){
+					$User->date_of_joining = $request->date_of_joining;
+				}
+
+				if($request->has('experience')){
+					$User->experience = (int)$request->experience;
+				}
+				if($request->has('user_function')){
+					$User->user_function = $request->user_function;
+				}
+				if($request->has('location')){
+					$User->location = $request->location;
+				}
+				if($request->has('vision')){
+					$User->vision = $request->vision;
+				}
+				if($request->has('description')){
+					$User->description = $request->description;
+				}
+				if($request->has('no_of_coachees')){
+					$User->no_of_coachees = (int)$request->no_of_coachees;
+				}
+				
+
 				if($request->has('avatar')) {
 					//$User->avatar = asset('storage/'.$request->avatar->store('user/profile'));
-
 					$base64_image = $request->avatar;
 
 					if (preg_match('/^data:image\/(\w+);base64,/', $base64_image)) {
