@@ -30,7 +30,61 @@ var apiUrl = "http://127.0.0.1:8000/";
 Samvaarta.globalVar = Samvaarta.globalVar || {
   errorValueInFlow: "",
   is_Loggedin: 0,
-  oauthToken: ""
+  oauthToken: "",
+  currlocation: ""
+};
+var elementInViewport = function elementInViewport(el) {
+  var top = el.offsetTop;
+  var left = el.offsetLeft;
+  var width = el.offsetWidth;
+  var height = el.offsetHeight;
+  while (el.offsetParent) {
+    el = el.offsetParent;
+    top += el.offsetTop;
+    left += el.offsetLeft;
+  }
+  return top < window.pageYOffset + window.innerHeight && left < window.pageXOffset + window.innerWidth && top + height > window.pageYOffset && left + width > window.pageXOffset;
+};
+var unvielImg = function unvielImg(selector, unveilSelector) {
+  var selector = selector || "body";
+  $(selector).find("img.unveil").each(function (i, v) {
+    var escapedWithParents = '.slide-container,.logos,[class*="wrapper_style"]';
+    var isTheImgEscaped = $(this).parents(escapedWithParents).length;
+    var unveilSelect = unveilSelector || elementInViewport(v) || isTheImgEscaped;
+    if (unveilSelect) {
+      $this = $(this);
+      try {
+        $this.attr("data-init-src", $this.attr("src"));
+        if ($this.attr("data-src") != "" && $this.attr("data-src") != null) {
+          $this.attr("src", $this.attr("data-src"));
+          $this.removeClass("unveil");
+        } else {
+          $this.attr("src", $this.attr("data-init-src"));
+        }
+        $this.on("error", function () {
+          $(this).unbind("error").attr("src", $(this).data("init-src"));
+        });
+      } catch (e) {}
+    }
+  });
+};
+var checkIfImageExists = function checkIfImageExists(url, callback) {
+  var img = new Image();
+  img.src = url;
+  if (url != "") {
+    if (img.complete) {
+      callback(true);
+    } else {
+      img.onload = function () {
+        callback(true);
+      };
+      img.onerror = function () {
+        callback(false);
+      };
+    }
+  } else {
+    callback(false);
+  }
 };
 Samvaarta.common = function () {
   var isNull = function isNull(obj) {
@@ -266,6 +320,26 @@ Samvaarta.common = function () {
     var formattedDate = "".concat(month, " ").concat(day, ", ").concat(year);
     return formattedDate;
   };
+  var getLocation = function getLocation() {
+    var paramObject = {
+      url: "http://ipwho.is/",
+      type: "GET",
+      data: {},
+      headers: {
+        Accept: "application/json"
+      }
+    };
+    function ajaxSuccessCall(data) {
+      Samvaarta.common.setLocalStorage("location", data, 1);
+    }
+    function ajaxErrorCall(data) {}
+    if (!Samvaarta.common.getLocalStorage("location")) {
+      Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
+    } else {
+      var loc = Samvaarta.common.getLocalStorage("location");
+      Samvaarta.globalVar.currlocation = loc.data.city;
+    }
+  };
   return {
     isNull: isNull,
     isBlank: isBlank,
@@ -277,7 +351,8 @@ Samvaarta.common = function () {
     deleteLocalStorage: deleteLocalStorage,
     encodeHTML: encodeHTML,
     removeRequiredFields: removeRequiredFields,
-    dateMonthYear: dateMonthYear
+    dateMonthYear: dateMonthYear,
+    getLocation: getLocation
   };
 }();
 Samvaarta.model = function () {
@@ -440,10 +515,10 @@ Samvaarta.system = function () {
     }
   };
   var editProfile = function editProfile() {
-    var _getOuathData$data$da, _getOuathData, _getOuathData2, _getOuathData3, _getOuathData4, _getOuathData5;
+    var _getOuathData$data$da, _getOuathData, _getOuathData2, _getOuathData3, _getOuathData4, _getOuathData5, _getOuathData6, _getOuathData7, _getOuathData8, _getOuathData9, _Samvaarta$common$get;
     var getOuathData = Samvaarta.common.getLocalStorage("oauthUserData");
     getOuathData = (_getOuathData$data$da = getOuathData.data.data) !== null && _getOuathData$data$da !== void 0 && _getOuathData$data$da.name ? getOuathData.data.data : getOuathData.data;
-    var profileDetail = "\n            <h2 class=\"align-center\">Edit Profile</h2>\n            <div class=\"edit-profile__inner marg-t20\">\n                <div class=\"edit-profile__inner--left photo-upload-container\">\n                    <div class=\"circle\">\n                        <img width=\"128\" height=\"128\" class=\"profile-pic\" src=\"".concat(getOuathData.avatar ? getOuathData.avatar : "/images/default-face.jpg", "\">\n\n                    </div>\n                    <div class=\"p-image\">\n                        <i class=\"fa fa-camera upload-button\"></i>\n                        <input class=\"file-upload\" type=\"file\" accept=\"image/*\" />\n                    </div>\n                </div>\n\n                <div class=\"edit-profile__inner--right\">\n                    <div class=\"form-elm-section input_sec \">\n                        <label for=\"b2boauth_email\">\n                            Email ID\n                        </label>\n                        <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_email\" class=\"input_txt_box readonly valid\" value=\"").concat(getOuathData.email, "\" readonly=\"true\" title=\"\">\n                        <p id=\"oauth_log_email_err\" class=\"error\"></p>\n                    </div>\n\n                    <div class=\"input-section-main\">\n                        <div class=\"form-elm-section input_sec \">\n                            <label for=\"oauth_log_name\">\n                                Name\n                            </label>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_name\" class=\"input_txt_box valid\" value=\"").concat(getOuathData.name, "\" maxlength=\"45\" title=\"\">\n                            <p id=\"oauth_log_name_err\" class=\"error\">\n                            </p>\n                        </div>\n                        <div class=\"form-elm-section input_sec \">\n                            <label for=\"oauth_coach_name\">\n                                Coach Name\n                            </label>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_coach_name\" class=\"input_txt_box valid\" value=\"").concat((_getOuathData = getOuathData) !== null && _getOuathData !== void 0 && _getOuathData.coach ? (_getOuathData2 = getOuathData) === null || _getOuathData2 === void 0 ? void 0 : _getOuathData2.coach : "", "\" maxlength=\"45\" title=\"\" readonly=\"true\">\n                            <p id=\"oauth_coach_name_err\" class=\"error\">\n                            </p>\n                        </div>\n                    </div>\n                    <div class=\"input-section-main\">\n                    <div class=\"form-elm-section input_sec \">\n                        <label for=\"oauth_doj\">\n                            Date of Joining\n                        </label>\n                        <input required=\"\" data-id=\"\" readonly=\"true\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_doj\" class=\"input_txt_box valid\" value=\"").concat(Samvaarta.common.dateMonthYear(getOuathData.created_at), "\" maxlength=\"45\" title=\"\">\n                        <p id=\"oauth_doj_err\" class=\"error\">\n                        </p>\n                    </div>\n                    <div class=\"form-elm-section input_sec \">\n                        <label for=\"oauth_experience\">\n                            Experience\n                        </label>\n                        <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_experience\" class=\"input_txt_box valid\" value=\"\" maxlength=\"45\" title=\"\">\n                        <p id=\"oauth_experience_err\" class=\"error\">\n                        </p>\n                    </div>\n                    </div>\n                    <div class=\"input-section-main\">\n                        <div class=\"form-elm-section input_sec \">\n                            <label for=\"oauth_log_lnurl\"> LinkedIn URL</label>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_lnurl\" class=\"input_txt_box\" value=\"").concat((_getOuathData3 = getOuathData) === null || _getOuathData3 === void 0 ? void 0 : _getOuathData3.linkedin_url, "\">\n                            <p id=\"oauth_log_lnurl_err\" class=\"validation error\"></p>\n                        </div>\n                        <div class=\"form-elm-section input_sec_role \">\n                            <label for=\"oauth_log_role\"> Role</label>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_role\" class=\"input_txt_box\" value=\"").concat((_getOuathData4 = getOuathData) === null || _getOuathData4 === void 0 ? void 0 : _getOuathData4.user_type, "\">\n\n                            <p id=\"oauth_log_role_err\" class=\"validation error\"></p>\n                        </div>\n                    </div>\n                    <div class=\"form-elm-section input_sec_num \">\n                        <label for=\"oauth_log_number\"> Phone No</label>\n                        <select>\n                            <option value=\"+91\">+91</option>\n                            <option value=\"+91\">+01</option>\n                            <option value=\"+91\">+31</option>\n                            <option value=\"+91\">+11</option>\n                            <option value=\"+91\">+90</option>\n                        </select>\n                        <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_number\" class=\"input_txt_box\" value=\"").concat((_getOuathData5 = getOuathData) === null || _getOuathData5 === void 0 ? void 0 : _getOuathData5.phone, "\">\n                        <p id=\"oauth_log_number_err\" class=\"validation error\"></p>\n                    </div>\n                    <div class=\"form-elm-section marg-t20\">\n                        <input type=\"button\" class=\"btn submit-button2\" name=\"submit_profile\" onclick=\"Samvaarta.system.userEditProfileUpdated(1);\" value=\"Update Profile Details\">\n                    </div>\n                </div>\n            </div>\n        ");
+    var profileDetail = "\n            <h2 class=\"align-center\">Edit Profile</h2>\n            <div class=\"edit-profile__inner marg-t20\">\n                <div class=\"edit-profile__inner--left photo-upload-container\">\n                    <div class=\"circle\">\n                        <img width=\"128\" height=\"128\" class=\"profile-pic\" src=\"".concat(getOuathData.avatar ? getOuathData.avatar : "/images/default-face.jpg", "\">\n\n                    </div>\n                    <div class=\"p-image\">\n                        <i class=\"fa fa-camera upload-button\"></i>\n                        <input class=\"file-upload\" type=\"file\" accept=\"image/*\" />\n                    </div>\n                </div>\n\n                <div class=\"edit-profile__inner--right\">\n                    <div class=\"form-elm-section input_sec \">\n                        <label for=\"b2boauth_email\">\n                            Email ID\n                        </label>\n                        <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_email\" class=\"input_txt_box readonly valid\" value=\"").concat(getOuathData.email, "\" readonly=\"true\" title=\"\">\n                        <p id=\"oauth_log_email_err\" class=\"error\"></p>\n                    </div>\n\n                    <div class=\"input-section-main\">\n                        <div class=\"form-elm-section input_sec \">\n                            <label for=\"oauth_log_name\">\n                                Name\n                            </label>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_name\" class=\"input_txt_box valid\" value=\"").concat(getOuathData.name, "\" maxlength=\"45\" title=\"\">\n                            <p id=\"oauth_log_name_err\" class=\"error\">\n                            </p>\n                        </div>\n                        <div class=\"form-elm-section input_sec \">\n                            <label for=\"oauth_coach_name\">\n                                Coach Name\n                            </label>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_coach_name\" class=\"input_txt_box valid\" value=\"").concat((_getOuathData = getOuathData) !== null && _getOuathData !== void 0 && _getOuathData.coach ? (_getOuathData2 = getOuathData) === null || _getOuathData2 === void 0 ? void 0 : _getOuathData2.coach : "", "\" maxlength=\"45\" title=\"\" readonly=\"true\">\n                            <p id=\"oauth_coach_name_err\" class=\"error\">\n                            </p>\n                        </div>\n                    </div>\n                    <div class=\"input-section-main\">\n                    <div class=\"form-elm-section input_sec \">\n                        <label for=\"oauth_doj\">\n                            Date of Joining\n                        </label>\n                        <input required=\"\" data-id=\"\" readonly=\"true\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_doj\" class=\"input_txt_box valid\" value=\"").concat(Samvaarta.common.dateMonthYear(getOuathData.created_at), "\" maxlength=\"45\" title=\"\">\n                        <p id=\"oauth_doj_err\" class=\"error\">\n                        </p>\n                    </div>\n                    <div class=\"form-elm-section input_sec \">\n                        <label for=\"oauth_experience\">\n                            Experience\n                        </label>\n                        <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_experience\" class=\"input_txt_box valid\" value=\"\" maxlength=\"45\" title=\"\">\n                        <p id=\"oauth_experience_err\" class=\"error\">\n                        </p>\n                    </div>\n                    </div>\n                    <div class=\"input-section-main\">\n                        <div class=\"form-elm-section input_sec \">\n                            <label for=\"oauth_log_vision\"> Vision</label>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_vision\" class=\"input_txt_box\" value=\"").concat((_getOuathData3 = getOuathData) !== null && _getOuathData3 !== void 0 && _getOuathData3.vision ? (_getOuathData4 = getOuathData) === null || _getOuathData4 === void 0 ? void 0 : _getOuathData4.vision : '', "\">\n                            <p id=\"oauth_log_vision_err\" class=\"validation error\"></p>\n                        </div>\n                        <div class=\"form-elm-section input_sec_role \">\n                            <label for=\"oauth_log_description\"> Description</label>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_description\" class=\"input_txt_box\" value=\"").concat((_getOuathData5 = getOuathData) !== null && _getOuathData5 !== void 0 && _getOuathData5.description ? (_getOuathData6 = getOuathData) === null || _getOuathData6 === void 0 ? void 0 : _getOuathData6.description : '', "\">\n\n                            <p id=\"oauth_log_description_err\" class=\"validation error\"></p>\n                        </div>\n                    </div>\n\n                    <div class=\"input-section-main\">\n                        <div class=\"form-elm-section input_sec \">\n                            <label for=\"oauth_log_lnurl\"> LinkedIn URL</label>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_lnurl\" class=\"input_txt_box\" value=\"").concat((_getOuathData7 = getOuathData) === null || _getOuathData7 === void 0 ? void 0 : _getOuathData7.linkedin_url, "\">\n                            <p id=\"oauth_log_lnurl_err\" class=\"validation error\"></p>\n                        </div>\n                        <div class=\"form-elm-section input_sec_role \">\n                            <label for=\"oauth_log_role\"> Role</label>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_role\" class=\"input_txt_box\" value=\"").concat((_getOuathData8 = getOuathData) === null || _getOuathData8 === void 0 ? void 0 : _getOuathData8.user_type, "\">\n\n                            <p id=\"oauth_log_role_err\" class=\"validation error\"></p>\n                        </div>\n                    </div>\n                    <div class=\"input-section-main\">\n                        <div class=\"form-elm-section input_sec_num \">\n                            <label for=\"oauth_log_number\"> Phone No</label>\n                            <select>\n                                <option value=\"+91\">+91</option>\n                                <option value=\"+91\">+01</option>\n                                <option value=\"+91\">+31</option>\n                                <option value=\"+91\">+11</option>\n                                <option value=\"+91\">+90</option>\n                            </select>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_number\" class=\"input_txt_box\" value=\"").concat((_getOuathData9 = getOuathData) === null || _getOuathData9 === void 0 ? void 0 : _getOuathData9.phone, "\">\n                            <p id=\"oauth_log_number_err\" class=\"validation error\"></p>\n                        </div>\n                        <div class=\"form-elm-section input_sec \">\n                            <label for=\"oauth_location\">\n                                Location\n                            </label>\n                            <input required=\"\" data-id=\"\" readonly=\"true\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_location\" class=\"input_txt_box valid\" value=\"").concat(getOuathData.location ? getOuathData.location : (_Samvaarta$common$get = Samvaarta.common.getLocalStorage("location")) === null || _Samvaarta$common$get === void 0 || (_Samvaarta$common$get = _Samvaarta$common$get.data) === null || _Samvaarta$common$get === void 0 ? void 0 : _Samvaarta$common$get.city, "\" maxlength=\"50\" title=\"\">\n                            <p id=\"oauth_location_err\" class=\"error\"></p>\n                    </div>\n                    </div>\n                    <div class=\"form-elm-section marg-t20\">\n                        <input type=\"button\" class=\"btn submit-button2\" name=\"submit_profile\" onclick=\"Samvaarta.system.userEditProfileUpdated(1);\" value=\"Update Profile Details\">\n                    </div>\n                </div>\n            </div>\n        ");
     document.querySelector("#edit-profile").innerHTML = profileDetail;
     photoUploadView();
   };
@@ -678,35 +753,78 @@ Samvaarta.system = function () {
       }
     }
   };
+  var userDashboard = function userDashboard() {
+    var userdashInfo = "\n        <ul>\n            <li class=\"active\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/conversation.png\" width=\"25\" height=\"25\" />\n                        Conversational details\n                    </h2>\n                </div>\n                <div class=\"details\">\n                    <h3>Conversational Details</h3>\n                    <p>You are documenting the interaction of the day and uploading documents to support your effort</p>\n                    <div id=\"\" class=\"details--items previous\">\n                        <h3>Previous Interactions</h3>\n                    </div>\n                    <div id=\"\" class=\"details--items current\">\n                        <h3>Current Interactions</h3>\n                    </div>\n                    <!-- <textarea name=\"\" id=\"\" cols=\"30\" rows=\"10\"></textarea> -->\n                    <div class=\"form-elm-section marg-t10\">\n                        <button class=\"btn\">Submit</button>\n                    </div>\n                </div>\n            </li>\n            <li>\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/objective.png\" width=\"25\" height=\"25\" />\n                        Learning Objective\n                    </h2>\n                </div>\n\n                <div class=\"details\">\n                    <h3>Learning Objective</h3>\n                    <textarea name=\"\" id=\"\" cols=\"30\" rows=\"10\"></textarea>\n                    <div class=\"form-elm-section marg-t10\">\n                        <button class=\"btn\">Submit</button>\n                    </div>\n                </div>\n            </li>\n            <li>\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/outcomes.png\" width=\"25\" height=\"25\" />\n                        Learning Outcomes\n                    </h2>\n                </div>\n                <div class=\"details\">\n                    <h3>Learning Outcomes</h3>\n                    <p>Please express yourself as how you plan to see yourself at the end of the interaction period in terms of how you will be experiencing</p>\n                    <textarea name=\"\" id=\"\" cols=\"30\" rows=\"10\"></textarea>\n                    <div class=\"form-elm-section marg-t10\">\n                        <button class=\"btn\">Submit</button>\n                    </div>\n                </div>\n            </li>\n            <li>\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/comments.png\" width=\"25\" height=\"25\" />\n                        Managers Comment\n                    </h2>\n                </div>\n                <div class=\"details\">\n                    <h3>Managers Comment</h3>\n                    <p>The coach will share his perspective on the progress made based on the interactions</p>\n                    <textarea name=\"\" id=\"\" cols=\"30\" rows=\"10\"></textarea>\n                    <div class=\"form-elm-section marg-t10\">\n                        <button class=\"btn\">Submit</button>\n                    </div>\n                </div>\n            </li>\n            <li>\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/upload.png\" width=\"25\" height=\"25\" />\n                        Uploading Documents\n                    </h2>\n                </div>\n                <div class=\"details\">\n                    <h3>Upload Documents</h3>\n                    <textarea name=\"\" id=\"\" cols=\"30\" rows=\"10\"></textarea>\n                    <div class=\"form-elm-section marg-t10\">\n                        <button class=\"btn\">Submit</button>\n                    </div>\n                </div>\n            </li>\n            <li>\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/ethics.png\" width=\"25\" height=\"25\" />\n                        Code of ethics\n                    </h2>\n                </div>\n                <div class=\"details\">\n                    <h3>Code of ethics</h3>\n                    <p>CoE refers to the responsible behavior that will be displayed by partied involved during the interaction period</p>\n                    <div class=\"details--items\">\n                        <h3>Coachee\u2019s Code of Ethics</h3>\n                        <ul class=\"list-view\">\n                            <li>I shall be sharing the details truthfully without any fear</li>\n                            <li>I commit to implement my commitments made in the interaction</li>\n                            <li>The responsibility of my growth life within me</li>\n                        </ul>\n                    </div>\n                    <div class=\"details--items\">\n                        <h3>The coach / Mentor has agreed to the following</h3>\n                        <ul class=\"list-view\">\n                            <li>The coach will be 100% invested in you during the interaction</li>\n                            <li>The coach\u2019s role will be to ask you question to help you explore</li>\n                            <li>The coach maintain the confidentiality of the interaction\u2026\u2026</li>\n                        </ul>\n                    </div>\n                    <div class=\"form-elm-section marg-t10\">\n                        <button class=\"btn\">Submit</button>\n                    </div>\n                </div>\n            </li>\n        </ul>\n        ";
+    $(".user-dashboard-info").html(userdashInfo);
+  };
+  var trainerDashboard = function trainerDashboard() {};
   var adminDashboard = function adminDashboard() {
-    var trainerdata = '';
+    var trainerdata = "";
     var paramObject = {
-      url: apiUrl + "api/admin/trainer/listing",
+      url: apiUrl + "api/admin/users/listing",
       type: "GET",
       data: {},
       headers: {
-        Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
+        Authorization: "Bearer ".concat(Samvaarta.common.getLocalStorage("AccessToken").access_token),
         Accept: "application/json"
       }
     };
     var ajaxSuccessCall = function ajaxSuccessCall(response) {
       console.log(response);
-      trainerdata = response;
-      return trainerdata;
+      response = response.data.data;
+      var userInfo = '';
+      userInfo += "<ul class=\"user-dashboard-info__head-list\">\n                <li>SNO.</li>\n                <li>Name</li>\n                <li>Email</li>\n                <li>Status</li>\n                <li>Delete</li>\n            </ul>";
+      response.map(function (item, index) {
+        userInfo += "<ul>";
+        userInfo += "<li>".concat(index + 1, "</li>");
+        userInfo += "<li class=\"camel-case\">".concat(item.name, "</li>");
+        userInfo += "<li>".concat(item.email, "</li>");
+        userInfo += "<li>".concat(item.status ? '<span>Approved</span> <span>Undo</span>' : '', "</li>");
+        userInfo += "<li onclick=\"Samvaarta.system.deleteUser();\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></li>";
+        userInfo += "</ul>";
+      });
+      $(".user-dashboard-info").html(userInfo);
     };
     var ajaxErrorCall = function ajaxErrorCall(response) {
       console.log(response);
     };
     Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
-    return trainerdata;
+  };
+  var showUserInfo = function showUserInfo(response) {
+    var _Samvaarta$common$get2;
+    var coachInfo = '',
+      cochees = '',
+      trainer = '',
+      plannedSess = '',
+      concluded = '',
+      nextSession = '',
+      completeSessCount = '';
+    if (response.user_type === "admin") {
+      cochees = "<li>No of Coachees: <span></span></li>";
+      trainer = "<li>No of Coaches: <span></span></li>";
+      adminDashboard();
+    } else if (response.user_type === "trainer") {
+      cochees = "<li>No of Coachees: <span></span></li>";
+      completeSessCount = "<li>No of sessions completed: <span></span></li>";
+      trainerDashboard();
+    } else {
+      userDashboard();
+      coachInfo = "<li>Coach Name: <span>".concat(response.coach ? response.coach : '', "</span></li>");
+      plannedSess = "<li>Planned Sessions: <span>".concat(response.plannedSession ? response.plannedSession : '', "</span></li>");
+      concluded = "<li>Concluded: <span></span></li>";
+      nextSession = "<li>Next Session Date: <span></span></li>";
+    }
+    var userInfo = "\n        <h3 class=\"userName\">Welcome ".concat(response.name.split(" ")[0], " </h3>\n        <div class=\"show-user-details__inner\">\n            <div class=\"show-user-details__inner--left detail-items\">\n                <ul>\n                    <li>Code: <span>").concat(response.id, "</span></li>\n                    <li>Date of Joining: <span>").concat(Samvaarta.common.dateMonthYear(response.created_at), "</span></li>\n                    ").concat(coachInfo, "\n                    <li>Experience: </li>\n                    <li>Function: </li>\n                    <li class=\"role\">Role: <span>").concat(response.user_type, "</span></li>\n                    <li>Location: <span>").concat(response.location ? response.location : (_Samvaarta$common$get2 = Samvaarta.common.getLocalStorage("location")) === null || _Samvaarta$common$get2 === void 0 ? void 0 : _Samvaarta$common$get2.data.city, "</span></li>\n                </ul>\n            </div>\n            <div class=\"show-user-details__inner--mid detail-items\">\n                <ul>\n                    <li>Vision: </li>\n                    <li>Brief Description: </li>\n                    ").concat(plannedSess, "  ").concat(cochees, "  ").concat(trainer, " \n                    ").concat(concluded, " ").concat(nextSession, "  ").concat(completeSessCount, "                 \n                </ul>\n            </div>\n            <div class=\"show-user-details__inner--right detail-items\">\n                <ul>\n                    <li class=\"profile-img\"><img src=\"").concat(response.avatar ? response.avatar : '/images/default-face.jpg', "\" width=\"100\" height=\"100\" alt=\"profile\"></li>\n                    <li>LinkedIn: <span>").concat(response.linkedin_url, "</span></li>\n                    <li>Email Id: <span>").concat(response.email, "</span></li>\n                    <li>Mobile No: <span>").concat(response.phone, "</span></li>\n                </ul>\n            </div>\n        </div>\n        ");
+    $(".show-user-details").html(userInfo);
   };
   var displayUserInfo = function displayUserInfo(data) {
     var _data$data$data;
     var userDetails = (_data$data$data = data.data.data) !== null && _data$data$data !== void 0 && _data$data$data.name ? data.data.data : data.data;
     if (data) {
+      showUserInfo(userDetails);
       Samvaarta.globalVar.oauthToken = Samvaarta.common.getLocalStorage("AccessToken");
       Samvaarta.globalVar.is_loggedin = 1;
-      var username = userDetails.name.split(' ')[0];
+      var username = userDetails.name.split(" ")[0];
       var userType = userDetails.user_type;
       var userTypreDescription = "";
       document.querySelector(".dashboard__header--welcome span").innerHTML = username;
@@ -714,9 +832,8 @@ Samvaarta.system = function () {
         userTypreDescription = "\n                <li>\n                    <a tabindex=\"0\" role=\"button\" href=\"/user-details\">\n                    <i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>User Detail\n                    </a>\n                </li>\t";
       } else if (userType === "admin") {
         userTypreDescription = "\n                <li>\n                    <a tabindex=\"0\" role=\"button\" href=\"/user-details\">\n                    <i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>User Detail\n                    </a>\n                </li>\n                <li>\n                    <a tabindex=\"0\" role=\"button\" href=\"/trainer-details\">\n                    <i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>Trainer Detail\n                    </a>\n                </li>\t\n                ";
-        //$('.dashboard__elements--inner').html(adminDashboard());
-      }
-      var userData = "\n\t\t\t\t<div class=\"d-flex align-items-center\">\n\t\t\t\t\t<div class=\"flex-shrink-0\">\n\t\t\t\t\t<img width=\"20\" height=\"20\" src=\"/images/user-default.svg\" class=\"avatar\" alt=\"\" />\n\t\t\t\t\t</div>\t\t\t\t\t\n\t\t\t\t</div>\n\t\t\t\t\n\t\t\t\t<div class=\"header-user-nav\">\n\t\t\t\t\t<div class=\"hvr_bx\">\n\t\t\t\t\t\t<ul>\n                            <li>\n                                <a tabindex=\"0\" role=\"button\" href=\"/dashboard\">\n                                <i class=\"fa fa-tachometer\" aria-hidden=\"true\"></i>Dashboard\n                                </a>\n                            </li>\t\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<a tabindex=\"0\" role=\"button\" href=\"/myaccount\">\n\t\t\t\t\t\t\t\t\t<i class=\"fa fa-pencil\"></i>Edit Profile\n\t\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t</li>\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<li class=\"change-password\">\n\t\t\t\t\t\t\t\t<a href=\"/change-password\" tabindex=\"0\" role=\"button\">\n\t\t\t\t\t\t\t\t\t<i class=\"fa fa-key\"></i>Change Password\n\t\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t</li>\n                            ".concat(userTypreDescription, "\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<a href=\"javascript:void(0);\" tabindex=\"0\" role=\"button\" onclick=\"Samvaarta.system.logout()\">\n\t\t\t\t\t\t\t\t\t<i class=\"fa fa-power-off\"></i>Logout\n\t\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t</ul>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t");
+      } else {}
+      var userData = "\n\t\t\t\t<div class=\"d-flex align-items-center\">\n\t\t\t\t\t<div class=\"flex-shrink-0\">\n\t\t\t\t\t<img width=\"20\" height=\"20\" data-src=\"".concat(userDetails.avatar, "\" src=\"/images/user-default.svg\" class=\"unveil avatar\" alt=\"").concat(username, "\" />\n\t\t\t\t\t</div>\t\t\t\t\t\n\t\t\t\t</div>\n\t\t\t\t\n\t\t\t\t<div class=\"header-user-nav\">\n\t\t\t\t\t<div class=\"hvr_bx\">\n\t\t\t\t\t\t<ul>\n                            <li>\n                                <a tabindex=\"0\" role=\"button\" href=\"/dashboard\">\n                                <i class=\"fa fa-tachometer\" aria-hidden=\"true\"></i>Dashboard\n                                </a>\n                            </li>\t\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<a tabindex=\"0\" role=\"button\" href=\"/myaccount\">\n\t\t\t\t\t\t\t\t\t<i class=\"fa fa-pencil\"></i>Edit Profile\n\t\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t</li>\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<li class=\"change-password\">\n\t\t\t\t\t\t\t\t<a href=\"/change-password\" tabindex=\"0\" role=\"button\">\n\t\t\t\t\t\t\t\t\t<i class=\"fa fa-key\"></i>Change Password\n\t\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t</li>\n                            ").concat(userTypreDescription, "\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<a href=\"javascript:void(0);\" tabindex=\"0\" role=\"button\" onclick=\"Samvaarta.system.logout()\">\n\t\t\t\t\t\t\t\t\t<i class=\"fa fa-power-off\"></i>Logout\n\t\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t</ul>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t");
       $(".dashboard__header--loggedin-user").html(userData);
     }
   };
@@ -752,6 +869,7 @@ Samvaarta.system = function () {
       Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
     }
   };
+  var deleteUser = function deleteUser() {};
   return {
     loginUser: loginUser,
     userRegistration: userRegistration,
@@ -764,7 +882,8 @@ Samvaarta.system = function () {
     changePassword: changePassword,
     editProfile: editProfile,
     passwordUpdated: passwordUpdated,
-    userEditProfileUpdated: userEditProfileUpdated
+    userEditProfileUpdated: userEditProfileUpdated,
+    deleteUser: deleteUser
   };
 }();
 var dashboardTab = function dashboardTab() {
@@ -804,8 +923,11 @@ document.addEventListener("readystatechange", function (event) {
     if (document.querySelector("#edit-profile")) {
       Samvaarta.system.editProfile();
     }
+    Samvaarta.common.getLocation();
   }
-  if (event.target.readyState === "complete") {}
+  if (event.target.readyState === "complete") {
+    unvielImg();
+  }
 });
 
 /***/ }),

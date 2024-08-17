@@ -41,16 +41,16 @@
 }
 
 @mixin btn($bg) {
-	padding: 10px 16px;
+	padding: 11px 20px;
 	background: $bg;
 	color: #fff;
 	border: 1px solid $bg;
 	border-radius: 40px;
 	width: auto;
 	font-family: $font-montserrat;
-	font-size: rem(12);
+	font-size: rem(14);
 	font-weight: $bold;
-	line-height: rem(15);
+	line-height: rem(17);
 	text-align: center;
 	transition: all ease 0.5s;
 
@@ -78,6 +78,10 @@
 	max-width: #{$w}px;
 	padding-left: 24px;
 	padding-right: 24px;
+	@include breakpointmax($end-small){
+		padding-left: 16px;
+		padding-right: 16px;
+	}
 }
 
 @mixin define-font($font){

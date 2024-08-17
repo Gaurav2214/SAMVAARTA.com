@@ -3,69 +3,72 @@
 
 .input-box {
     @include input-style-1();
-  }
+}
 
-  .desktop-view {
+.desktop-view {
     @include breakpointmax($end-small) {
-      display: none !important;
+        display: none !important;
     }
-  }
+}
 
-  .mobile-view {
+.mobile-view {
     @include breakpoint($end-small) {
-      display: none !important;
+        display: none !important;
     }
-  }
-
-  .hide {
+}
+.camel-case{
+  text-transform: capitalize;
+}
+.hide {
     display: none !important;
-  }
+}
 
-  .btn, .btn-vote {
-    @include btn($primary);
-  }
+.btn,
+.btn-vote {
+    @include btn($clr-29);
+}
 
-  .btn-invert {
+.btn-invert {
     @include btn-invert($primary);
-  }
+}
 
-  .btn-invert-gray {
+.btn-invert-gray {
     @include btn-invert($clr-9);
 
     @include hover {
-      background: $primary;
-      color: $clr-1;
-      border-color: $primary;
+        background: $primary;
+        color: $clr-1;
+        border-color: $primary;
     }
-    &:focus{
-      outline: none;
+    &:focus {
+        outline: none;
     }
-  }  
+}
 
-  .container {
+.container {
     @include container;
-  }
+}
 
-  .sprite-icon{    
+.sprite-icon {
     width: rem(20);
     height: rem(20);
     display: inline-block;
-    &.coversation{
-      background: url(/images/conversation.png) 0 0 no-repeat;
+    &.coversation {
+        background: url(/images/conversation.png) 0 0 no-repeat;
     }
-    &.objectives{
-      background: url(/images/objective.png) 0 0 no-repeat;
+    &.objectives {
+        background: url(/images/objective.png) 0 0 no-repeat;
     }
-    &.outcomes{
-      background: url(/images/outcomes.png) 0 0 no-repeat;
+    &.outcomes {
+        background: url(/images/outcomes.png) 0 0 no-repeat;
     }
-    &.comments{
-      background: url(/images/comments.png) 0 0 no-repeat;
+    &.comments {
+        background: url(/images/comments.png) 0 0 no-repeat;
     }
-    &.upload{
-      background: url(/images/upload.png) 0 0 no-repeat;
+    &.upload {
+        background: url(/images/upload.png) 0 0 no-repeat;
     }
-    &.ethics{
-      background: url(/images/ethics.png) 0 0 no-repeat;
+    &.ethics {
+        background: url(/images/ethics.png) 0 0 no-repeat;
     }
-  }
+}

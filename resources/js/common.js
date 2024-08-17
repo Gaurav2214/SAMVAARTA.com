@@ -20,6 +20,81 @@ Samvaarta.globalVar = Samvaarta.globalVar || {
     errorValueInFlow: "",
     is_Loggedin: 0,
     oauthToken: "",
+    currlocation: "",
+};
+
+const elementInViewport = (el) => {
+    var top = el.offsetTop;
+    var left = el.offsetLeft;
+    var width = el.offsetWidth;
+    var height = el.offsetHeight;
+
+    while (el.offsetParent) {
+        el = el.offsetParent;
+        top += el.offsetTop;
+        left += el.offsetLeft;
+    }
+
+    return (
+        top < window.pageYOffset + window.innerHeight &&
+        left < window.pageXOffset + window.innerWidth &&
+        top + height > window.pageYOffset &&
+        left + width > window.pageXOffset
+    );
+};
+const unvielImg = (selector, unveilSelector) => {
+    var selector = selector || "body";
+    $(selector)
+        .find("img.unveil")
+        .each(function (i, v) {
+            var escapedWithParents =
+                '.slide-container,.logos,[class*="wrapper_style"]';
+            var isTheImgEscaped = $(this).parents(escapedWithParents).length;
+            var unveilSelect =
+                unveilSelector || elementInViewport(v) || isTheImgEscaped;
+
+            if (unveilSelect) {
+                $this = $(this);
+                try {
+                    $this.attr("data-init-src", $this.attr("src"));
+                    if (
+                        $this.attr("data-src") != "" &&
+                        $this.attr("data-src") != null
+                    ) {
+                        $this.attr("src", $this.attr("data-src"));
+                        $this.removeClass("unveil");
+                    } else {
+                        $this.attr("src", $this.attr("data-init-src"));
+                    }
+                    $this.on("error", function () {
+                        $(this)
+                            .unbind("error")
+                            .attr("src", $(this).data("init-src"));
+                    });
+                } catch (e) {}
+            }
+        });
+};
+
+const checkIfImageExists = (url, callback) => {
+    const img = new Image();
+    img.src = url;
+
+    if (url != "") {
+        if (img.complete) {
+            callback(true);
+        } else {
+            img.onload = () => {
+                callback(true);
+            };
+
+            img.onerror = () => {
+                callback(false);
+            };
+        }
+    } else {
+        callback(false);
+    }
 };
 
 Samvaarta.common = (() => {
@@ -280,6 +355,32 @@ Samvaarta.common = (() => {
         return formattedDate;
     };
 
+    const getLocation = () => {
+        var paramObject = {
+            url: "http://ipwho.is/",
+            type: "GET",
+            data: {},
+            headers: {
+                Accept: "application/json",
+            },
+        };
+
+        function ajaxSuccessCall(data) {
+            Samvaarta.common.setLocalStorage("location", data, 1);
+        }
+        function ajaxErrorCall(data) {}
+        if (!Samvaarta.common.getLocalStorage("location")) {
+            Samvaarta.common.hitAjaxApi(
+                paramObject,
+                ajaxSuccessCall,
+                ajaxErrorCall
+            );
+        } else {
+            var loc = Samvaarta.common.getLocalStorage("location");
+            Samvaarta.globalVar.currlocation = loc.data.city;
+        }
+    };
+
     return {
         isNull: isNull,
         isBlank: isBlank,
@@ -291,7 +392,8 @@ Samvaarta.common = (() => {
         deleteLocalStorage: deleteLocalStorage,
         encodeHTML: encodeHTML,
         removeRequiredFields: removeRequiredFields,
-        dateMonthYear : dateMonthYear,
+        dateMonthYear: dateMonthYear,
+        getLocation: getLocation,
     };
 })();
 
@@ -644,7 +746,9 @@ Samvaarta.system = (() => {
     };
     const editProfile = () => {
         let getOuathData = Samvaarta.common.getLocalStorage("oauthUserData");
-        getOuathData = getOuathData.data.data?.name ? getOuathData.data.data : getOuathData.data;
+        getOuathData = getOuathData.data.data?.name
+            ? getOuathData.data.data
+            : getOuathData.data;
         let profileDetail = `
             <h2 class="align-center">Edit Profile</h2>
             <div class="edit-profile__inner marg-t20">
@@ -701,7 +805,9 @@ Samvaarta.system = (() => {
                         <label for="oauth_doj">
                             Date of Joining
                         </label>
-                        <input required="" data-id="" readonly="true" placeholder="" name="" type="text" id="oauth_doj" class="input_txt_box valid" value="${Samvaarta.common.dateMonthYear(getOuathData.created_at)}" maxlength="45" title="">
+                        <input required="" data-id="" readonly="true" placeholder="" name="" type="text" id="oauth_doj" class="input_txt_box valid" value="${Samvaarta.common.dateMonthYear(
+                            getOuathData.created_at
+                        )}" maxlength="45" title="">
                         <p id="oauth_doj_err" class="error">
                         </p>
                     </div>
@@ -716,28 +822,67 @@ Samvaarta.system = (() => {
                     </div>
                     <div class="input-section-main">
                         <div class="form-elm-section input_sec ">
+                            <label for="oauth_log_vision"> Vision</label>
+                            <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_vision" class="input_txt_box" value="${
+                                getOuathData?.vision ? getOuathData?.vision : ''
+                            }">
+                            <p id="oauth_log_vision_err" class="validation error"></p>
+                        </div>
+                        <div class="form-elm-section input_sec_role ">
+                            <label for="oauth_log_description"> Description</label>
+                            <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_description" class="input_txt_box" value="${
+                                getOuathData?.description ? getOuathData?.description : ''
+                            }">
+
+                            <p id="oauth_log_description_err" class="validation error"></p>
+                        </div>
+                    </div>
+
+                    <div class="input-section-main">
+                        <div class="form-elm-section input_sec ">
                             <label for="oauth_log_lnurl"> LinkedIn URL</label>
-                            <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_lnurl" class="input_txt_box" value="${getOuathData?.linkedin_url}">
+                            <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_lnurl" class="input_txt_box" value="${
+                                getOuathData?.linkedin_url
+                            }">
                             <p id="oauth_log_lnurl_err" class="validation error"></p>
                         </div>
                         <div class="form-elm-section input_sec_role ">
                             <label for="oauth_log_role"> Role</label>
-                            <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_role" class="input_txt_box" value="${getOuathData?.user_type}">
+                            <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_role" class="input_txt_box" value="${
+                                getOuathData?.user_type
+                            }">
 
                             <p id="oauth_log_role_err" class="validation error"></p>
                         </div>
                     </div>
-                    <div class="form-elm-section input_sec_num ">
-                        <label for="oauth_log_number"> Phone No</label>
-                        <select>
-                            <option value="+91">+91</option>
-                            <option value="+91">+01</option>
-                            <option value="+91">+31</option>
-                            <option value="+91">+11</option>
-                            <option value="+91">+90</option>
-                        </select>
-                        <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_number" class="input_txt_box" value="${getOuathData?.phone}">
-                        <p id="oauth_log_number_err" class="validation error"></p>
+                    <div class="input-section-main">
+                        <div class="form-elm-section input_sec_num ">
+                            <label for="oauth_log_number"> Phone No</label>
+                            <select>
+                                <option value="+91">+91</option>
+                                <option value="+91">+01</option>
+                                <option value="+91">+31</option>
+                                <option value="+91">+11</option>
+                                <option value="+91">+90</option>
+                            </select>
+                            <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_number" class="input_txt_box" value="${
+                                getOuathData?.phone
+                            }">
+                            <p id="oauth_log_number_err" class="validation error"></p>
+                        </div>
+                        <div class="form-elm-section input_sec ">
+                            <label for="oauth_location">
+                                Location
+                            </label>
+                            <input required="" data-id="" readonly="true" placeholder="" name="" type="text" id="oauth_location" class="input_txt_box valid" value="${
+                                getOuathData.location
+                                    ? getOuathData.location
+                                    : Samvaarta.common.getLocalStorage(
+                                          "location"
+                                      )?.data?.city
+                            }" maxlength="50" title="">
+                            <p id="oauth_location_err" class="error"></p>
+                    </div>
                     </div>
                     <div class="form-elm-section marg-t20">
                         <input type="button" class="btn submit-button2" name="submit_profile" onclick="Samvaarta.system.userEditProfileUpdated(1);" value="Update Profile Details">
@@ -790,7 +935,7 @@ Samvaarta.system = (() => {
                     linkedin: reg_linkedin,
                     user_type: reg_role,
                     avatar: reg_avatar,
-                    action:"profile"
+                    action: "profile",
                 },
                 headers: {
                     Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
@@ -816,7 +961,7 @@ Samvaarta.system = (() => {
                 ajaxErrorCall
             );
         }
-    }
+    };
 
     const logout = () => {
         Samvaarta.common.deleteLocalStorage("oauthUserData");
@@ -1011,8 +1156,8 @@ Samvaarta.system = (() => {
                 url: apiUrl + "api/register",
                 type: "POST",
                 headers: {
-                    Accept: "application/json"
-                  },
+                    Accept: "application/json",
+                },
                 data: {
                     email: reg_email,
                     name: reg_name,
@@ -1060,22 +1205,168 @@ Samvaarta.system = (() => {
         }
     };
 
+    const userDashboard = () => {
+        var userdashInfo = `
+        <ul>
+            <li class="active">
+                <div class="dashboard__elements--item">
+                    <h2>
+                        <img alt="" src="/images/conversation.png" width="25" height="25" />
+                        Conversational details
+                    </h2>
+                </div>
+                <div class="details">
+                    <h3>Conversational Details</h3>
+                    <p>You are documenting the interaction of the day and uploading documents to support your effort</p>
+                    <div id="" class="details--items previous">
+                        <h3>Previous Interactions</h3>
+                    </div>
+                    <div id="" class="details--items current">
+                        <h3>Current Interactions</h3>
+                    </div>
+                    <!-- <textarea name="" id="" cols="30" rows="10"></textarea> -->
+                    <div class="form-elm-section marg-t10">
+                        <button class="btn">Submit</button>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="dashboard__elements--item">
+                    <h2>
+                        <img alt="" src="/images/objective.png" width="25" height="25" />
+                        Learning Objective
+                    </h2>
+                </div>
+
+                <div class="details">
+                    <h3>Learning Objective</h3>
+                    <textarea name="" id="" cols="30" rows="10"></textarea>
+                    <div class="form-elm-section marg-t10">
+                        <button class="btn">Submit</button>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="dashboard__elements--item">
+                    <h2>
+                        <img alt="" src="/images/outcomes.png" width="25" height="25" />
+                        Learning Outcomes
+                    </h2>
+                </div>
+                <div class="details">
+                    <h3>Learning Outcomes</h3>
+                    <p>Please express yourself as how you plan to see yourself at the end of the interaction period in terms of how you will be experiencing</p>
+                    <textarea name="" id="" cols="30" rows="10"></textarea>
+                    <div class="form-elm-section marg-t10">
+                        <button class="btn">Submit</button>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="dashboard__elements--item">
+                    <h2>
+                        <img alt="" src="/images/comments.png" width="25" height="25" />
+                        Managers Comment
+                    </h2>
+                </div>
+                <div class="details">
+                    <h3>Managers Comment</h3>
+                    <p>The coach will share his perspective on the progress made based on the interactions</p>
+                    <textarea name="" id="" cols="30" rows="10"></textarea>
+                    <div class="form-elm-section marg-t10">
+                        <button class="btn">Submit</button>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="dashboard__elements--item">
+                    <h2>
+                        <img alt="" src="/images/upload.png" width="25" height="25" />
+                        Uploading Documents
+                    </h2>
+                </div>
+                <div class="details">
+                    <h3>Upload Documents</h3>
+                    <textarea name="" id="" cols="30" rows="10"></textarea>
+                    <div class="form-elm-section marg-t10">
+                        <button class="btn">Submit</button>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="dashboard__elements--item">
+                    <h2>
+                        <img alt="" src="/images/ethics.png" width="25" height="25" />
+                        Code of ethics
+                    </h2>
+                </div>
+                <div class="details">
+                    <h3>Code of ethics</h3>
+                    <p>CoE refers to the responsible behavior that will be displayed by partied involved during the interaction period</p>
+                    <div class="details--items">
+                        <h3>Coachee’s Code of Ethics</h3>
+                        <ul class="list-view">
+                            <li>I shall be sharing the details truthfully without any fear</li>
+                            <li>I commit to implement my commitments made in the interaction</li>
+                            <li>The responsibility of my growth life within me</li>
+                        </ul>
+                    </div>
+                    <div class="details--items">
+                        <h3>The coach / Mentor has agreed to the following</h3>
+                        <ul class="list-view">
+                            <li>The coach will be 100% invested in you during the interaction</li>
+                            <li>The coach’s role will be to ask you question to help you explore</li>
+                            <li>The coach maintain the confidentiality of the interaction……</li>
+                        </ul>
+                    </div>
+                    <div class="form-elm-section marg-t10">
+                        <button class="btn">Submit</button>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        `;
+        $(".user-dashboard-info").html(userdashInfo);
+    };
+
+    const trainerDashboard = () => {
+
+    };
+
     const adminDashboard = () => {
-        let trainerdata = '';
+        let trainerdata = "";
         var paramObject = {
-            url: apiUrl + "api/admin/trainer/listing",
+            url: apiUrl + "api/admin/users/listing",
             type: "GET",
             data: {},
             headers: {
-                Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+                Authorization: `Bearer ${Samvaarta.common.getLocalStorage("AccessToken").access_token}`,
                 Accept: "application/json",
             },
         };
 
         const ajaxSuccessCall = (response) => {
             console.log(response);
-            trainerdata = response;
-            return trainerdata;
+            response = response.data.data;
+            let userInfo = '';
+            userInfo += `<ul class="user-dashboard-info__head-list">
+                <li>SNO.</li>
+                <li>Name</li>
+                <li>Email</li>
+                <li>Status</li>
+                <li>Delete</li>
+            </ul>`;
+            response.map((item, index) => {
+                userInfo += `<ul>`;
+                userInfo += `<li>${index+1}</li>`;
+                userInfo += `<li class="camel-case">${item.name}</li>`;
+                userInfo += `<li>${item.email}</li>`;
+                userInfo += `<li>${item.status ? '<span>Approved</span> <span>Undo</span>' : ''}</li>`;
+                userInfo += `<li onclick="Samvaarta.system.deleteUser();"><i class="fa fa-trash-o" aria-hidden="true"></i></li>`;
+                userInfo += `</ul>`;
+            })
+            
+            $(".user-dashboard-info").html(userInfo);
         };
 
         const ajaxErrorCall = (response) => {
@@ -1087,16 +1378,81 @@ Samvaarta.system = (() => {
             ajaxSuccessCall,
             ajaxErrorCall
         );
+    };
 
-        return trainerdata;
-    }
+    const showUserInfo = (response) => {
+        var coachInfo = '', cochees = '', trainer = '', plannedSess = '', 
+        concluded = '', nextSession = '', completeSessCount = '';
+        if (response.user_type === "admin") {
+            cochees = `<li>No of Coachees: <span></span></li>`;
+            trainer = `<li>No of Coaches: <span></span></li>`;            
+            adminDashboard();
+        } else if (response.user_type === "trainer") {
+            cochees = `<li>No of Coachees: <span></span></li>`;
+            completeSessCount = `<li>No of sessions completed: <span></span></li>`;
+            trainerDashboard();
+        } else {
+            userDashboard();
+            coachInfo = `<li>Coach Name: <span>${response.coach ? response.coach : ''}</span></li>`;
+            plannedSess = `<li>Planned Sessions: <span>${response.plannedSession ? response.plannedSession : ''}</span></li>`;
+            concluded = `<li>Concluded: <span></span></li>`;
+            nextSession = `<li>Next Session Date: <span></span></li>`;
+
+        }
+        const userInfo = `
+        <h3 class="userName">Welcome ${response.name.split(" ")[0]} </h3>
+        <div class="show-user-details__inner">
+            <div class="show-user-details__inner--left detail-items">
+                <ul>
+                    <li>Code: <span>${response.id}</span></li>
+                    <li>Date of Joining: <span>${Samvaarta.common.dateMonthYear(
+                        response.created_at
+                    )}</span></li>
+                    ${coachInfo}
+                    <li>Experience: </li>
+                    <li>Function: </li>
+                    <li class="role">Role: <span>${
+                        response.user_type
+                    }</span></li>
+                    <li>Location: <span>${
+                        response.location
+                            ? response.location
+                            : Samvaarta.common.getLocalStorage("location")?.data
+                                  .city
+                    }</span></li>
+                </ul>
+            </div>
+            <div class="show-user-details__inner--mid detail-items">
+                <ul>
+                    <li>Vision: </li>
+                    <li>Brief Description: </li>
+                    ${plannedSess}  ${cochees}  ${trainer} 
+                    ${concluded} ${nextSession}  ${completeSessCount}                 
+                </ul>
+            </div>
+            <div class="show-user-details__inner--right detail-items">
+                <ul>
+                    <li class="profile-img"><img src="${
+                        response.avatar ? response.avatar : '/images/default-face.jpg'
+                    }" width="100" height="100" alt="profile"></li>
+                    <li>LinkedIn: <span>${response.linkedin_url}</span></li>
+                    <li>Email Id: <span>${response.email}</span></li>
+                    <li>Mobile No: <span>${response.phone}</span></li>
+                </ul>
+            </div>
+        </div>
+        `;
+        $(".show-user-details").html(userInfo);
+    };
 
     var displayUserInfo = (data) => {
         let userDetails = data.data.data?.name ? data.data.data : data.data;
         if (data) {
-            Samvaarta.globalVar.oauthToken = Samvaarta.common.getLocalStorage("AccessToken");
+            showUserInfo(userDetails);
+            Samvaarta.globalVar.oauthToken =
+                Samvaarta.common.getLocalStorage("AccessToken");
             Samvaarta.globalVar.is_loggedin = 1;
-            let username = userDetails.name.split(' ')[0];
+            let username = userDetails.name.split(" ")[0];
             let userType = userDetails.user_type;
             let userTypreDescription = "";
             document.querySelector(
@@ -1122,12 +1478,12 @@ Samvaarta.system = (() => {
                     </a>
                 </li>	
                 `;
-                //$('.dashboard__elements--inner').html(adminDashboard());
+            } else {
             }
             let userData = `
 				<div class="d-flex align-items-center">
 					<div class="flex-shrink-0">
-					<img width="20" height="20" src="/images/user-default.svg" class="avatar" alt="" />
+					<img width="20" height="20" data-src="${userDetails.avatar}" src="/images/user-default.svg" class="unveil avatar" alt="${username}" />
 					</div>					
 				</div>
 				
@@ -1209,6 +1565,10 @@ Samvaarta.system = (() => {
         }
     };
 
+    const deleteUser = () => {
+
+    }
+
     return {
         loginUser: loginUser,
         userRegistration: userRegistration,
@@ -1221,7 +1581,8 @@ Samvaarta.system = (() => {
         changePassword: changePassword,
         editProfile: editProfile,
         passwordUpdated: passwordUpdated,
-        userEditProfileUpdated: userEditProfileUpdated
+        userEditProfileUpdated: userEditProfileUpdated,
+        deleteUser: deleteUser,
     };
 })();
 
@@ -1268,8 +1629,10 @@ document.addEventListener("readystatechange", (event) => {
         if (document.querySelector("#edit-profile")) {
             Samvaarta.system.editProfile();
         }
+        Samvaarta.common.getLocation();
     }
 
     if (event.target.readyState === "complete") {
+        unvielImg();
     }
 });

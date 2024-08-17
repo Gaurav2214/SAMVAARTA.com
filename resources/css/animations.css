@@ -1,0 +1,30 @@
+@keyframes pulse {
+  to {
+    opacity: 0;
+    transform: scale(2.8); } }
+
+@keyframes header {
+  from {
+    text-align: center; }
+  to {
+    text-align: left; } }
+
+@keyframes wave-lines {
+  0% {
+    background-position: -468px 0; }
+  100% {
+    background-position: 468px 0; } }
+
+@keyframes wave-squares {
+  0% {
+    background-position: -468px 0; }
+  100% {
+    background-position: 468px 0; } }
+
+@keyframes skinners {
+  from {
+    background-attachment: unset;
+    background-position: center top; }
+  to {
+    background-attachment: fixed;
+    background-position: center 70px; } }
