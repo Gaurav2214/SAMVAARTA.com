@@ -542,45 +542,47 @@
                 }
             }
             .user-dashboard-info {
-                ul{
-                    justify-content: flex-start;
-                    padding: rem(8) rem(14);
-                    gap: rem(10);
-                    border: 1px solid #ccc;
-                    border-top: none;
-                    li{
-                        &:first-of-type(){
-                            width: 5%;
+                &.admin-info{
+                    ul{
+                        justify-content: flex-start;
+                        padding: rem(8) rem(14);
+                        gap: rem(10);
+                        border: 1px solid #ccc;
+                        border-top: none;
+                        li{
+                            &:first-of-type(){
+                                width: 5%;
+                            }
+                            &:nth-child(2){
+                                width: 15%;
+                            }
+                            &:nth-child(3){
+                                width: 30%;
+                            }
+                            &:nth-child(4){
+                                width: 30%;
+                            }
+                            &:nth-child(5){
+                                width: 6%;
+                                text-align: center;
+                            }
                         }
-                        &:nth-child(2){
-                            width: 15%;
+                        &:last-of-type(){
+                            border-radius: 0 0 rem(6) rem(6);
                         }
-                        &:nth-child(3){
-                            width: 30%;
-                        }
-                        &:nth-child(4){
-                            width: 30%;
-                        }
-                        &:nth-child(5){
-                            width: 6%;
-                            text-align: center;
+                        &:not(:first-of-type){
+                            cursor: pointer;
+                            @include hover(){
+                                background: linear-gradient(180deg, #eff5ff 0%, rgba(239, 245, 255, 0) 100%);
+                            }
                         }
                     }
-                    &:last-of-type(){
-                        border-radius: 0 0 rem(6) rem(6);
+                    &__head-list{
+                        background: $clr-29;
+                        @include insert-box-shadow();                    
+                        color: #fff;
+                        border-radius: rem(4);
                     }
-                    &:not(:first-of-type){
-                        cursor: pointer;
-                        @include hover(){
-                            background: linear-gradient(180deg, #eff5ff 0%, rgba(239, 245, 255, 0) 100%);
-                        }
-                    }
-                }
-                &__head-list{
-                    background: $clr-29;
-                    @include insert-box-shadow();                    
-                    color: #fff;
-                    border-radius: rem(4);
                 }
             }
         }

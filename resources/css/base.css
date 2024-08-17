@@ -770,30 +770,30 @@ button,
             text-transform: capitalize; }
           .dashboard__elements--inner .show-user-details__inner .detail-items ul li span {
             color: #736e6e; }
-  .dashboard__elements--inner .user-dashboard-info ul {
+  .dashboard__elements--inner .user-dashboard-info.admin-info ul {
     justify-content: flex-start;
     padding: 8px 14px;
     gap: 10px;
     border: 1px solid #ccc;
     border-top: none; }
-    .dashboard__elements--inner .user-dashboard-info ul li:first-of-type {
+    .dashboard__elements--inner .user-dashboard-info.admin-info ul li:first-of-type {
       width: 5%; }
-    .dashboard__elements--inner .user-dashboard-info ul li:nth-child(2) {
+    .dashboard__elements--inner .user-dashboard-info.admin-info ul li:nth-child(2) {
       width: 15%; }
-    .dashboard__elements--inner .user-dashboard-info ul li:nth-child(3) {
+    .dashboard__elements--inner .user-dashboard-info.admin-info ul li:nth-child(3) {
       width: 30%; }
-    .dashboard__elements--inner .user-dashboard-info ul li:nth-child(4) {
+    .dashboard__elements--inner .user-dashboard-info.admin-info ul li:nth-child(4) {
       width: 30%; }
-    .dashboard__elements--inner .user-dashboard-info ul li:nth-child(5) {
+    .dashboard__elements--inner .user-dashboard-info.admin-info ul li:nth-child(5) {
       width: 6%;
       text-align: center; }
-    .dashboard__elements--inner .user-dashboard-info ul:last-of-type {
+    .dashboard__elements--inner .user-dashboard-info.admin-info ul:last-of-type {
       border-radius: 0 0 6px 6px; }
-    .dashboard__elements--inner .user-dashboard-info ul:not(:first-of-type) {
+    .dashboard__elements--inner .user-dashboard-info.admin-info ul:not(:first-of-type) {
       cursor: pointer; }
-      .dashboard__elements--inner .user-dashboard-info ul:not(:first-of-type):hover, .dashboard__elements--inner .user-dashboard-info ul:not(:first-of-type):focus {
+      .dashboard__elements--inner .user-dashboard-info.admin-info ul:not(:first-of-type):hover, .dashboard__elements--inner .user-dashboard-info.admin-info ul:not(:first-of-type):focus {
         background: linear-gradient(180deg, #eff5ff 0%, rgba(239, 245, 255, 0) 100%); }
-  .dashboard__elements--inner .user-dashboard-info__head-list {
+  .dashboard__elements--inner .user-dashboard-info.admin-info__head-list {
     background: #fd7702;
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
     color: #fff;

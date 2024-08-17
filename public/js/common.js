@@ -783,6 +783,7 @@ Samvaarta.system = function () {
         userInfo += "<li onclick=\"Samvaarta.system.deleteUser();\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></li>";
         userInfo += "</ul>";
       });
+      $(".user-dashboard-info").addCalss('admin-info');
       $(".user-dashboard-info").html(userInfo);
     };
     var ajaxErrorCall = function ajaxErrorCall(response) {
