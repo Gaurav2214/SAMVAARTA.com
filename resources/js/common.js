@@ -1366,7 +1366,7 @@ Samvaarta.system = (() => {
                 userInfo += `</ul>`;
             })
             
-            $(".user-dashboard-info").addCalss('admin-info');
+            $(".user-dashboard-info").addClass('admin-info');
             $(".user-dashboard-info").html(userInfo);
         };
 

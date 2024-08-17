@@ -793,7 +793,7 @@ button,
       cursor: pointer; }
       .dashboard__elements--inner .user-dashboard-info.admin-info ul:not(:first-of-type):hover, .dashboard__elements--inner .user-dashboard-info.admin-info ul:not(:first-of-type):focus {
         background: linear-gradient(180deg, #eff5ff 0%, rgba(239, 245, 255, 0) 100%); }
-  .dashboard__elements--inner .user-dashboard-info.admin-info__head-list {
+  .dashboard__elements--inner .user-dashboard-info.admin-info .user-dashboard-info__head-list {
     background: #fd7702;
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
     color: #fff;

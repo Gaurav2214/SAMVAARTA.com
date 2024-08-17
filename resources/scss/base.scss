@@ -577,7 +577,7 @@
                             }
                         }
                     }
-                    &__head-list{
+                    .user-dashboard-info__head-list{
                         background: $clr-29;
                         @include insert-box-shadow();                    
                         color: #fff;
