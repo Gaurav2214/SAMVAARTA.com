@@ -357,7 +357,7 @@ Samvaarta.common = (() => {
 
     const getLocation = () => {
         var paramObject = {
-            url: "http://ipwho.is/",
+            url: "https://st.etb2bimg.com/locinfo",
             type: "GET",
             data: {},
             headers: {
@@ -815,7 +815,7 @@ Samvaarta.system = (() => {
                         <label for="oauth_experience">
                             Experience
                         </label>
-                        <input required="" data-id="" placeholder="" name="" type="text" id="oauth_experience" class="input_txt_box valid" value="" maxlength="45" title="">
+                        <input required="" data-id="" placeholder="" name="" type="text" id="oauth_experience" class="input_txt_box valid" value="${getOuathData.experience}" maxlength="45" title="">
                         <p id="oauth_experience_err" class="error">
                         </p>
                     </div>
@@ -897,7 +897,9 @@ Samvaarta.system = (() => {
     const userEditProfileUpdated = () => {
         var reg_name = document.getElementById("oauth_log_name").value;
         var reg_email = document.getElementById("oauth_log_email").value;
-        var coachName = document.getElementById("oauth_coach_name").value;
+        var vision = document.getElementById("oauth_log_vision").value;
+        var description = document.getElementById("oauth_log_description").value;
+        var experience = document.getElementById("oauth_experience").value;
         var reg_phone = document.getElementById("oauth_log_number").value;
         var reg_linkedin = document.getElementById("oauth_log_lnurl").value;
         var reg_role = document.getElementById("oauth_log_role").value;
@@ -936,6 +938,9 @@ Samvaarta.system = (() => {
                     user_type: reg_role,
                     avatar: reg_avatar,
                     action: "profile",
+                    vision: vision,
+                    description: description,
+                    experience: experience,
                 },
                 headers: {
                     Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
@@ -1349,6 +1354,7 @@ Samvaarta.system = (() => {
             console.log(response);
             response = response.data.data;
             let userInfo = '';
+            userInfo += ``;
             userInfo += `<ul class="user-dashboard-info__head-list">
                 <li>SNO.</li>
                 <li>Name</li>
@@ -1361,7 +1367,7 @@ Samvaarta.system = (() => {
                 userInfo += `<li>${index+1}</li>`;
                 userInfo += `<li class="camel-case">${item.name}</li>`;
                 userInfo += `<li>${item.email}</li>`;
-                userInfo += `<li>${item.status ? '<span>Approved</span> <span>Undo</span>' : ''}</li>`;
+                userInfo += `<li>${item.status ? '<span>Approved</span> <span>Undo</span>' : '<span>Approve</span> <span>Deny</span>'}</li>`;
                 userInfo += `<li onclick="Samvaarta.system.deleteUser();"><i class="fa fa-trash-o" aria-hidden="true"></i></li>`;
                 userInfo += `</ul>`;
             })
@@ -1410,7 +1416,7 @@ Samvaarta.system = (() => {
                         response.created_at
                     )}</span></li>
                     ${coachInfo}
-                    <li>Experience: </li>
+                    <li>Experience: <span>${response.experience}</span></li>
                     <li>Function: </li>
                     <li class="role">Role: <span>${
                         response.user_type
@@ -1418,15 +1424,14 @@ Samvaarta.system = (() => {
                     <li>Location: <span>${
                         response.location
                             ? response.location
-                            : Samvaarta.common.getLocalStorage("location")?.data
-                                  .city
+                            : Samvaarta.common.getLocalStorage("location")?.data.city
                     }</span></li>
                 </ul>
             </div>
             <div class="show-user-details__inner--mid detail-items">
                 <ul>
-                    <li>Vision: </li>
-                    <li>Brief Description: </li>
+                    <li>Vision: <span>${response.vision}</span></li>
+                    <li>Brief Description: <span>${response.description}</span></li>
                     ${plannedSess}  ${cochees}  ${trainer} 
                     ${concluded} ${nextSession}  ${completeSessCount}                 
                 </ul>

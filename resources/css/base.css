@@ -777,13 +777,15 @@ button,
     border: 1px solid #ccc;
     border-top: none; }
     .dashboard__elements--inner .user-dashboard-info.admin-info ul li:first-of-type {
-      width: 5%; }
+      width: 6%; }
     .dashboard__elements--inner .user-dashboard-info.admin-info ul li:nth-child(2) {
-      width: 15%; }
+      width: 18%; }
     .dashboard__elements--inner .user-dashboard-info.admin-info ul li:nth-child(3) {
       width: 30%; }
     .dashboard__elements--inner .user-dashboard-info.admin-info ul li:nth-child(4) {
-      width: 30%; }
+      width: 34%;
+      display: flex;
+      justify-content: space-evenly; }
     .dashboard__elements--inner .user-dashboard-info.admin-info ul li:nth-child(5) {
       width: 6%;
       text-align: center; }
