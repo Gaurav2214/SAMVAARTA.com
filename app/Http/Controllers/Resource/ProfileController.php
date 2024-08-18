@@ -11,6 +11,7 @@ use App\User;
 use Illuminate\Support\Facades\Validator;
 use Exception;
 use Storage;
+use App\Models\CodeOfEthics;
 
 class ProfileController extends Controller
 {
@@ -232,6 +233,44 @@ class ProfileController extends Controller
 		}
 	}
 
+	public function code_of_ethics(Request $request)
+	{
+		try {
+			$CodeOfEthics= CodeOfEthics::where('user_id', $request->user()->id)->first();
+			return response()->json(['data' => $CodeOfEthics]);
+		} catch (Exception $e) {
+			return response()->json(['error' => "Something missing"], 500);
+		}
+	}
 	
+	public function add_edit_code_of_ethics(Request $request)
+	{
+		$validator =Validator::make($request->all(), [
+			'comments' => 'required|max:1500',
+		]);    
 
+		if (!$validator->fails())
+		{
+			
+			$user_id =  $request->user()->id;
+			$CodeOfEthics= CodeOfEthics::where('user_id',$user_id)->first();
+
+			
+
+			if(!empty($CodeOfEthics)){
+				$CodeOfEthics->comments=$request->comments;
+			}else{
+				$CodeOfEthics = CodeOfEthics::create(['user_id'=>$user_id,'comments'=>$request->comments]);
+			}
+
+			if($CodeOfEthics){
+				return response()->json(['data' => $CodeOfEthics,"success"=>"true","message"=>"Successfully Updated"]);
+			}else{
+				return response()->json(['data' => $CodeOfEthics,"success"=>"false"]);
+			}
+
+		}else{
+			return $validator->errors();
+		}
+	}
 }
