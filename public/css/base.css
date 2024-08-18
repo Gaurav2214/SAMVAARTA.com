@@ -769,12 +769,19 @@ button,
       .dashboard__elements--inner .user-dashboard-info.admin-info ul li:nth-child(3) {
         width: 30%; }
       .dashboard__elements--inner .user-dashboard-info.admin-info ul li:nth-child(4) {
-        width: 34%;
+        width: 35%;
         display: flex;
-        justify-content: space-evenly; }
+        justify-content: space-around; }
       .dashboard__elements--inner .user-dashboard-info.admin-info ul li:nth-child(5) {
         width: 6%;
         text-align: center; }
+      .dashboard__elements--inner .user-dashboard-info.admin-info ul li span {
+        width: 80px;
+        display: inline-block; }
+      .dashboard__elements--inner .user-dashboard-info.admin-info ul li .approved {
+        color: #397532; }
+      .dashboard__elements--inner .user-dashboard-info.admin-info ul li .denied {
+        color: #a7262b; }
     .dashboard__elements--inner .user-dashboard-info.admin-info ul:last-of-type {
       border-radius: 0 0 6px 6px; }
     .dashboard__elements--inner .user-dashboard-info.admin-info ul:not(:first-of-type) {

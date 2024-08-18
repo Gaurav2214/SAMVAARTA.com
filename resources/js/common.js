@@ -1224,7 +1224,16 @@ Samvaarta.system = (() => {
         };
 
         const ajaxSuccessCall = (response) => {
-            console.log(response);            
+            console.log(response);                
+            let statusInfo = ''; 
+            if(status === '1'){
+                statusInfo = `<span class="approved">Approved</span> <span onclick="Samvaarta.system.activateDeactivateUser(${id}, '0')">Undo</span>`;
+            } else if(status === '2'){
+                statusInfo = `<span onclick="Samvaarta.system.activateDeactivateUser(${id}, '0')">Undo</span> <span class="denied">Denied</span>`;
+            } else {
+                statusInfo = `<span onclick="Samvaarta.system.activateDeactivateUser(${id}, '1')">Approve</span> <span onclick="Samvaarta.system.activateDeactivateUser(${id}, '2')">Deny</span>`;
+            }  
+            $('.user-data-list #status_'+id).html(statusInfo);    
         };
 
         const ajaxErrorCall = (response) => {
@@ -1367,9 +1376,9 @@ Samvaarta.system = (() => {
 
     };
 
-    const adminDashboard = () => {
+    const adminDashboard = (type) => {
         var paramObject = {
-            url: apiUrl + "api/admin/users/listing",
+            url: apiUrl + "api/admin/"+type+"/listing",
             type: "GET",
             data: {},
             headers: {
@@ -1382,12 +1391,8 @@ Samvaarta.system = (() => {
             console.log(response);
             response = response.data.data;
             let userInfo = '';
-            userInfo += `<div class="show-role-tab">
-                <button>User</button>
-                <button>Trainer</button>
-                <button>Admin</button>
-                <button>Upcoming Session</button>
-            </div>`;
+            let statusInfo = ``;
+            userInfo += ``;
             userInfo += `<ul class="user-dashboard-info__head-list">
                 <li>SNO.</li>
                 <li>Name</li>
@@ -1396,18 +1401,26 @@ Samvaarta.system = (() => {
                 <li>Delete</li>
             </ul>`;
             response.map((item, index) => {
+                if(item.status === 1){
+                    statusInfo = `<span class="approved">Approved</span> <span onclick="Samvaarta.system.activateDeactivateUser(${item.id}, '0')">Undo</span>`;
+                } else if(item.status === 2){
+                    statusInfo = `<span onclick="Samvaarta.system.activateDeactivateUser(${item.id}, '0')">Undo</span> <span class="denied">Denied</span>`;
+                } else {
+                    statusInfo = `<span onclick="Samvaarta.system.activateDeactivateUser(${item.id}, '1')">Approve</span> <span onclick="Samvaarta.system.activateDeactivateUser(${item.id}, '2')">Deny</span>`;
+                }
                 userInfo += `<ul>`;
                 userInfo += `<li>${index+1}</li>`;
                 userInfo += `<li class="camel-case">${item.name}</li>`;
                 userInfo += `<li>${item.email}</li>`;
-                userInfo += `<li>${item.status ? '<span>Approved</span> <span onclick="Samvaarta.system.activateDeactivateUser('+item.id+', '+0+')">Undo</span>' : '<span onclick="Samvaarta.system.activateDeactivateUser('+item.id+', '+1+')">Approve</span> <span onclick="Samvaarta.system.activateDeactivateUser('+item.id+', '+2+')">Deny</span>'}</li>`;
+                userInfo += `<li id="status_${item.id}">${statusInfo}</li>`;
                 userInfo += `<li onclick="Samvaarta.system.deleteUser();"><i class="fa fa-trash-o" aria-hidden="true"></i></li>`;
                 userInfo += `</ul>`;
             })
             
             $(".user-dashboard-info").addClass('admin-info');
-            $(".user-dashboard-info").html(userInfo);
-            activateDeactivateUser();
+            $(".user-dashboard-info .user-data-list").html(userInfo);
+            $('.show-role-tab').removeClass('hide');
+            showRoleTab();
         };
 
         const ajaxErrorCall = (response) => {
@@ -1427,7 +1440,7 @@ Samvaarta.system = (() => {
         if (response.user_type === "admin") {
             cochees = `<li>No of Coachees: <span></span></li>`;
             trainer = `<li>No of Coaches: <span></span></li>`;            
-            adminDashboard();
+            adminDashboard('users');
         } else if (response.user_type === "trainer") {
             cochees = `<li>No of Coachees: <span></span></li>`;
             completeSessCount = `<li>No of sessions completed: <span></span></li>`;
@@ -1623,7 +1636,8 @@ Samvaarta.system = (() => {
         passwordUpdated: passwordUpdated,
         userEditProfileUpdated: userEditProfileUpdated,
         deleteUser: deleteUser,
-        activateDeactivateUser: activateDeactivateUser
+        activateDeactivateUser: activateDeactivateUser,
+        adminDashboard: adminDashboard 
     };
 })();
 
@@ -1633,7 +1647,7 @@ const dashboardTab = () => {
         $("body").on("click", ".dashboard__elements--inner li", (event) => {
             if (!event.currentTarget.classList.contains("active")) {
                 $(".dashboard__elements--inner li").removeClass("active");
-                event.currentTarget.classList.add("active");
+                event.currentTarget.classList.add("active");               
             }
         });
     }
@@ -1660,6 +1674,19 @@ const photoUploadView = () => {
         $(".file-upload").click();
     });
 };
+
+const showRoleTab = () => {
+    const elm = document.querySelector(".show-role-tab");
+    if (elm) {
+        $("body").on("click", ".show-role-tab button", (event) => {
+            if (!event.currentTarget.classList.contains("active")) {
+                $(".show-role-tab button").removeClass("active");
+                event.currentTarget.classList.add("active");
+                Samvaarta.system.adminDashboard(event.currentTarget.dataset.type);
+            }
+        });
+    }
+}
 
 document.addEventListener("readystatechange", (event) => {
     // When HTML/DOM elements are ready:
