@@ -790,13 +790,13 @@ Samvaarta.system = (() => {
                             </p>
                         </div>
                         <div class="form-elm-section input_sec ">
-                            <label for="oauth_coach_name">
-                                Coach Name
+                            <label for="oauth_function">
+                                Function
                             </label>
-                            <input required="" data-id="" placeholder="" name="" type="text" id="oauth_coach_name" class="input_txt_box valid" value="${
-                                getOuathData?.coach ? getOuathData?.coach : ""
-                            }" maxlength="45" title="" readonly="true">
-                            <p id="oauth_coach_name_err" class="error">
+                            <input required="" data-id="" placeholder="" name="" type="text" id="oauth_function" class="input_txt_box valid" value="${
+                                getOuathData?.user_function ? getOuathData?.user_function : ""
+                            }" maxlength="45" title="" >
+                            <p id="oauth_function_err" class="error">
                             </p>
                         </div>
                     </div>
@@ -898,6 +898,7 @@ Samvaarta.system = (() => {
         var reg_name = document.getElementById("oauth_log_name").value;
         var reg_email = document.getElementById("oauth_log_email").value;
         var vision = document.getElementById("oauth_log_vision").value;
+        var userfunction = document.getElementById("oauth_function").value;
         var description = document.getElementById("oauth_log_description").value;
         var experience = document.getElementById("oauth_experience").value;
         var reg_phone = document.getElementById("oauth_log_number").value;
@@ -934,13 +935,14 @@ Samvaarta.system = (() => {
                     email: reg_email,
                     name: reg_name,
                     phone: reg_phone,
-                    linkedin: reg_linkedin,
+                    linkedin_url: reg_linkedin,
                     user_type: reg_role,
                     avatar: reg_avatar,
                     action: "profile",
                     vision: vision,
                     description: description,
                     experience: experience,
+                    user_function: userfunction,
                 },
                 headers: {
                     Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
@@ -1210,6 +1212,42 @@ Samvaarta.system = (() => {
         }
     };
 
+    const activateDeactivateUser = (id, status) => {
+        var paramObject = {
+            url: apiUrl + "api/admin/user/activate/"+id+"?status="+status,
+            type: "GET",
+            data: {status: status},
+            headers: {
+                Authorization: `Bearer ${Samvaarta.common.getLocalStorage("AccessToken").access_token}`,
+                Accept: "application/json",
+            },
+        };
+
+        const ajaxSuccessCall = (response) => {
+            console.log(response);                
+            let statusInfo = ''; 
+            if(status === '1'){
+                statusInfo = `<span class="approved">Approved</span> <span onclick="Samvaarta.system.activateDeactivateUser(${id}, '0')">Undo</span>`;
+            } else if(status === '2'){
+                statusInfo = `<span onclick="Samvaarta.system.activateDeactivateUser(${id}, '0')">Undo</span> <span class="denied">Denied</span>`;
+            } else {
+                statusInfo = `<span onclick="Samvaarta.system.activateDeactivateUser(${id}, '1')">Approve</span> <span onclick="Samvaarta.system.activateDeactivateUser(${id}, '2')">Deny</span>`;
+            }  
+            $('.user-data-list #status_'+id).html(statusInfo);    
+        };
+
+        const ajaxErrorCall = (response) => {
+            console.log(response);
+        };
+        if(id){
+            Samvaarta.common.hitAjaxApi(
+                paramObject,
+                ajaxSuccessCall,
+                ajaxErrorCall
+            );
+        }
+    }
+
     const userDashboard = () => {
         var userdashInfo = `
         <ul>
@@ -1338,10 +1376,9 @@ Samvaarta.system = (() => {
 
     };
 
-    const adminDashboard = () => {
-        let trainerdata = "";
+    const adminDashboard = (type) => {
         var paramObject = {
-            url: apiUrl + "api/admin/users/listing",
+            url: apiUrl + "api/admin/"+type+"/listing",
             type: "GET",
             data: {},
             headers: {
@@ -1354,6 +1391,7 @@ Samvaarta.system = (() => {
             console.log(response);
             response = response.data.data;
             let userInfo = '';
+            let statusInfo = ``;
             userInfo += ``;
             userInfo += `<ul class="user-dashboard-info__head-list">
                 <li>SNO.</li>
@@ -1363,17 +1401,26 @@ Samvaarta.system = (() => {
                 <li>Delete</li>
             </ul>`;
             response.map((item, index) => {
+                if(item.status === 1){
+                    statusInfo = `<span class="approved">Approved</span> <span onclick="Samvaarta.system.activateDeactivateUser(${item.id}, '0')">Undo</span>`;
+                } else if(item.status === 2){
+                    statusInfo = `<span onclick="Samvaarta.system.activateDeactivateUser(${item.id}, '0')">Undo</span> <span class="denied">Denied</span>`;
+                } else {
+                    statusInfo = `<span onclick="Samvaarta.system.activateDeactivateUser(${item.id}, '1')">Approve</span> <span onclick="Samvaarta.system.activateDeactivateUser(${item.id}, '2')">Deny</span>`;
+                }
                 userInfo += `<ul>`;
                 userInfo += `<li>${index+1}</li>`;
                 userInfo += `<li class="camel-case">${item.name}</li>`;
                 userInfo += `<li>${item.email}</li>`;
-                userInfo += `<li>${item.status ? '<span>Approved</span> <span>Undo</span>' : '<span>Approve</span> <span>Deny</span>'}</li>`;
+                userInfo += `<li id="status_${item.id}">${statusInfo}</li>`;
                 userInfo += `<li onclick="Samvaarta.system.deleteUser();"><i class="fa fa-trash-o" aria-hidden="true"></i></li>`;
                 userInfo += `</ul>`;
             })
             
             $(".user-dashboard-info").addClass('admin-info');
-            $(".user-dashboard-info").html(userInfo);
+            $(".user-dashboard-info .user-data-list").html(userInfo);
+            $('.show-role-tab').removeClass('hide');
+            showRoleTab();
         };
 
         const ajaxErrorCall = (response) => {
@@ -1393,7 +1440,7 @@ Samvaarta.system = (() => {
         if (response.user_type === "admin") {
             cochees = `<li>No of Coachees: <span></span></li>`;
             trainer = `<li>No of Coaches: <span></span></li>`;            
-            adminDashboard();
+            adminDashboard('users');
         } else if (response.user_type === "trainer") {
             cochees = `<li>No of Coachees: <span></span></li>`;
             completeSessCount = `<li>No of sessions completed: <span></span></li>`;
@@ -1417,7 +1464,7 @@ Samvaarta.system = (() => {
                     )}</span></li>
                     ${coachInfo}
                     <li>Experience: <span>${response.experience}</span></li>
-                    <li>Function: </li>
+                    <li>Function: <span>${response.user_function}</span></li>
                     <li class="role">Role: <span>${
                         response.user_type
                     }</span></li>
@@ -1589,6 +1636,8 @@ Samvaarta.system = (() => {
         passwordUpdated: passwordUpdated,
         userEditProfileUpdated: userEditProfileUpdated,
         deleteUser: deleteUser,
+        activateDeactivateUser: activateDeactivateUser,
+        adminDashboard: adminDashboard 
     };
 })();
 
@@ -1598,7 +1647,7 @@ const dashboardTab = () => {
         $("body").on("click", ".dashboard__elements--inner li", (event) => {
             if (!event.currentTarget.classList.contains("active")) {
                 $(".dashboard__elements--inner li").removeClass("active");
-                event.currentTarget.classList.add("active");
+                event.currentTarget.classList.add("active");               
             }
         });
     }
@@ -1625,6 +1674,19 @@ const photoUploadView = () => {
         $(".file-upload").click();
     });
 };
+
+const showRoleTab = () => {
+    const elm = document.querySelector(".show-role-tab");
+    if (elm) {
+        $("body").on("click", ".show-role-tab button", (event) => {
+            if (!event.currentTarget.classList.contains("active")) {
+                $(".show-role-tab button").removeClass("active");
+                event.currentTarget.classList.add("active");
+                Samvaarta.system.adminDashboard(event.currentTarget.dataset.type);
+            }
+        });
+    }
+}
 
 document.addEventListener("readystatechange", (event) => {
     // When HTML/DOM elements are ready:

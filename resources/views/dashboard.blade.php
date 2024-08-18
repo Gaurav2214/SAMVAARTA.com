@@ -16,6 +16,7 @@
                         <li>Location: </li>
                     </ul>
                 </div>
+
                 <div class="show-user-details__inner--mid detail-items">
                     <ul>
                         <li>Vision: </li>
@@ -24,6 +25,7 @@
                         <li>No of Coaches: </li>
                     </ul>
                 </div>
+
                 <div class="show-user-details__inner--right detail-items">
                     <ul>
                         <li>
@@ -41,9 +43,14 @@
             </div>
         </div>
         <div class="user-dashboard-info component-divider">
-           
+            <div class="show-role-tab hide">
+                <button data-type="users" class="active">User</button>
+                <button data-type="trainer">Trainer</button>
+                <button data-type="admin">Admin</button>
+                <button data-type="upcoming-session">Upcoming Session</button>
+            </div>
+            <div id="" class="user-data-list"></div>
         </div>
-
     </div>
 </div>
 @endsection

@@ -192,7 +192,6 @@ class UserResource extends Controller
 
         $User = User::find($id);
 
-        
         if(empty($User)){
             return response()->json(['success' =>'false','message'=>"User is not exists"]);
         }else if($status =="1" && $User['status']=='1'){
@@ -204,7 +203,7 @@ class UserResource extends Controller
         }else{
             $User->status= $status;
             $User->save();
-            return response()->json(['success' =>'true','message'=>"User has been successfulle ".( $status==1?'activated':'rejected')]);
+            return response()->json(['success' =>'true','message'=>"User has been successfully ".( $status==1?'activated':'rejected')]);
         }
     }
 
