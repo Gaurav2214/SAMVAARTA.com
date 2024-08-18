@@ -16,6 +16,8 @@ Route::group(['middleware' => ['auth:api']], function() {
 		Route::get('/', 'Resource\ProfileController@index');
 		Route::post('/update', 'Resource\ProfileController@update');
 		Route::post('/password', 'Resource\ProfileController@password');
+		Route::get('/code-of-ethics', 'Resource\ProfileController@code_of_ethics');
+		Route::post('/code-of-ethics', 'Resource\ProfileController@add_edit_code_of_ethics');
 	});
 	Route::get('/logout', 'Resource\ProfileController@logout');
 });
