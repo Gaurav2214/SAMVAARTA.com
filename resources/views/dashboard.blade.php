@@ -16,6 +16,7 @@
                         <li>Location: </li>
                     </ul>
                 </div>
+
                 <div class="show-user-details__inner--mid detail-items">
                     <ul>
                         <li>Vision: </li>
@@ -24,6 +25,7 @@
                         <li>No of Coaches: </li>
                     </ul>
                 </div>
+
                 <div class="show-user-details__inner--right detail-items">
                     <ul>
                         <li>
@@ -39,11 +41,8 @@
                     </ul>
                 </div>
             </div>
-        </div>
-        <div class="user-dashboard-info component-divider">
-           
-        </div>
-
+        </div>        
+        <div class="user-dashboard-info component-divider"></div>
     </div>
 </div>
 @endsection
