@@ -733,6 +733,9 @@ button,
     flex-wrap: wrap;
     margin-top: 24px;
     gap: 32px; }
+    @media screen and (max-width: 1000px) {
+      .dashboard__elements--inner .show-user-details__inner {
+        gap: 10px; } }
     .dashboard__elements--inner .show-user-details__inner .detail-items {
       width: 350px; }
       .dashboard__elements--inner .show-user-details__inner .detail-items ul {
@@ -746,10 +749,23 @@ button,
           color: #262626; }
           .dashboard__elements--inner .show-user-details__inner .detail-items ul li.profile-img img {
             border-radius: 6px; }
+          @media screen and (max-width: 1000px) {
+            .dashboard__elements--inner .show-user-details__inner .detail-items ul li.profile-img {
+              display: flex;
+              justify-content: center;
+              width: -webkit-fill-available;
+              margin-bottom: 15px; } }
           .dashboard__elements--inner .show-user-details__inner .detail-items ul li.role span {
             text-transform: capitalize; }
           .dashboard__elements--inner .show-user-details__inner .detail-items ul li span {
             color: #736e6e; }
+      @media screen and (max-width: 1000px) {
+        .dashboard__elements--inner .show-user-details__inner .detail-items:last-of-type {
+          order: 1; }
+        .dashboard__elements--inner .show-user-details__inner .detail-items:first-of-type {
+          order: 2; }
+        .dashboard__elements--inner .show-user-details__inner .detail-items:nth-child(2) {
+          order: 3; } }
   .dashboard__elements--inner .user-dashboard-info.admin-info ul {
     justify-content: flex-start;
     padding: 8px 14px;
@@ -793,7 +809,6 @@ button,
       border-radius: 4px;
       background: linear-gradient(180deg, #eff5ff 0%, rgba(239, 245, 255, 0) 100%); }
   .dashboard__elements--inner .user-dashboard-info.admin-info .show-role-tab {
-    padding: 10px;
     background: #fd7702;
     border-radius: 5px 5px 0 0;
     -ms-display: flex;
@@ -803,8 +818,7 @@ button,
     justify-content: flex-start;
     -ms-align-items: flex-start;
     align-items: flex-start;
-    flex-direction: row;
-    gap: 25px; }
+    flex-direction: row; }
     .dashboard__elements--inner .user-dashboard-info.admin-info .show-role-tab button {
       background: transparent;
       border: none;
@@ -813,7 +827,16 @@ button,
       font-family: "Open Sans", sans-serif;
       font-weight: 500;
       color: #262626;
-      color: #fff; }
+      color: #fff;
+      padding: 10px;
+      min-width: 110px;
+      transition: all 1s ease; }
+      .dashboard__elements--inner .user-dashboard-info.admin-info .show-role-tab button.active {
+        background: #db6d0d; }
+      .dashboard__elements--inner .user-dashboard-info.admin-info .show-role-tab button:first-of-type {
+        border-radius: 5px 0 0 0; }
+      .dashboard__elements--inner .user-dashboard-info.admin-info .show-role-tab button:hover, .dashboard__elements--inner .user-dashboard-info.admin-info .show-role-tab button:focus {
+        background: #db6d0d; }
 
 .component-divider {
   -o-border-image: linear-gradient(90deg, #fff, #ccc, #fff);
