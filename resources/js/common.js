@@ -1698,6 +1698,9 @@ document.addEventListener("readystatechange", (event) => {
             Samvaarta.system.editProfile();
         }
         Samvaarta.common.getLocation();
+        if($('.user-details-page').length){            
+            Samvaarta.system.adminDashboard('users');
+        }
     }
 
     if (event.target.readyState === "complete") {

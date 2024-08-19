@@ -512,6 +512,9 @@
                     flex-wrap: wrap;
                     margin-top: rem(24);
                     gap: rem(32);
+                    @include breakpointmax($end-small){
+                        gap: rem(10);
+                    }
                     .detail-items {
                         width: rem(350);
                         ul {
@@ -522,6 +525,12 @@
                                 &.profile-img {
                                     img {
                                         border-radius: rem(6);
+                                    }
+                                    @include breakpointmax($end-small){
+                                        display: flex;
+                                        justify-content: center;
+                                        width: -webkit-fill-available;
+                                        margin-bottom: rem(15);
                                     }
                                 }
                                 &.role {
@@ -534,8 +543,15 @@
                                 }
                             }
                         }
-                        &:last-of-type {
-                            ul {
+                        @include breakpointmax($end-small){
+                            &:last-of-type {
+                                order: 1;
+                            }
+                            &:first-of-type(){
+                                order: 2;
+                            }
+                            &:nth-child(2){
+                                order: 3;
                             }
                         }
                     }
@@ -605,17 +621,27 @@
                         }
                     }
                     
-                    .show-role-tab{
-                        padding: rem(10);
+                    .show-role-tab{                        
                         background: $clr-29;
                         border-radius: 5px 5px 0 0;
                         @include set-flex-box($jc:flex-start);
-                        gap: rem(25);
                         button{
                             background: transparent;
                             border: none;
                             @include desc-5();
                             color: #fff;
+                            padding: rem(10);
+                            min-width: rem(110);
+                            transition: all 1s ease;                            
+                            &.active{
+                                background: $clr-26;
+                            }
+                            &:first-of-type(){
+                                border-radius: rem(5) 0 0 0;
+                            }
+                            @include hover(){
+                                background: $clr-26;
+                            }
                         }
                     }
                 }
