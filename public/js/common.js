@@ -792,7 +792,7 @@ Samvaarta.system = function () {
     }
   };
   var userDashboard = function userDashboard() {
-    var userdashInfo = "\n        <ul>\n            <li class=\"active\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/conversation.png\" width=\"25\" height=\"25\" />\n                        Conversational details\n                    </h2>\n                </div>\n                <div class=\"details\">\n                    <h3>Conversational Details</h3>\n                    <p>You are documenting the interaction of the day and uploading documents to support your effort</p>\n                    <div id=\"\" class=\"details--items previous\">\n                        <h3>Previous Interactions</h3>\n                    </div>\n                    <div id=\"\" class=\"details--items current\">\n                        <h3>Current Interactions</h3>\n                    </div>\n                    <!-- <textarea name=\"\" id=\"\" cols=\"30\" rows=\"10\"></textarea> -->\n                    <div class=\"form-elm-section marg-t10\">\n                        <button class=\"btn\">Submit</button>\n                    </div>\n                </div>\n            </li>\n            <li>\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/objective.png\" width=\"25\" height=\"25\" />\n                        Learning Objective\n                    </h2>\n                </div>\n\n                <div class=\"details\">\n                    <h3>Learning Objective</h3>\n                    <textarea name=\"\" id=\"\" cols=\"30\" rows=\"10\"></textarea>\n                    <div class=\"form-elm-section marg-t10\">\n                        <button class=\"btn\">Submit</button>\n                    </div>\n                </div>\n            </li>\n            <li>\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/outcomes.png\" width=\"25\" height=\"25\" />\n                        Learning Outcomes\n                    </h2>\n                </div>\n                <div class=\"details\">\n                    <h3>Learning Outcomes</h3>\n                    <p>Please express yourself as how you plan to see yourself at the end of the interaction period in terms of how you will be experiencing</p>\n                    <textarea name=\"\" id=\"\" cols=\"30\" rows=\"10\"></textarea>\n                    <div class=\"form-elm-section marg-t10\">\n                        <button class=\"btn\">Submit</button>\n                    </div>\n                </div>\n            </li>\n            <li>\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/comments.png\" width=\"25\" height=\"25\" />\n                        Managers Comment\n                    </h2>\n                </div>\n                <div class=\"details\">\n                    <h3>Managers Comment</h3>\n                    <p>The coach will share his perspective on the progress made based on the interactions</p>\n                    <textarea name=\"\" id=\"\" cols=\"30\" rows=\"10\"></textarea>\n                    <div class=\"form-elm-section marg-t10\">\n                        <button class=\"btn\">Submit</button>\n                    </div>\n                </div>\n            </li>\n            <li>\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/upload.png\" width=\"25\" height=\"25\" />\n                        Uploading Documents\n                    </h2>\n                </div>\n                <div class=\"details\">\n                    <h3>Upload Documents</h3>\n                    <textarea name=\"\" id=\"\" cols=\"30\" rows=\"10\"></textarea>\n                    <div class=\"form-elm-section marg-t10\">\n                        <button class=\"btn\">Submit</button>\n                    </div>\n                </div>\n            </li>\n            <li>\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/ethics.png\" width=\"25\" height=\"25\" />\n                        Code of ethics\n                    </h2>\n                </div>\n                <div class=\"details\">\n                    <h3>Code of ethics</h3>\n                    <p>CoE refers to the responsible behavior that will be displayed by partied involved during the interaction period</p>\n                    <div class=\"details--items\">\n                        <h3>Coachee\u2019s Code of Ethics</h3>\n                        <ul class=\"list-view\">\n                            <li>I shall be sharing the details truthfully without any fear</li>\n                            <li>I commit to implement my commitments made in the interaction</li>\n                            <li>The responsibility of my growth life within me</li>\n                        </ul>\n                    </div>\n                    <div class=\"details--items\">\n                        <h3>The coach / Mentor has agreed to the following</h3>\n                        <ul class=\"list-view\">\n                            <li>The coach will be 100% invested in you during the interaction</li>\n                            <li>The coach\u2019s role will be to ask you question to help you explore</li>\n                            <li>The coach maintain the confidentiality of the interaction\u2026\u2026</li>\n                        </ul>\n                    </div>\n                    <div class=\"form-elm-section marg-t10\">\n                        <button class=\"btn\">Submit</button>\n                    </div>\n                </div>\n            </li>\n        </ul>\n        ";
+    var userdashInfo = "\n        <ul>\n            <li class=\"active\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/conversation.png\" width=\"25\" height=\"25\" />\n                        Conversational details\n                    </h2>\n                </div>\n                <div class=\"details\">\n                    <h3>Conversational Details</h3>\n                    <p>You are documenting the interaction of the day and uploading documents to support your effort</p>\n                    <div id=\"\" class=\"details--items previous\">\n                        <h3>Previous Interactions</h3>\n                    </div>\n                    <div id=\"\" class=\"details--items current\">\n                        <h3>Current Interactions</h3>\n                    </div>\n                    <div class=\"form-elm-section marg-t10\">\n                        <button class=\"btn\">Submit</button>\n                    </div>\n                </div>\n            </li>\n            <li>\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/objective.png\" width=\"25\" height=\"25\" />\n                        Learning Objective\n                    </h2>\n                </div>\n\n                <div class=\"details\">\n                    <h3>Learning Objective</h3>\n                    <textarea name=\"\" id=\"\" cols=\"30\" rows=\"10\"></textarea>\n                    <div class=\"form-elm-section marg-t10\">\n                        <button class=\"btn\">Submit</button>\n                    </div>\n                </div>\n            </li>\n            <li>\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/outcomes.png\" width=\"25\" height=\"25\" />\n                        Learning Outcomes\n                    </h2>\n                </div>\n                <div class=\"details\">\n                    <h3>Learning Outcomes</h3>\n                    <p>Please express yourself as how you plan to see yourself at the end of the interaction period in terms of how you will be experiencing</p>\n                    <textarea name=\"\" id=\"\" cols=\"30\" rows=\"10\"></textarea>\n                    <div class=\"form-elm-section marg-t10\">\n                        <button class=\"btn\">Submit</button>\n                    </div>\n                </div>\n            </li>\n            <li>\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/comments.png\" width=\"25\" height=\"25\" />\n                        Managers Comment\n                    </h2>\n                </div>\n                <div class=\"details\">\n                    <h3>Managers Comment</h3>\n                    <p>The coach will share his perspective on the progress made based on the interactions</p>\n                    <textarea name=\"\" id=\"\" cols=\"30\" rows=\"10\"></textarea>\n                    <div class=\"form-elm-section marg-t10\">\n                        <button class=\"btn\">Submit</button>\n                    </div>\n                </div>\n            </li>\n            <li>\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/upload.png\" width=\"25\" height=\"25\" />\n                        Uploading Documents\n                    </h2>\n                </div>\n                <div class=\"details\">\n                    <h3>Upload Documents</h3>\n                    <textarea name=\"\" id=\"\" cols=\"30\" rows=\"10\"></textarea>\n                    <div class=\"form-elm-section marg-t10\">\n                        <button class=\"btn\">Submit</button>\n                    </div>\n                </div>\n            </li>\n            <li>\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/ethics.png\" width=\"25\" height=\"25\" />\n                        Code of ethics\n                    </h2>\n                </div>\n                <div class=\"details codeofethics\">\n                    <h3>Code of ethics</h3>\n                    <p>CoE refers to the responsible behavior that will be displayed by partied involved during the interaction period</p>\n                    <div class=\"details--items\">\n                        <h3>Coachee\u2019s Code of Ethics</h3>\n                        <ul class=\"list-view\">\n                            <li>I shall be sharing the details truthfully without any fear</li>\n                            <li>I commit to implement my commitments made in the interaction</li>\n                            <li>The responsibility of my growth life within me</li>\n                        </ul>\n                    </div>\n                    <div class=\"details--items\">\n                        <h3>The coach / Mentor has agreed to the following</h3>\n                        <ul class=\"list-view\">\n                            <li>The coach will be 100% invested in you during the interaction</li>\n                            <li>The coach\u2019s role will be to ask you question to help you explore</li>\n                            <li>The coach maintain the confidentiality of the interaction\u2026\u2026</li>\n                        </ul>\n                    </div>\n                    <div class=\"form-elm-section marg-t10\">\n                        <button onclick=\"Samvaarta.userDashboard.codeOfEthics()\" class=\"btn\">Submit</button>\n                    </div>\n                </div>\n            </li>\n        </ul>\n        ";
     $(".user-dashboard-info").html(userdashInfo);
   };
   var trainerDashboard = function trainerDashboard() {};
@@ -937,12 +937,60 @@ Samvaarta.system = function () {
     adminDashboard: adminDashboard
   };
 }();
+Samvaarta.userDashboard = function () {
+  var codeOfEthics = function codeOfEthics() {
+    var ethicsdata = $('.codeofethics ul').text();
+    var paramObject = {
+      url: apiUrl + "api/profile/code-of-ethics",
+      type: "POST",
+      data: {
+        'comments': ethicsdata
+      },
+      headers: {
+        Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
+        Accept: "application/json"
+      }
+    };
+    var ajaxSuccessCall = function ajaxSuccessCall(response) {
+      console.log(response);
+    };
+    var ajaxErrorCall = function ajaxErrorCall(error) {
+      if (error.response) {
+        $("#b2boauth_log_email_err").html(error.response.data.message).show();
+      }
+    };
+    Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
+  };
+  var getCodeOfEthics = function getCodeOfEthics() {
+    var paramObject = {
+      url: apiUrl + "api/profile/code-of-ethics",
+      type: "GET",
+      headers: {
+        Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
+        Accept: "application/json"
+      }
+    };
+    var ajaxSuccessCall = function ajaxSuccessCall(response) {
+      console.log(response);
+    };
+    var ajaxErrorCall = function ajaxErrorCall(error) {
+      if (error.response) {
+        $("#b2boauth_log_email_err").html(error.response.data.message).show();
+      }
+    };
+    Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
+  };
+  return {
+    codeOfEthics: codeOfEthics,
+    getCodeOfEthics: getCodeOfEthics
+  };
+}();
 var dashboardTab = function dashboardTab() {
   var elm = document.querySelector(".dashboard__elements--inner");
   if (elm) {
-    $("body").on("click", ".dashboard__elements--inner li", function (event) {
+    $("body").on("click", ".user-dashboard-info li", function (event) {
       if (!event.currentTarget.classList.contains("active")) {
-        $(".dashboard__elements--inner li").removeClass("active");
+        $(".user-dashboard-info li").removeClass("active");
         event.currentTarget.classList.add("active");
       }
     });

@@ -1267,7 +1267,6 @@ Samvaarta.system = (() => {
                     <div id="" class="details--items current">
                         <h3>Current Interactions</h3>
                     </div>
-                    <!-- <textarea name="" id="" cols="30" rows="10"></textarea> -->
                     <div class="form-elm-section marg-t10">
                         <button class="btn">Submit</button>
                     </div>
@@ -1343,7 +1342,7 @@ Samvaarta.system = (() => {
                         Code of ethics
                     </h2>
                 </div>
-                <div class="details">
+                <div class="details codeofethics">
                     <h3>Code of ethics</h3>
                     <p>CoE refers to the responsible behavior that will be displayed by partied involved during the interaction period</p>
                     <div class="details--items">
@@ -1363,7 +1362,7 @@ Samvaarta.system = (() => {
                         </ul>
                     </div>
                     <div class="form-elm-section marg-t10">
-                        <button class="btn">Submit</button>
+                        <button onclick="Samvaarta.userDashboard.codeOfEthics()" class="btn">Submit</button>
                     </div>
                 </div>
             </li>
@@ -1641,12 +1640,77 @@ Samvaarta.system = (() => {
     };
 })();
 
+Samvaarta.userDashboard = (() => {
+    const codeOfEthics = () => {
+        let ethicsdata = $('.codeofethics ul').text();
+        let paramObject = {
+            url: apiUrl + "api/profile/code-of-ethics",
+            type: "POST",
+            data: { 'comments': ethicsdata },
+            headers: {
+                Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+                Accept: "application/json",
+            },
+        };
+
+        const ajaxSuccessCall = (response) => {
+            console.log(response);
+        };
+
+        const ajaxErrorCall = (error) => {
+            if (error.response) {
+                $("#b2boauth_log_email_err")
+                    .html(error.response.data.message)
+                    .show();
+            }
+        };
+
+        Samvaarta.common.hitAjaxApi(
+            paramObject,
+            ajaxSuccessCall,
+            ajaxErrorCall
+        );
+    }
+    const getCodeOfEthics = () => {
+        let paramObject = {
+            url: apiUrl + "api/profile/code-of-ethics",
+            type: "GET",
+            headers: {
+                Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+                Accept: "application/json",
+            },
+        };
+
+        const ajaxSuccessCall = (response) => {
+            console.log(response);
+        };
+
+        const ajaxErrorCall = (error) => {
+            if (error.response) {
+                $("#b2boauth_log_email_err")
+                    .html(error.response.data.message)
+                    .show();
+            }
+        };
+
+        Samvaarta.common.hitAjaxApi(
+            paramObject,
+            ajaxSuccessCall,
+            ajaxErrorCall
+        );
+    }
+    return {
+        codeOfEthics: codeOfEthics,
+        getCodeOfEthics: getCodeOfEthics
+    }
+})();
+
 const dashboardTab = () => {
     const elm = document.querySelector(".dashboard__elements--inner");
     if (elm) {
-        $("body").on("click", ".dashboard__elements--inner li", (event) => {
+        $("body").on("click", ".user-dashboard-info li", (event) => {
             if (!event.currentTarget.classList.contains("active")) {
-                $(".dashboard__elements--inner li").removeClass("active");
+                $(".user-dashboard-info li").removeClass("active");
                 event.currentTarget.classList.add("active");               
             }
         });
