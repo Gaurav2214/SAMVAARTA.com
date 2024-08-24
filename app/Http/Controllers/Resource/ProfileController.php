@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Validator;
 use Exception;
 use Storage;
 use App\Models\CodeOfEthics;
+use App\Models\LearningOutcomes;
+use App\Models\LearningObjective;
+use App\Models\TrainerComment;
 
 class ProfileController extends Controller
 {
@@ -242,6 +245,7 @@ class ProfileController extends Controller
 			return response()->json(['error' => "Something missing"], 500);
 		}
 	}
+
 	
 	public function add_edit_code_of_ethics(Request $request)
 	{
@@ -273,4 +277,149 @@ class ProfileController extends Controller
 			return $validator->errors();
 		}
 	}
+
+	public function learning_objective(Request $request)
+	{
+		try {
+			$LearningObjective= LearningObjective::with('learning_objective_type')->where('user_id', $request->user()->id)->get()->toArray();
+			return response()->json(['data' => $LearningObjective]);
+		} catch (Exception $e) {
+			return response()->json(['error' => "Something missing"], 500);
+		}
+	}
+
+	public function add_edit_learning_objective(Request $request)
+	{
+		$validator =Validator::make($request->all(), [
+			'description' => 'required',
+			'objective_type'=>'required'
+		]);    
+
+		if (!$validator->fails())
+		{
+			
+			$user_id =  $request->user()->id;
+			$LearningObjective= LearningObjective::where('user_id',$user_id)->first();			
+
+			if(!empty($LearningObjective)){
+				$LearningObjective->description=json_encode($request->description);
+				$LearningObjective->objective_type=$request->objective_type;
+		
+			}else{
+				$LearningObjective = LearningObjective::create(['user_id'=>$user_id,'description'=>json_encode($request->description),'objective_type'=>$request->objective_type]);
+			}
+
+			$LearningObjective= LearningObjective::with('learning_objective_type')->where('user_id', $request->user()->id)->first();
+
+			if($LearningObjective){
+				$LearningObjective->description=json_decode($LearningObjective->description,true);
+				return response()->json(['data' => $LearningObjective,"success"=>"true","message"=>"Successfully Updated"]);
+			}else{
+				return response()->json(['data' => $LearningObjective,"success"=>"false"]);
+			}
+
+		}else{
+			return $validator->errors();
+		}
+	}
+
+	public function learning_outcome(Request $request)
+	{
+		try {
+			$LearningOutcomes= LearningOutcomes::where('user_id', $request->user()->id)->first();
+			return response()->json(['data' => $LearningOutcomes]);
+		} catch (Exception $e) {
+			return response()->json(['error' => "Something missing"], 500);
+		}
+	}
+
+	public function add_edit_learning_outcome(Request $request)
+	{
+		$validator =Validator::make($request->all(), [
+			'description' => 'required',
+		]);    
+
+		if (!$validator->fails())
+		{
+			
+			$user_id =  $request->user()->id;
+			$LearningOutcomes= LearningOutcomes::where('user_id',$user_id)->first();			
+
+			if(!empty($LearningOutcomes)){
+				$LearningOutcomes->outcome_description=json_encode($request->outcome_description);
+			}else{
+				$LearningOutcomes = LearningOutcomes::create(['user_id'=>$user_id,'outcome_description'=>json_encode($request->outcome_description)]);
+			}
+
+			$LearningOutcomes= LearningOutcomes::where('user_id', $request->user()->id)->first();
+
+			if($LearningOutcomes){
+				$LearningOutcomes->outcome_description=json_decode($LearningOutcomes->outcome_description,true);
+				return response()->json(['data' => $LearningOutcomes,"success"=>"true","message"=>"Successfully Updated"]);
+			}else{
+				return response()->json(['data' => $LearningOutcomes,"success"=>"false"]);
+			}
+
+		}else{
+			return $validator->errors();
+		}
+	}
+
+	public function add_comment(Request $request)
+	{
+		$validator =Validator::make($request->all(), [
+			'comments' => 'required',
+			'user_id'=>'required'
+		]);    
+
+		if (!$validator->fails())
+		{
+			
+			$trainer_id =  $request->user()->id;
+			$user_id = $request->user_id;
+
+			$User = User::with('users')->find($trainer_id);   
+
+			if($request->user()->user_type!="trainer"){
+				return response()->json(['data' => "You are not trainer.","success"=>"false"]);
+			}
+
+			
+			$TrainerComment = TrainerComment::create(['user_id'=>$user_id,'trainer_id'=>$trainer_id,'comments'=>$request->comments]);
+			
+			$TrainerComment= TrainerComment::where('trainer_id', $trainer_id)->get()->toArray();
+
+			if($TrainerComment){
+				return response()->json(['data' => $TrainerComment,"success"=>"true","message"=>"Successfully Added"]);
+			}else{
+				return response()->json(['data' => $TrainerComment,"success"=>"false"]);
+			}
+
+		}else{
+			return $validator->errors();
+		}
+	}
+
+	public function comments(Request $request)
+	{
+		try {
+			$TrainerComment= TrainerComment::where('trainer_id', $request->user()->id)->get()->toArray();
+			return response()->json(['data' => $TrainerComment]);
+		} catch (Exception $e) {
+			return response()->json(['error' => "Something missing"], 500);
+		}
+	}
+
+	public function getTrainerComments(Request $request)
+	{
+		try {
+			$TrainerComment= TrainerComment::where('user_id', $request->user()->id)->get()->toArray();
+			return response()->json(['data' => $TrainerComment]);
+		} catch (Exception $e) {
+			return response()->json(['error' => "Something missing"], 500);
+		}
+	}
+
+	
+	
 }
