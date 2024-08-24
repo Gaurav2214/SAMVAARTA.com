@@ -10,6 +10,8 @@ Route::post('/register', 'Auth\RegisterController@apiregister');
 Route::post('/forgot/password','Auth\ForgotPasswordController@forgot_password');
 Route::post('/reset/password', 'Auth\ResetPasswordController@reset_password');
 
+Route::get('learning-objective-types','Resource\CommonController@learning_objective_types');
+
 
 Route::group(['middleware' => ['auth:api']], function() {
 	Route::group(['prefix' => 'profile'], function() {
@@ -18,6 +20,18 @@ Route::group(['middleware' => ['auth:api']], function() {
 		Route::post('/password', 'Resource\ProfileController@password');
 		Route::get('/code-of-ethics', 'Resource\ProfileController@code_of_ethics');
 		Route::post('/code-of-ethics', 'Resource\ProfileController@add_edit_code_of_ethics');
+
+		Route::get('/learning-objective', 'Resource\ProfileController@learning_objective');
+		Route::post('/learning-objective', 'Resource\ProfileController@add_edit_learning_objective');
+
+		Route::get('/learning-outcome', 'Resource\ProfileController@learning_outcome');
+		Route::post('/learning-outcome', 'Resource\ProfileController@add_edit_learning_outcome');
+
+		Route::get('/comments', 'Resource\ProfileController@getTrainerComments');
+	});
+	Route::group(['prefix' => 'trainer'], function() {
+		Route::post('/add_comment', 'Resource\ProfileController@add_comment');
+		Route::get('/comments', 'Resource\ProfileController@comments');
 	});
 	Route::get('/logout', 'Resource\ProfileController@logout');
 });
@@ -31,7 +45,4 @@ Route::group(['prefix' => 'admin','middleware' => ['auth:api']], function () {
 	Route::post('user/update/{id}', 'Resource\UserResource@edit');
 
 	Route::post('user/assign_trainer', 'Resource\UserResource@assign_trainer');
-
-
-
 });
