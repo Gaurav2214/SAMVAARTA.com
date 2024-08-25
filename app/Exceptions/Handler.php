@@ -50,4 +50,15 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof  \Illuminate\Auth\AuthenticationException) {
+            if ($request->is('api/admin/*') || $request->is('api/profile/*') || $request->is('api/trainer/*')) {
+                return response()->json(['error' => 'unauthorized'], 403);
+            }
+        }
+
+        return parent::render($request, $exception);
+    }
 }

@@ -43,6 +43,11 @@ Route::group(['prefix' => 'admin','middleware' => ['auth:api']], function () {
 	Route::get('user/activate/{id}', 'Resource\UserResource@activate');
 	Route::get('user/show/{id}', 'Resource\UserResource@show');
 	Route::post('user/update/{id}', 'Resource\UserResource@edit');
-
 	Route::post('user/assign_trainer', 'Resource\UserResource@assign_trainer');
+
+	Route::get('sessions', 'Resource\SessionController@listing');
+	Route::post('session/add', 'Resource\SessionController@add');
+	Route::post('session/update/{id}', 'Resource\SessionController@update');
+
+
 });
