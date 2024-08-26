@@ -27,14 +27,26 @@ class SessionController extends Controller
 
     public function listing(Request $request){
         $trainer_id =$request->trainer_id??'';
+        $request_for=$request->request_for??'';
+
         $TrainingSession = TrainingSession::with(['trainer']);
 
+        if($request_for=="upcoming"){
+            $TrainingSession = TrainingSession::whereRaw("date(session_date) >= date(now())");
+        }else if($request_for=="past"){
+            $TrainingSession = TrainingSession::whereRaw("date(session_date) < date(now())");
+        }else if($request_for=="today"){
+            $TrainingSession = TrainingSession::whereRaw("date(session_date) = date(now())");
+        }
+
+
         if($trainer_id>0){
-            $TrainingSession->where('trainer_id',$trainer_id);
+            $TrainingSession =  $TrainingSession->where('trainer_id',$trainer_id);
         }
 
         $TrainingSession=$TrainingSession->orderBy('session_date', 'DESC')->get();
-        return response()->json(['success' =>'true','data'=>$TrainingSession,'count'=>count($TrainingSession)]);
+
+        return response()->json(['success' =>'true','count'=>count($TrainingSession),'data'=>$TrainingSession]);
     }
 
     public function add(Request $request){
