@@ -15,6 +15,7 @@ Samvaarta.messageLog = {
 
 var valError = true;
 var apiUrl = "http://127.0.0.1:8000/";
+var expireTime = 2 / (24 * 60);
 
 Samvaarta.globalVar = Samvaarta.globalVar || {
     errorValueInFlow: "",
@@ -751,7 +752,7 @@ Samvaarta.system = (() => {
             : getOuathData.data;
         let profileDetail = `
             <h2 class="align-center">Edit Profile</h2>
-            <div class="edit-profile__inner marg-t20">
+            <div class="edit-profile__inner component-divider">
                 <div class="edit-profile__inner--left photo-upload-container">
                     <div class="circle">
                         <img width="128" height="128" class="profile-pic" src="${
@@ -1375,7 +1376,77 @@ Samvaarta.system = (() => {
 
     };
 
-    const adminDashboard = (type) => {
+    const displayTypeWise = (response, type) => {
+        let userInfo = '';
+        let statusInfo = ``, assignTrainer = '', userList = '', adminList = '';
+        var trainerdata = Samvaarta.common.getLocalStorage('trainer_data');
+        if(type === 'users'){
+            assignTrainer = `<td>Assign Trainer</td>`;
+        } else if(type === 'trainer'){
+            userList = `<td>Assigned User</td>`;
+        } else {
+            adminList = `<td></td>`;
+        }
+        userInfo += ``;
+        userInfo += `<tr class="user-dashboard-info__head-list">
+            <td>SNO.</td>
+            <td>Name</td>
+            <td>Email</td>                
+            <td>Status</td>
+            ${assignTrainer}
+            ${userList}
+            ${adminList}
+        </tr>`;
+        response.map((item, index) => {
+            let trainerList = '';
+            if(type === 'users'){  
+                if(!item.trainer?.length){      
+                    trainerList += `<select class="input_txt_box" onchange="Samvaarta.system.assignedTrainer(this);">
+                        <option value="select">Select Trainer</option>
+                    `;
+                    trainerdata.map((titem) => {
+                        trainerList += `<option userId="${item.id}" value="${titem.id}">${titem.name}</option>`;
+                    })
+                    trainerList += `</select>`;
+                } else {
+                    trainerList = `${item.trainer[0].name}`;
+                }
+            } else if(type === 'trainer'){
+                if(item.users.length){
+                trainerList += `<select>
+                    <option value="select">Assigned User List</option>
+                `;
+                item.users?.map((titem) => {
+                    trainerList += `<option userId="${item.id}" value="${titem.id}">${titem.name}</option>`;
+                })
+                trainerList += `</select>`;
+                } else {
+                    trainerList = 'No User';
+                }
+            }
+            if(item.status === 1){
+                statusInfo = `<span class="approved">Approved</span> <span onclick="Samvaarta.system.activateDeactivateUser(${item.id}, '0')">Undo</span>`;
+            } else if(item.status === 2){
+                statusInfo = `<span onclick="Samvaarta.system.activateDeactivateUser(${item.id}, '0')">Undo</span> <span class="denied">Denied</span>`;
+            } else {
+                statusInfo = `<span onclick="Samvaarta.system.activateDeactivateUser(${item.id}, '1')">Approve</span> <span onclick="Samvaarta.system.activateDeactivateUser(${item.id}, '2')">Deny</span>`;
+            }
+            userInfo += `<tr>`;
+            userInfo += `<td>${index+1}</td>`;
+            userInfo += `<td class="camel-case">${item.name}</td>`;
+            userInfo += `<td>${item.email}</td>`;
+            userInfo += `<td id="status_${item.id}">${statusInfo}</td>`;
+            userInfo += `<td>${trainerList}</td>`;
+            userInfo += `</tr>`;
+        });
+        
+        $(".user-dashboard-info").addClass('admin-info');
+        $(".user-dashboard-info .user-data-list tbody").html(userInfo);
+        $('.show-role-tab').removeClass('hide');
+        showRoleTab();
+    }
+
+    const getTrainerData = (type) => {
         var paramObject = {
             url: apiUrl + "api/admin/"+type+"/listing",
             type: "GET",
@@ -1386,40 +1457,9 @@ Samvaarta.system = (() => {
             },
         };
 
-        const ajaxSuccessCall = (response) => {
-            console.log(response);
+        const ajaxSuccessCall = async(response) => {
             response = response.data.data;
-            let userInfo = '';
-            let statusInfo = ``;
-            userInfo += ``;
-            userInfo += `<ul class="user-dashboard-info__head-list">
-                <li>SNO.</li>
-                <li>Name</li>
-                <li>Email</li>
-                <li>Status</li>
-                <li>Delete</li>
-            </ul>`;
-            response.map((item, index) => {
-                if(item.status === 1){
-                    statusInfo = `<span class="approved">Approved</span> <span onclick="Samvaarta.system.activateDeactivateUser(${item.id}, '0')">Undo</span>`;
-                } else if(item.status === 2){
-                    statusInfo = `<span onclick="Samvaarta.system.activateDeactivateUser(${item.id}, '0')">Undo</span> <span class="denied">Denied</span>`;
-                } else {
-                    statusInfo = `<span onclick="Samvaarta.system.activateDeactivateUser(${item.id}, '1')">Approve</span> <span onclick="Samvaarta.system.activateDeactivateUser(${item.id}, '2')">Deny</span>`;
-                }
-                userInfo += `<ul>`;
-                userInfo += `<li>${index+1}</li>`;
-                userInfo += `<li class="camel-case">${item.name}</li>`;
-                userInfo += `<li>${item.email}</li>`;
-                userInfo += `<li id="status_${item.id}">${statusInfo}</li>`;
-                userInfo += `<li onclick="Samvaarta.system.deleteUser();"><i class="fa fa-trash-o" aria-hidden="true"></i></li>`;
-                userInfo += `</ul>`;
-            })
-            
-            $(".user-dashboard-info").addClass('admin-info');
-            $(".user-dashboard-info .user-data-list").html(userInfo);
-            $('.show-role-tab').removeClass('hide');
-            showRoleTab();
+            Samvaarta.common.setLocalStorage(type+'_data', response, expireTime);
         };
 
         const ajaxErrorCall = (response) => {
@@ -1431,11 +1471,48 @@ Samvaarta.system = (() => {
             ajaxSuccessCall,
             ajaxErrorCall
         );
+        
+    }
+    const adminDashboard = (type) => {
+        var typeWisedata = Samvaarta.common.getLocalStorage(type+'_data');
+        var paramObject = {
+            url: apiUrl + "api/admin/"+type+"/listing",
+            type: "GET",
+            data: {},
+            headers: {
+                Authorization: `Bearer ${Samvaarta.common.getLocalStorage("AccessToken").access_token}`,
+                Accept: "application/json",
+            },
+        };
+
+        const ajaxSuccessCall = async(response) => {
+            response = response.data.data;
+            Samvaarta.common.setLocalStorage(type+'_data', response, expireTime);
+            
+            getTrainerData('trainer');
+            setTimeout(() => {
+                displayTypeWise(response, type);
+            },1000);       
+        };
+
+        const ajaxErrorCall = (response) => {
+            console.log(response);
+        };
+
+        if(!typeWisedata){
+            Samvaarta.common.hitAjaxApi(
+                paramObject,
+                ajaxSuccessCall,
+                ajaxErrorCall
+            );
+        } else {
+            displayTypeWise(typeWisedata, type);
+        }
     };
 
     const showUserInfo = (response) => {
         var coachInfo = '', cochees = '', trainer = '', plannedSess = '', 
-        concluded = '', nextSession = '', completeSessCount = '';
+        concluded = '', nextSession = '', completeSessCount = '', userExp = '', userFun = '';
         if (response.user_type === "admin") {
             cochees = `<li>No of Coachees: <span></span></li>`;
             trainer = `<li>No of Coaches: <span></span></li>`;            
@@ -1450,6 +1527,8 @@ Samvaarta.system = (() => {
             plannedSess = `<li>Planned Sessions: <span>${response.plannedSession ? response.plannedSession : ''}</span></li>`;
             concluded = `<li>Concluded: <span></span></li>`;
             nextSession = `<li>Next Session Date: <span></span></li>`;
+            userExp = `<li>Experience: <span>${response.experience}</span></li>`;
+            userFun = `<li>Function: <span>${response.user_function}</span></li>`;
 
         }
         const userInfo = `
@@ -1462,8 +1541,8 @@ Samvaarta.system = (() => {
                         response.created_at
                     )}</span></li>
                     ${coachInfo}
-                    <li>Experience: <span>${response.experience}</span></li>
-                    <li>Function: <span>${response.user_function}</span></li>
+                    ${userExp}
+                    ${userFun}
                     <li class="role">Role: <span>${
                         response.user_type
                     }</span></li>
@@ -1617,8 +1696,35 @@ Samvaarta.system = (() => {
         }
     };
 
-    const deleteUser = () => {
+    const assignedTrainer = (event) => {
+        let trainerid = $(event)[0].options[$(event)[0].options.selectedIndex].getAttribute('value');
+        let userId = $(event)[0].options[$(event)[0].options.selectedIndex].getAttribute('userid');
+        var paramObject = {
+            url: apiUrl + "api/admin/user/assign_trainer",
+            type: "POST",
+            data: {user_id: userId, trainer_id: trainerid},
+            headers: {
+                Authorization: `Bearer ${Samvaarta.common.getLocalStorage("AccessToken").access_token}`,
+                Accept: "application/json",
+            },
+        };
 
+        const ajaxSuccessCall = async(response) => {
+            response = response.data.data;
+            Samvaarta.common.deleteLocalStorage('users_data');
+            Samvaarta.common.deleteLocalStorage('trainer_data');
+            adminDashboard('users');
+        };
+
+        const ajaxErrorCall = (response) => {
+            console.log(response);
+        };
+
+        Samvaarta.common.hitAjaxApi(
+            paramObject,
+            ajaxSuccessCall,
+            ajaxErrorCall
+        );
     }
 
     return {
@@ -1634,7 +1740,7 @@ Samvaarta.system = (() => {
         editProfile: editProfile,
         passwordUpdated: passwordUpdated,
         userEditProfileUpdated: userEditProfileUpdated,
-        deleteUser: deleteUser,
+        assignedTrainer: assignedTrainer,
         activateDeactivateUser: activateDeactivateUser,
         adminDashboard: adminDashboard 
     };

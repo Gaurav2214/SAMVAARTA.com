@@ -27,6 +27,7 @@ Samvaarta.messageLog = {
 };
 var valError = true;
 var apiUrl = "http://127.0.0.1:8000/";
+var expireTime = 2 / (24 * 60);
 Samvaarta.globalVar = Samvaarta.globalVar || {
   errorValueInFlow: "",
   is_Loggedin: 0,
@@ -518,7 +519,7 @@ Samvaarta.system = function () {
     var _getOuathData$data$da, _getOuathData, _getOuathData2, _getOuathData3, _getOuathData4, _getOuathData5, _getOuathData6, _getOuathData7, _getOuathData8, _getOuathData9, _Samvaarta$common$get;
     var getOuathData = Samvaarta.common.getLocalStorage("oauthUserData");
     getOuathData = (_getOuathData$data$da = getOuathData.data.data) !== null && _getOuathData$data$da !== void 0 && _getOuathData$data$da.name ? getOuathData.data.data : getOuathData.data;
-    var profileDetail = "\n            <h2 class=\"align-center\">Edit Profile</h2>\n            <div class=\"edit-profile__inner marg-t20\">\n                <div class=\"edit-profile__inner--left photo-upload-container\">\n                    <div class=\"circle\">\n                        <img width=\"128\" height=\"128\" class=\"profile-pic\" src=\"".concat(getOuathData.avatar ? getOuathData.avatar : "/images/default-face.jpg", "\">\n\n                    </div>\n                    <div class=\"p-image\">\n                        <i class=\"fa fa-camera upload-button\"></i>\n                        <input class=\"file-upload\" type=\"file\" accept=\"image/*\" />\n                    </div>\n                </div>\n\n                <div class=\"edit-profile__inner--right\">\n                    <div class=\"form-elm-section input_sec \">\n                        <label for=\"b2boauth_email\">\n                            Email ID\n                        </label>\n                        <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_email\" class=\"input_txt_box readonly valid\" value=\"").concat(getOuathData.email, "\" readonly=\"true\" title=\"\">\n                        <p id=\"oauth_log_email_err\" class=\"error\"></p>\n                    </div>\n\n                    <div class=\"input-section-main\">\n                        <div class=\"form-elm-section input_sec \">\n                            <label for=\"oauth_log_name\">\n                                Name\n                            </label>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_name\" class=\"input_txt_box valid\" value=\"").concat(getOuathData.name, "\" maxlength=\"45\" title=\"\">\n                            <p id=\"oauth_log_name_err\" class=\"error\">\n                            </p>\n                        </div>\n                        <div class=\"form-elm-section input_sec \">\n                            <label for=\"oauth_function\">\n                                Function\n                            </label>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_function\" class=\"input_txt_box valid\" value=\"").concat((_getOuathData = getOuathData) !== null && _getOuathData !== void 0 && _getOuathData.user_function ? (_getOuathData2 = getOuathData) === null || _getOuathData2 === void 0 ? void 0 : _getOuathData2.user_function : "", "\" maxlength=\"45\" title=\"\" >\n                            <p id=\"oauth_function_err\" class=\"error\">\n                            </p>\n                        </div>\n                    </div>\n                    <div class=\"input-section-main\">\n                    <div class=\"form-elm-section input_sec \">\n                        <label for=\"oauth_doj\">\n                            Date of Joining\n                        </label>\n                        <input required=\"\" data-id=\"\" readonly=\"true\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_doj\" class=\"input_txt_box valid\" value=\"").concat(Samvaarta.common.dateMonthYear(getOuathData.created_at), "\" maxlength=\"45\" title=\"\">\n                        <p id=\"oauth_doj_err\" class=\"error\">\n                        </p>\n                    </div>\n                    <div class=\"form-elm-section input_sec \">\n                        <label for=\"oauth_experience\">\n                            Experience\n                        </label>\n                        <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_experience\" class=\"input_txt_box valid\" value=\"").concat(getOuathData.experience, "\" maxlength=\"45\" title=\"\">\n                        <p id=\"oauth_experience_err\" class=\"error\">\n                        </p>\n                    </div>\n                    </div>\n                    <div class=\"input-section-main\">\n                        <div class=\"form-elm-section input_sec \">\n                            <label for=\"oauth_log_vision\"> Vision</label>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_vision\" class=\"input_txt_box\" value=\"").concat((_getOuathData3 = getOuathData) !== null && _getOuathData3 !== void 0 && _getOuathData3.vision ? (_getOuathData4 = getOuathData) === null || _getOuathData4 === void 0 ? void 0 : _getOuathData4.vision : '', "\">\n                            <p id=\"oauth_log_vision_err\" class=\"validation error\"></p>\n                        </div>\n                        <div class=\"form-elm-section input_sec_role \">\n                            <label for=\"oauth_log_description\"> Description</label>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_description\" class=\"input_txt_box\" value=\"").concat((_getOuathData5 = getOuathData) !== null && _getOuathData5 !== void 0 && _getOuathData5.description ? (_getOuathData6 = getOuathData) === null || _getOuathData6 === void 0 ? void 0 : _getOuathData6.description : '', "\">\n\n                            <p id=\"oauth_log_description_err\" class=\"validation error\"></p>\n                        </div>\n                    </div>\n\n                    <div class=\"input-section-main\">\n                        <div class=\"form-elm-section input_sec \">\n                            <label for=\"oauth_log_lnurl\"> LinkedIn URL</label>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_lnurl\" class=\"input_txt_box\" value=\"").concat((_getOuathData7 = getOuathData) === null || _getOuathData7 === void 0 ? void 0 : _getOuathData7.linkedin_url, "\">\n                            <p id=\"oauth_log_lnurl_err\" class=\"validation error\"></p>\n                        </div>\n                        <div class=\"form-elm-section input_sec_role \">\n                            <label for=\"oauth_log_role\"> Role</label>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_role\" class=\"input_txt_box\" value=\"").concat((_getOuathData8 = getOuathData) === null || _getOuathData8 === void 0 ? void 0 : _getOuathData8.user_type, "\">\n\n                            <p id=\"oauth_log_role_err\" class=\"validation error\"></p>\n                        </div>\n                    </div>\n                    <div class=\"input-section-main\">\n                        <div class=\"form-elm-section input_sec_num \">\n                            <label for=\"oauth_log_number\"> Phone No</label>\n                            <select>\n                                <option value=\"+91\">+91</option>\n                                <option value=\"+91\">+01</option>\n                                <option value=\"+91\">+31</option>\n                                <option value=\"+91\">+11</option>\n                                <option value=\"+91\">+90</option>\n                            </select>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_number\" class=\"input_txt_box\" value=\"").concat((_getOuathData9 = getOuathData) === null || _getOuathData9 === void 0 ? void 0 : _getOuathData9.phone, "\">\n                            <p id=\"oauth_log_number_err\" class=\"validation error\"></p>\n                        </div>\n                        <div class=\"form-elm-section input_sec \">\n                            <label for=\"oauth_location\">\n                                Location\n                            </label>\n                            <input required=\"\" data-id=\"\" readonly=\"true\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_location\" class=\"input_txt_box valid\" value=\"").concat(getOuathData.location ? getOuathData.location : (_Samvaarta$common$get = Samvaarta.common.getLocalStorage("location")) === null || _Samvaarta$common$get === void 0 || (_Samvaarta$common$get = _Samvaarta$common$get.data) === null || _Samvaarta$common$get === void 0 ? void 0 : _Samvaarta$common$get.city, "\" maxlength=\"50\" title=\"\">\n                            <p id=\"oauth_location_err\" class=\"error\"></p>\n                    </div>\n                    </div>\n                    <div class=\"form-elm-section marg-t20\">\n                        <input type=\"button\" class=\"btn submit-button2\" name=\"submit_profile\" onclick=\"Samvaarta.system.userEditProfileUpdated(1);\" value=\"Update Profile Details\">\n                    </div>\n                </div>\n            </div>\n        ");
+    var profileDetail = "\n            <h2 class=\"align-center\">Edit Profile</h2>\n            <div class=\"edit-profile__inner component-divider\">\n                <div class=\"edit-profile__inner--left photo-upload-container\">\n                    <div class=\"circle\">\n                        <img width=\"128\" height=\"128\" class=\"profile-pic\" src=\"".concat(getOuathData.avatar ? getOuathData.avatar : "/images/default-face.jpg", "\">\n\n                    </div>\n                    <div class=\"p-image\">\n                        <i class=\"fa fa-camera upload-button\"></i>\n                        <input class=\"file-upload\" type=\"file\" accept=\"image/*\" />\n                    </div>\n                </div>\n\n                <div class=\"edit-profile__inner--right\">\n                    <div class=\"form-elm-section input_sec \">\n                        <label for=\"b2boauth_email\">\n                            Email ID\n                        </label>\n                        <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_email\" class=\"input_txt_box readonly valid\" value=\"").concat(getOuathData.email, "\" readonly=\"true\" title=\"\">\n                        <p id=\"oauth_log_email_err\" class=\"error\"></p>\n                    </div>\n\n                    <div class=\"input-section-main\">\n                        <div class=\"form-elm-section input_sec \">\n                            <label for=\"oauth_log_name\">\n                                Name\n                            </label>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_name\" class=\"input_txt_box valid\" value=\"").concat(getOuathData.name, "\" maxlength=\"45\" title=\"\">\n                            <p id=\"oauth_log_name_err\" class=\"error\">\n                            </p>\n                        </div>\n                        <div class=\"form-elm-section input_sec \">\n                            <label for=\"oauth_function\">\n                                Function\n                            </label>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_function\" class=\"input_txt_box valid\" value=\"").concat((_getOuathData = getOuathData) !== null && _getOuathData !== void 0 && _getOuathData.user_function ? (_getOuathData2 = getOuathData) === null || _getOuathData2 === void 0 ? void 0 : _getOuathData2.user_function : "", "\" maxlength=\"45\" title=\"\" >\n                            <p id=\"oauth_function_err\" class=\"error\">\n                            </p>\n                        </div>\n                    </div>\n                    <div class=\"input-section-main\">\n                    <div class=\"form-elm-section input_sec \">\n                        <label for=\"oauth_doj\">\n                            Date of Joining\n                        </label>\n                        <input required=\"\" data-id=\"\" readonly=\"true\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_doj\" class=\"input_txt_box valid\" value=\"").concat(Samvaarta.common.dateMonthYear(getOuathData.created_at), "\" maxlength=\"45\" title=\"\">\n                        <p id=\"oauth_doj_err\" class=\"error\">\n                        </p>\n                    </div>\n                    <div class=\"form-elm-section input_sec \">\n                        <label for=\"oauth_experience\">\n                            Experience\n                        </label>\n                        <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_experience\" class=\"input_txt_box valid\" value=\"").concat(getOuathData.experience, "\" maxlength=\"45\" title=\"\">\n                        <p id=\"oauth_experience_err\" class=\"error\">\n                        </p>\n                    </div>\n                    </div>\n                    <div class=\"input-section-main\">\n                        <div class=\"form-elm-section input_sec \">\n                            <label for=\"oauth_log_vision\"> Vision</label>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_vision\" class=\"input_txt_box\" value=\"").concat((_getOuathData3 = getOuathData) !== null && _getOuathData3 !== void 0 && _getOuathData3.vision ? (_getOuathData4 = getOuathData) === null || _getOuathData4 === void 0 ? void 0 : _getOuathData4.vision : '', "\">\n                            <p id=\"oauth_log_vision_err\" class=\"validation error\"></p>\n                        </div>\n                        <div class=\"form-elm-section input_sec_role \">\n                            <label for=\"oauth_log_description\"> Description</label>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_description\" class=\"input_txt_box\" value=\"").concat((_getOuathData5 = getOuathData) !== null && _getOuathData5 !== void 0 && _getOuathData5.description ? (_getOuathData6 = getOuathData) === null || _getOuathData6 === void 0 ? void 0 : _getOuathData6.description : '', "\">\n\n                            <p id=\"oauth_log_description_err\" class=\"validation error\"></p>\n                        </div>\n                    </div>\n\n                    <div class=\"input-section-main\">\n                        <div class=\"form-elm-section input_sec \">\n                            <label for=\"oauth_log_lnurl\"> LinkedIn URL</label>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_lnurl\" class=\"input_txt_box\" value=\"").concat((_getOuathData7 = getOuathData) === null || _getOuathData7 === void 0 ? void 0 : _getOuathData7.linkedin_url, "\">\n                            <p id=\"oauth_log_lnurl_err\" class=\"validation error\"></p>\n                        </div>\n                        <div class=\"form-elm-section input_sec_role \">\n                            <label for=\"oauth_log_role\"> Role</label>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_role\" class=\"input_txt_box\" value=\"").concat((_getOuathData8 = getOuathData) === null || _getOuathData8 === void 0 ? void 0 : _getOuathData8.user_type, "\">\n\n                            <p id=\"oauth_log_role_err\" class=\"validation error\"></p>\n                        </div>\n                    </div>\n                    <div class=\"input-section-main\">\n                        <div class=\"form-elm-section input_sec_num \">\n                            <label for=\"oauth_log_number\"> Phone No</label>\n                            <select>\n                                <option value=\"+91\">+91</option>\n                                <option value=\"+91\">+01</option>\n                                <option value=\"+91\">+31</option>\n                                <option value=\"+91\">+11</option>\n                                <option value=\"+91\">+90</option>\n                            </select>\n                            <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_number\" class=\"input_txt_box\" value=\"").concat((_getOuathData9 = getOuathData) === null || _getOuathData9 === void 0 ? void 0 : _getOuathData9.phone, "\">\n                            <p id=\"oauth_log_number_err\" class=\"validation error\"></p>\n                        </div>\n                        <div class=\"form-elm-section input_sec \">\n                            <label for=\"oauth_location\">\n                                Location\n                            </label>\n                            <input required=\"\" data-id=\"\" readonly=\"true\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_location\" class=\"input_txt_box valid\" value=\"").concat(getOuathData.location ? getOuathData.location : (_Samvaarta$common$get = Samvaarta.common.getLocalStorage("location")) === null || _Samvaarta$common$get === void 0 || (_Samvaarta$common$get = _Samvaarta$common$get.data) === null || _Samvaarta$common$get === void 0 ? void 0 : _Samvaarta$common$get.city, "\" maxlength=\"50\" title=\"\">\n                            <p id=\"oauth_location_err\" class=\"error\"></p>\n                    </div>\n                    </div>\n                    <div class=\"form-elm-section marg-t20\">\n                        <input type=\"button\" class=\"btn submit-button2\" name=\"submit_profile\" onclick=\"Samvaarta.system.userEditProfileUpdated(1);\" value=\"Update Profile Details\">\n                    </div>\n                </div>\n            </div>\n        ");
     document.querySelector("#edit-profile").innerHTML = profileDetail;
     photoUploadView();
   };
@@ -796,7 +797,68 @@ Samvaarta.system = function () {
     $(".user-dashboard-info").html(userdashInfo);
   };
   var trainerDashboard = function trainerDashboard() {};
-  var adminDashboard = function adminDashboard(type) {
+  var displayTypeWise = function displayTypeWise(response, type) {
+    var userInfo = '';
+    var statusInfo = "",
+      assignTrainer = '',
+      userList = '',
+      adminList = '';
+    var trainerdata = Samvaarta.common.getLocalStorage('trainer_data');
+    if (type === 'users') {
+      assignTrainer = "<td>Assign Trainer</td>";
+    } else if (type === 'trainer') {
+      userList = "<td>Assigned User</td>";
+    } else {
+      adminList = "<td></td>";
+    }
+    userInfo += "";
+    userInfo += "<tr class=\"user-dashboard-info__head-list\">\n            <td>SNO.</td>\n            <td>Name</td>\n            <td>Email</td>                \n            <td>Status</td>\n            ".concat(assignTrainer, "\n            ").concat(userList, "\n            ").concat(adminList, "\n        </tr>");
+    response.map(function (item, index) {
+      var trainerList = '';
+      if (type === 'users') {
+        var _item$trainer;
+        if (!((_item$trainer = item.trainer) !== null && _item$trainer !== void 0 && _item$trainer.length)) {
+          trainerList += "<select class=\"input_txt_box\" onchange=\"Samvaarta.system.assignedTrainer(this);\">\n                        <option value=\"select\">Select Trainer</option>\n                    ";
+          trainerdata.map(function (titem) {
+            trainerList += "<option userId=\"".concat(item.id, "\" value=\"").concat(titem.id, "\">").concat(titem.name, "</option>");
+          });
+          trainerList += "</select>";
+        } else {
+          trainerList = "".concat(item.trainer[0].name);
+        }
+      } else if (type === 'trainer') {
+        if (item.users.length) {
+          var _item$users;
+          trainerList += "<select>\n                    <option value=\"select\">Assigned User List</option>\n                ";
+          (_item$users = item.users) === null || _item$users === void 0 || _item$users.map(function (titem) {
+            trainerList += "<option userId=\"".concat(item.id, "\" value=\"").concat(titem.id, "\">").concat(titem.name, "</option>");
+          });
+          trainerList += "</select>";
+        } else {
+          trainerList = 'No User';
+        }
+      }
+      if (item.status === 1) {
+        statusInfo = "<span class=\"approved\">Approved</span> <span onclick=\"Samvaarta.system.activateDeactivateUser(".concat(item.id, ", '0')\">Undo</span>");
+      } else if (item.status === 2) {
+        statusInfo = "<span onclick=\"Samvaarta.system.activateDeactivateUser(".concat(item.id, ", '0')\">Undo</span> <span class=\"denied\">Denied</span>");
+      } else {
+        statusInfo = "<span onclick=\"Samvaarta.system.activateDeactivateUser(".concat(item.id, ", '1')\">Approve</span> <span onclick=\"Samvaarta.system.activateDeactivateUser(").concat(item.id, ", '2')\">Deny</span>");
+      }
+      userInfo += "<tr>";
+      userInfo += "<td>".concat(index + 1, "</td>");
+      userInfo += "<td class=\"camel-case\">".concat(item.name, "</td>");
+      userInfo += "<td>".concat(item.email, "</td>");
+      userInfo += "<td id=\"status_".concat(item.id, "\">").concat(statusInfo, "</td>");
+      userInfo += "<td>".concat(trainerList, "</td>");
+      userInfo += "</tr>";
+    });
+    $(".user-dashboard-info").addClass('admin-info');
+    $(".user-dashboard-info .user-data-list tbody").html(userInfo);
+    $('.show-role-tab').removeClass('hide');
+    showRoleTab();
+  };
+  var getTrainerData = function getTrainerData(type) {
     var paramObject = {
       url: apiUrl + "api/admin/" + type + "/listing",
       type: "GET",
@@ -806,38 +868,68 @@ Samvaarta.system = function () {
         Accept: "application/json"
       }
     };
-    var ajaxSuccessCall = function ajaxSuccessCall(response) {
-      console.log(response);
-      response = response.data.data;
-      var userInfo = '';
-      var statusInfo = "";
-      userInfo += "";
-      userInfo += "<ul class=\"user-dashboard-info__head-list\">\n                <li>SNO.</li>\n                <li>Name</li>\n                <li>Email</li>\n                <li>Status</li>\n                <li>Delete</li>\n            </ul>";
-      response.map(function (item, index) {
-        if (item.status === 1) {
-          statusInfo = "<span class=\"approved\">Approved</span> <span onclick=\"Samvaarta.system.activateDeactivateUser(".concat(item.id, ", '0')\">Undo</span>");
-        } else if (item.status === 2) {
-          statusInfo = "<span onclick=\"Samvaarta.system.activateDeactivateUser(".concat(item.id, ", '0')\">Undo</span> <span class=\"denied\">Denied</span>");
-        } else {
-          statusInfo = "<span onclick=\"Samvaarta.system.activateDeactivateUser(".concat(item.id, ", '1')\">Approve</span> <span onclick=\"Samvaarta.system.activateDeactivateUser(").concat(item.id, ", '2')\">Deny</span>");
-        }
-        userInfo += "<ul>";
-        userInfo += "<li>".concat(index + 1, "</li>");
-        userInfo += "<li class=\"camel-case\">".concat(item.name, "</li>");
-        userInfo += "<li>".concat(item.email, "</li>");
-        userInfo += "<li id=\"status_".concat(item.id, "\">").concat(statusInfo, "</li>");
-        userInfo += "<li onclick=\"Samvaarta.system.deleteUser();\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></li>";
-        userInfo += "</ul>";
-      });
-      $(".user-dashboard-info").addClass('admin-info');
-      $(".user-dashboard-info .user-data-list").html(userInfo);
-      $('.show-role-tab').removeClass('hide');
-      showRoleTab();
-    };
+    var ajaxSuccessCall = /*#__PURE__*/function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(response) {
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              response = response.data.data;
+              Samvaarta.common.setLocalStorage(type + '_data', response, expireTime);
+            case 2:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2);
+      }));
+      return function ajaxSuccessCall(_x4) {
+        return _ref2.apply(this, arguments);
+      };
+    }();
     var ajaxErrorCall = function ajaxErrorCall(response) {
       console.log(response);
     };
     Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
+  };
+  var adminDashboard = function adminDashboard(type) {
+    var typeWisedata = Samvaarta.common.getLocalStorage(type + '_data');
+    var paramObject = {
+      url: apiUrl + "api/admin/" + type + "/listing",
+      type: "GET",
+      data: {},
+      headers: {
+        Authorization: "Bearer ".concat(Samvaarta.common.getLocalStorage("AccessToken").access_token),
+        Accept: "application/json"
+      }
+    };
+    var ajaxSuccessCall = /*#__PURE__*/function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(response) {
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
+            case 0:
+              response = response.data.data;
+              Samvaarta.common.setLocalStorage(type + '_data', response, expireTime);
+              getTrainerData('trainer');
+              setTimeout(function () {
+                displayTypeWise(response, type);
+              }, 1000);
+            case 4:
+            case "end":
+              return _context3.stop();
+          }
+        }, _callee3);
+      }));
+      return function ajaxSuccessCall(_x5) {
+        return _ref3.apply(this, arguments);
+      };
+    }();
+    var ajaxErrorCall = function ajaxErrorCall(response) {
+      console.log(response);
+    };
+    if (!typeWisedata) {
+      Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
+    } else {
+      displayTypeWise(typeWisedata, type);
+    }
   };
   var showUserInfo = function showUserInfo(response) {
     var _Samvaarta$common$get2;
@@ -847,7 +939,9 @@ Samvaarta.system = function () {
       plannedSess = '',
       concluded = '',
       nextSession = '',
-      completeSessCount = '';
+      completeSessCount = '',
+      userExp = '',
+      userFun = '';
     if (response.user_type === "admin") {
       cochees = "<li>No of Coachees: <span></span></li>";
       trainer = "<li>No of Coaches: <span></span></li>";
@@ -862,8 +956,10 @@ Samvaarta.system = function () {
       plannedSess = "<li>Planned Sessions: <span>".concat(response.plannedSession ? response.plannedSession : '', "</span></li>");
       concluded = "<li>Concluded: <span></span></li>";
       nextSession = "<li>Next Session Date: <span></span></li>";
+      userExp = "<li>Experience: <span>".concat(response.experience, "</span></li>");
+      userFun = "<li>Function: <span>".concat(response.user_function, "</span></li>");
     }
-    var userInfo = "\n        <h3 class=\"userName\">Welcome ".concat(response.name.split(" ")[0], " </h3>\n        <div class=\"show-user-details__inner\">\n            <div class=\"show-user-details__inner--left detail-items\">\n                <ul>\n                    <li>Code: <span>").concat(response.id, "</span></li>\n                    <li>Date of Joining: <span>").concat(Samvaarta.common.dateMonthYear(response.created_at), "</span></li>\n                    ").concat(coachInfo, "\n                    <li>Experience: <span>").concat(response.experience, "</span></li>\n                    <li>Function: <span>").concat(response.user_function, "</span></li>\n                    <li class=\"role\">Role: <span>").concat(response.user_type, "</span></li>\n                    <li>Location: <span>").concat(response.location ? response.location : (_Samvaarta$common$get2 = Samvaarta.common.getLocalStorage("location")) === null || _Samvaarta$common$get2 === void 0 ? void 0 : _Samvaarta$common$get2.data.city, "</span></li>\n                </ul>\n            </div>\n            <div class=\"show-user-details__inner--mid detail-items\">\n                <ul>\n                    <li>Vision: <span>").concat(response.vision, "</span></li>\n                    <li>Brief Description: <span>").concat(response.description, "</span></li>\n                    ").concat(plannedSess, "  ").concat(cochees, "  ").concat(trainer, " \n                    ").concat(concluded, " ").concat(nextSession, "  ").concat(completeSessCount, "                 \n                </ul>\n            </div>\n            <div class=\"show-user-details__inner--right detail-items\">\n                <ul>\n                    <li class=\"profile-img\"><img src=\"").concat(response.avatar ? response.avatar : '/images/default-face.jpg', "\" width=\"100\" height=\"100\" alt=\"profile\"></li>\n                    <li>LinkedIn: <span>").concat(response.linkedin_url, "</span></li>\n                    <li>Email Id: <span>").concat(response.email, "</span></li>\n                    <li>Mobile No: <span>").concat(response.phone, "</span></li>\n                </ul>\n            </div>\n        </div>\n        ");
+    var userInfo = "\n        <h3 class=\"userName\">Welcome ".concat(response.name.split(" ")[0], " </h3>\n        <div class=\"show-user-details__inner\">\n            <div class=\"show-user-details__inner--left detail-items\">\n                <ul>\n                    <li>Code: <span>").concat(response.id, "</span></li>\n                    <li>Date of Joining: <span>").concat(Samvaarta.common.dateMonthYear(response.created_at), "</span></li>\n                    ").concat(coachInfo, "\n                    ").concat(userExp, "\n                    ").concat(userFun, "\n                    <li class=\"role\">Role: <span>").concat(response.user_type, "</span></li>\n                    <li>Location: <span>").concat(response.location ? response.location : (_Samvaarta$common$get2 = Samvaarta.common.getLocalStorage("location")) === null || _Samvaarta$common$get2 === void 0 ? void 0 : _Samvaarta$common$get2.data.city, "</span></li>\n                </ul>\n            </div>\n            <div class=\"show-user-details__inner--mid detail-items\">\n                <ul>\n                    <li>Vision: <span>").concat(response.vision, "</span></li>\n                    <li>Brief Description: <span>").concat(response.description, "</span></li>\n                    ").concat(plannedSess, "  ").concat(cochees, "  ").concat(trainer, " \n                    ").concat(concluded, " ").concat(nextSession, "  ").concat(completeSessCount, "                 \n                </ul>\n            </div>\n            <div class=\"show-user-details__inner--right detail-items\">\n                <ul>\n                    <li class=\"profile-img\"><img src=\"").concat(response.avatar ? response.avatar : '/images/default-face.jpg', "\" width=\"100\" height=\"100\" alt=\"profile\"></li>\n                    <li>LinkedIn: <span>").concat(response.linkedin_url, "</span></li>\n                    <li>Email Id: <span>").concat(response.email, "</span></li>\n                    <li>Mobile No: <span>").concat(response.phone, "</span></li>\n                </ul>\n            </div>\n        </div>\n        ");
     $(".show-user-details").html(userInfo);
   };
   var displayUserInfo = function displayUserInfo(data) {
@@ -918,7 +1014,45 @@ Samvaarta.system = function () {
       Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
     }
   };
-  var deleteUser = function deleteUser() {};
+  var assignedTrainer = function assignedTrainer(event) {
+    var trainerid = $(event)[0].options[$(event)[0].options.selectedIndex].getAttribute('value');
+    var userId = $(event)[0].options[$(event)[0].options.selectedIndex].getAttribute('userid');
+    var paramObject = {
+      url: apiUrl + "api/admin/user/assign_trainer",
+      type: "POST",
+      data: {
+        user_id: userId,
+        trainer_id: trainerid
+      },
+      headers: {
+        Authorization: "Bearer ".concat(Samvaarta.common.getLocalStorage("AccessToken").access_token),
+        Accept: "application/json"
+      }
+    };
+    var ajaxSuccessCall = /*#__PURE__*/function () {
+      var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(response) {
+        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+          while (1) switch (_context4.prev = _context4.next) {
+            case 0:
+              response = response.data.data;
+              Samvaarta.common.deleteLocalStorage('users_data');
+              Samvaarta.common.deleteLocalStorage('trainer_data');
+              adminDashboard('users');
+            case 4:
+            case "end":
+              return _context4.stop();
+          }
+        }, _callee4);
+      }));
+      return function ajaxSuccessCall(_x6) {
+        return _ref4.apply(this, arguments);
+      };
+    }();
+    var ajaxErrorCall = function ajaxErrorCall(response) {
+      console.log(response);
+    };
+    Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
+  };
   return {
     loginUser: loginUser,
     userRegistration: userRegistration,
@@ -932,7 +1066,7 @@ Samvaarta.system = function () {
     editProfile: editProfile,
     passwordUpdated: passwordUpdated,
     userEditProfileUpdated: userEditProfileUpdated,
-    deleteUser: deleteUser,
+    assignedTrainer: assignedTrainer,
     activateDeactivateUser: activateDeactivateUser,
     adminDashboard: adminDashboard
   };

@@ -382,6 +382,22 @@ button,
     .input-section-main .form-elm-section {
       width: 49%; } }
 
+.input_txt_box {
+  width: -webkit-fill-available;
+  width: -moz-available;
+  padding: 6px 10px;
+  border: 1px solid #e0e0e0;
+  display: block;
+  transition: all 1s ease;
+  font-size: 14px;
+  line-height: 21px;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 500;
+  color: #262626;
+  border-radius: 4px;
+  margin-top: 5px;
+  outline: none; }
+
 .form-elm-section {
   -ms-display: flex;
   -webkit-display: flex;
@@ -787,45 +803,48 @@ button,
           order: 2; }
         .dashboard__elements--inner .show-user-details__inner .detail-items:nth-child(2) {
           order: 3; } }
-  .dashboard__elements--inner .user-dashboard-info.admin-info ul {
+  .dashboard__elements--inner .user-dashboard-info.admin-info table {
+    width: 100%; }
+  .dashboard__elements--inner .user-dashboard-info.admin-info tr {
     justify-content: flex-start;
     padding: 8px 14px;
     gap: 10px;
     border: 1px solid #ccc;
     border-top: none; }
-    .dashboard__elements--inner .user-dashboard-info.admin-info ul li {
+    .dashboard__elements--inner .user-dashboard-info.admin-info tr td {
       font-size: 14px;
       line-height: 21px;
       font-family: "Open Sans", sans-serif;
       font-weight: 500;
-      color: #262626; }
-      .dashboard__elements--inner .user-dashboard-info.admin-info ul li:first-of-type {
+      color: #262626;
+      padding: 6px; }
+      .dashboard__elements--inner .user-dashboard-info.admin-info tr td:first-of-type {
         width: 6%; }
-      .dashboard__elements--inner .user-dashboard-info.admin-info ul li:nth-child(2) {
+      .dashboard__elements--inner .user-dashboard-info.admin-info tr td:nth-child(2) {
         width: 18%; }
-      .dashboard__elements--inner .user-dashboard-info.admin-info ul li:nth-child(3) {
-        width: 30%; }
-      .dashboard__elements--inner .user-dashboard-info.admin-info ul li:nth-child(4) {
-        width: 35%;
+      .dashboard__elements--inner .user-dashboard-info.admin-info tr td:nth-child(3) {
+        width: 25%; }
+      .dashboard__elements--inner .user-dashboard-info.admin-info tr td:nth-child(4) {
+        width: 45%;
         display: flex;
         justify-content: space-around; }
-      .dashboard__elements--inner .user-dashboard-info.admin-info ul li:nth-child(5) {
-        width: 6%;
+      .dashboard__elements--inner .user-dashboard-info.admin-info tr td:nth-child(5) {
+        width: 15%;
         text-align: center; }
-      .dashboard__elements--inner .user-dashboard-info.admin-info ul li span {
+      .dashboard__elements--inner .user-dashboard-info.admin-info tr td span {
         width: 80px;
         display: inline-block; }
-      .dashboard__elements--inner .user-dashboard-info.admin-info ul li .approved {
+      .dashboard__elements--inner .user-dashboard-info.admin-info tr td .approved {
         color: #397532; }
-      .dashboard__elements--inner .user-dashboard-info.admin-info ul li .denied {
+      .dashboard__elements--inner .user-dashboard-info.admin-info tr td .denied {
         color: #a7262b; }
-    .dashboard__elements--inner .user-dashboard-info.admin-info ul:last-of-type {
+    .dashboard__elements--inner .user-dashboard-info.admin-info tr:last-of-type {
       border-radius: 0 0 6px 6px; }
-    .dashboard__elements--inner .user-dashboard-info.admin-info ul:not(:first-of-type) {
+    .dashboard__elements--inner .user-dashboard-info.admin-info tr:not(:first-of-type) {
       cursor: pointer; }
-      .dashboard__elements--inner .user-dashboard-info.admin-info ul:not(:first-of-type):hover, .dashboard__elements--inner .user-dashboard-info.admin-info ul:not(:first-of-type):focus {
+      .dashboard__elements--inner .user-dashboard-info.admin-info tr:not(:first-of-type):hover, .dashboard__elements--inner .user-dashboard-info.admin-info tr:not(:first-of-type):focus {
         background: linear-gradient(180deg, #eff5ff 0%, rgba(239, 245, 255, 0) 100%); }
-    .dashboard__elements--inner .user-dashboard-info.admin-info ul.user-dashboard-info__head-list {
+    .dashboard__elements--inner .user-dashboard-info.admin-info tr.user-dashboard-info__head-list {
       box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
       border-radius: 4px;
       background: linear-gradient(180deg, #eff5ff 0%, rgba(239, 245, 255, 0) 100%); }

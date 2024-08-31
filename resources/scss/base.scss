@@ -150,6 +150,18 @@
         }
     }
 }
+.input_txt_box {
+    width: -webkit-fill-available;
+    width: -moz-available;
+    padding: rem(6) rem(10);
+    border: 1px solid #e0e0e0;
+    display: block;
+    transition: all 1s ease;
+    @include desc-5();
+    border-radius: rem(4);
+    margin-top: rem(5);
+    outline: none;
+}
 .form-elm-section {
     @include set-flex-box();
     position: relative;
@@ -559,14 +571,18 @@
             }
             .user-dashboard-info {
                 &.admin-info {
-                    ul {
+                    table{
+                        width: 100%;
+                    }
+                    tr {
                         justify-content: flex-start;
                         padding: rem(8) rem(14);
                         gap: rem(10);
                         border: 1px solid #ccc;
                         border-top: none;
-                        li {
+                        td {
                             @include desc-5();
+                            padding: rem(6);
                             &:first-of-type() {
                                 width: 6%;
                             }
@@ -574,15 +590,15 @@
                                 width: 18%;
                             }
                             &:nth-child(3) {
-                                width: 30%;
+                                width: 25%;
                             }
                             &:nth-child(4) {
-                                width: 35%;
+                                width: 45%;
                                 display: flex;
                                 justify-content: space-around;
                             }
                             &:nth-child(5) {
-                                width: 6%;
+                                width: 15%;
                                 text-align: center;
                             }
                             span{
@@ -595,12 +611,7 @@
                             .denied{
                                 color: $clr-27;
                             }
-                        }
-                        &:first-of-type() {
-                            li {
-                                // color: #fff;
-                            }
-                        }
+                        }                        
                         &:last-of-type() {
                             border-radius: 0 0 rem(6) rem(6);
                         }

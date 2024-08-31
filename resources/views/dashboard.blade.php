@@ -49,7 +49,13 @@
                 <button data-type="admin">Admin</button>
                 <button data-type="upcoming-session">Upcoming Session</button>
             </div>
-            <div id="" class="user-data-list"></div>
+            <div id="" class="user-data-list">
+                <table>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
