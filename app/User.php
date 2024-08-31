@@ -46,7 +46,7 @@ class User extends Authenticatable
 
     public function trainer()
     {
-        return $this->belongsToMany(User::class,'trainer_learner_mapping','id','trainer_id')->where('users.status',1);
+        return $this->belongsToMany(User::class,'trainer_learner_mapping','user_id','trainer_learner_mapping.trainer_id')->where('users.status',1);
     }
 
     public function users()
