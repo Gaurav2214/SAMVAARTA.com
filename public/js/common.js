@@ -818,7 +818,7 @@ Samvaarta.system = function () {
       if (type === 'users') {
         var _item$trainer;
         if (!((_item$trainer = item.trainer) !== null && _item$trainer !== void 0 && _item$trainer.length)) {
-          trainerList += "<select class=\"input_txt_box\" onchange=\"Samvaarta.system.assignedTrainer(this);\">\n                        <option value=\"select\">Select Trainer</option>\n                    ";
+          trainerList += "<select class=\"input_txt_box select-box\" onchange=\"Samvaarta.system.assignedTrainer(this);\">\n                        <option value=\"select\">Select Trainer</option>\n                    ";
           trainerdata.map(function (titem) {
             trainerList += "<option userId=\"".concat(item.id, "\" value=\"").concat(titem.id, "\">").concat(titem.name, "</option>");
           });

@@ -1401,7 +1401,7 @@ Samvaarta.system = (() => {
             let trainerList = '';
             if(type === 'users'){  
                 if(!item.trainer?.length){      
-                    trainerList += `<select class="input_txt_box" onchange="Samvaarta.system.assignedTrainer(this);">
+                    trainerList += `<select class="input_txt_box select-box" onchange="Samvaarta.system.assignedTrainer(this);">
                         <option value="select">Select Trainer</option>
                     `;
                     trainerdata.map((titem) => {
