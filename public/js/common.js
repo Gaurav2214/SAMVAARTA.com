@@ -841,9 +841,9 @@ Samvaarta.system = function () {
           trainerList = 'No User';
         }
       }
-      if (item.status === 1) {
+      if (parseFloat(item.status) === 1) {
         statusInfo = "<span class=\"approved\">Approved</span> <span onclick=\"Samvaarta.system.activateDeactivateUser(".concat(item.id, ", '0')\">Undo</span>");
-      } else if (item.status === 2) {
+      } else if (parseFloat(item.status) === 2) {
         statusInfo = "<span onclick=\"Samvaarta.system.activateDeactivateUser(".concat(item.id, ", '0')\">Undo</span> <span class=\"denied\">Denied</span>");
       } else {
         statusInfo = "<span onclick=\"Samvaarta.system.activateDeactivateUser(".concat(item.id, ", '1')\">Approve</span> <span onclick=\"Samvaarta.system.activateDeactivateUser(").concat(item.id, ", '2')\">Deny</span>");
