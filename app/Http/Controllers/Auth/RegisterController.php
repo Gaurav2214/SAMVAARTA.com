@@ -64,6 +64,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        
        return User::create([
 	            'name' => $data['name'],
 	            'email' => $data['email'],
@@ -73,7 +74,8 @@ class RegisterController extends Controller
 	            'social_unique_id' => '',
                 'user_type'=> $data['user_type'],
                 'linkedin_url'=>isset($data['linkedin_url'])?$data['linkedin_url']:'',
-                'status'=>0
+                'status'=>0,
+                'date_of_joining'=>'1970-01-01'
         ]);
     }
 
@@ -118,11 +120,11 @@ class RegisterController extends Controller
     {
         $validator =$this->validator($request->all());    
 
-       if (!$validator->fails())
+       if(!$validator->fails())
        {
         try {
-	        $User = $this->create($request->all());	   
-            
+	        $User = $this->create($request->all());	 
+                        
             if($request->hasFile('avatar')) {
 				$User->avatar = asset('storage/'.$request->avatar->store('user/profile'));
 				$User->save();
@@ -135,7 +137,7 @@ class RegisterController extends Controller
             }	
 
 		} catch (Exception $e) {
-			return response()->json(['error' => trans('form.whoops'),'status'=>'false'], 500);
+			return response()->json(['error' => $e->getMessage(),'status'=>'false'], 500);
 		}
 
        }else{

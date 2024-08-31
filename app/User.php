@@ -51,7 +51,7 @@ class User extends Authenticatable
 
     public function users()
     {
-        return $this->belongsToMany(User::class,'trainer_learner_mapping','trainer_id','id');
+        return $this->belongsToMany(User::class,'trainer_learner_mapping','trainer_id','trainer_learner_mapping.user_id');
     }
 
 }
