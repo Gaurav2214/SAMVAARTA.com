@@ -397,6 +397,9 @@ button,
   border-radius: 4px;
   margin-top: 5px;
   outline: none; }
+  .input_txt_box.select-box {
+    border: none;
+    margin-top: 0; }
 
 .form-elm-section {
   -ms-display: flex;
