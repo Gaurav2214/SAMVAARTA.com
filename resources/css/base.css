@@ -399,7 +399,8 @@ button,
   outline: none; }
   .input_txt_box.select-box {
     border: none;
-    margin-top: 0; }
+    margin-top: 0;
+    padding: 0 8px; }
 
 .form-elm-section {
   -ms-display: flex;
@@ -820,7 +821,7 @@ button,
       font-family: "Open Sans", sans-serif;
       font-weight: 500;
       color: #262626;
-      padding: 6px; }
+      padding: 8px; }
       .dashboard__elements--inner .user-dashboard-info.admin-info tr td:first-of-type {
         width: 6%; }
       .dashboard__elements--inner .user-dashboard-info.admin-info tr td:nth-child(2) {
@@ -833,7 +834,8 @@ button,
         justify-content: space-around; }
       .dashboard__elements--inner .user-dashboard-info.admin-info tr td:nth-child(5) {
         width: 15%;
-        text-align: center; }
+        text-align: center;
+        text-transform: capitalize; }
       .dashboard__elements--inner .user-dashboard-info.admin-info tr td span {
         width: 80px;
         display: inline-block; }
