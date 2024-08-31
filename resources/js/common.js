@@ -1235,6 +1235,9 @@ Samvaarta.system = (() => {
                 statusInfo = `<span onclick="Samvaarta.system.activateDeactivateUser(${id}, '1')">Approve</span> <span onclick="Samvaarta.system.activateDeactivateUser(${id}, '2')">Deny</span>`;
             }  
             $('.user-data-list #status_'+id).html(statusInfo);    
+            Samvaarta.common.deleteLocalStorage('users_data');
+            Samvaarta.common.deleteLocalStorage('trainer_data');
+            adminDashboard('users');
         };
 
         const ajaxErrorCall = (response) => {
