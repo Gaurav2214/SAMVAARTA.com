@@ -164,6 +164,7 @@
     &.select-box{
         border: none;
         margin-top: 0;
+        padding: 0 rem(8);
     }
 }
 .form-elm-section {
@@ -586,7 +587,7 @@
                         border-top: none;
                         td {
                             @include desc-5();
-                            padding: rem(6);
+                            padding: rem(8);
                             &:first-of-type() {
                                 width: 6%;
                             }
@@ -604,6 +605,7 @@
                             &:nth-child(5) {
                                 width: 15%;
                                 text-align: center;
+                                text-transform: capitalize;
                             }
                             span{
                                 width: rem(80);
