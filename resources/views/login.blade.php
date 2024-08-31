@@ -1,7 +1,7 @@
 <header class="login-header">
     <div class="container">
         <a href="/">
-            <img width="103" height="60" src="https://goalsnu.com/images/goalnu-logo.png" alt="" />
+            <img width="103" height="60" src="/images/goalnu-logo.png" alt="" />
         </a>
     </div>
 </header>
