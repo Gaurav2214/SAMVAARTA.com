@@ -26,7 +26,7 @@ Samvaarta.messageLog = {
   12: "Your Profile has been updated successfully."
 };
 var valError = true;
-var apiUrl = typeof(appUrl)!="undefined"?appUrl:"http://127.0.0.1:8000/";
+var apiUrl = typeof appUrl != "undefined" ? appUrl : "http://127.0.0.1:8000/";
 var expireTime = 2 / (24 * 60);
 Samvaarta.globalVar = Samvaarta.globalVar || {
   errorValueInFlow: "",
