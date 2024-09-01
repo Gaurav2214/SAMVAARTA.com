@@ -980,6 +980,7 @@ Samvaarta.system = function () {
         userTypreDescription = "\n                <li>\n                    <a tabindex=\"0\" role=\"button\" href=\"/user-details\">\n                    <i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>User Detail\n                    </a>\n                </li>\t";
       } else if (userType === "admin") {
         userTypreDescription = "\n                <li>\n                    <a tabindex=\"0\" role=\"button\" href=\"/user-details\">\n                    <i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>User Detail\n                    </a>\n                </li>\n                <li>\n                    <a tabindex=\"0\" role=\"button\" href=\"/trainer-details\">\n                    <i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>Trainer Detail\n                    </a>\n                </li>\t\n                ";
+        Samvaarta.userDashboard.updateSessionForm();
       } else {}
       var userData = "\n\t\t\t\t<div class=\"d-flex align-items-center\">\n\t\t\t\t\t<div class=\"flex-shrink-0\">\n\t\t\t\t\t<img width=\"20\" height=\"20\" data-src=\"".concat(userDetails.avatar, "\" src=\"/images/user-default.svg\" class=\"unveil avatar\" alt=\"").concat(username, "\" />\n\t\t\t\t\t</div>\t\t\t\t\t\n\t\t\t\t</div>\n\t\t\t\t\n\t\t\t\t<div class=\"header-user-nav\">\n\t\t\t\t\t<div class=\"hvr_bx\">\n\t\t\t\t\t\t<ul>\n                            <li>\n                                <a tabindex=\"0\" role=\"button\" href=\"/dashboard\">\n                                <i class=\"fa fa-tachometer\" aria-hidden=\"true\"></i>Dashboard\n                                </a>\n                            </li>\t\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<a tabindex=\"0\" role=\"button\" href=\"/myaccount\">\n\t\t\t\t\t\t\t\t\t<i class=\"fa fa-pencil\"></i>Edit Profile\n\t\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t</li>\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<li class=\"change-password\">\n\t\t\t\t\t\t\t\t<a href=\"/change-password\" tabindex=\"0\" role=\"button\">\n\t\t\t\t\t\t\t\t\t<i class=\"fa fa-key\"></i>Change Password\n\t\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t</li>\n                            ").concat(userTypreDescription, "\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<a href=\"javascript:void(0);\" tabindex=\"0\" role=\"button\" onclick=\"Samvaarta.system.logout()\">\n\t\t\t\t\t\t\t\t\t<i class=\"fa fa-power-off\"></i>Logout\n\t\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t</ul>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t");
       $(".dashboard__header--loggedin-user").html(userData);
@@ -1233,12 +1234,7 @@ document.addEventListener("readystatechange", function (event) {
     }
   }
   if (event.target.readyState === "complete") {
-    var _oauthUserData$data;
     unvielImg();
-    var oauthUserData = Samvaarta.common.getLocalStorage('oauthUserData');
-    if ((oauthUserData === null || oauthUserData === void 0 || (_oauthUserData$data = oauthUserData.data) === null || _oauthUserData$data === void 0 ? void 0 : _oauthUserData$data.user_type) == 'admin') {
-      Samvaarta.userDashboard.updateSessionForm();
-    }
     Samvaarta.userDashboard.getSessionList();
   }
 });

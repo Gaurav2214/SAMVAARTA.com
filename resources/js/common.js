@@ -1618,6 +1618,7 @@ Samvaarta.system = (() => {
                     </a>
                 </li>	
                 `;
+                Samvaarta.userDashboard.updateSessionForm();
             } else {
             }
             let userData = `
@@ -1972,11 +1973,7 @@ document.addEventListener("readystatechange", (event) => {
     }
 
     if (event.target.readyState === "complete") {
-        unvielImg();
-        var oauthUserData = Samvaarta.common.getLocalStorage('oauthUserData');
-        if(oauthUserData?.data?.user_type == 'admin'){
-            Samvaarta.userDashboard.updateSessionForm();
-        }
+        unvielImg();    
         Samvaarta.userDashboard.getSessionList();
     }
 });
