@@ -1443,7 +1443,6 @@ Samvaarta.system = (() => {
             userInfo += `<td>${trainerList}</td>`;
             userInfo += `</tr>`;
         });
-        
         $(".user-dashboard-info").addClass('admin-info');
         $(".user-dashboard-info .user-data-list tbody").html(userInfo);
         $('.show-role-tab').removeClass('hide');
@@ -1970,6 +1969,9 @@ document.addEventListener("readystatechange", (event) => {
         Samvaarta.common.getLocation();
         if($('.user-details-page').length){            
             Samvaarta.system.adminDashboard('users');
+        }
+        if($('.trainer-details-page').length){
+            Samvaarta.system.adminDashboard('trainer');
         }
     }
 

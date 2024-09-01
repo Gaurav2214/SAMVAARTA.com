@@ -1232,6 +1232,9 @@ document.addEventListener("readystatechange", function (event) {
     if ($('.user-details-page').length) {
       Samvaarta.system.adminDashboard('users');
     }
+    if ($('.trainer-details-page').length) {
+      Samvaarta.system.adminDashboard('trainer');
+    }
   }
   if (event.target.readyState === "complete") {
     unvielImg();
