@@ -165,6 +165,9 @@
         border: none;
         margin-top: 0;
         padding: 0 rem(8);
+        option{
+            text-transform: capitalize;
+        }
     }
 }
 .form-elm-section {
@@ -686,6 +689,43 @@
                             }
                             @include hover(){
                                 background: $clr-26;
+                            }
+                        }
+                    }
+                    .assigned-user-list{
+                        position: relative;
+                        h3{
+                            @include desc-5();
+                        }
+                        ul{
+                            background: #fff;
+                            border-radius: rem(8);
+                            @include insert-box-shadow();
+                            display: none;
+                            position: absolute;
+                            width: 90%;
+                            text-align: left;
+                            padding: rem(10);
+                            top: rem(30);
+                            left: rem(-15);
+                            z-index: 1;
+                            &::before{
+                                content: '';
+                                position: absolute;
+                                top: -50px;
+                                right: 0;
+                                padding: 28px;
+                            }
+                            li{
+                                @include desc-5();
+                                &:not(:first-of-type){
+                                    margin-top: rem(10);
+                                }
+                            }
+                        }
+                        @include hover(){
+                            ul{
+                                display: block;
                             }
                         }
                     }

@@ -832,11 +832,11 @@ Samvaarta.system = function () {
       } else if (type === 'trainer') {
         if (item.users.length) {
           var _item$users;
-          trainerList += "<select class=\"input_txt_box select-box\">\n                    <option value=\"select\">Assigned User List</option>\n                ";
+          trainerList += "<div class=\"assigned-user-list\">\n                    <h3>Assigned User List</h3>\n                    <ul>\n                ";
           (_item$users = item.users) === null || _item$users === void 0 || _item$users.map(function (titem) {
-            trainerList += "<option userId=\"".concat(item.id, "\" value=\"").concat(titem.id, "\">").concat(titem.name, "</option>");
+            trainerList += "<li trainerId=\"".concat(item.id, "\" userId=\"").concat(titem.id, "\">").concat(titem.name, "</li>");
           });
-          trainerList += "</select>";
+          trainerList += "</ul>";
         } else {
           trainerList = 'No User';
         }

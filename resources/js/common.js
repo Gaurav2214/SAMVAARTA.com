@@ -1416,13 +1416,14 @@ Samvaarta.system = (() => {
                 }
             } else if(type === 'trainer'){
                 if(item.users.length){
-                trainerList += `<select class="input_txt_box select-box">
-                    <option value="select">Assigned User List</option>
+                trainerList += `<div class="assigned-user-list">
+                    <h3>Assigned User List</h3>
+                    <ul>
                 `;
                 item.users?.map((titem) => {
-                    trainerList += `<option userId="${item.id}" value="${titem.id}">${titem.name}</option>`;
+                    trainerList += `<li trainerId="${item.id}" userId="${titem.id}">${titem.name}</li>`;
                 })
-                trainerList += `</select>`;
+                trainerList += `</ul>`;
                 } else {
                     trainerList = 'No User';
                 }

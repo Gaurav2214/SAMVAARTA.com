@@ -403,6 +403,8 @@ button,
     border: none;
     margin-top: 0;
     padding: 0 8px; }
+    .input_txt_box.select-box option {
+      text-transform: capitalize; }
 
 .form-elm-section {
   -ms-display: flex;
@@ -898,6 +900,42 @@ button,
         border-radius: 5px 0 0 0; }
       .dashboard__elements--inner .user-dashboard-info.admin-info .show-role-tab button:hover, .dashboard__elements--inner .user-dashboard-info.admin-info .show-role-tab button:focus {
         background: #db6d0d; }
+  .dashboard__elements--inner .user-dashboard-info.admin-info .assigned-user-list {
+    position: relative; }
+    .dashboard__elements--inner .user-dashboard-info.admin-info .assigned-user-list h3 {
+      font-size: 14px;
+      line-height: 21px;
+      font-family: "Open Sans", sans-serif;
+      font-weight: 500;
+      color: #262626; }
+    .dashboard__elements--inner .user-dashboard-info.admin-info .assigned-user-list ul {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+      display: none;
+      position: absolute;
+      width: 90%;
+      text-align: left;
+      padding: 10px;
+      top: 30px;
+      left: -15px;
+      z-index: 1; }
+      .dashboard__elements--inner .user-dashboard-info.admin-info .assigned-user-list ul::before {
+        content: '';
+        position: absolute;
+        top: -50px;
+        right: 0;
+        padding: 28px; }
+      .dashboard__elements--inner .user-dashboard-info.admin-info .assigned-user-list ul li {
+        font-size: 14px;
+        line-height: 21px;
+        font-family: "Open Sans", sans-serif;
+        font-weight: 500;
+        color: #262626; }
+        .dashboard__elements--inner .user-dashboard-info.admin-info .assigned-user-list ul li:not(:first-of-type) {
+          margin-top: 10px; }
+    .dashboard__elements--inner .user-dashboard-info.admin-info .assigned-user-list:hover ul, .dashboard__elements--inner .user-dashboard-info.admin-info .assigned-user-list:focus ul {
+      display: block; }
 
 .component-divider {
   -o-border-image: linear-gradient(90deg, #fff, #ccc, #fff);
