@@ -1416,13 +1416,14 @@ Samvaarta.system = (() => {
                 }
             } else if(type === 'trainer'){
                 if(item.users.length){
-                trainerList += `<select class="input_txt_box select-box">
-                    <option value="select">Assigned User List</option>
+                trainerList += `<div class="assigned-user-list">
+                    <h3>Assigned User List</h3>
+                    <ul>
                 `;
                 item.users?.map((titem) => {
-                    trainerList += `<option userId="${item.id}" value="${titem.id}">${titem.name}</option>`;
+                    trainerList += `<li trainerId="${item.id}" userId="${titem.id}">${titem.name}</li>`;
                 })
-                trainerList += `</select>`;
+                trainerList += `</ul>`;
                 } else {
                     trainerList = 'No User';
                 }
@@ -1442,7 +1443,6 @@ Samvaarta.system = (() => {
             userInfo += `<td>${trainerList}</td>`;
             userInfo += `</tr>`;
         });
-        
         $(".user-dashboard-info").addClass('admin-info');
         $(".user-dashboard-info .user-data-list tbody").html(userInfo);
         $('.show-role-tab').removeClass('hide');
@@ -1969,6 +1969,9 @@ document.addEventListener("readystatechange", (event) => {
         Samvaarta.common.getLocation();
         if($('.user-details-page').length){            
             Samvaarta.system.adminDashboard('users');
+        }
+        if($('.trainer-details-page').length){
+            Samvaarta.system.adminDashboard('trainer');
         }
     }
 
