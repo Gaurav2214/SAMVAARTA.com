@@ -1118,7 +1118,7 @@ Samvaarta.userDashboard = function () {
     Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
   };
   var updateSessionForm = function updateSessionForm() {
-    var sessionForm = "\n            <div class=\"form-elm-section input_sec \">\n                <label for=\"session_date\">\n                    Session Date\n                </label>\n                <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_date\" class=\"input_txt_box\" value=\"\" title=\"\">\n                <p id=\"session_date_err\" class=\"error\"></p>\n            </div>\n            <div class=\"form-elm-section input_sec \">\n                <label for=\"session_name\">\n                    Session Name\n                </label>\n                <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_name\" class=\"input_txt_box\" value=\"\" title=\"\">\n                <p id=\"session_name_err\" class=\"error\"></p>\n            </div>\n            <div class=\"form-elm-section input_sec \">\n                <label for=\"session_time\">\n                    Session Time\n                </label>\n                <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_time\" class=\"input_txt_box\" value=\"\" title=\"\">\n                <p id=\"session_time_err\" class=\"error\"></p>\n            </div>\n            <div class=\"form-elm-section marg-t20\">\n                <input type=\"button\" class=\"btn submit-button2\" name=\"submit_profile\" onclick=\"Samvaarta.system.updateSession(1);\" value=\"Update Session\">\n            </div>\n        ";
+    var sessionForm = "\n            <div class=\"form-elm-section input_sec \">\n                <label for=\"session_date\">\n                    Session Date\n                </label>\n                <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_date\" class=\"input_txt_box\" value=\"\" title=\"\">\n                <p id=\"session_date_err\" class=\"error\"></p>\n            </div>\n            <div class=\"form-elm-section input_sec \">\n                <label for=\"session_name\">\n                    Session Name\n                </label>\n                <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_name\" class=\"input_txt_box\" value=\"\" title=\"\">\n                <p id=\"session_name_err\" class=\"error\"></p>\n            </div>\n            <div class=\"form-elm-section input_sec \">\n                <label for=\"session_time\">\n                    Session Time\n                </label>\n                <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_time\" class=\"input_txt_box\" value=\"\" title=\"\">\n                <p id=\"session_time_err\" class=\"error\"></p>\n            </div>\n            <div class=\"form-elm-section marg-t20\">\n                <input type=\"button\" class=\"btn submit-button2\" name=\"submit_profile\" onclick=\"Samvaarta.userDashboard.updateSession(1);\" value=\"Update Session\">\n            </div>\n        ";
     $('.upcoming_session_container').html(sessionForm);
   };
   var updateSession = function updateSession() {
@@ -1138,7 +1138,12 @@ Samvaarta.userDashboard = function () {
         $("#oauth_log_email_err").html(error.response.data.message).show();
       }
     };
-    Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
+
+    // Samvaarta.common.hitAjaxApi(
+    //     paramObject,
+    //     ajaxSuccessCall,
+    //     ajaxErrorCall
+    // );
   };
   var getSessionList = function getSessionList() {
     var paramObject = {

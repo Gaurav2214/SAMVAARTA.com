@@ -1838,7 +1838,7 @@ Samvaarta.userDashboard = (() => {
                 <p id="session_time_err" class="error"></p>
             </div>
             <div class="form-elm-section marg-t20">
-                <input type="button" class="btn submit-button2" name="submit_profile" onclick="Samvaarta.system.updateSession(1);" value="Update Session">
+                <input type="button" class="btn submit-button2" name="submit_profile" onclick="Samvaarta.userDashboard.updateSession(1);" value="Update Session">
             </div>
         `;
         $('.upcoming_session_container').html(sessionForm);
@@ -1865,11 +1865,11 @@ Samvaarta.userDashboard = (() => {
             }
         };
 
-        Samvaarta.common.hitAjaxApi(
-            paramObject,
-            ajaxSuccessCall,
-            ajaxErrorCall
-        );
+        // Samvaarta.common.hitAjaxApi(
+        //     paramObject,
+        //     ajaxSuccessCall,
+        //     ajaxErrorCall
+        // );
     }
     const getSessionList = () => {
         let paramObject = {
