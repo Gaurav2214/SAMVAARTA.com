@@ -18,6 +18,7 @@ Route::get('/dashboard', 'UserController@dashboard');
 Route::get('/myaccount', 'UserController@myaccount');
 Route::get('/change-password', 'UserController@change_password');
 Route::get('/user-details', 'UserController@user_details');
+Route::get('/upcoming_session', 'UserController@upcoming_session');
 Route::get('/trainer-details', 'UserController@trainer_details');
 
 Route::get('/list', function () { return view('list'); });
