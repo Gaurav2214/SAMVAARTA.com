@@ -29,6 +29,12 @@
     background-attachment: fixed;
     background-position: center 70px; } }
 
+@keyframes blink {
+  0% {
+    opacity: 1; }
+  100% {
+    opacity: 0; } }
+
 *, html, body {
   margin: 0;
   padding: 0; }
@@ -751,62 +757,92 @@ button,
       display: block; }
       .dashboard__elements--inner.activate-list__item.head {
         background: #fd7702; }
-  .dashboard__elements--inner .show-user-details .userName {
-    text-align: center;
-    font-size: 20px;
-    line-height: 32px;
-    font-family: "Open Sans", sans-serif;
-    font-weight: 500;
-    color: #262626; }
-  .dashboard__elements--inner .show-user-details__inner {
-    -ms-display: flex;
-    -webkit-display: flex;
-    display: flex;
-    -ms-justify-content: flex-start;
-    -webkit-justify-content: flex-start;
-    justify-content: flex-start;
-    -ms-align-items: flex-start;
-    -webkit-align-items: flex-start;
-    align-items: flex-start;
-    -ms-flex-direction: row;
-    -webkit-flex-direction: row;
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin-top: 24px;
-    gap: 32px; }
-    @media screen and (max-width: 1000px) {
-      .dashboard__elements--inner .show-user-details__inner {
-        gap: 10px; } }
-    .dashboard__elements--inner .show-user-details__inner .detail-items {
-      width: 350px; }
-      .dashboard__elements--inner .show-user-details__inner .detail-items ul {
-        flex-direction: column;
-        gap: 6px; }
-        .dashboard__elements--inner .show-user-details__inner .detail-items ul li {
-          font-size: 14px;
-          line-height: 21px;
-          font-family: "Open Sans", sans-serif;
-          font-weight: 500;
-          color: #262626; }
-          .dashboard__elements--inner .show-user-details__inner .detail-items ul li.profile-img img {
-            border-radius: 6px; }
-          @media screen and (max-width: 1000px) {
-            .dashboard__elements--inner .show-user-details__inner .detail-items ul li.profile-img {
-              display: flex;
-              justify-content: center;
-              width: -webkit-fill-available;
-              margin-bottom: 15px; } }
-          .dashboard__elements--inner .show-user-details__inner .detail-items ul li.role span {
-            text-transform: capitalize; }
-          .dashboard__elements--inner .show-user-details__inner .detail-items ul li span {
-            color: #736e6e; }
+  .dashboard__elements--inner .show-user-details {
+    position: relative; }
+    .dashboard__elements--inner .show-user-details .upcoming-session {
+      position: absolute;
+      right: 0;
+      top: 5px;
+      padding: 5px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1); }
+      .dashboard__elements--inner .show-user-details .upcoming-session a {
+        font-size: 20px;
+        line-height: 32px;
+        font-family: "Open Sans", sans-serif;
+        font-weight: 500;
+        color: #262626; }
+        .dashboard__elements--inner .show-user-details .upcoming-session a i {
+          -moz-animation-duration: 500ms;
+          -moz-animation-name: blink;
+          -moz-animation-iteration-count: infinite;
+          -moz-animation-direction: alternate;
+          -webkit-animation-duration: 500ms;
+          -webkit-animation-name: blink;
+          -webkit-animation-iteration-count: infinite;
+          -webkit-animation-direction: alternate;
+          animation-duration: 500ms;
+          animation-name: blink;
+          animation-iteration-count: infinite;
+          animation-direction: alternate;
+          color: red; }
+    .dashboard__elements--inner .show-user-details .userName {
+      text-align: center;
+      font-size: 20px;
+      line-height: 32px;
+      font-family: "Open Sans", sans-serif;
+      font-weight: 500;
+      color: #262626; }
+    .dashboard__elements--inner .show-user-details__inner {
+      -ms-display: flex;
+      -webkit-display: flex;
+      display: flex;
+      -ms-justify-content: flex-start;
+      -webkit-justify-content: flex-start;
+      justify-content: flex-start;
+      -ms-align-items: flex-start;
+      -webkit-align-items: flex-start;
+      align-items: flex-start;
+      -ms-flex-direction: row;
+      -webkit-flex-direction: row;
+      flex-direction: row;
+      flex-wrap: wrap;
+      margin-top: 24px;
+      gap: 32px; }
       @media screen and (max-width: 1000px) {
-        .dashboard__elements--inner .show-user-details__inner .detail-items:last-of-type {
-          order: 1; }
-        .dashboard__elements--inner .show-user-details__inner .detail-items:first-of-type {
-          order: 2; }
-        .dashboard__elements--inner .show-user-details__inner .detail-items:nth-child(2) {
-          order: 3; } }
+        .dashboard__elements--inner .show-user-details__inner {
+          gap: 10px; } }
+      .dashboard__elements--inner .show-user-details__inner .detail-items {
+        width: 350px; }
+        .dashboard__elements--inner .show-user-details__inner .detail-items ul {
+          flex-direction: column;
+          gap: 6px; }
+          .dashboard__elements--inner .show-user-details__inner .detail-items ul li {
+            font-size: 14px;
+            line-height: 21px;
+            font-family: "Open Sans", sans-serif;
+            font-weight: 500;
+            color: #262626; }
+            .dashboard__elements--inner .show-user-details__inner .detail-items ul li.profile-img img {
+              border-radius: 6px; }
+            @media screen and (max-width: 1000px) {
+              .dashboard__elements--inner .show-user-details__inner .detail-items ul li.profile-img {
+                display: flex;
+                justify-content: center;
+                width: -webkit-fill-available;
+                margin-bottom: 15px; } }
+            .dashboard__elements--inner .show-user-details__inner .detail-items ul li.role span {
+              text-transform: capitalize; }
+            .dashboard__elements--inner .show-user-details__inner .detail-items ul li span {
+              color: #736e6e; }
+        @media screen and (max-width: 1000px) {
+          .dashboard__elements--inner .show-user-details__inner .detail-items:last-of-type {
+            order: 1; }
+          .dashboard__elements--inner .show-user-details__inner .detail-items:first-of-type {
+            order: 2; }
+          .dashboard__elements--inner .show-user-details__inner .detail-items:nth-child(2) {
+            order: 3; } }
   .dashboard__elements--inner .user-dashboard-info.admin-info table {
     width: 100%; }
   .dashboard__elements--inner .user-dashboard-info.admin-info tr {

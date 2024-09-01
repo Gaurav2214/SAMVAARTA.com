@@ -42,5 +42,10 @@ class UserController extends Controller
         return view('trainer_details');
     }
 
+    public function upcoming_session()
+    {   
+        return view('upcoming_session');
+    }
+
 
 }

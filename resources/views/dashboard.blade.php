@@ -4,7 +4,7 @@
 <div class="dashboard__elements">
     <div class="container dashboard__elements--inner">
         <div class="show-user-details">
-            <h3 class="userName">Welcome </h3>
+            <h3 class="userName">Welcome </h3>            
             <div class="show-user-details__inner">
                 <div class="show-user-details__inner--left detail-items">
                     <ul>
@@ -46,13 +46,12 @@
             <div class="show-role-tab hide">
                 <button data-type="users" class="active">User</button>
                 <button data-type="trainer">Trainer</button>
-                <button data-type="admin">Admin</button>
-                <button data-type="upcoming-session">Upcoming Session</button>
+                <button data-type="admin">Admin</button>                
             </div>
             <div id="" class="user-data-list">
                 <table>
                     <tbody>
-                        
+
                     </tbody>
                 </table>
             </div>

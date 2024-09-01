@@ -770,7 +770,7 @@ Samvaarta.system = (() => {
 
                 <div class="edit-profile__inner--right">
                     <div class="form-elm-section input_sec ">
-                        <label for="b2boauth_email">
+                        <label for="oauth_log_email">
                             Email ID
                         </label>
                         <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_email" class="input_txt_box readonly valid" value="${
@@ -1416,7 +1416,7 @@ Samvaarta.system = (() => {
                 }
             } else if(type === 'trainer'){
                 if(item.users.length){
-                trainerList += `<select>
+                trainerList += `<select class="input_txt_box select-box">
                     <option value="select">Assigned User List</option>
                 `;
                 item.users?.map((titem) => {
@@ -1536,6 +1536,12 @@ Samvaarta.system = (() => {
         }
         const userInfo = `
         <h3 class="userName">Welcome ${response.name.split(" ")[0]} </h3>
+        <div class="upcoming-session">
+            <a href="/upcoming_session" data-type="upcoming-session">
+                <i class="fa fa-circle fa-fw"></i>
+                Upcoming Session
+            </a>
+        </div>
         <div class="show-user-details__inner">
             <div class="show-user-details__inner--left detail-items">
                 <ul>
@@ -1655,7 +1661,7 @@ Samvaarta.system = (() => {
     };
 
     var forgetPassword = () => {
-        let reg_email = $("#b2boauth_log_email").val();
+        let reg_email = $("#oauth_log_email").val();
         $(".error").html("");
 
         $(".authentication-form input").each(function () {
@@ -1685,7 +1691,7 @@ Samvaarta.system = (() => {
 
             const ajaxErrorCall = (error) => {
                 if (error.response) {
-                    $("#b2boauth_log_email_err")
+                    $("#oauth_log_email_err")
                         .html(error.response.data.message)
                         .show();
                 }
@@ -1768,7 +1774,7 @@ Samvaarta.userDashboard = (() => {
 
         const ajaxErrorCall = (error) => {
             if (error.response) {
-                $("#b2boauth_log_email_err")
+                $("#oauth_log_email_err")
                     .html(error.response.data.message)
                     .show();
             }
@@ -1796,7 +1802,7 @@ Samvaarta.userDashboard = (() => {
 
         const ajaxErrorCall = (error) => {
             if (error.response) {
-                $("#b2boauth_log_email_err")
+                $("#oauth_log_email_err")
                     .html(error.response.data.message)
                     .show();
             }
@@ -1808,9 +1814,98 @@ Samvaarta.userDashboard = (() => {
             ajaxErrorCall
         );
     }
+    const updateSessionForm = () => {
+        let sessionForm = `
+            <div class="form-elm-section input_sec ">
+                <label for="session_date">
+                    Session Date
+                </label>
+                <input placeholder="" name="" type="text" id="session_date" class="input_txt_box" value="" title="">
+                <p id="session_date_err" class="error"></p>
+            </div>
+            <div class="form-elm-section input_sec ">
+                <label for="session_name">
+                    Session Name
+                </label>
+                <input placeholder="" name="" type="text" id="session_name" class="input_txt_box" value="" title="">
+                <p id="session_name_err" class="error"></p>
+            </div>
+            <div class="form-elm-section input_sec ">
+                <label for="session_time">
+                    Session Time
+                </label>
+                <input placeholder="" name="" type="text" id="session_time" class="input_txt_box" value="" title="">
+                <p id="session_time_err" class="error"></p>
+            </div>
+            <div class="form-elm-section marg-t20">
+                <input type="button" class="btn submit-button2" name="submit_profile" onclick="Samvaarta.system.updateSession(1);" value="Update Session">
+            </div>
+        `;
+        $('.upcoming_session_container').html(sessionForm);
+    }
+    const updateSession = () => {
+        let paramObject = {
+            url: apiUrl + "api/update-session",
+            type: "POST",
+            headers: {
+                Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+                Accept: "application/json",
+            },
+        };
+
+        const ajaxSuccessCall = (response) => {
+            console.log(response);
+        };
+
+        const ajaxErrorCall = (error) => {
+            if (error.response) {
+                $("#oauth_log_email_err")
+                    .html(error.response.data.message)
+                    .show();
+            }
+        };
+
+        Samvaarta.common.hitAjaxApi(
+            paramObject,
+            ajaxSuccessCall,
+            ajaxErrorCall
+        );
+    }
+    const getSessionList = () => {
+        let paramObject = {
+            url: apiUrl + "api/update-session",
+            type: "GET",
+            headers: {
+                Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+                Accept: "application/json",
+            },
+        };
+
+        const ajaxSuccessCall = (response) => {
+            console.log(response);
+        };
+
+        const ajaxErrorCall = (error) => {
+            if (error.response) {
+                $("#oauth_log_email_err")
+                    .html(error.response.data.message)
+                    .show();
+            }
+        };
+
+        // Samvaarta.common.hitAjaxApi(
+        //     paramObject,
+        //     ajaxSuccessCall,
+        //     ajaxErrorCall
+        // );
+        $('.upcoming_session_list').html('<h2>No upcoming session available.</h2>');
+    }
     return {
         codeOfEthics: codeOfEthics,
-        getCodeOfEthics: getCodeOfEthics
+        getCodeOfEthics: getCodeOfEthics,
+        updateSession: updateSession,
+        getSessionList: getSessionList,
+        updateSessionForm: updateSessionForm
     }
 })();
 
@@ -1878,5 +1973,10 @@ document.addEventListener("readystatechange", (event) => {
 
     if (event.target.readyState === "complete") {
         unvielImg();
+        var oauthUserData = Samvaarta.common.getLocalStorage('oauthUserData');
+        if(oauthUserData?.data?.user_type == 'admin'){
+            Samvaarta.userDashboard.updateSessionForm();
+        }
+        Samvaarta.userDashboard.getSessionList();
     }
 });

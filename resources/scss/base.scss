@@ -520,6 +520,34 @@
                 }
             }
             .show-user-details {
+                position: relative;
+                .upcoming-session{
+                    position: absolute;
+                    right: 0;
+                    top: rem(5);
+                    padding: 5px 12px;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    @include insert-box-shadow();
+                    a{
+                        @include heading-3();
+                        i{
+                            -moz-animation-duration: 500ms;
+                            -moz-animation-name: blink;
+                            -moz-animation-iteration-count: infinite;
+                            -moz-animation-direction: alternate;
+                            -webkit-animation-duration: 500ms;
+                            -webkit-animation-name: blink;
+                            -webkit-animation-iteration-count: infinite;
+                            -webkit-animation-direction: alternate;
+                            animation-duration: 500ms;
+                            animation-name: blink;
+                            animation-iteration-count: infinite;
+                            animation-direction: alternate;
+                            color: red;
+                        }
+                    }                    
+                }
                 .userName {
                     text-align: center;
                     @include heading-3();
