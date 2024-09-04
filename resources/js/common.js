@@ -382,6 +382,23 @@ Samvaarta.common = (() => {
         }
     };
 
+    const toastMsg = (tmsg) => {
+        $('.info_consentmsg').remove();
+        let cnsetMsg = `<div class="info_success info_consentmsg">
+                            <div class="info_success__inner">
+                            <span>${tmsg}</span>
+                            <a class="info_close"><span class="sprite-icon-img close-info"></span></a>    
+                            </div>                
+                            </div>`;
+        $('body').append(cnsetMsg);
+        setTimeout(function () {
+            $('.info_consentmsg').remove();
+        }, 4000);
+        $('body').on('click', '.info_close', function () {
+            $('.info_consentmsg').remove();
+        });
+    }
+
     return {
         isNull: isNull,
         isBlank: isBlank,
@@ -395,6 +412,7 @@ Samvaarta.common = (() => {
         removeRequiredFields: removeRequiredFields,
         dateMonthYear: dateMonthYear,
         getLocation: getLocation,
+        toastMsg: toastMsg
     };
 })();
 
@@ -1267,9 +1285,32 @@ Samvaarta.system = (() => {
                     <p>You are documenting the interaction of the day and uploading documents to support your effort</p>
                     <div id="" class="details--items previous">
                         <h3>Previous Interactions</h3>
+                        <p>No previous interactions</p>
                     </div>
                     <div id="" class="details--items current">
                         <h3>Current Interactions</h3>
+                        <ul class="details--items__topics">
+                            <li class="fa fa-arrow-right">
+                                <label for="user_focus" class="topic">Focus of the day</label>
+                                <input type="text" id="user_focus" value="" class="input_txt_box" />
+                            </li>
+                            <li>
+                                <label for="user_last_commitment" class="topic">Last weeks commitment</label>
+                                <input type="text" id="user_last_commitment" value="" class="input_txt_box" />
+                            </li>
+                            <li>
+                                <label for="user_conversation" class="topic">Today’s conversation</label>
+                                <input type="text" id="user_conversation" value="" class="input_txt_box" />
+                            </li>
+                            <li>
+                                <label for="user_week_commitment" class="topic">Commitment for the week</label>
+                                <input type="text" id="user_week_commitment" value="" class="input_txt_box" />
+                            </li>
+                            <li>
+                                <label for="user_comments" class="topic">Coach’s Comments</label>
+                                <input type="text" id="user_comments" value="" class="input_txt_box" />
+                            </li>
+                        </ul>
                     </div>
                     <div class="form-elm-section marg-t10">
                         <button class="btn">Submit</button>
@@ -1720,10 +1761,13 @@ Samvaarta.system = (() => {
         };
 
         const ajaxSuccessCall = async(response) => {
-            response = response.data.data;
-            Samvaarta.common.deleteLocalStorage('users_data');
-            Samvaarta.common.deleteLocalStorage('trainer_data');
-            adminDashboard('users');
+            if(response.data?.success === 'true'){
+                Samvaarta.common.deleteLocalStorage('users_data');
+                Samvaarta.common.deleteLocalStorage('trainer_data');
+                adminDashboard('users');
+            } else {
+                Samvaarta.common.toastMsg('User is not activate yet, Please activate first.');
+            }
         };
 
         const ajaxErrorCall = (response) => {
@@ -1980,3 +2024,11 @@ document.addEventListener("readystatechange", (event) => {
         Samvaarta.userDashboard.getSessionList();
     }
 });
+
+// const people = [
+//     {name:'john', hobbies:['cricket', 'javascript']},
+//     {name:'ajay', hobbies:'singing'},
+//     {name:'akhil', hobbies:['running', 'food']}
+// ]
+// const hobby = people.flatMap((p) => p.hobbies);
+// console.log(hobby);
