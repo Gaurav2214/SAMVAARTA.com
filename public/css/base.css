@@ -717,6 +717,31 @@ button,
             font-family: "Open Sans", sans-serif;
             font-weight: 500;
             color: #262626; }
+        .dashboard__elements--inner ul li .details--items__topics {
+          margin-top: 10px;
+          display: flex;
+          flex-direction: column;
+          padding-left: 20px;
+          gap: 15px; }
+          .dashboard__elements--inner ul li .details--items__topics li {
+            width: 100%; }
+            .dashboard__elements--inner ul li .details--items__topics li::before {
+              content: "\f061";
+              position: absolute;
+              left: 0;
+              display: inline-block;
+              font: normal normal normal 14px / 1 FontAwesome;
+              font-size: inherit;
+              text-rendering: auto;
+              -webkit-font-smoothing: antialiased;
+              -moz-osx-font-smoothing: grayscale;
+              color: #fd7702; }
+            .dashboard__elements--inner ul li .details--items__topics li .topic {
+              font-size: 14px;
+              line-height: 21px;
+              font-family: "Open Sans", sans-serif;
+              font-weight: 500;
+              color: #262626; }
       .dashboard__elements--inner ul li .details textarea {
         margin-top: 30px;
         border-radius: 12px;
@@ -1105,4 +1130,44 @@ button,
   .skeleton.no-shadow {
     box-shadow: none;
     padding-left: 0; }
+
+.info_success {
+  position: fixed;
+  bottom: 25px;
+  left: 25px;
+  z-index: 9999;
+  text-align: center; }
+  .info_success.info_consentmsg {
+    color: #FFF;
+    background: #fd7702;
+    box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 19px 55px 19px 20px;
+    z-index: 99999; }
+  .info_success__inner {
+    position: relative;
+    text-align: left; }
+    .info_success__inner span {
+      font-size: 14px;
+      line-height: 17px;
+      font-family: "Montserrat", sans-serif;
+      font-weight: 500;
+      color: #808080;
+      color: #FFF; }
+    .info_success__inner .info_close {
+      position: absolute;
+      right: -45px;
+      top: -7px;
+      padding: 8px 10px;
+      border-radius: 50%; }
+      .info_success__inner .info_close:hover {
+        background: rgba(255, 255, 255, 0.1); }
+      .info_success__inner .info_close .close-info {
+        background-position: -664px -177px;
+        height: 16px;
+        width: 16px; }
+  @media screen and (max-width: 1000px) {
+    .info_success {
+      left: 24px;
+      right: 24px; } }
 
