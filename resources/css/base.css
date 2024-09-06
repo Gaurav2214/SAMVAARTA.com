@@ -705,103 +705,100 @@ button,
       .dashboard__elements--inner ul li .dashboard__elements--item:hover {
         box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
         background: antiquewhite; }
-    .dashboard__elements--inner ul li .details {
-      display: none;
-      margin-top: 35px;
-      position: absolute;
-      width: 100%;
-      left: 0; }
-      .dashboard__elements--inner ul li .details > h3 {
-        font-size: 28px;
-        line-height: 40px;
-        font-family: "Open Sans", sans-serif;
-        font-weight: 700;
-        color: #262626; }
-      .dashboard__elements--inner ul li .details p {
-        font-size: 14px;
-        line-height: 17px;
-        font-family: "Montserrat", sans-serif;
-        font-weight: 500;
-        color: #808080;
-        margin-top: 5px; }
-      .dashboard__elements--inner ul li .details--items {
-        margin-top: 20px; }
-        .dashboard__elements--inner ul li .details--items h3 {
-          font-size: 18px;
-          line-height: 26px;
-          font-family: "Open Sans", sans-serif;
-          font-weight: 700;
-          color: #262626; }
-          .dashboard__elements--inner ul li .details--items h3 span {
-            font-size: 14px;
-            line-height: 17px;
-            font-family: "Montserrat", sans-serif;
-            font-weight: 500;
-            color: #808080; }
-        .dashboard__elements--inner ul li .details--items .list-view {
-          display: block;
-          list-style-position: inside;
-          margin-top: 10px; }
-          .dashboard__elements--inner ul li .details--items .list-view li {
-            list-style-type: decimal;
-            font-size: 14px;
-            line-height: 21px;
-            font-family: "Open Sans", sans-serif;
-            font-weight: 500;
-            color: #262626; }
-        .dashboard__elements--inner ul li .details--items__topics {
-          margin-top: 10px;
-          display: flex;
-          flex-direction: column;
-          padding-left: 20px;
-          gap: 15px;
-          list-style-type: disc; }
-          .dashboard__elements--inner ul li .details--items__topics li {
-            width: 100%; }
-            .dashboard__elements--inner ul li .details--items__topics li .topic {
-              font-size: 14px;
-              line-height: 21px;
-              font-family: "Open Sans", sans-serif;
-              font-weight: 500;
-              color: #262626; }
-        .dashboard__elements--inner ul li .details--items.quantitative .qualitative__data, .dashboard__elements--inner ul li .details--items.qualitative .qualitative__data, .dashboard__elements--inner ul li .details--items.outcomes .qualitative__data {
-          margin-top: 20px; }
-        .dashboard__elements--inner ul li .details--items.quantitative h4, .dashboard__elements--inner ul li .details--items.qualitative h4, .dashboard__elements--inner ul li .details--items.outcomes h4 {
-          font-size: 14px;
-          line-height: 21px;
-          font-family: "Open Sans", sans-serif;
-          font-weight: 500;
-          color: #262626;
-          margin-top: 24px; }
-        .dashboard__elements--inner ul li .details--items.quantitative ul, .dashboard__elements--inner ul li .details--items.qualitative ul, .dashboard__elements--inner ul li .details--items.outcomes ul {
-          gap: 8px; }
-          .dashboard__elements--inner ul li .details--items.quantitative ul li, .dashboard__elements--inner ul li .details--items.qualitative ul li, .dashboard__elements--inner ul li .details--items.outcomes ul li {
-            font-size: 14px;
-            line-height: 17px;
-            font-family: "Montserrat", sans-serif;
-            font-weight: 500;
-            color: #808080; }
-            .dashboard__elements--inner ul li .details--items.quantitative ul li ul, .dashboard__elements--inner ul li .details--items.qualitative ul li ul, .dashboard__elements--inner ul li .details--items.outcomes ul li ul {
-              list-style-type: circle;
-              list-style-position: inside;
-              flex-direction: column;
-              gap: 5px;
-              margin-top: 6px; }
-      .dashboard__elements--inner ul li .details textarea {
-        margin-top: 30px;
-        border-radius: 12px;
-        border: 1px solid #ccc;
-        width: -webkit-fill-available;
-        resize: none;
-        outline: none;
-        padding: 20px; }
-      .dashboard__elements--inner ul li .details .btn {
-        margin-top: 15px; }
     .dashboard__elements--inner ul li.active .dashboard__elements--item {
       box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
       background: antiquewhite; }
     .dashboard__elements--inner ul li.active .details {
       display: block; }
+  .dashboard__elements--inner .user-activity-details .details {
+    margin-top: 35px;
+    width: 100%; }
+    .dashboard__elements--inner .user-activity-details .details > h3 {
+      font-size: 28px;
+      line-height: 40px;
+      font-family: "Open Sans", sans-serif;
+      font-weight: 700;
+      color: #262626; }
+    .dashboard__elements--inner .user-activity-details .details p {
+      font-size: 14px;
+      line-height: 17px;
+      font-family: "Montserrat", sans-serif;
+      font-weight: 500;
+      color: #808080;
+      margin-top: 5px; }
+    .dashboard__elements--inner .user-activity-details .details--items {
+      margin-top: 20px; }
+      .dashboard__elements--inner .user-activity-details .details--items h3 {
+        font-size: 18px;
+        line-height: 26px;
+        font-family: "Open Sans", sans-serif;
+        font-weight: 700;
+        color: #262626; }
+        .dashboard__elements--inner .user-activity-details .details--items h3 span {
+          font-size: 14px;
+          line-height: 17px;
+          font-family: "Montserrat", sans-serif;
+          font-weight: 500;
+          color: #808080; }
+      .dashboard__elements--inner .user-activity-details .details--items .list-view {
+        display: block;
+        list-style-position: inside;
+        margin-top: 10px; }
+        .dashboard__elements--inner .user-activity-details .details--items .list-view li {
+          list-style-type: decimal;
+          font-size: 14px;
+          line-height: 21px;
+          font-family: "Open Sans", sans-serif;
+          font-weight: 500;
+          color: #262626; }
+      .dashboard__elements--inner .user-activity-details .details--items__topics {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        padding-left: 20px;
+        gap: 15px;
+        list-style-type: disc; }
+        .dashboard__elements--inner .user-activity-details .details--items__topics li {
+          width: 100%; }
+          .dashboard__elements--inner .user-activity-details .details--items__topics li .topic {
+            font-size: 14px;
+            line-height: 21px;
+            font-family: "Open Sans", sans-serif;
+            font-weight: 500;
+            color: #262626; }
+      .dashboard__elements--inner .user-activity-details .details--items.quantitative .qualitative__data, .dashboard__elements--inner .user-activity-details .details--items.quantitative .outcomes__data, .dashboard__elements--inner .user-activity-details .details--items.quantitative .quantitative__data, .dashboard__elements--inner .user-activity-details .details--items.qualitative .qualitative__data, .dashboard__elements--inner .user-activity-details .details--items.qualitative .outcomes__data, .dashboard__elements--inner .user-activity-details .details--items.qualitative .quantitative__data, .dashboard__elements--inner .user-activity-details .details--items.outcomes .qualitative__data, .dashboard__elements--inner .user-activity-details .details--items.outcomes .outcomes__data, .dashboard__elements--inner .user-activity-details .details--items.outcomes .quantitative__data {
+        margin-top: 20px; }
+      .dashboard__elements--inner .user-activity-details .details--items.quantitative h4, .dashboard__elements--inner .user-activity-details .details--items.qualitative h4, .dashboard__elements--inner .user-activity-details .details--items.outcomes h4 {
+        font-size: 14px;
+        line-height: 21px;
+        font-family: "Open Sans", sans-serif;
+        font-weight: 500;
+        color: #262626;
+        margin-top: 24px; }
+      .dashboard__elements--inner .user-activity-details .details--items.quantitative ul, .dashboard__elements--inner .user-activity-details .details--items.qualitative ul, .dashboard__elements--inner .user-activity-details .details--items.outcomes ul {
+        gap: 8px; }
+        .dashboard__elements--inner .user-activity-details .details--items.quantitative ul li, .dashboard__elements--inner .user-activity-details .details--items.qualitative ul li, .dashboard__elements--inner .user-activity-details .details--items.outcomes ul li {
+          font-size: 14px;
+          line-height: 17px;
+          font-family: "Montserrat", sans-serif;
+          font-weight: 500;
+          color: #808080; }
+          .dashboard__elements--inner .user-activity-details .details--items.quantitative ul li ul, .dashboard__elements--inner .user-activity-details .details--items.qualitative ul li ul, .dashboard__elements--inner .user-activity-details .details--items.outcomes ul li ul {
+            list-style-type: circle;
+            list-style-position: inside;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 6px; }
+    .dashboard__elements--inner .user-activity-details .details textarea {
+      margin-top: 30px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      width: -webkit-fill-available;
+      resize: none;
+      outline: none;
+      padding: 20px; }
+    .dashboard__elements--inner .user-activity-details .details .btn {
+      margin-top: 15px; }
   .dashboard__elements--inner.activate-list {
     border: none; }
     .dashboard__elements--inner.activate-list__container {
@@ -952,6 +949,18 @@ button,
         border-radius: 4px;
         background: linear-gradient(180deg, #eff5ff 0%, rgba(239, 245, 255, 0) 100%);
         border: none; }
+    .dashboard__elements--inner .user-dashboard-info table.light-view tr td:nth-child(2) {
+      width: 70%; }
+    .dashboard__elements--inner .user-dashboard-info table.complex-view tr td:first-of-type {
+      width: 5%; }
+    .dashboard__elements--inner .user-dashboard-info table.complex-view tr td:nth-child(2) {
+      width: 5%; }
+    .dashboard__elements--inner .user-dashboard-info table.complex-view tr td:last-of-type {
+      width: auto;
+      min-width: 80%; }
+    .dashboard__elements--inner .user-dashboard-info table.complex-view tr td .table-layer-2 tr td {
+      width: 50px;
+      min-width: unset; }
   .dashboard__elements--inner .user-dashboard-info.admin-info .show-role-tab {
     background: #fd7702;
     border-radius: 5px 5px 0 0;
