@@ -1273,147 +1273,31 @@ Samvaarta.system = (() => {
     const userDashboard = () => {
         var userdashInfo = `
         <ul>
-            <li class="active">
+            <li id="" class="active" onclick="Samvaarta.userDashboard.docConversation();">
                 <div class="dashboard__elements--item">
                     <h2>
                         <img alt="" src="/images/conversation.png" width="25" height="25" />
-                        Conversational details
+                        Documenting Conversations
                     </h2>
                 </div>
-                <div class="details">
-                    <h3>Conversational Details</h3>
-                    <p>You are documenting the interaction of the day and uploading documents to support your effort</p>
-                    <div id="" class="details--items previous">
-                        <h3>Previous Interactions</h3>
-                        <p>No previous interactions</p>
-                    </div>
-                    <div id="" class="details--items current">
-                        <h3>Current Interactions</h3>
-                        <ul class="details--items__topics">
-                            <li class="">
-                                <label for="user_focus" class="topic">Focus of the day</label>
-                                <input type="text" id="user_focus" value="" class="input_txt_box" />
-                            </li>
-                            <li>
-                                <label for="user_last_commitment" class="topic">Last weeks commitment</label>
-                                <input type="text" id="user_last_commitment" value="" class="input_txt_box" />
-                            </li>
-                            <li>
-                                <label for="user_conversation" class="topic">Today’s conversation</label>
-                                <input type="text" id="user_conversation" value="" class="input_txt_box" />
-                            </li>
-                            <li>
-                                <label for="user_week_commitment" class="topic">Commitment for the week</label>
-                                <input type="text" id="user_week_commitment" value="" class="input_txt_box" />
-                            </li>
-                            <li>
-                                <label for="user_comments" class="topic">Coach’s Comments</label>
-                                <input type="text" id="user_comments" value="" class="input_txt_box" />
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="form-elm-section btn-container marg-t10">
-                        <button class="btn">Upload</button>
-                        <button class="btn">Submit</button>
-                    </div>
-                </div>
             </li>
-            <li>
+            <li onclick="Samvaarta.userDashboard.desObjective();">
                 <div class="dashboard__elements--item">
                     <h2>
                         <img alt="" src="/images/objective.png" width="25" height="25" />
                         Desired Objective
                     </h2>
-                </div>
-
-                <div class="details">
-                    <h3>Desired Objective</h3>
-                    <div class="details--items quantitative">
-                        <h3>Quantitative Parameters – <span>They refer to the past, current and future performance</span></h3>
-                        <h4>The following details needs to be filled up</h4>
-                        <ul class="details--items__topics">
-                            <li>Measurable parameters – 3</li>
-                            <li>Mention the units of measurement for example in% or unit</li>
-                            <li>Performance of the parameter over of last two month and current month Future months</li>
-                            <li>For example –
-                                <ul>
-                                    <li>Parameter - Emp attrition</li>
-                                    <li>Measurement - %: Performance jun - 16%, Jul - 17%, Aug - 16%</li>
-                                </ul> 
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="details--items qualitative">
-                        <h3>Qualitative Parameters – <span>They refer to the behavioural shift you desire</span></h3>
-                        <h4>The following details needs to be filled up</h4>
-                        <ul class="details--items__topics">
-                            <li>Mention the parameter</li>
-                            <li>Give a brief description of the parameter</li>
-                            <li>They should be influencing the quantitative parameter</li>
-                            <li>For Example 
-                                <ul>
-                                    <li>Parameter</li>
-                                    <li>Customer Relationship</li>
-                                    <li>Brief Des</li>
-                                    <li>Develop and maintain strong relationships with key clients and accounts</li>
-                                </ul>
-                            </li>
-                        </ul>
-                        <div class="qualitative__data">
-                            <table>
-                                <thead>
-                                    <tr class="user-dashboard-info__head-list">
-                                        <td>Parameter</td>
-                                        <td>Brief Description</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <input id="qualitative_param_1" class="input_txt_box" type="text" value="" />
-                                        </td>
-                                        <td>
-                                            <input id="qualitative_desc_1" class="input_txt_box" type="text" value="" />
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="form-elm-section marg-t10">
-                        <button class="btn">Submit</button>
-                    </div>
-                </div>
+                </div>                
             </li>
-            <li>
+            <li onclick="Samvaarta.userDashboard.desOutcomes();">
                 <div class="dashboard__elements--item">
                     <h2>
                         <img alt="" src="/images/outcomes.png" width="25" height="25" />
                         Desired Outcomes
                     </h2>
-                </div>
-                <div class="details">
-                    <h3>Desired Outcomes</h3>
-                    <p>Desired outcomes refers to the state you desire at the end of the period                    </p>
-                    <div class="details--items outcomes">
-                        <h4>The following details needs to be filled up</h4>
-                        <ul class="details--items__topics">
-                            <li>Mention the parameter</li>
-                            <li>Describe the outcome you like. This will include the way you will feel, hear, say and do after a desired a period of time</li>
-                            <li>For example
-                                <ul>
-                                    <li>Parameter – Manager Relationship</li>
-                                    <li>Brief Description – My manager is talking is trusting me by giving important tasks beyond the KRAs</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="form-elm-section marg-t10">
-                        <button class="btn">Submit</button>
-                    </div>
-                </div>
+                </div>                
             </li>
-            <li>
+            <li class="hide">
                 <div class="dashboard__elements--item">
                     <h2>
                         <img alt="" src="/images/comments.png" width="25" height="25" />
@@ -1428,54 +1312,19 @@ Samvaarta.system = (() => {
                         <button class="btn">Submit</button>
                     </div>
                 </div>
-            </li>
-            <li class="hide">
-                <div class="dashboard__elements--item">
-                    <h2>
-                        <img alt="" src="/images/upload.png" width="25" height="25" />
-                        Uploading Documents
-                    </h2>
-                </div>
-                <div class="details">
-                    <h3>Upload Documents</h3>
-                    <textarea name="" id="" cols="30" rows="10"></textarea>
-                    <div class="form-elm-section marg-t10">
-                        <button class="btn">Submit</button>
-                    </div>
-                </div>
-            </li>
-            <li>
+            </li>            
+            <li onclick="Samvaarta.userDashboard.codeOfEthics()">
                 <div class="dashboard__elements--item">
                     <h2>
                         <img alt="" src="/images/ethics.png" width="25" height="25" />
                         Code of ethics
                     </h2>
-                </div>
-                <div class="details codeofethics">
-                    <h3>Code of ethics</h3>
-                    <p>CoE refers to the responsible behavior that will be displayed by partied involved during the interaction period</p>
-                    <div class="details--items">
-                        <h3>Coachee’s Code of Ethics</h3>
-                        <ul class="list-view">
-                            <li>I shall be sharing the details truthfully without any fear</li>
-                            <li>I commit to implement my commitments made in the interaction</li>
-                            <li>The responsibility of my growth life within me</li>
-                        </ul>
-                    </div>
-                    <div class="details--items">
-                        <h3>The coach / Mentor has agreed to the following</h3>
-                        <ul class="list-view">
-                            <li>The coach will be 100% invested in you during the interaction</li>
-                            <li>The coach’s role will be to ask you question to help you explore</li>
-                            <li>The coach maintain the confidentiality of the interaction……</li>
-                        </ul>
-                    </div>
-                    <div class="form-elm-section marg-t10 hide">
-                        <button onclick="Samvaarta.userDashboard.codeOfEthics()" class="btn">Submit</button>
-                    </div>
-                </div>
+                </div>                
             </li>
         </ul>
+        <div class="user-activity-details">
+            <div class="user-activity-details__inner"></div>
+        </div>
         `;
         $(".user-dashboard-info").html(userdashInfo);
     };
@@ -1860,12 +1709,12 @@ Samvaarta.system = (() => {
         userEditProfileUpdated: userEditProfileUpdated,
         assignedTrainer: assignedTrainer,
         activateDeactivateUser: activateDeactivateUser,
-        adminDashboard: adminDashboard 
+        adminDashboard: adminDashboard,        
     };
 })();
 
 Samvaarta.userDashboard = (() => {
-    const codeOfEthics = () => {
+    const codeOfEthics1 = () => {
         let ethicsdata = $('.codeofethics ul').text();
         let paramObject = {
             url: apiUrl + "api/profile/code-of-ethics",
@@ -1894,6 +1743,31 @@ Samvaarta.userDashboard = (() => {
             ajaxSuccessCall,
             ajaxErrorCall
         );
+    }
+    const codeOfEthics = () => {
+        let codeOfEthics = `
+        <div class="details codeofethics">
+            <h3>Code of ethics</h3>
+            <p>CoE refers to the responsible behavior that will be displayed by partied involved during the interaction period</p>
+            <div class="details--items">
+                <h3>Coachee’s Code of Ethics</h3>
+                <ul class="list-view">
+                    <li>I shall be sharing the details truthfully without any fear</li>
+                    <li>I commit to implement my commitments made in the interaction</li>
+                    <li>The responsibility of my growth life within me</li>
+                </ul>
+            </div>
+            <div class="details--items">
+                <h3>The coach / Mentor has agreed to the following</h3>
+                <ul class="list-view">
+                    <li>The coach will be 100% invested in you during the interaction</li>
+                    <li>The coach’s role will be to ask you question to help you explore</li>
+                    <li>The coach maintain the confidentiality of the interaction……</li>
+                </ul>
+            </div>            
+        </div>
+        `;
+        $('.user-activity-details__inner').html(codeOfEthics);
     }
     const getCodeOfEthics = () => {
         let paramObject = {
@@ -2009,17 +1883,260 @@ Samvaarta.userDashboard = (() => {
         // );
         $('.upcoming_session_list').html('<h2>No upcoming session available.</h2>');
     }
+    const docConversation = () => {
+        let docCon = `
+        <div class="details">
+            <h3>Documenting Conversations</h3>
+            <p>They are filled in weekly ideally</p>
+            <p>Firstly – When a formal conversation with coach has taken place</p>
+            <p>Secondly – When you want to discuss any situation, share any development</p>
+            <p>You can upload a voice or video file, ppt, pdf, word or excel file</p>
+            <div id="" class="details--items previous">
+                <h3>Previous Interactions</h3>
+                <p>No previous interactions</p>
+            </div>
+            <div id="" class="details--items current">
+                <h3>Current Interactions</h3>
+                <ul class="details--items__topics">
+                    <li class="">
+                        <label for="user_focus" class="topic">Focus of the day</label>
+                        <input type="text" id="user_focus" value="" class="input_txt_box" />
+                    </li>
+                    <li>
+                        <label for="user_last_commitment" class="topic">Last weeks commitment</label>
+                        <input type="text" id="user_last_commitment" value="" class="input_txt_box" />
+                    </li>
+                    <li>
+                        <label for="user_conversation" class="topic">Today’s conversation</label>
+                        <input type="text" id="user_conversation" value="" class="input_txt_box" />
+                    </li>
+                    <li>
+                        <label for="user_week_commitment" class="topic">Commitment for the week</label>
+                        <input type="text" id="user_week_commitment" value="" class="input_txt_box" />
+                    </li>
+                    <li>
+                        <label for="user_comments" class="topic">Coach’s Comments</label>
+                        <input type="text" id="user_comments" value="" class="input_txt_box" />
+                    </li>
+                </ul>
+            </div>
+            <div class="form-elm-section btn-container marg-t10">
+                <button class="btn">Upload</button>
+                <button class="btn">Save</button>
+            </div>
+        </div>
+        `;
+        $('.user-activity-details__inner').html(docCon);
+    }
+    const desObjective = () => {
+        let objective = `
+        <div class="details">
+            <h3>Desired Objective</h3>
+            <div class="details--items quantitative">
+                <h3>Quantitative Parameters – <span>They refer to the past, current and future performance</span></h3>
+                <h4>The following details needs to be filled up</h4>
+                <ul class="details--items__topics">
+                    <li>Measurable parameters – 3</li>
+                    <li>Mention the units of measurement for example in% or unit</li>
+                    <li>Performance of the parameter over of last two month and current month Future months</li>
+                    <li>For example –
+                        <ul>
+                            <li>Parameter - Emp attrition</li>
+                            <li>Measurement - %: Performance jun - 16%, Jul - 17%, Aug - 16%</li>
+                        </ul> 
+                    </li>
+                </ul>
+                <div class="quantitative__data">
+                    <table class="complex-view">
+                        <thead>
+                            <tr class="user-dashboard-info__head-list">
+                                <td>Parameter</td>
+                                <td>Unit of Measurement</td>
+                                <td>Performance</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <table class="table-layer-2">
+                                        <tr>
+                                            <td>M-1</td>
+                                            <td>C</td>
+                                            <td>M+1</td>
+                                            <td>M+2</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input id="qualitative_param_1" class="input_txt_box" type="text" value="" />
+                                </td>
+                                <td>
+                                    <input id="qualitative_desc_1" class="input_txt_box" type="text" value="" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input id="qualitative_param_2" class="input_txt_box" type="text" value="" />
+                                </td>
+                                <td>
+                                    <input id="qualitative_desc_2" class="input_txt_box" type="text" value="" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input id="qualitative_param_3" class="input_txt_box" type="text" value="" />
+                                </td>
+                                <td>
+                                    <input id="qualitative_desc_3" class="input_txt_box" type="text" value="" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="details--items qualitative">
+                <h3>Qualitative Parameters – <span>They refer to the behavioural shift you desire</span></h3>
+                <h4>The following details needs to be filled up</h4>
+                <ul class="details--items__topics">
+                    <li>Mention the parameter</li>
+                    <li>Give a brief description of the parameter</li>
+                    <li>They should be influencing the quantitative parameter</li>
+                    <li>For Example 
+                        <ul>
+                            <li>Parameter</li>
+                            <li>Customer Relationship</li>
+                            <li>Brief Des</li>
+                            <li>Develop and maintain strong relationships with key clients and accounts</li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="qualitative__data">
+                    <table class="light-view">
+                        <thead>
+                            <tr class="user-dashboard-info__head-list">
+                                <td>Parameter</td>
+                                <td>Brief Description</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input id="qualitative_param_1" class="input_txt_box" type="text" value="" />
+                                </td>
+                                <td>
+                                    <input id="qualitative_desc_1" class="input_txt_box" type="text" value="" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input id="qualitative_param_2" class="input_txt_box" type="text" value="" />
+                                </td>
+                                <td>
+                                    <input id="qualitative_desc_2" class="input_txt_box" type="text" value="" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input id="qualitative_param_3" class="input_txt_box" type="text" value="" />
+                                </td>
+                                <td>
+                                    <input id="qualitative_desc_3" class="input_txt_box" type="text" value="" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-elm-section marg-t10">
+                <button class="btn">Submit</button>
+            </div>
+        </div>
+        `;
+        $('.user-activity-details__inner').html(objective);
+    }
+
+    const desOutcomes = () => {
+        let outcome = `
+        <div class="details">
+            <h3>Desired Outcomes</h3>
+            <p>Desired outcomes refers to the state you desire at the end of the period                    </p>
+            <div class="details--items outcomes">
+                <h4>The following details needs to be filled up</h4>
+                <ul class="details--items__topics">
+                    <li>Mention the parameter</li>
+                    <li>Describe the outcome you like. This will include the way you will feel, hear, say and do after a desired a period of time</li>
+                    <li>For example
+                        <ul>
+                            <li>Parameter – Manager Relationship</li>
+                            <li>Brief Description – My manager is talking is trusting me by giving important tasks beyond the KRAs</li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="outcomes__data">
+                    <table class="light-view">
+                        <thead>
+                            <tr class="user-dashboard-info__head-list">
+                                <td>Parameter</td>
+                                <td>Brief Description</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input id="outcomes_param_1" class="input_txt_box" type="text" value="" />
+                                </td>
+                                <td>
+                                    <input id="outcomes_desc_1" class="input_txt_box" type="text" value="" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input id="outcomes_param_2" class="input_txt_box" type="text" value="" />
+                                </td>
+                                <td>
+                                    <input id="outcomes_desc_2" class="input_txt_box" type="text" value="" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input id="outcomes_param_3" class="input_txt_box" type="text" value="" />
+                                </td>
+                                <td>
+                                    <input id="outcomes_desc_3" class="input_txt_box" type="text" value="" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-elm-section marg-t10">
+                <button class="btn">Submit</button>
+            </div>
+        </div>
+        `;
+        $('.user-activity-details__inner').html(outcome);
+    }
+
+
     return {
         codeOfEthics: codeOfEthics,
         getCodeOfEthics: getCodeOfEthics,
         updateSession: updateSession,
         getSessionList: getSessionList,
-        updateSessionForm: updateSessionForm
+        updateSessionForm: updateSessionForm,
+        docConversation: docConversation,
+        desObjective: desObjective,
+        desOutcomes: desOutcomes,
     }
 })();
 
 const dashboardTab = () => {
     const elm = document.querySelector(".dashboard__elements--inner");
+    Samvaarta.userDashboard.docConversation();
     if (elm) {
         $("body").on("click", ".user-dashboard-info li", (event) => {
             if (!event.currentTarget.classList.contains("active")) {
