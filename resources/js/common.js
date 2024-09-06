@@ -596,7 +596,7 @@ Samvaarta.system = (() => {
                     <button class="btn" type="button" onclick="Samvaarta.system.userRegistration()">Submit</button>
                 </div>
             </form>
-            <p class="reg-login-toggle">Already have the Samvaarta account?
+            <p class="reg-login-toggle">Already have the Goalsnu account?
                 <a role="button" tabindex="0" rel="noreferrer nofollow" class="login-link">Log in</a>
             </p>
         </div>
@@ -632,7 +632,7 @@ Samvaarta.system = (() => {
                     <button class="btn" type="button" onclick="Samvaarta.system.loginUser()">Submit</button>
                 </div>
             </form>
-            <p class="reg-login-toggle">Don't have the Samvaarta account?
+            <p class="reg-login-toggle">Don't have the Goalsnu account?
                 <a role="button" tabindex="0" rel="noreferrer nofollow" class="signup-link">Create one</a>
             </p>
         </div>
@@ -1290,7 +1290,7 @@ Samvaarta.system = (() => {
                     <div id="" class="details--items current">
                         <h3>Current Interactions</h3>
                         <ul class="details--items__topics">
-                            <li class="fa fa-arrow-right">
+                            <li class="">
                                 <label for="user_focus" class="topic">Focus of the day</label>
                                 <input type="text" id="user_focus" value="" class="input_txt_box" />
                             </li>
@@ -1312,7 +1312,8 @@ Samvaarta.system = (() => {
                             </li>
                         </ul>
                     </div>
-                    <div class="form-elm-section marg-t10">
+                    <div class="form-elm-section btn-container marg-t10">
+                        <button class="btn">Upload</button>
                         <button class="btn">Submit</button>
                     </div>
                 </div>
@@ -1321,13 +1322,64 @@ Samvaarta.system = (() => {
                 <div class="dashboard__elements--item">
                     <h2>
                         <img alt="" src="/images/objective.png" width="25" height="25" />
-                        Learning Objective
+                        Desired Objective
                     </h2>
                 </div>
 
                 <div class="details">
-                    <h3>Learning Objective</h3>
-                    <textarea name="" id="" cols="30" rows="10"></textarea>
+                    <h3>Desired Objective</h3>
+                    <div class="details--items quantitative">
+                        <h3>Quantitative Parameters – <span>They refer to the past, current and future performance</span></h3>
+                        <h4>The following details needs to be filled up</h4>
+                        <ul class="details--items__topics">
+                            <li>Measurable parameters – 3</li>
+                            <li>Mention the units of measurement for example in% or unit</li>
+                            <li>Performance of the parameter over of last two month and current month Future months</li>
+                            <li>For example –
+                                <ul>
+                                    <li>Parameter - Emp attrition</li>
+                                    <li>Measurement - %: Performance jun - 16%, Jul - 17%, Aug - 16%</li>
+                                </ul> 
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="details--items qualitative">
+                        <h3>Qualitative Parameters – <span>They refer to the behavioural shift you desire</span></h3>
+                        <h4>The following details needs to be filled up</h4>
+                        <ul class="details--items__topics">
+                            <li>Mention the parameter</li>
+                            <li>Give a brief description of the parameter</li>
+                            <li>They should be influencing the quantitative parameter</li>
+                            <li>For Example 
+                                <ul>
+                                    <li>Parameter</li>
+                                    <li>Customer Relationship</li>
+                                    <li>Brief Des</li>
+                                    <li>Develop and maintain strong relationships with key clients and accounts</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <div class="qualitative__data">
+                            <table>
+                                <thead>
+                                    <tr class="user-dashboard-info__head-list">
+                                        <td>Parameter</td>
+                                        <td>Brief Description</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <input id="qualitative_param_1" class="input_txt_box" type="text" value="" />
+                                        </td>
+                                        <td>
+                                            <input id="qualitative_desc_1" class="input_txt_box" type="text" value="" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                     <div class="form-elm-section marg-t10">
                         <button class="btn">Submit</button>
                     </div>
@@ -1337,13 +1389,25 @@ Samvaarta.system = (() => {
                 <div class="dashboard__elements--item">
                     <h2>
                         <img alt="" src="/images/outcomes.png" width="25" height="25" />
-                        Learning Outcomes
+                        Desired Outcomes
                     </h2>
                 </div>
                 <div class="details">
-                    <h3>Learning Outcomes</h3>
-                    <p>Please express yourself as how you plan to see yourself at the end of the interaction period in terms of how you will be experiencing</p>
-                    <textarea name="" id="" cols="30" rows="10"></textarea>
+                    <h3>Desired Outcomes</h3>
+                    <p>Desired outcomes refers to the state you desire at the end of the period                    </p>
+                    <div class="details--items outcomes">
+                        <h4>The following details needs to be filled up</h4>
+                        <ul class="details--items__topics">
+                            <li>Mention the parameter</li>
+                            <li>Describe the outcome you like. This will include the way you will feel, hear, say and do after a desired a period of time</li>
+                            <li>For example
+                                <ul>
+                                    <li>Parameter – Manager Relationship</li>
+                                    <li>Brief Description – My manager is talking is trusting me by giving important tasks beyond the KRAs</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
                     <div class="form-elm-section marg-t10">
                         <button class="btn">Submit</button>
                     </div>
@@ -1365,7 +1429,7 @@ Samvaarta.system = (() => {
                     </div>
                 </div>
             </li>
-            <li>
+            <li class="hide">
                 <div class="dashboard__elements--item">
                     <h2>
                         <img alt="" src="/images/upload.png" width="25" height="25" />
@@ -1406,7 +1470,7 @@ Samvaarta.system = (() => {
                             <li>The coach maintain the confidentiality of the interaction……</li>
                         </ul>
                     </div>
-                    <div class="form-elm-section marg-t10">
+                    <div class="form-elm-section marg-t10 hide">
                         <button onclick="Samvaarta.userDashboard.codeOfEthics()" class="btn">Submit</button>
                     </div>
                 </div>
@@ -1580,7 +1644,7 @@ Samvaarta.system = (() => {
         <div class="upcoming-session">
             <a href="/upcoming_session" data-type="upcoming-session">
                 <i class="fa fa-circle fa-fw"></i>
-                Upcoming Session
+                <span class="desktop-view">Upcoming Session</span>
             </a>
         </div>
         <div class="show-user-details__inner">
