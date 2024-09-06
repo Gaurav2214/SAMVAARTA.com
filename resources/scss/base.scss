@@ -176,6 +176,11 @@
     flex-direction: column;
     margin-bottom: rem(16);
     width: 100%;
+    &.btn-container{
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: rem(18);
+    }
     label {
         @include desc-6();
     }
@@ -423,8 +428,13 @@
                 max-width: rem(600);
             }
             ul {
-                @include set-flex-box();
+                @include set-flex-box($jc:center);
                 position: relative;
+                gap: rem(32);
+                @include breakpointmax($end-small){
+                    justify-content: flex-start;
+                    gap: rem(24);
+                }
                 li {
                     .dashboard__elements--item {
                         gap: rem(5);
@@ -449,6 +459,7 @@
                             width: rem(90);
                             gap: rem(5);
                             color: $clr-4;
+                            line-height: rem(20);
                         }
                         &:hover {
                             @include insert-box-shadow();
@@ -462,7 +473,7 @@
                         width: 100%;
                         left: 0;
                         & > h3 {
-                            @include heading-5();
+                            @include heading-5();                            
                         }
                         p {
                             @include desc-2();
@@ -472,6 +483,9 @@
                             margin-top: rem(20);
                             h3 {
                                 @include heading-6();
+                                span{
+                                    @include desc-2();
+                                }
                             }
                             .list-view {
                                 display: block;
@@ -487,23 +501,34 @@
                                 display: flex;
                                 flex-direction: column;
                                 padding-left: rem(20);    
-                                gap: rem(15);                            
-                                li{
-                                    &::before{
-                                        content: "\f061";
-                                        position: absolute;
-                                        left: 0;
-                                        display: inline-block;
-                                        font: normal normal normal 14px / 1 FontAwesome;
-                                        font-size: inherit;
-                                        text-rendering: auto;
-                                        -webkit-font-smoothing: antialiased;
-                                        -moz-osx-font-smoothing: grayscale;
-                                        color: $clr-29;
-                                    }
+                                gap: rem(15);    
+                                list-style-type: disc;                        
+                                li{                                    
                                     width: 100%;
                                     .topic{
                                         @include desc-5();
+                                    }
+                                }
+                            }
+                            &.quantitative, &.qualitative, &.outcomes{      
+                                .qualitative__data{
+                                    margin-top: rem(20);
+                                }                          
+                                h4{
+                                    @include desc-5();
+                                    margin-top: rem(24);
+                                }
+                                ul{
+                                    gap: rem(8);
+                                    li{
+                                        @include desc-2();
+                                        ul{
+                                            list-style-type: circle;
+                                            list-style-position: inside;
+                                            flex-direction: column;     
+                                            gap: rem(5);  
+                                            margin-top: rem(6);                                 
+                                        }
                                     }
                                 }
                             }
@@ -574,7 +599,10 @@
                             animation-direction: alternate;
                             color: red;
                         }
-                    }                    
+                    }  
+                    @include breakpointmax($end-small){
+                        top: rem(-7);
+                    }                  
                 }
                 .userName {
                     text-align: center;
@@ -631,10 +659,13 @@
                 }
             }
             .user-dashboard-info {
-                &.admin-info {
-                    table{
-                        width: 100%;
+                .user-data-list{
+                    @include breakpointmax($end-small){
+                        overflow-x: auto;
                     }
+                }
+                table{
+                    width: 100%;
                     tr {
                         justify-content: flex-start;
                         padding: rem(8) rem(14);
@@ -691,8 +722,19 @@
                             @include insert-box-shadow();
                             border-radius: rem(4);
                             background: linear-gradient(180deg, #eff5ff 0%, rgba(239, 245, 255, 0) 100%);
+                            border: none;
                         }
                     }
+                    &.light-view{
+                        tr{
+                            &.user-dashboard-info__head-list{
+
+                            }
+                        }
+                    }
+                }
+                
+                &.admin-info {                   
                     
                     .show-role-tab{                        
                         background: $clr-29;
