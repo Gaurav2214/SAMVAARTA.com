@@ -2035,6 +2035,7 @@ Samvaarta.userDashboard = (() => {
             const ajaxSuccessCall = (response) => {
                 console.log(response);
                 $('.upcoming_session_container input').val('');
+                getSessionList();
             };
 
             const ajaxErrorCall = (error) => {
@@ -2052,6 +2053,21 @@ Samvaarta.userDashboard = (() => {
             );
         }
     }
+    const displaySessionList = (response) => {
+        let sessionList = '';
+        response?.data?.data.map((item, index) => {
+            sessionList += `
+                <tr>
+                    <td>${index+1}</td>
+                    <td>${(item.session_date).split(' ')[0]}</td>
+                    <td>${item.topic}</td>
+                    <td>${item.duration}</td>
+                    <td>${item.trainer.name}</td>
+                </tr>
+            `;
+        });
+        $('.upcoming_session_list tbody').html(sessionList);
+    }
     const getSessionList = () => {
         let paramObject = {
             url: apiUrl + "api/admin/sessions",
@@ -2062,21 +2078,10 @@ Samvaarta.userDashboard = (() => {
             },
         };
 
-        const ajaxSuccessCall = (response) => {
-            let sessionList = '';
-            if(response?.data?.data?.length){
-                response?.data?.data.map((item, index) => {
-                    sessionList += `
-                        <tr>
-                            <td>${index+1}</td>
-                            <td>${item.session_date}</td>
-                            <td>${item.topic}</td>
-                            <td>${item.duration}</td>
-                            <td>${item.trainer.name}</td>
-                        </tr>
-                    `;
-                });
-                $('.upcoming_session_list tbody').html(sessionList);
+        const ajaxSuccessCall = (response) => {            
+            if(response?.data?.data?.length){                
+                Samvaarta.common.setLocalStorage('sessionList', response, expireTime);
+                displaySessionList(response);
             } else {
                 $('.upcoming_session_list').html('<h2>No upcoming session available.</h2>');
             }            
@@ -2096,6 +2101,16 @@ Samvaarta.userDashboard = (() => {
             ajaxErrorCall
         );
         
+    }
+    const interactionList = () => {
+        const interactionNameList = Samvaarta.common.getLocalStorage('sessionList');
+        let interactions = '<option>Choose Session</option>';
+        if(interactionNameList?.data?.data?.length){
+            interactionNameList?.data?.data.map((item, index) => {
+                interactions += `<option value="${item.session_id}">${item.topic}</option>`;
+            })
+            $('.details--items__topics #interaction_name').html(interactions);
+        }
     }
     const docConversation = () => {
         let docCon = `
@@ -2132,15 +2147,30 @@ Samvaarta.userDashboard = (() => {
                         <label for="user_comments" class="topic">Coach’s Comments</label>
                         <input type="text" id="user_comments" value="" class="input_txt_box" />
                     </li>
+                    <li>
+                        <label for="next_interaction_date" class="topic">Next Interaction Date</label>
+                        <input readonly placeholder="Next Interaction Date" type="text" id="next_interaction_date" value="" class="input_txt_box" />
+                        <script>$('#next_interaction_date').datepicker();</script>
+                    </li>
+                    <li>
+                        <label for="interaction_name" class="topic">Interaction Name</label>                        
+                        <div class="interaction_name">
+                            <select id="interaction_name" class="input_txt_box">
+                                
+                            </select>
+                        </div>
+                    </li>
                 </ul>
             </div>
             <div class="form-elm-section btn-container marg-t10">
                 <button class="btn">Upload</button>
                 <button class="btn">Save</button>
+                <button class="btn">Edit</button>
             </div>
         </div>
         `;
         $('.user-activity-details__inner').html(docCon);
+        setTimeout(() => {interactionList()},1000);
     }
     const desObjective = () => {
         let objective = `
@@ -2375,7 +2405,8 @@ Samvaarta.userDashboard = (() => {
         docConversation: docConversation,
         desObjective: desObjective,
         desOutcomes: desOutcomes,
-        trainerOptionList: trainerOptionList
+        trainerOptionList: trainerOptionList,
+        displaySessionList: displaySessionList,
     }
 })();
 
@@ -2446,8 +2477,12 @@ document.addEventListener("readystatechange", (event) => {
     }
 
     if (event.target.readyState === "complete") {
-        unvielImg();    
-        Samvaarta.userDashboard.getSessionList();
+        unvielImg();   
+        if(!Samvaarta.common.getLocalStorage('sessionList')){ 
+            Samvaarta.userDashboard.getSessionList();
+        } else {
+            Samvaarta.userDashboard.displaySessionList(Samvaarta.common.getLocalStorage('sessionList'));
+        }
     }
 });
 
