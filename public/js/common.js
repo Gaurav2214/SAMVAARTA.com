@@ -11,6 +11,12 @@ function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyri
 function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
 function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 Samvaarta.messageLog = {
   1: "Please provide your email ID",
   2: "Please provide a valid email ID",
@@ -33,6 +39,22 @@ Samvaarta.globalVar = Samvaarta.globalVar || {
   is_Loggedin: 0,
   oauthToken: "",
   currlocation: ""
+};
+var sessionStatus = {
+  'completed': 'completed',
+  'scheduled': 'scheduled',
+  'cancelled': 'cancelled',
+  'postponed': 'postponed'
+};
+var generateOptions = function generateOptions(response) {
+  var options = '';
+  for (var _i = 0, _Object$entries = Object.entries(response); _i < _Object$entries.length; _i++) {
+    var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+      key = _Object$entries$_i[0],
+      value = _Object$entries$_i[1];
+    options += "<option value=\"".concat(value, "\">").concat(value, "</option>");
+  }
+  return options;
 };
 var elementInViewport = function elementInViewport(el) {
   var top = el.offsetTop;
@@ -767,9 +789,9 @@ Samvaarta.system = function () {
     } else {
       if (window.location.pathname !== "/") {
         window.location.href = "/";
-        Samvaarta.system.createRegForm();
+        Samvaarta.system.createLoginForm();
       } else {
-        Samvaarta.system.createRegForm();
+        Samvaarta.system.createLoginForm();
       }
     }
   };
@@ -1080,7 +1102,7 @@ Samvaarta.system = function () {
     checkLoginStatus: checkLoginStatus,
     verifyEmail: verifyEmail,
     forgetPassword: forgetPassword,
-    createRegForm: createRegForm,
+    createLoginForm: createLoginForm,
     logout: logout,
     changePassword: changePassword,
     editProfile: editProfile,
@@ -1138,8 +1160,18 @@ Samvaarta.userDashboard = function () {
     };
     Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
   };
+  var trainerOptionList = function trainerOptionList() {
+    var trainerdata = Samvaarta.common.getLocalStorage('trainer_data');
+    var trainerList = '';
+    trainerList += "<select class=\"input_txt_box select-box\">\n            <option value=\"select\">Select Trainer</option>\n        ";
+    trainerdata.map(function (titem) {
+      trainerList += "<option value=\"".concat(titem.id, "\">").concat(titem.name, "</option>");
+    });
+    trainerList += "</select>";
+    return trainerList;
+  };
   var updateSessionForm = function updateSessionForm() {
-    var sessionForm = "\n            <div class=\"form-elm-section input_sec \">\n                <label for=\"session_date\">\n                    Session Date\n                </label>\n                <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_date\" class=\"input_txt_box\" value=\"\" title=\"\">\n                <p id=\"session_date_err\" class=\"error\"></p>\n            </div>\n            <div class=\"form-elm-section input_sec \">\n                <label for=\"session_name\">\n                    Session Name\n                </label>\n                <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_name\" class=\"input_txt_box\" value=\"\" title=\"\">\n                <p id=\"session_name_err\" class=\"error\"></p>\n            </div>\n            <div class=\"form-elm-section input_sec \">\n                <label for=\"session_time\">\n                    Session Time\n                </label>\n                <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_time\" class=\"input_txt_box\" value=\"\" title=\"\">\n                <p id=\"session_time_err\" class=\"error\"></p>\n            </div>\n            <div class=\"form-elm-section marg-t20\">\n                <input type=\"button\" class=\"btn submit-button2\" name=\"submit_profile\" onclick=\"Samvaarta.userDashboard.updateSession(1);\" value=\"Update Session\">\n            </div>\n        ";
+    var sessionForm = "\n            <div class=\"input-section-main\">\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"session_date\">\n                        Session Date\n                    </label>\n                    <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_date\" class=\"input_txt_box\" value=\"\" title=\"\">\n                    <p id=\"session_date_err\" class=\"error\"></p>\n                </div>\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"session_duration\">\n                        Session Duration\n                    </label>\n                    <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_duration\" class=\"input_txt_box\" value=\"\" title=\"\">\n                    <p id=\"session_duration_err\" class=\"error\"></p>\n                </div>\n            </div>\n            <div class=\"input-section-main\">\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"session_name\">\n                        Session Name\n                    </label>\n                    <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_name\" class=\"input_txt_box\" value=\"\" title=\"\">\n                    <p id=\"session_name_err\" class=\"error\"></p>\n                </div>\n                <div class=\"form-elm-section input_sec \">     \n                    <label for=\"session_name\">\n                        Session Status\n                    </label>           \n                    <select id=\"session_status\" class=\"input_txt_box select-box\">\n                        <option value=\"select\">Select Session Status</option>\n                        ".concat(generateOptions(sessionStatus), "\n                    </select>\n                    <p id=\"session_name_err\" class=\"error\"></p>\n                </div>\n            </div>\n            <div class=\"input-section-main\">\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"session_desc\">\n                        Session Description\n                    </label>\n                    <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_desc\" class=\"input_txt_box\" value=\"\" title=\"\">\n                    <p id=\"session_desc_err\" class=\"error\"></p>\n                </div>\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"assign_trainer\">\n                        Assign Trainer\n                    </label>\n                    ").concat(trainerOptionList(), "\n                    <p id=\"assign_trainer_err\" class=\"error\"></p>\n                </div>\n            </div>\n            <div class=\"form-elm-section marg-t20\">\n                <input type=\"button\" class=\"btn submit-button2\" name=\"submit_profile\" onclick=\"Samvaarta.userDashboard.updateSession(1);\" value=\"Update Session\">\n            </div>\n        ");
     $('.upcoming_session_container').html(sessionForm);
   };
   var updateSession = function updateSession() {
