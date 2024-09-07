@@ -8,13 +8,17 @@
         </div>
         <div class="upcoming_session_list">
             <table>
-                <tbody>
-                    <tr>
+                <thead>
+                    <tr class="user-dashboard-info__head-list">
                         <td>S.No.</td>
                         <td>Date</td>
                         <td>Session Name</td>
-                        <td>Timing</td>
+                        <td>During</td>
+                        <td>Trainer</td>
                     </tr>
+                </thead>
+                <tbody>
+
                 </tbody>
             </table>
         </div>

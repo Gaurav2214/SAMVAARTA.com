@@ -490,6 +490,8 @@ button,
     .form-elm-section .btn:hover, .form-elm-section .btn:focus {
       background: #d57521;
       color: #fff; }
+  .upcoming_session_container .form-elm-section .error.validation {
+    top: 64px; }
 
 .model-bg {
   position: fixed;
@@ -902,81 +904,6 @@ button,
   @media screen and (max-width: 1000px) {
     .dashboard__elements--inner .user-dashboard-info .user-data-list {
       overflow-x: auto; } }
-  .dashboard__elements--inner .user-dashboard-info table {
-    width: 100%; }
-    .dashboard__elements--inner .user-dashboard-info table tr {
-      justify-content: flex-start;
-      padding: 8px 14px;
-      gap: 10px;
-      border: 1px solid #e0e0e0;
-      border-top: none; }
-      .dashboard__elements--inner .user-dashboard-info table tr td {
-        font-size: 14px;
-        line-height: 21px;
-        font-family: "Open Sans", sans-serif;
-        font-weight: 500;
-        color: #262626;
-        padding: 8px; }
-        .dashboard__elements--inner .user-dashboard-info table tr td:first-of-type {
-          width: 6%; }
-        .dashboard__elements--inner .user-dashboard-info table tr td:nth-child(2) {
-          width: 18%; }
-        .dashboard__elements--inner .user-dashboard-info table tr td:nth-child(3) {
-          width: 25%; }
-        .dashboard__elements--inner .user-dashboard-info table tr td:nth-child(4) {
-          width: 45%;
-          display: flex;
-          justify-content: space-around; }
-        .dashboard__elements--inner .user-dashboard-info table tr td:nth-child(5) {
-          width: 15%;
-          text-align: center;
-          text-transform: capitalize; }
-        .dashboard__elements--inner .user-dashboard-info table tr td span {
-          width: 80px;
-          display: inline-block; }
-        .dashboard__elements--inner .user-dashboard-info table tr td .approved {
-          color: #397532; }
-        .dashboard__elements--inner .user-dashboard-info table tr td .denied {
-          color: #a7262b; }
-      .dashboard__elements--inner .user-dashboard-info table tr:last-of-type {
-        border-radius: 0 0 6px 6px; }
-      .dashboard__elements--inner .user-dashboard-info table tr:not(:first-of-type) {
-        cursor: pointer; }
-        .dashboard__elements--inner .user-dashboard-info table tr:not(:first-of-type):hover, .dashboard__elements--inner .user-dashboard-info table tr:not(:first-of-type):focus {
-          background: linear-gradient(180deg, #eff5ff 0%, rgba(239, 245, 255, 0) 100%); }
-      .dashboard__elements--inner .user-dashboard-info table tr.user-dashboard-info__head-list {
-        box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
-        border-radius: 4px;
-        background: linear-gradient(180deg, #eff5ff 0%, rgba(239, 245, 255, 0) 100%);
-        border: none; }
-    .dashboard__elements--inner .user-dashboard-info table.light-view tr td:nth-child(2) {
-      width: 70%; }
-    .dashboard__elements--inner .user-dashboard-info table.light-view tr:not(:first-of-type):hover, .dashboard__elements--inner .user-dashboard-info table.light-view tr:not(:first-of-type):focus {
-      background: transparent; }
-    .dashboard__elements--inner .user-dashboard-info table.complex-view tr td:first-of-type {
-      width: 5%; }
-    .dashboard__elements--inner .user-dashboard-info table.complex-view tr td:nth-child(2) {
-      width: 5%; }
-    .dashboard__elements--inner .user-dashboard-info table.complex-view tr td:last-of-type {
-      width: auto;
-      min-width: 80%; }
-    .dashboard__elements--inner .user-dashboard-info table.complex-view tr td .table-layer-2 tr td {
-      width: 70px;
-      min-width: unset;
-      text-align: center;
-      padding-bottom: 0; }
-      .dashboard__elements--inner .user-dashboard-info table.complex-view tr td .table-layer-2 tr td span {
-        border-radius: 3px;
-        padding: 5px;
-        display: block;
-        background: #e0e0e0;
-        width: 60px; }
-      .dashboard__elements--inner .user-dashboard-info table.complex-view tr td .table-layer-2 tr td .input_txt_box {
-        margin-top: 0;
-        width: 56px;
-        padding: 5px; }
-    .dashboard__elements--inner .user-dashboard-info table.complex-view tr:not(:first-of-type):hover, .dashboard__elements--inner .user-dashboard-info table.complex-view tr:not(:first-of-type):focus {
-      background: transparent; }
   .dashboard__elements--inner .user-dashboard-info.admin-info .show-role-tab {
     background: #fd7702;
     border-radius: 5px 5px 0 0;
@@ -1046,6 +973,81 @@ button,
           margin-top: 10px; }
     .dashboard__elements--inner .user-dashboard-info.admin-info .assigned-user-list:hover ul, .dashboard__elements--inner .user-dashboard-info.admin-info .assigned-user-list:focus ul {
       display: block; }
+  .dashboard__elements--inner table {
+    width: 100%; }
+    .dashboard__elements--inner table tr {
+      justify-content: flex-start;
+      padding: 8px 14px;
+      gap: 10px;
+      border: 1px solid #e0e0e0;
+      border-top: none; }
+      .dashboard__elements--inner table tr td {
+        font-size: 14px;
+        line-height: 21px;
+        font-family: "Open Sans", sans-serif;
+        font-weight: 500;
+        color: #262626;
+        padding: 8px; }
+        .dashboard__elements--inner table tr td:first-of-type {
+          width: 6%; }
+        .dashboard__elements--inner table tr td:nth-child(2) {
+          width: 18%; }
+        .dashboard__elements--inner table tr td:nth-child(3) {
+          width: 25%; }
+        .dashboard__elements--inner table tr td:nth-child(4) {
+          width: 45%;
+          display: flex;
+          justify-content: space-around; }
+        .dashboard__elements--inner table tr td:nth-child(5) {
+          width: 15%;
+          text-align: center;
+          text-transform: capitalize; }
+        .dashboard__elements--inner table tr td span {
+          width: 80px;
+          display: inline-block; }
+        .dashboard__elements--inner table tr td .approved {
+          color: #397532; }
+        .dashboard__elements--inner table tr td .denied {
+          color: #a7262b; }
+      .dashboard__elements--inner table tr:last-of-type {
+        border-radius: 0 0 6px 6px; }
+      .dashboard__elements--inner table tr:not(:first-of-type) {
+        cursor: pointer; }
+        .dashboard__elements--inner table tr:not(:first-of-type):hover, .dashboard__elements--inner table tr:not(:first-of-type):focus {
+          background: linear-gradient(180deg, #eff5ff 0%, rgba(239, 245, 255, 0) 100%); }
+      .dashboard__elements--inner table tr.user-dashboard-info__head-list {
+        box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+        background: linear-gradient(180deg, #eff5ff 0%, rgba(239, 245, 255, 0) 100%);
+        border: none; }
+    .dashboard__elements--inner table.light-view tr td:nth-child(2) {
+      width: 70%; }
+    .dashboard__elements--inner table.light-view tr:not(:first-of-type):hover, .dashboard__elements--inner table.light-view tr:not(:first-of-type):focus {
+      background: transparent; }
+    .dashboard__elements--inner table.complex-view tr td:first-of-type {
+      width: 5%; }
+    .dashboard__elements--inner table.complex-view tr td:nth-child(2) {
+      width: 5%; }
+    .dashboard__elements--inner table.complex-view tr td:last-of-type {
+      width: auto;
+      min-width: 80%; }
+    .dashboard__elements--inner table.complex-view tr td .table-layer-2 tr td {
+      width: 70px;
+      min-width: unset;
+      text-align: center;
+      padding-bottom: 0; }
+      .dashboard__elements--inner table.complex-view tr td .table-layer-2 tr td span {
+        border-radius: 3px;
+        padding: 5px;
+        display: block;
+        background: #e0e0e0;
+        width: 60px; }
+      .dashboard__elements--inner table.complex-view tr td .table-layer-2 tr td .input_txt_box {
+        margin-top: 0;
+        width: 56px;
+        padding: 5px; }
+    .dashboard__elements--inner table.complex-view tr:not(:first-of-type):hover, .dashboard__elements--inner table.complex-view tr:not(:first-of-type):focus {
+      background: transparent; }
 
 .component-divider {
   border-image: linear-gradient(90deg, #fff, #ccc, #fff);
@@ -1260,3 +1262,6 @@ button,
     .info_success {
       left: 24px;
       right: 24px; } }
+
+.trainer-list {
+  width: 100%; }

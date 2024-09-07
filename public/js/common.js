@@ -29,7 +29,8 @@ Samvaarta.messageLog = {
   9: "Entered passwords do not match",
   10: "Please enter a new password",
   11: "Password has been changed successfully.",
-  12: "Your Profile has been updated successfully."
+  12: "Your Profile has been updated successfully.",
+  13: "Please provide valid input"
 };
 var valError = true;
 var apiUrl = typeof appUrl != "undefined" ? appUrl : "http://127.0.0.1:8000/";
@@ -41,10 +42,22 @@ Samvaarta.globalVar = Samvaarta.globalVar || {
   currlocation: ""
 };
 var sessionStatus = {
-  'completed': 'completed',
-  'scheduled': 'scheduled',
-  'cancelled': 'cancelled',
-  'postponed': 'postponed'
+  'completed': 'Completed',
+  'scheduled': 'Scheduled',
+  'cancelled': 'Cancelled',
+  'postponed': 'Postponed'
+};
+var debounce = function debounce(fn, delay) {
+  var timer;
+  return function () {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      fn.apply(void 0, args);
+    }, delay);
+  };
 };
 var generateOptions = function generateOptions(response) {
   var options = '';
@@ -166,7 +179,7 @@ Samvaarta.common = function () {
     src_alphanumeric = src_alphanumeric.toLowerCase();
     var skip = 1;
     if (async == false && !(document.readyState == 'interactive' || document.readyState == 'complete')) {
-      document.write('<script type="text/javascript" src="' + src + '"><\/script>');
+      document.write('<script type="text/javascript" src="' + src + '"></script>');
       callback(params);
       return;
     }
@@ -216,6 +229,13 @@ Samvaarta.common = function () {
         handleBlankNameVal(3, 4);
       case "oauth_log_role":
         handleBlankNameVal(8);
+      case "datepicker":
+      case "session_duration":
+      case "session_desc":
+      case "session_name":
+      case "session_status":
+      case "assign_trainer":
+        handleBlankNameVal(13);
     }
     return error;
   };
@@ -310,7 +330,13 @@ Samvaarta.common = function () {
       oauth_log_role: validateName,
       oauth_curr_password: validatePassword,
       oauth_new_password1: validatePassword,
-      oauth_new_password2: validatePassword
+      oauth_new_password2: validatePassword,
+      datepicker: validateName,
+      session_duration: validateName,
+      session_desc: validateName,
+      session_name: validateName,
+      session_status: validateName,
+      assign_trainer: validateName
     };
 
     // Iterate through the validation functions
@@ -959,7 +985,10 @@ Samvaarta.system = function () {
             case 0:
               response = response.data.data;
               Samvaarta.common.setLocalStorage(type + '_data', response, expireTime);
-            case 2:
+              setTimeout(function () {
+                Samvaarta.userDashboard.trainerOptionList();
+              }, 1000);
+            case 3:
             case "end":
               return _context2.stop();
           }
@@ -1013,6 +1042,9 @@ Samvaarta.system = function () {
       Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
     } else {
       displayTypeWise(typeWisedata, type);
+      setTimeout(function () {
+        Samvaarta.userDashboard.trainerOptionList();
+      }, 1000);
     }
   };
   var showUserInfo = function showUserInfo(response) {
@@ -1211,47 +1243,74 @@ Samvaarta.userDashboard = function () {
     var trainerdata = Samvaarta.common.getLocalStorage('trainer_data');
     if (trainerdata) {
       var trainerList = '';
-      trainerList += "<select class=\"input_txt_box select-box\">\n                <option value=\"select\">Select Trainer</option>\n            ";
+      trainerList += "<select id=\"assign_trainer\" class=\"input_txt_box select-box\">\n                <option value=\"select\">Select Trainer</option>\n            ";
       trainerdata.map(function (titem) {
         trainerList += "<option value=\"".concat(titem.id, "\">").concat(titem.name, "</option>");
       });
       trainerList += "</select>";
-      return trainerList;
-    } else {
-      trainerOptionList();
+      $('.upcoming_session_container .trainer-list').html(trainerList);
     }
   };
   var updateSessionForm = function updateSessionForm() {
-    var sessionForm = "\n            <div class=\"input-section-main\">\n                <div class=\"form-elm-section input_sec\">\n                    <label for=\"datepickerInput\">\n                        Session Date\n                    </label>\n                    <input class=\"input_txt_box\" type=\"text\" id=\"datepicker\" placeholder=\"YYYY-MM-DD\"\n                        maxlength=\"10\">\n                    <p id=\"session_date_err\" class=\"error\"></p>\n                    <script>setTimeout(() => { $(\"#datepicker\").datepicker()}, 1000)</script>\n                    \n                </div>\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"session_duration\">\n                        Session Duration\n                    </label>\n                    <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_duration\" class=\"input_txt_box\" value=\"\" title=\"\">\n                    <p id=\"session_duration_err\" class=\"error\"></p>\n                </div>\n            </div>\n            <div class=\"input-section-main\">\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"session_name\">\n                        Session Name\n                    </label>\n                    <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_name\" class=\"input_txt_box\" value=\"\" title=\"\">\n                    <p id=\"session_name_err\" class=\"error\"></p>\n                </div>\n                <div class=\"form-elm-section input_sec \">     \n                    <label for=\"session_name\">\n                        Session Status\n                    </label>           \n                    <select id=\"session_status\" class=\"input_txt_box select-box\">\n                        <option value=\"select\">Select Session Status</option>\n                        ".concat(generateOptions(sessionStatus), "\n                    </select>\n                    <p id=\"session_name_err\" class=\"error\"></p>\n                </div>\n            </div>\n            <div class=\"input-section-main\">\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"session_desc\">\n                        Session Description\n                    </label>\n                    <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_desc\" class=\"input_txt_box\" value=\"\" title=\"\">\n                    <p id=\"session_desc_err\" class=\"error\"></p>\n                </div>\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"assign_trainer\">\n                        Assign Trainer\n                    </label>\n                    ").concat(trainerOptionList(), "\n                    <p id=\"assign_trainer_err\" class=\"error\"></p>\n                </div>\n            </div>\n            <div class=\"form-elm-section marg-t20\">\n                <input type=\"button\" class=\"btn submit-button2\" name=\"submit_profile\" onclick=\"Samvaarta.userDashboard.updateSession(1);\" value=\"Update Session\">\n            </div>\n        ");
+    var sessionForm = "\n            <div class=\"input-section-main\">\n                <div class=\"form-elm-section input_sec\">\n                    <label for=\"datepicker\">\n                        Session Date\n                    </label>\n                    <input readonly class=\"input_txt_box\" type=\"text\" id=\"datepicker\" placeholder=\"Date\"\n                        maxlength=\"10\">                    \n                    <script>setTimeout(() => { $(\"#datepicker\").datepicker()}, 1000)</script>  \n                    <p id=\"datepicker_err\" class=\"error validation\"></p>                  \n                </div>\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"session_duration\">\n                        Session Duration\n                    </label>\n                    <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_duration\" class=\"input_txt_box\" value=\"\" title=\"\">\n                    <p id=\"session_duration_err\" class=\"error validation\"></p>\n                </div>\n            </div>\n            <div class=\"input-section-main\">\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"session_name\">\n                        Session Name\n                    </label>\n                    <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_name\" class=\"input_txt_box\" value=\"\" title=\"\">\n                    <p id=\"session_name_err\" class=\"error validation\"></p>\n                </div>\n                <div class=\"form-elm-section input_sec \">     \n                    <label for=\"session_name\">\n                        Session Status\n                    </label>           \n                    <select id=\"session_status\" class=\"input_txt_box select-box\">\n                        <option value=\"select\">Select Session Status</option>\n                        ".concat(generateOptions(sessionStatus), "\n                    </select>\n                    <p id=\"session_name_err\" class=\"error validation\"></p>\n                </div>\n            </div>\n            <div class=\"input-section-main\">\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"session_desc\">\n                        Session Description\n                    </label>\n                    <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_desc\" class=\"input_txt_box\" value=\"\" title=\"\">\n                    <p id=\"session_desc_err\" class=\"error validation\"></p>\n                </div>\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"assign_trainer\">\n                        Assign Trainer\n                    </label>\n                    <div class=\"trainer-list\">\n                        <select class=\"input_txt_box select-box\">\n                            <option value=\"select\">Select Trainer</option>\n                        </select>\n                    </div>\n                    \n                    <p id=\"assign_trainer_err\" class=\"error validation\"></p>\n                </div>\n            </div>\n            <div class=\"form-elm-section marg-t20\">\n                <input type=\"button\" class=\"btn submit-button2\" name=\"submit_profile\" onclick=\"Samvaarta.userDashboard.updateSession(1);\" value=\"Update Session\">\n            </div>\n        ");
     $('.upcoming_session_container').html(sessionForm);
   };
   var updateSession = function updateSession() {
-    var paramObject = {
-      url: apiUrl + "api/update-session",
-      type: "POST",
-      headers: {
-        Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
-        Accept: "application/json"
+    var datepicker = document.getElementById("datepicker").value;
+    var sesDuration = document.getElementById("session_duration").value;
+    var session_name = document.getElementById("session_name").value;
+    var session_status = document.getElementById("session_status").value;
+    var session_desc = document.getElementById("session_desc").value;
+    var assign_trainer = document.getElementById("assign_trainer").value;
+    var errorElements = document.querySelectorAll(".error");
+    var date = new Date(datepicker);
+    var formattedDate = date.toISOString().split('T')[0];
+    errorElements.forEach(function (el) {
+      el.innerHTML = "";
+    });
+    var inputElements = document.querySelectorAll(".upcoming_session_container .input_txt_box");
+    for (var i = 0; i < inputElements.length; i++) {
+      if (inputElements[i].type !== "button" && inputElements[i].type !== "checkbox") {
+        Samvaarta.common.removeRequiredFields(inputElements[i]);
+        if (valError) {
+          return false;
+        }
       }
-    };
-    var ajaxSuccessCall = function ajaxSuccessCall(response) {
-      console.log(response);
-    };
-    var ajaxErrorCall = function ajaxErrorCall(error) {
-      if (error.response) {
-        $("#oauth_log_email_err").html(error.response.data.message).show();
-      }
-    };
-
-    // Samvaarta.common.hitAjaxApi(
-    //     paramObject,
-    //     ajaxSuccessCall,
-    //     ajaxErrorCall
-    // );
+    }
+    if (valError) {
+      return false;
+    } else {
+      var paramObject = {
+        url: apiUrl + "api/admin/session/add",
+        type: "POST",
+        headers: {
+          Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
+          Accept: "application/json"
+        },
+        data: {
+          session_date: formattedDate,
+          trainer_id: assign_trainer,
+          duration: sesDuration,
+          topic: session_name,
+          description: session_desc,
+          session_status: session_status
+        }
+      };
+      var ajaxSuccessCall = function ajaxSuccessCall(response) {
+        console.log(response);
+        $('.upcoming_session_container input').val('');
+      };
+      var ajaxErrorCall = function ajaxErrorCall(error) {
+        if (error.response) {
+          $("#oauth_log_email_err").html(error.response.data.message).show();
+        }
+      };
+      Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
+    }
   };
   var getSessionList = function getSessionList() {
     var paramObject = {
-      url: apiUrl + "api/update-session",
+      url: apiUrl + "api/admin/sessions",
       type: "GET",
       headers: {
         Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
@@ -1259,20 +1318,24 @@ Samvaarta.userDashboard = function () {
       }
     };
     var ajaxSuccessCall = function ajaxSuccessCall(response) {
-      console.log(response);
+      var _response$data2;
+      var sessionList = '';
+      if (response !== null && response !== void 0 && (_response$data2 = response.data) !== null && _response$data2 !== void 0 && (_response$data2 = _response$data2.data) !== null && _response$data2 !== void 0 && _response$data2.length) {
+        var _response$data3;
+        response === null || response === void 0 || (_response$data3 = response.data) === null || _response$data3 === void 0 || _response$data3.data.map(function (item, index) {
+          sessionList += "\n                        <tr>\n                            <td>".concat(index + 1, "</td>\n                            <td>").concat(item.session_date, "</td>\n                            <td>").concat(item.topic, "</td>\n                            <td>").concat(item.duration, "</td>\n                            <td>").concat(item.trainer.name, "</td>\n                        </tr>\n                    ");
+        });
+        $('.upcoming_session_list tbody').html(sessionList);
+      } else {
+        $('.upcoming_session_list').html('<h2>No upcoming session available.</h2>');
+      }
     };
     var ajaxErrorCall = function ajaxErrorCall(error) {
       if (error.response) {
         $("#oauth_log_email_err").html(error.response.data.message).show();
       }
     };
-
-    // Samvaarta.common.hitAjaxApi(
-    //     paramObject,
-    //     ajaxSuccessCall,
-    //     ajaxErrorCall
-    // );
-    $('.upcoming_session_list').html('<h2>No upcoming session available.</h2>');
+    Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
   };
   var docConversation = function docConversation() {
     var docCon = "\n        <div class=\"details\">\n            <h3>Documenting Conversations</h3>\n            <p>They are filled in weekly ideally</p>\n            <p>Firstly \u2013 When a formal conversation with coach has taken place</p>\n            <p>Secondly \u2013 When you want to discuss any situation, share any development</p>\n            <p>You can upload a voice or video file, ppt, pdf, word or excel file</p>\n            <div id=\"\" class=\"details--items previous\">\n                <h3>Previous Interactions</h3>\n                <p>No previous interactions</p>\n            </div>\n            <div id=\"\" class=\"details--items current\">\n                <h3>Current Interactions</h3>\n                <ul class=\"details--items__topics\">\n                    <li class=\"\">\n                        <label for=\"user_focus\" class=\"topic\">Focus of the day</label>\n                        <input type=\"text\" id=\"user_focus\" value=\"\" class=\"input_txt_box\" />\n                    </li>\n                    <li>\n                        <label for=\"user_last_commitment\" class=\"topic\">Last weeks commitment</label>\n                        <input type=\"text\" id=\"user_last_commitment\" value=\"\" class=\"input_txt_box\" />\n                    </li>\n                    <li>\n                        <label for=\"user_conversation\" class=\"topic\">Today\u2019s conversation</label>\n                        <input type=\"text\" id=\"user_conversation\" value=\"\" class=\"input_txt_box\" />\n                    </li>\n                    <li>\n                        <label for=\"user_week_commitment\" class=\"topic\">Commitment for the week</label>\n                        <input type=\"text\" id=\"user_week_commitment\" value=\"\" class=\"input_txt_box\" />\n                    </li>\n                    <li>\n                        <label for=\"user_comments\" class=\"topic\">Coach\u2019s Comments</label>\n                        <input type=\"text\" id=\"user_comments\" value=\"\" class=\"input_txt_box\" />\n                    </li>\n                </ul>\n            </div>\n            <div class=\"form-elm-section btn-container marg-t10\">\n                <button class=\"btn\">Upload</button>\n                <button class=\"btn\">Save</button>\n            </div>\n        </div>\n        ";
@@ -1294,7 +1357,8 @@ Samvaarta.userDashboard = function () {
     updateSessionForm: updateSessionForm,
     docConversation: docConversation,
     desObjective: desObjective,
-    desOutcomes: desOutcomes
+    desOutcomes: desOutcomes,
+    trainerOptionList: trainerOptionList
   };
 }();
 var dashboardTab = function dashboardTab() {
