@@ -248,6 +248,13 @@
             color: #fff;
         }
     }
+    .upcoming_session_container &{
+        .error {
+            &.validation{
+                top: rem(64);
+            }
+        }
+    }
 }
 .model-bg {
     position: fixed;
@@ -663,126 +670,7 @@
                     @include breakpointmax($end-small){
                         overflow-x: auto;
                     }
-                }
-                table{
-                    width: 100%;
-                    tr {
-                        justify-content: flex-start;
-                        padding: rem(8) rem(14);
-                        gap: rem(10);
-                        border: 1px solid #e0e0e0;
-                        border-top: none;
-                        td {
-                            @include desc-5();
-                            padding: rem(8);
-                            &:first-of-type() {
-                                width: 6%;
-                            }
-                            &:nth-child(2) {
-                                width: 18%;
-                            }
-                            &:nth-child(3) {
-                                width: 25%;
-                            }
-                            &:nth-child(4) {
-                                width: 45%;
-                                display: flex;
-                                justify-content: space-around;
-                            }
-                            &:nth-child(5) {
-                                width: 15%;
-                                text-align: center;
-                                text-transform: capitalize;
-                            }
-                            span{
-                                width: rem(80);
-                                display: inline-block;
-                            }
-                            .approved{
-                                color: $clr-28;
-                            }
-                            .denied{
-                                color: $clr-27;
-                            }
-                        }                        
-                        &:last-of-type() {
-                            border-radius: 0 0 rem(6) rem(6);
-                        }
-                        &:not(:first-of-type) {
-                            cursor: pointer;
-                            @include hover() {
-                                background: linear-gradient(
-                                    180deg,
-                                    #eff5ff 0%,
-                                    rgba(239, 245, 255, 0) 100%
-                                );
-                            }
-                        }
-                        &.user-dashboard-info__head-list {
-                            @include insert-box-shadow();
-                            border-radius: rem(4);
-                            background: linear-gradient(180deg, #eff5ff 0%, rgba(239, 245, 255, 0) 100%);
-                            border: none;
-                        }
-                    }
-                    &.light-view{
-                        tr{                            
-                            td {
-                                &:nth-child(2) {
-                                    width: 70%;
-                                }
-                            }
-                            &:not(:first-of-type) {
-                                @include hover() {
-                                    background: transparent;
-                                }
-                            }
-                        }
-                    }
-                    &.complex-view{
-                        tr{                            
-                            td {
-                                &:first-of-type {
-                                    width: 5%;
-                                }
-                                &:nth-child(2) {
-                                    width: 5%;
-                                }
-                                &:last-of-type {
-                                    width: auto;
-                                    min-width: 80%;
-                                }
-                                .table-layer-2{
-                                    tr{
-                                        td{
-                                            width: rem(70);
-                                            min-width: unset;
-                                            text-align: center; 
-                                            padding-bottom: 0;                                           
-                                            span{
-                                                border-radius: rem(3);
-                                                padding: rem(5);
-                                                display: block;
-                                                background: #e0e0e0;
-                                                width: rem(60);
-                                            }
-                                            .input_txt_box{
-                                                margin-top: 0;
-                                                width: rem(56);
-                                                padding: rem(5);
-                                            }     
-                                        }
-                                    }
-                                }                                
-                            }
-                            &:not(:first-of-type) {
-                                @include hover() {
-                                    background: transparent;
-                                }
-                            }
-                        }
-                    }                    
-                }
+                }               
                 
                 &.admin-info {    
                     .show-role-tab{                        
@@ -846,6 +734,125 @@
                         }
                     }
                 }
+            }
+            table{
+                width: 100%;
+                tr {
+                    justify-content: flex-start;
+                    padding: rem(8) rem(14);
+                    gap: rem(10);
+                    border: 1px solid #e0e0e0;
+                    border-top: none;
+                    td {
+                        @include desc-5();
+                        padding: rem(8);
+                        &:first-of-type() {
+                            width: 6%;
+                        }
+                        &:nth-child(2) {
+                            width: 18%;
+                        }
+                        &:nth-child(3) {
+                            width: 25%;
+                        }
+                        &:nth-child(4) {
+                            width: 45%;
+                            display: flex;
+                            justify-content: space-around;
+                        }
+                        &:nth-child(5) {
+                            width: 15%;
+                            text-align: center;
+                            text-transform: capitalize;
+                        }
+                        span{
+                            width: rem(80);
+                            display: inline-block;
+                        }
+                        .approved{
+                            color: $clr-28;
+                        }
+                        .denied{
+                            color: $clr-27;
+                        }
+                    }                        
+                    &:last-of-type() {
+                        border-radius: 0 0 rem(6) rem(6);
+                    }
+                    &:not(:first-of-type) {
+                        cursor: pointer;
+                        @include hover() {
+                            background: linear-gradient(
+                                180deg,
+                                #eff5ff 0%,
+                                rgba(239, 245, 255, 0) 100%
+                            );
+                        }
+                    }
+                    &.user-dashboard-info__head-list {
+                        @include insert-box-shadow();
+                        border-radius: rem(4);
+                        background: linear-gradient(180deg, #eff5ff 0%, rgba(239, 245, 255, 0) 100%);
+                        border: none;
+                    }
+                }
+                &.light-view{
+                    tr{                            
+                        td {
+                            &:nth-child(2) {
+                                width: 70%;
+                            }
+                        }
+                        &:not(:first-of-type) {
+                            @include hover() {
+                                background: transparent;
+                            }
+                        }
+                    }
+                }
+                &.complex-view{
+                    tr{                            
+                        td {
+                            &:first-of-type {
+                                width: 5%;
+                            }
+                            &:nth-child(2) {
+                                width: 5%;
+                            }
+                            &:last-of-type {
+                                width: auto;
+                                min-width: 80%;
+                            }
+                            .table-layer-2{
+                                tr{
+                                    td{
+                                        width: rem(70);
+                                        min-width: unset;
+                                        text-align: center; 
+                                        padding-bottom: 0;                                           
+                                        span{
+                                            border-radius: rem(3);
+                                            padding: rem(5);
+                                            display: block;
+                                            background: #e0e0e0;
+                                            width: rem(60);
+                                        }
+                                        .input_txt_box{
+                                            margin-top: 0;
+                                            width: rem(56);
+                                            padding: rem(5);
+                                        }     
+                                    }
+                                }
+                            }                                
+                        }
+                        &:not(:first-of-type) {
+                            @include hover() {
+                                background: transparent;
+                            }
+                        }
+                    }
+                }                    
             }
         }
     }
@@ -1146,6 +1153,9 @@
         left: rem(24);
         right: rem(24);
     }
+}
+.trainer-list{
+    width: 100%;
 }
 
 
