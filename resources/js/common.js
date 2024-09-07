@@ -24,6 +24,22 @@ Samvaarta.globalVar = Samvaarta.globalVar || {
     currlocation: "",
 };
 
+var sessionStatus = {
+    'completed': 'completed',
+    'scheduled': 'scheduled',
+    'cancelled': 'cancelled',
+    'postponed': 'postponed',
+};
+
+const generateOptions = (response) => {
+    let options = '';
+    for (const [key, value] of Object.entries(response)) {
+        options += `<option value="${value}">${value}</option>`;
+    }
+    return options;
+  }
+
+
 const elementInViewport = (el) => {
     var top = el.offsetTop;
     var left = el.offsetLeft;
@@ -1224,9 +1240,9 @@ Samvaarta.system = (() => {
         } else {
             if (window.location.pathname !== "/") {
                 window.location.href = "/";
-                Samvaarta.system.createRegForm();
+                Samvaarta.system.createLoginForm();
             } else {
-                Samvaarta.system.createRegForm();
+                Samvaarta.system.createLoginForm();
             }
         }
     };
@@ -1701,7 +1717,7 @@ Samvaarta.system = (() => {
         checkLoginStatus: checkLoginStatus,
         verifyEmail: verifyEmail,
         forgetPassword: forgetPassword,
-        createRegForm: createRegForm,
+        createLoginForm: createLoginForm,
         logout: logout,
         changePassword: changePassword,
         editProfile: editProfile,
@@ -1797,28 +1813,71 @@ Samvaarta.userDashboard = (() => {
             ajaxErrorCall
         );
     }
+    const trainerOptionList = () => {
+        var trainerdata = Samvaarta.common.getLocalStorage('trainer_data');
+        let trainerList = '';
+        trainerList += `<select class="input_txt_box select-box">
+            <option value="select">Select Trainer</option>
+        `;
+        trainerdata.map((titem) => {
+            trainerList += `<option value="${titem.id}">${titem.name}</option>`;
+        })
+        trainerList += `</select>`;
+        return trainerList;
+    }
     const updateSessionForm = () => {
+        
         let sessionForm = `
-            <div class="form-elm-section input_sec ">
-                <label for="session_date">
-                    Session Date
-                </label>
-                <input placeholder="" name="" type="text" id="session_date" class="input_txt_box" value="" title="">
-                <p id="session_date_err" class="error"></p>
+            <div class="input-section-main">
+                <div class="form-elm-section input_sec ">
+                    <label for="session_date">
+                        Session Date
+                    </label>
+                    <input placeholder="" name="" type="text" id="session_date" class="input_txt_box" value="" title="">
+                    <p id="session_date_err" class="error"></p>
+                </div>
+                <div class="form-elm-section input_sec ">
+                    <label for="session_duration">
+                        Session Duration
+                    </label>
+                    <input placeholder="" name="" type="text" id="session_duration" class="input_txt_box" value="" title="">
+                    <p id="session_duration_err" class="error"></p>
+                </div>
             </div>
-            <div class="form-elm-section input_sec ">
-                <label for="session_name">
-                    Session Name
-                </label>
-                <input placeholder="" name="" type="text" id="session_name" class="input_txt_box" value="" title="">
-                <p id="session_name_err" class="error"></p>
+            <div class="input-section-main">
+                <div class="form-elm-section input_sec ">
+                    <label for="session_name">
+                        Session Name
+                    </label>
+                    <input placeholder="" name="" type="text" id="session_name" class="input_txt_box" value="" title="">
+                    <p id="session_name_err" class="error"></p>
+                </div>
+                <div class="form-elm-section input_sec ">     
+                    <label for="session_name">
+                        Session Status
+                    </label>           
+                    <select id="session_status" class="input_txt_box select-box">
+                        <option value="select">Select Session Status</option>
+                        ${generateOptions(sessionStatus)}
+                    </select>
+                    <p id="session_name_err" class="error"></p>
+                </div>
             </div>
-            <div class="form-elm-section input_sec ">
-                <label for="session_time">
-                    Session Time
-                </label>
-                <input placeholder="" name="" type="text" id="session_time" class="input_txt_box" value="" title="">
-                <p id="session_time_err" class="error"></p>
+            <div class="input-section-main">
+                <div class="form-elm-section input_sec ">
+                    <label for="session_desc">
+                        Session Description
+                    </label>
+                    <input placeholder="" name="" type="text" id="session_desc" class="input_txt_box" value="" title="">
+                    <p id="session_desc_err" class="error"></p>
+                </div>
+                <div class="form-elm-section input_sec ">
+                    <label for="assign_trainer">
+                        Assign Trainer
+                    </label>
+                    ${trainerOptionList()}
+                    <p id="assign_trainer_err" class="error"></p>
+                </div>
             </div>
             <div class="form-elm-section marg-t20">
                 <input type="button" class="btn submit-button2" name="submit_profile" onclick="Samvaarta.userDashboard.updateSession(1);" value="Update Session">
