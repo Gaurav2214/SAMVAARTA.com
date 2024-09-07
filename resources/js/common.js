@@ -15,7 +15,7 @@ Samvaarta.messageLog = {
 
 var valError = true;
 var apiUrl = typeof(appUrl) != "undefined" ? appUrl : "http://127.0.0.1:8000/";
-var expireTime = 2 / (24 * 60);
+var expireTime = 1 / (24 * 60);
 
 Samvaarta.globalVar = Samvaarta.globalVar || {
     errorValueInFlow: "",
@@ -174,6 +174,61 @@ Samvaarta.common = (() => {
             .replace(/</g, "&lt;")
             .replace(/"/g, "&quot;");
     };
+    const loadScript = (src, callback, async, params) => {
+        if (typeof async == 'undefined')
+            async = true;
+        else
+            async = (async) ? true : false;
+        var s, r, t;
+        r = false;
+        
+        var src_alphanumeric = src.replace(/[^a-zA-Z0-9]+/g, '-');
+        src_alphanumeric = src_alphanumeric.toLowerCase();
+
+        var skip = 1;
+
+        if (async == false && !(document.readyState == 'interactive' || document.readyState == 'complete')) {
+            document.write('<script type="text/javascript" src="' + src + '"><\/script>');
+            callback(params);
+            return;
+        }
+
+        if (!(document.getElementById(src_alphanumeric)) && skip == 1) {
+            s = document.createElement('script');
+            s.type = 'text/javascript';
+            s.src = src;
+            s.id = src_alphanumeric;
+            if (async == true) {
+                s.async = true;
+                s.defer = true;
+            } else
+                s.async = false;
+            s.onload = s.onreadystatechange = function() {
+                if (!r && (!this.readyState || this.readyState == 'complete')) {
+                    r = true;
+                    if (typeof callback == 'function')
+                        callback(params);
+                    document.getElementById(s.id).setAttribute('data-ready', 1);
+                }
+            }
+            ;
+            t = document.getElementsByTagName('head')[0];
+            t.appendChild(s, t);
+        } else if (document.getElementById(src_alphanumeric)) {
+            if (document.getElementById(src_alphanumeric).getAttribute('data-ready') == 0 || document.getElementById(src_alphanumeric).getAttribute('data-ready') == null) {
+                setTimeout(function() {
+                    loadScript(src, callback, async, params);
+                }, 100);
+            } else {
+                if (typeof callback == 'function') {
+                    //callback.apply(null, Array.prototype.slice.call(params instanceof Array?params:[]));
+                    callback(params);
+                }
+
+            }
+
+        }
+    }
 
     var validateName = (name, key) => {
         var error = "";
@@ -415,6 +470,10 @@ Samvaarta.common = (() => {
         });
     }
 
+    const dataPicker = () => {
+        $( "#datepicker" ).datepicker("option", "dateFormat", "yy-mm-dd");      
+    }
+
     return {
         isNull: isNull,
         isBlank: isBlank,
@@ -428,7 +487,8 @@ Samvaarta.common = (() => {
         removeRequiredFields: removeRequiredFields,
         dateMonthYear: dateMonthYear,
         getLocation: getLocation,
-        toastMsg: toastMsg
+        toastMsg: toastMsg,
+        dataPicker: dataPicker,
     };
 })();
 
@@ -1815,26 +1875,33 @@ Samvaarta.userDashboard = (() => {
     }
     const trainerOptionList = () => {
         var trainerdata = Samvaarta.common.getLocalStorage('trainer_data');
-        let trainerList = '';
-        trainerList += `<select class="input_txt_box select-box">
-            <option value="select">Select Trainer</option>
-        `;
-        trainerdata.map((titem) => {
-            trainerList += `<option value="${titem.id}">${titem.name}</option>`;
-        })
-        trainerList += `</select>`;
-        return trainerList;
+        if(trainerdata){
+            let trainerList = '';
+            trainerList += `<select class="input_txt_box select-box">
+                <option value="select">Select Trainer</option>
+            `;
+            trainerdata.map((titem) => {
+                trainerList += `<option value="${titem.id}">${titem.name}</option>`;
+            })
+            trainerList += `</select>`;
+            return trainerList;
+        } else {
+            trainerOptionList();
+        }
     }
     const updateSessionForm = () => {
         
         let sessionForm = `
             <div class="input-section-main">
-                <div class="form-elm-section input_sec ">
-                    <label for="session_date">
+                <div class="form-elm-section input_sec">
+                    <label for="datepickerInput">
                         Session Date
                     </label>
-                    <input placeholder="" name="" type="text" id="session_date" class="input_txt_box" value="" title="">
+                    <input class="input_txt_box" type="text" id="datepicker" placeholder="YYYY-MM-DD"
+                        maxlength="10">
                     <p id="session_date_err" class="error"></p>
+                    <script>setTimeout(() => { $("#datepicker").datepicker()}, 1000)</script>
+                    
                 </div>
                 <div class="form-elm-section input_sec ">
                     <label for="session_duration">

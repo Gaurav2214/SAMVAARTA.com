@@ -11,14 +11,17 @@
 
     <!-- Styles -->
 
-
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.0/themes/base/jquery-ui.css">
 
     <link rel="stylesheet" type="text/css" href="{{ asset('css/base.css?mod=3') }}">
-    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous">
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.js" crossorigin="anonymous">
     </script>
+    <script src="https://code.jquery.com/ui/1.14.0/jquery-ui.js"></script>
+
     <script>
         var appUrl ='<?php echo env('APP_URL')?>';
-        var fileVersion = '2';
+        var fileVersion = '3';
     </script>
 </head>
 <body>
