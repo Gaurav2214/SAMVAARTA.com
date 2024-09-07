@@ -453,7 +453,7 @@ button,
     padding-left: 60px; }
     .form-elm-section.input_sec_num .input_txt_box::before {
       content: "";
-      border: 1px solid #ccc;
+      border: 1px solid #e0e0e0;
       display: block; }
   .form-elm-section.input_sec_num select {
     border: none;
@@ -776,7 +776,7 @@ button,
     .dashboard__elements--inner .user-activity-details .details textarea {
       margin-top: 30px;
       border-radius: 12px;
-      border: 1px solid #ccc;
+      border: 1px solid #e0e0e0;
       width: -webkit-fill-available;
       resize: none;
       outline: none;
@@ -888,7 +888,7 @@ button,
       justify-content: flex-start;
       padding: 8px 14px;
       gap: 10px;
-      border: 1px solid #ccc;
+      border: 1px solid #e0e0e0;
       border-top: none; }
       .dashboard__elements--inner .user-dashboard-info table tr td {
         font-size: 14px;
@@ -931,6 +931,8 @@ button,
         border: none; }
     .dashboard__elements--inner .user-dashboard-info table.light-view tr td:nth-child(2) {
       width: 70%; }
+    .dashboard__elements--inner .user-dashboard-info table.light-view tr:not(:first-of-type):hover, .dashboard__elements--inner .user-dashboard-info table.light-view tr:not(:first-of-type):focus {
+      background: transparent; }
     .dashboard__elements--inner .user-dashboard-info table.complex-view tr td:first-of-type {
       width: 5%; }
     .dashboard__elements--inner .user-dashboard-info table.complex-view tr td:nth-child(2) {
@@ -939,8 +941,22 @@ button,
       width: auto;
       min-width: 80%; }
     .dashboard__elements--inner .user-dashboard-info table.complex-view tr td .table-layer-2 tr td {
-      width: 50px;
-      min-width: unset; }
+      width: 70px;
+      min-width: unset;
+      text-align: center;
+      padding-bottom: 0; }
+      .dashboard__elements--inner .user-dashboard-info table.complex-view tr td .table-layer-2 tr td span {
+        border-radius: 3px;
+        padding: 5px;
+        display: block;
+        background: #e0e0e0;
+        width: 60px; }
+      .dashboard__elements--inner .user-dashboard-info table.complex-view tr td .table-layer-2 tr td .input_txt_box {
+        margin-top: 0;
+        width: 56px;
+        padding: 5px; }
+    .dashboard__elements--inner .user-dashboard-info table.complex-view tr:not(:first-of-type):hover, .dashboard__elements--inner .user-dashboard-info table.complex-view tr:not(:first-of-type):focus {
+      background: transparent; }
   .dashboard__elements--inner .user-dashboard-info.admin-info .show-role-tab {
     background: #fd7702;
     border-radius: 5px 5px 0 0;

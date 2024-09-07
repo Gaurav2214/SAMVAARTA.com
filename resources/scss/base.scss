@@ -209,7 +209,7 @@
             padding-left: rem(60);
             &::before {
                 content: "";
-                border: 1px solid #ccc;
+                border: 1px solid #e0e0e0;
                 display: block;
             }
         }
@@ -546,7 +546,7 @@
                     textarea {
                         margin-top: rem(30);
                         border-radius: rem(12);
-                        border: 1px solid #ccc;
+                        border: 1px solid #e0e0e0;
                         width: -webkit-fill-available;
                         resize: none;
                         outline: none;
@@ -670,7 +670,7 @@
                         justify-content: flex-start;
                         padding: rem(8) rem(14);
                         gap: rem(10);
-                        border: 1px solid #ccc;
+                        border: 1px solid #e0e0e0;
                         border-top: none;
                         td {
                             @include desc-5();
@@ -732,6 +732,11 @@
                                     width: 70%;
                                 }
                             }
+                            &:not(:first-of-type) {
+                                @include hover() {
+                                    background: transparent;
+                                }
+                            }
                         }
                     }
                     &.complex-view{
@@ -750,18 +755,36 @@
                                 .table-layer-2{
                                     tr{
                                         td{
-                                            width: rem(50);
+                                            width: rem(70);
                                             min-width: unset;
+                                            text-align: center; 
+                                            padding-bottom: 0;                                           
+                                            span{
+                                                border-radius: rem(3);
+                                                padding: rem(5);
+                                                display: block;
+                                                background: #e0e0e0;
+                                                width: rem(60);
+                                            }
+                                            .input_txt_box{
+                                                margin-top: 0;
+                                                width: rem(56);
+                                                padding: rem(5);
+                                            }     
                                         }
                                     }
+                                }                                
+                            }
+                            &:not(:first-of-type) {
+                                @include hover() {
+                                    background: transparent;
                                 }
                             }
                         }
                     }                    
                 }
                 
-                &.admin-info {                   
-                    
+                &.admin-info {    
                     .show-role-tab{                        
                         background: $clr-29;
                         border-radius: 5px 5px 0 0;

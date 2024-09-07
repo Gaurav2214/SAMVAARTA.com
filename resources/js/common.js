@@ -1960,10 +1960,10 @@ Samvaarta.userDashboard = (() => {
                                 <td>
                                     <table class="table-layer-2">
                                         <tr>
-                                            <td>M-1</td>
-                                            <td>C</td>
-                                            <td>M+1</td>
-                                            <td>M+2</td>
+                                            <td><span>M-1</span></td>
+                                            <td><span>C</span></td>
+                                            <td><span>M+1</span></td>
+                                            <td><span>M+2</span></td>
                                         </tr>
                                     </table>
                                 </td>
@@ -1977,6 +1977,16 @@ Samvaarta.userDashboard = (() => {
                                 <td>
                                     <input id="qualitative_desc_1" class="input_txt_box" type="text" value="" />
                                 </td>
+                                <td>
+                                    <table class="table-layer-2">
+                                        <tr>
+                                            <td><input id="qualitative_param_1_performance" class="input_txt_box" type="text" value=""></td>
+                                            <td><input id="qualitative_param_2_performance" class="input_txt_box" type="text" value=""></td>
+                                            <td><input id="qualitative_param_3_performance" class="input_txt_box" type="text" value=""></td>
+                                            <td><input id="qualitative_param_4_performance" class="input_txt_box" type="text" value=""></td>
+                                        </tr>
+                                    </table>
+                                </td>
                             </tr>
                             <tr>
                                 <td>
@@ -1985,6 +1995,16 @@ Samvaarta.userDashboard = (() => {
                                 <td>
                                     <input id="qualitative_desc_2" class="input_txt_box" type="text" value="" />
                                 </td>
+                                <td>
+                                    <table class="table-layer-2">
+                                        <tr>
+                                            <td><input id="qualitative_param_1_performance" class="input_txt_box" type="text" value=""></td>
+                                            <td><input id="qualitative_param_2_performance" class="input_txt_box" type="text" value=""></td>
+                                            <td><input id="qualitative_param_3_performance" class="input_txt_box" type="text" value=""></td>
+                                            <td><input id="qualitative_param_4_performance" class="input_txt_box" type="text" value=""></td>
+                                        </tr>
+                                    </table>
+                                </td>
                             </tr>
                             <tr>
                                 <td>
@@ -1992,6 +2012,16 @@ Samvaarta.userDashboard = (() => {
                                 </td>
                                 <td>
                                     <input id="qualitative_desc_3" class="input_txt_box" type="text" value="" />
+                                </td>
+                                <td>
+                                    <table class="table-layer-2">
+                                        <tr>
+                                            <td><input id="qualitative_param_1_performance" class="input_txt_box" type="text" value=""></td>
+                                            <td><input id="qualitative_param_2_performance" class="input_txt_box" type="text" value=""></td>
+                                            <td><input id="qualitative_param_3_performance" class="input_txt_box" type="text" value=""></td>
+                                            <td><input id="qualitative_param_4_performance" class="input_txt_box" type="text" value=""></td>
+                                        </tr>
+                                    </table>
                                 </td>
                             </tr>
                         </tbody>
