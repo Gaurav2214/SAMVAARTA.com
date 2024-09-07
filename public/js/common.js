@@ -33,7 +33,7 @@ Samvaarta.messageLog = {
 };
 var valError = true;
 var apiUrl = typeof appUrl != "undefined" ? appUrl : "http://127.0.0.1:8000/";
-var expireTime = 2 / (24 * 60);
+var expireTime = 1 / (24 * 60);
 Samvaarta.globalVar = Samvaarta.globalVar || {
   errorValueInFlow: "",
   is_Loggedin: 0,
@@ -157,6 +157,49 @@ Samvaarta.common = function () {
       return param;
     }
     return param.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+  };
+  var loadScript = function loadScript(src, callback, async, params) {
+    if (typeof async == 'undefined') async = true;else async = async ? true : false;
+    var s, r, t;
+    r = false;
+    var src_alphanumeric = src.replace(/[^a-zA-Z0-9]+/g, '-');
+    src_alphanumeric = src_alphanumeric.toLowerCase();
+    var skip = 1;
+    if (async == false && !(document.readyState == 'interactive' || document.readyState == 'complete')) {
+      document.write('<script type="text/javascript" src="' + src + '"><\/script>');
+      callback(params);
+      return;
+    }
+    if (!document.getElementById(src_alphanumeric) && skip == 1) {
+      s = document.createElement('script');
+      s.type = 'text/javascript';
+      s.src = src;
+      s.id = src_alphanumeric;
+      if (async == true) {
+        s.async = true;
+        s.defer = true;
+      } else s.async = false;
+      s.onload = s.onreadystatechange = function () {
+        if (!r && (!this.readyState || this.readyState == 'complete')) {
+          r = true;
+          if (typeof callback == 'function') callback(params);
+          document.getElementById(s.id).setAttribute('data-ready', 1);
+        }
+      };
+      t = document.getElementsByTagName('head')[0];
+      t.appendChild(s, t);
+    } else if (document.getElementById(src_alphanumeric)) {
+      if (document.getElementById(src_alphanumeric).getAttribute('data-ready') == 0 || document.getElementById(src_alphanumeric).getAttribute('data-ready') == null) {
+        setTimeout(function () {
+          loadScript(src, callback, async, params);
+        }, 100);
+      } else {
+        if (typeof callback == 'function') {
+          //callback.apply(null, Array.prototype.slice.call(params instanceof Array?params:[]));
+          callback(params);
+        }
+      }
+    }
   };
   var validateName = function validateName(name, key) {
     var error = "";
@@ -374,6 +417,9 @@ Samvaarta.common = function () {
       $('.info_consentmsg').remove();
     });
   };
+  var dataPicker = function dataPicker() {
+    $("#datepicker").datepicker("option", "dateFormat", "yy-mm-dd");
+  };
   return {
     isNull: isNull,
     isBlank: isBlank,
@@ -387,7 +433,8 @@ Samvaarta.common = function () {
     removeRequiredFields: removeRequiredFields,
     dateMonthYear: dateMonthYear,
     getLocation: getLocation,
-    toastMsg: toastMsg
+    toastMsg: toastMsg,
+    dataPicker: dataPicker
   };
 }();
 Samvaarta.model = function () {
@@ -1162,16 +1209,20 @@ Samvaarta.userDashboard = function () {
   };
   var trainerOptionList = function trainerOptionList() {
     var trainerdata = Samvaarta.common.getLocalStorage('trainer_data');
-    var trainerList = '';
-    trainerList += "<select class=\"input_txt_box select-box\">\n            <option value=\"select\">Select Trainer</option>\n        ";
-    trainerdata.map(function (titem) {
-      trainerList += "<option value=\"".concat(titem.id, "\">").concat(titem.name, "</option>");
-    });
-    trainerList += "</select>";
-    return trainerList;
+    if (trainerdata) {
+      var trainerList = '';
+      trainerList += "<select class=\"input_txt_box select-box\">\n                <option value=\"select\">Select Trainer</option>\n            ";
+      trainerdata.map(function (titem) {
+        trainerList += "<option value=\"".concat(titem.id, "\">").concat(titem.name, "</option>");
+      });
+      trainerList += "</select>";
+      return trainerList;
+    } else {
+      trainerOptionList();
+    }
   };
   var updateSessionForm = function updateSessionForm() {
-    var sessionForm = "\n            <div class=\"input-section-main\">\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"session_date\">\n                        Session Date\n                    </label>\n                    <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_date\" class=\"input_txt_box\" value=\"\" title=\"\">\n                    <p id=\"session_date_err\" class=\"error\"></p>\n                </div>\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"session_duration\">\n                        Session Duration\n                    </label>\n                    <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_duration\" class=\"input_txt_box\" value=\"\" title=\"\">\n                    <p id=\"session_duration_err\" class=\"error\"></p>\n                </div>\n            </div>\n            <div class=\"input-section-main\">\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"session_name\">\n                        Session Name\n                    </label>\n                    <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_name\" class=\"input_txt_box\" value=\"\" title=\"\">\n                    <p id=\"session_name_err\" class=\"error\"></p>\n                </div>\n                <div class=\"form-elm-section input_sec \">     \n                    <label for=\"session_name\">\n                        Session Status\n                    </label>           \n                    <select id=\"session_status\" class=\"input_txt_box select-box\">\n                        <option value=\"select\">Select Session Status</option>\n                        ".concat(generateOptions(sessionStatus), "\n                    </select>\n                    <p id=\"session_name_err\" class=\"error\"></p>\n                </div>\n            </div>\n            <div class=\"input-section-main\">\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"session_desc\">\n                        Session Description\n                    </label>\n                    <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_desc\" class=\"input_txt_box\" value=\"\" title=\"\">\n                    <p id=\"session_desc_err\" class=\"error\"></p>\n                </div>\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"assign_trainer\">\n                        Assign Trainer\n                    </label>\n                    ").concat(trainerOptionList(), "\n                    <p id=\"assign_trainer_err\" class=\"error\"></p>\n                </div>\n            </div>\n            <div class=\"form-elm-section marg-t20\">\n                <input type=\"button\" class=\"btn submit-button2\" name=\"submit_profile\" onclick=\"Samvaarta.userDashboard.updateSession(1);\" value=\"Update Session\">\n            </div>\n        ");
+    var sessionForm = "\n            <div class=\"input-section-main\">\n                <div class=\"form-elm-section input_sec\">\n                    <label for=\"datepickerInput\">\n                        Session Date\n                    </label>\n                    <input class=\"input_txt_box\" type=\"text\" id=\"datepicker\" placeholder=\"YYYY-MM-DD\"\n                        maxlength=\"10\">\n                    <p id=\"session_date_err\" class=\"error\"></p>\n                    <script>setTimeout(() => { $(\"#datepicker\").datepicker()}, 1000)</script>\n                    \n                </div>\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"session_duration\">\n                        Session Duration\n                    </label>\n                    <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_duration\" class=\"input_txt_box\" value=\"\" title=\"\">\n                    <p id=\"session_duration_err\" class=\"error\"></p>\n                </div>\n            </div>\n            <div class=\"input-section-main\">\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"session_name\">\n                        Session Name\n                    </label>\n                    <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_name\" class=\"input_txt_box\" value=\"\" title=\"\">\n                    <p id=\"session_name_err\" class=\"error\"></p>\n                </div>\n                <div class=\"form-elm-section input_sec \">     \n                    <label for=\"session_name\">\n                        Session Status\n                    </label>           \n                    <select id=\"session_status\" class=\"input_txt_box select-box\">\n                        <option value=\"select\">Select Session Status</option>\n                        ".concat(generateOptions(sessionStatus), "\n                    </select>\n                    <p id=\"session_name_err\" class=\"error\"></p>\n                </div>\n            </div>\n            <div class=\"input-section-main\">\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"session_desc\">\n                        Session Description\n                    </label>\n                    <input placeholder=\"\" name=\"\" type=\"text\" id=\"session_desc\" class=\"input_txt_box\" value=\"\" title=\"\">\n                    <p id=\"session_desc_err\" class=\"error\"></p>\n                </div>\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"assign_trainer\">\n                        Assign Trainer\n                    </label>\n                    ").concat(trainerOptionList(), "\n                    <p id=\"assign_trainer_err\" class=\"error\"></p>\n                </div>\n            </div>\n            <div class=\"form-elm-section marg-t20\">\n                <input type=\"button\" class=\"btn submit-button2\" name=\"submit_profile\" onclick=\"Samvaarta.userDashboard.updateSession(1);\" value=\"Update Session\">\n            </div>\n        ");
     $('.upcoming_session_container').html(sessionForm);
   };
   var updateSession = function updateSession() {
