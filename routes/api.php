@@ -28,6 +28,10 @@ Route::group(['middleware' => ['auth:api']], function() {
 		Route::post('/learning-outcome', 'Resource\ProfileController@add_edit_learning_outcome');
 
 		Route::get('/comments', 'Resource\ProfileController@getTrainerComments');
+
+		Route::get('/session-listing', 'Resource\ProfileController@getSessionListing');
+		Route::post('documenting-conversations','Resource\ProfileController@addDocumentingConversations');
+		Route::get('documenting-conversations','Resource\ProfileController@documentingConversations');
 	});
 	Route::group(['prefix' => 'trainer'], function() {
 		Route::post('/add_comment', 'Resource\ProfileController@add_comment');
@@ -48,6 +52,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth:api']], function () {
 	Route::get('sessions', 'Resource\SessionController@listing');
 	Route::post('session/add', 'Resource\SessionController@add');
 	Route::post('session/update/{id}', 'Resource\SessionController@update');
+	
 
 
 });
