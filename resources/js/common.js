@@ -1566,7 +1566,7 @@ Samvaarta.system = (() => {
 
     const showUserInfo = (response) => {
         var coachInfo = '', cochees = '', trainer = '', plannedSess = '', 
-        concluded = '', nextSession = '', completeSessCount = '', userExp = '', userFun = '';
+        concluded = '', nextSession = '', completeSessCount = '', userExp = '', userFun = '', downloadReport = '';
         if (response.user_type === "admin") {
             cochees = `<li>No of Coachees: <span></span></li>`;
             trainer = `<li>No of Coaches: <span></span></li>`;            
@@ -1583,6 +1583,7 @@ Samvaarta.system = (() => {
             nextSession = `<li>Next Session Date: <span></span></li>`;
             userExp = `<li>Experience: <span>${response.experience}</span></li>`;
             userFun = `<li>Function: <span>${response.user_function}</span></li>`;
+            downloadReport = `<li class="download-report"><button class="btn">Download Report</button></li>`;
 
         }
         const userInfo = `
@@ -1629,6 +1630,7 @@ Samvaarta.system = (() => {
                     <li>LinkedIn: <span>${response.linkedin_url}</span></li>
                     <li>Email Id: <span>${response.email}</span></li>
                     <li>Mobile No: <span>${response.phone}</span></li>
+                    ${downloadReport}
                 </ul>
             </div>
         </div>

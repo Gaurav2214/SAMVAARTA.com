@@ -875,6 +875,8 @@ button,
               text-transform: capitalize; }
             .dashboard__elements--inner .show-user-details__inner .detail-items ul li span {
               color: #736e6e; }
+            .dashboard__elements--inner .show-user-details__inner .detail-items ul li.download-report {
+              margin-top: 10px; }
         @media screen and (max-width: 1000px) {
           .dashboard__elements--inner .show-user-details__inner .detail-items:last-of-type {
             order: 1; }
