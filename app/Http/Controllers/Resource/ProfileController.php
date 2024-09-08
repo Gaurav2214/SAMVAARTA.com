@@ -461,7 +461,8 @@ class ProfileController extends Controller
 			'today_conversion'=>'required|max:255',
 			'feedback'=>'required|max:2000',
 			'next_date'=>'required|date_format:Y-m-d|after:today',
-			'session_id'=>'required'
+			'session_id'=>'required',
+			"last_week_comments"=>'required|max:500',
 		]);    
 
 		if (!$validator->fails())
@@ -480,7 +481,8 @@ class ProfileController extends Controller
 					'feedback'=>$request->feedback,
 					'next_date'=>$next_date->format('Y-m-d'),
 					'status'=>'1',
-					'session_id'=>$request->session_id
+					'session_id'=>$request->session_id,
+					"last_week_comments"=>$request->last_week_comments
 				]);
 
 			if($request->has('doc_file')) {
@@ -509,7 +511,8 @@ class ProfileController extends Controller
 			'feedback'=>'required|max:2000',
 			'next_date'=>'required|date_format:Y-m-d|after:today',
 			'session_id'=>'required',
-			'document_conversation_id'=>"required"
+			'document_conversation_id'=>"required",
+			"last_week_comments"=>'required|max:500',
 		]);    
 
 		if (!$validator->fails())
@@ -529,6 +532,7 @@ class ProfileController extends Controller
 			$DocumentConversations->feedback=$request->feedback;
 			$DocumentConversations->next_date=$request->next_date;
 			$DocumentConversations->session_id=$request->session_id;
+			$DocumentConversations->last_week_comments=$request->last_week_comments;
 
 			if($request->has('doc_file')) {
 				$DocumentConversations->doc_file = asset('storage/'.$request->doc_file->store('user/docs'));

@@ -32,7 +32,8 @@ class DocumentConversations extends Model
         'feedback',
         'focus_of_the_day',
         'today_conversion',
-        'next_date'
+        'next_date',
+        'last_week_comments'
     ];
    
     public  function session(){
