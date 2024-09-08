@@ -503,10 +503,23 @@ class ProfileController extends Controller
 
 	public function documentingConversations(Request $request){
 
-		$DocumentConversations= DocumentConversations::trainerComment()->with('session','session.trainer')->where('document_conversations.user_id', $request->user()->id)->select('document_conversations.*','trainer_comments.comments')->orderBy('document_conversations.id','desc')->get();
+		$request_for=$request->request_for??'';
+
+		$DocumentConversations= DocumentConversations::trainerComment()->with('session','session.trainer')->where('document_conversations.user_id', $request->user()->id)->select('document_conversations.*','trainer_comments.comments');
+
+		if($request_for=="current"){
+			$DocumentConversations=$DocumentConversations->orderBy('document_conversations.id','desc')->first();
+		}else{
+			if($request_for=="past"){
+				$DocumentConversations= $DocumentConversations->whereRaw('date(document_conversations.created_at) < DATE(now())')->get();
+			}else{
+				$DocumentConversations= $DocumentConversations->get();
+			}
+			
+		}
 
 		if($DocumentConversations){
-			return response()->json(['data' => $DocumentConversations,"success"=>"true","count"=>count($DocumentConversations)]);
+			return response()->json(['data' => $DocumentConversations,"success"=>"true","count"=>($request_for=="current"?1:count($DocumentConversations))]);
 		}else{
 			return response()->json(['data' =>[],"success"=>"false"]);
 		}
