@@ -18,6 +18,7 @@ use App\Models\TrainerComment;
 use App\Models\TrainingSession;
 use App\Models\DocumentConversations;
 use Carbon\Carbon;
+use App\Models\PerformanceData;
 class ProfileController extends Controller
 {
 	/**
@@ -501,6 +502,51 @@ class ProfileController extends Controller
 		}
 	}
 
+	public function updateDocumentingConversations(Request $request){
+		$validator =Validator::make($request->all(), [
+			'focus_of_the_day' => 'required|max:255',
+			'today_conversion'=>'required|max:255',
+			'feedback'=>'required|max:2000',
+			'next_date'=>'required|date_format:Y-m-d|after:today',
+			'session_id'=>'required',
+			'document_conversation_id'=>"required"
+		]);    
+
+		if (!$validator->fails())
+		{
+			
+			$user_id =  $request->user()->id;
+			$next_date = Carbon::parse($request->next_date);
+
+			$DocumentConversations=DocumentConversations::where('id',$request->document_conversation_id)->where("user_id",$user_id)->first();
+
+			if(empty($DocumentConversations)){
+				return response()->json(['message' =>"Document Conversation Id is not valid","success"=>"false"]);
+			}
+
+			$DocumentConversations->focus_of_the_day=$request->focus_of_the_day;
+			$DocumentConversations->today_conversion=$request->today_conversion;
+			$DocumentConversations->feedback=$request->feedback;
+			$DocumentConversations->next_date=$request->next_date;
+			$DocumentConversations->session_id=$request->session_id;
+
+			if($request->has('doc_file')) {
+				$DocumentConversations->doc_file = asset('storage/'.$request->doc_file->store('user/docs'));
+			}
+			$DocumentConversations->save();
+
+			if($DocumentConversations){
+				
+				return response()->json(['data' => $DocumentConversations,"success"=>"true","message"=>"Successfully Updated"]);
+			}else{
+				return response()->json(['data' => $DocumentConversations,"success"=>"false"]);
+			}
+
+		}else{
+			return $validator->errors();
+		}
+	}
+
 	public function documentingConversations(Request $request){
 
 		$request_for=$request->request_for??'';
@@ -525,7 +571,76 @@ class ProfileController extends Controller
 		}
 	}
 
+	public function desiredObjective(Request $request){
+		$user_id =  $request->user()->id;
+		$PerformanceData=PerformanceData::with('session')->where("user_id",$user_id)->orderBy('id',"desc")->get();
 
+		if($PerformanceData){
+			return response()->json(['data' => $PerformanceData,"success"=>"true","count"=>count($PerformanceData)]);
+		}else{
+			return response()->json(['data' =>[],"success"=>"false"]);
+		}
+
+	}
+
+	public function addDesiredObjective(Request $request){
+		$request_data=$request->post();
+
+		$user_id =  $request->user()->id;
+
+		$validator =Validator::make($request->all(), [
+				"performance"    => "required|array|min:3",
+    			"performance.*"  => "required|numeric",
+				"unit_measurement"    => "required|array|min:3",
+    			"unit_measurement.*"  => "required",
+				"parameter"    => "required|array|min:3",
+    			"parameter.*"  => "required",
+				'session_id'=>'required',
+			]);    
+		
+
+		if (!$validator->fails())
+		{
+
+			$PerformanceData=PerformanceData::where("user_id",$user_id)->where("session_id",$request->session_id)->orderBy('id',"desc")->get();
+
+			if(!empty($PerformanceData)){
+				return response()->json(['message' =>"Performance data is alreardy added for this session","success"=>"false"]);
+			}
+			
+			PerformanceData::where("user_id",$user_id)->update(['performance_status'=>'past']);
+
+			$performance = $request_data['performance'];
+			$parameter = $request_data['parameter'];
+			$unit_measurement = $request_data['unit_measurement'];
+
+			foreach($performance as $key=>$val){
+
+				PerformanceData::create(
+				[
+					'user_id'=>$user_id,
+					'performance'=>$val,
+					'kpi_score'=>0,
+					'parameter'=>$parameter[$key],
+					'unit_measurement'=>$unit_measurement[$key],
+					'status'=>'1',
+					'performance_status'=>'current',
+					'session_id'=>$request->session_id
+				]);
+			}
+			
+			$PerformanceData=PerformanceData::where("user_id",$user_id)->where("session_id",$request->session_id)->orderBy('id',"desc")->get();
+
+			if($PerformanceData){
+				return response()->json(['data' => $PerformanceData,"success"=>"true","message"=>"Successfully Added"]);
+			}else{
+				return response()->json(['data' => $PerformanceData,"success"=>"false"]);
+			}
+
+		}else{
+			return $validator->errors();
+		}
+	}
 	
 	
 }
