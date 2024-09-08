@@ -1396,7 +1396,7 @@ Samvaarta.system = (() => {
                     </h2>
                 </div>                
             </li>
-            <li id=""  onclick="Samvaarta.userDashboard.docConversation();">
+            <li id="" onclick="Samvaarta.userDashboard.docConversation();">
                 <div class="dashboard__elements--item">
                     <h2>
                         <img alt="" src="/images/conversation.png" width="25" height="25" />
@@ -1404,21 +1404,13 @@ Samvaarta.system = (() => {
                     </h2>
                 </div>
             </li>
-            <li class="hide">
+            <li onclick="Samvaarta.userDashboard.closureInteraction();">
                 <div class="dashboard__elements--item">
                     <h2>
-                        <img alt="" src="/images/comments.png" width="25" height="25" />
-                        Managers Comment
+                        <img alt="" src="/images/closure.png" width="25" height="25" />
+                        Closing of Interaction
                     </h2>
-                </div>
-                <div class="details">
-                    <h3>Managers Comment</h3>
-                    <p>The coach will share his perspective on the progress made based on the interactions</p>
-                    <textarea name="" id="" cols="30" rows="10"></textarea>
-                    <div class="form-elm-section marg-t10">
-                        <button class="btn">Submit</button>
-                    </div>
-                </div>
+                </div>                
             </li>            
             
         </ul>
@@ -1874,6 +1866,30 @@ Samvaarta.userDashboard = (() => {
         </div>
         `;
         $('.user-activity-details__inner').html(codeOfEthics);
+    }
+    const closureInteraction = () => {
+        let closure = `
+        <div class="details codeofethics">
+            <h3>Closure</h3>
+            <p>Please document your experience on your journey </p>
+            <div class="details--items">
+                <h3>User Experience</h3>
+                <ul class="list-view">
+                    <li>I enjoyed.... </li>
+                    <li>I wish....</li>
+                    <li>I gained by way of....</li>
+                </ul>
+            </div>
+            <div class="details--items">
+                <h3>Manager Experience</h3>
+                <ul class="list-view">
+                    <li>I enjoyed....</li>
+                    <li>I wish....</li>
+                </ul>
+            </div>            
+        </div>
+        `;
+        $('.user-activity-details__inner').html(closure);
     }
     const getCodeOfEthics = () => {
         let paramObject = {
@@ -2408,6 +2424,7 @@ Samvaarta.userDashboard = (() => {
         desOutcomes: desOutcomes,
         trainerOptionList: trainerOptionList,
         displaySessionList: displaySessionList,
+        closureInteraction: closureInteraction,
     }
 })();
 
