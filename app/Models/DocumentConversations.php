@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
-use App\Models\TrainerLearnerMapping;
+use App\Models\TrainingSession;
 
 class DocumentConversations extends Model
 {
@@ -35,5 +35,14 @@ class DocumentConversations extends Model
         'next_date'
     ];
    
+    public  function session(){
+        return $this->hasOne(TrainingSession::class,'session_id','session_id');
+    }
+
+    
+
+    public function scopeTrainerComment($query){
+        return $query->join('trainer_comments', 'trainer_comments.session_id', '=', 'document_conversations.session_id','left');
+    }
 
 }

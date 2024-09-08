@@ -501,6 +501,17 @@ class ProfileController extends Controller
 		}
 	}
 
+	public function documentingConversations(Request $request){
+
+		$DocumentConversations= DocumentConversations::trainerComment()->with('session','session.trainer')->where('document_conversations.user_id', $request->user()->id)->select('document_conversations.*','trainer_comments.comments')->orderBy('document_conversations.id','desc')->get();
+
+		if($DocumentConversations){
+			return response()->json(['data' => $DocumentConversations,"success"=>"true","count"=>count($DocumentConversations)]);
+		}else{
+			return response()->json(['data' =>[],"success"=>"false"]);
+		}
+	}
+
 
 	
 	
