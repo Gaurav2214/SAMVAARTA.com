@@ -1193,29 +1193,6 @@ Samvaarta.system = function () {
   };
 }();
 Samvaarta.userDashboard = function () {
-  var codeOfEthics1 = function codeOfEthics1() {
-    var ethicsdata = $('.codeofethics ul').text();
-    var paramObject = {
-      url: apiUrl + "api/profile/code-of-ethics",
-      type: "POST",
-      data: {
-        'comments': ethicsdata
-      },
-      headers: {
-        Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
-        Accept: "application/json"
-      }
-    };
-    var ajaxSuccessCall = function ajaxSuccessCall(response) {
-      console.log(response);
-    };
-    var ajaxErrorCall = function ajaxErrorCall(error) {
-      if (error.response) {
-        $("#oauth_log_email_err").html(error.response.data.message).show();
-      }
-    };
-    Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
-  };
   var codeOfEthics = function codeOfEthics() {
     var codeOfEthics = "\n        <div class=\"details codeofethics\">\n            <h3>Code of ethics</h3>\n            <p>CoE refers to the responsible behavior that will be displayed by partied involved during the interaction period</p>\n            <div class=\"details--items\">\n                <h3>Coachee\u2019s Code of Ethics</h3>\n                <ul class=\"list-view\">\n                    <li>I shall be sharing the details truthfully without any fear</li>\n                    <li>I commit to implement my commitments made in the interaction</li>\n                    <li>The responsibility of my growth life within me</li>\n                </ul>\n            </div>\n            <div class=\"details--items\">\n                <h3>The coach / Mentor has agreed to the following</h3>\n                <ul class=\"list-view\">\n                    <li>The coach will be 100% invested in you during the interaction</li>\n                    <li>The coach\u2019s role will be to ask you question to help you explore</li>\n                    <li>The coach maintain the confidentiality of the interaction\u2026\u2026</li>\n                </ul>\n            </div>            \n        </div>\n        ";
     $('.user-activity-details__inner').html(codeOfEthics);
@@ -1223,25 +1200,6 @@ Samvaarta.userDashboard = function () {
   var closureInteraction = function closureInteraction() {
     var closure = "\n        <div class=\"details codeofethics\">\n            <h3>Closure</h3>\n            <p>Please document your experience on your journey </p>\n            <div class=\"details--items\">\n                <h3>User Experience</h3>\n                <ul class=\"list-view\">\n                    <li>I enjoyed.... </li>\n                    <li>I wish....</li>\n                    <li>I gained by way of....</li>\n                </ul>\n            </div>\n            <div class=\"details--items\">\n                <h3>Manager Experience</h3>\n                <ul class=\"list-view\">\n                    <li>I enjoyed....</li>\n                    <li>I wish....</li>\n                </ul>\n            </div>            \n        </div>\n        ";
     $('.user-activity-details__inner').html(closure);
-  };
-  var getCodeOfEthics = function getCodeOfEthics() {
-    var paramObject = {
-      url: apiUrl + "api/profile/code-of-ethics",
-      type: "GET",
-      headers: {
-        Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
-        Accept: "application/json"
-      }
-    };
-    var ajaxSuccessCall = function ajaxSuccessCall(response) {
-      console.log(response);
-    };
-    var ajaxErrorCall = function ajaxErrorCall(error) {
-      if (error.response) {
-        $("#oauth_log_email_err").html(error.response.data.message).show();
-      }
-    };
-    Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
   };
   var trainerOptionList = function trainerOptionList() {
     var trainerdata = Samvaarta.common.getLocalStorage('trainer_data');
@@ -1375,7 +1333,6 @@ Samvaarta.userDashboard = function () {
   };
   return {
     codeOfEthics: codeOfEthics,
-    getCodeOfEthics: getCodeOfEthics,
     updateSession: updateSession,
     getSessionList: getSessionList,
     updateSessionForm: updateSessionForm,

@@ -492,7 +492,6 @@ Samvaarta.common = (() => {
             $('.info_consentmsg').remove();
         });
     }
-
     const dataPicker = () => {
         $( "#datepicker" ).datepicker("option", "dateFormat", "yy-mm-dd");      
     }
@@ -1812,36 +1811,7 @@ Samvaarta.system = (() => {
 })();
 
 Samvaarta.userDashboard = (() => {
-    const codeOfEthics1 = () => {
-        let ethicsdata = $('.codeofethics ul').text();
-        let paramObject = {
-            url: apiUrl + "api/profile/code-of-ethics",
-            type: "POST",
-            data: { 'comments': ethicsdata },
-            headers: {
-                Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
-                Accept: "application/json",
-            },
-        };
-
-        const ajaxSuccessCall = (response) => {
-            console.log(response);
-        };
-
-        const ajaxErrorCall = (error) => {
-            if (error.response) {
-                $("#oauth_log_email_err")
-                    .html(error.response.data.message)
-                    .show();
-            }
-        };
-
-        Samvaarta.common.hitAjaxApi(
-            paramObject,
-            ajaxSuccessCall,
-            ajaxErrorCall
-        );
-    }
+    
     const codeOfEthics = () => {
         let codeOfEthics = `
         <div class="details codeofethics">
@@ -1890,35 +1860,7 @@ Samvaarta.userDashboard = (() => {
         </div>
         `;
         $('.user-activity-details__inner').html(closure);
-    }
-    const getCodeOfEthics = () => {
-        let paramObject = {
-            url: apiUrl + "api/profile/code-of-ethics",
-            type: "GET",
-            headers: {
-                Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
-                Accept: "application/json",
-            },
-        };
-
-        const ajaxSuccessCall = (response) => {
-            console.log(response);
-        };
-
-        const ajaxErrorCall = (error) => {
-            if (error.response) {
-                $("#oauth_log_email_err")
-                    .html(error.response.data.message)
-                    .show();
-            }
-        };
-
-        Samvaarta.common.hitAjaxApi(
-            paramObject,
-            ajaxSuccessCall,
-            ajaxErrorCall
-        );
-    }
+    }    
     const trainerOptionList = () => {
         var trainerdata = Samvaarta.common.getLocalStorage('trainer_data');
         if(trainerdata){
@@ -2349,7 +2291,6 @@ Samvaarta.userDashboard = (() => {
         `;
         $('.user-activity-details__inner').html(objective);
     }
-
     const desOutcomes = () => {
         let outcome = `
         <div class="details">
@@ -2415,7 +2356,6 @@ Samvaarta.userDashboard = (() => {
 
     return {
         codeOfEthics: codeOfEthics,
-        getCodeOfEthics: getCodeOfEthics,
         updateSession: updateSession,
         getSessionList: getSessionList,
         updateSessionForm: updateSessionForm,
