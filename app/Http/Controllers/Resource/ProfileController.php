@@ -15,6 +15,7 @@ use App\Models\CodeOfEthics;
 use App\Models\LearningOutcomes;
 use App\Models\LearningObjective;
 use App\Models\TrainerComment;
+use App\Models\TrainingSession;
 
 class ProfileController extends Controller
 {
@@ -420,6 +421,41 @@ class ProfileController extends Controller
 		}
 	}
 
+	public function getSessionListing(Request $request){
+		$User = $request->user();
+
+		$request_for=$request->request_for??'';
+
+		if($User->user_type=="user"){
+			$User = User::with('trainer')->find($User->id);  
+			
+			$trainer_id= $User['trainer'][0]->id;
+			
+		}else if($User->user_type=="trainer"){
+			$User = User::with('users')->find($User->id);             
+		}
+
+		$TrainingSession =TrainingSession::with('trainer');
+		if($request_for=="past"){
+            $TrainingSession = $TrainingSession->whereRaw("date(session_date) < date(now())");
+        }else if($request_for=="today"){
+            $TrainingSession = $TrainingSession->whereRaw("date(session_date) = date(now())");
+        }else{
+			$TrainingSession = $TrainingSession->whereRaw("date(session_date) >= date(now())");
+		}
+
+
+        if($trainer_id>0){
+            $TrainingSession =  $TrainingSession->where('trainer_id',$trainer_id);
+        }
+
+        $TrainingSession=$TrainingSession->orderBy('session_date', 'DESC')->get();
+
+		
+
+        return response()->json(['success' =>'true','count'=>count($TrainingSession),'data'=>$TrainingSession]);
+
+	}
 	
 	
 }

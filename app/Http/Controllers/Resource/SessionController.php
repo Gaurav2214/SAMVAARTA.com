@@ -46,6 +46,16 @@ class SessionController extends Controller
 
         $TrainingSession=$TrainingSession->orderBy('session_date', 'DESC')->get();
 
+        if(!empty($TrainingSession)){
+			foreach($TrainingSession as $val){
+                if(!empty($val['trainer'])){
+                    $User = User::TrainerFilter($val['trainer']->id)->get();
+                    $val['trainer']['user']=$User;
+                    $val['trainer']['no_of_coachees']=count($User);
+                }
+            }
+		}
+
         return response()->json(['success' =>'true','count'=>count($TrainingSession),'data'=>$TrainingSession]);
     }
 

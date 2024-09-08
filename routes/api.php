@@ -28,6 +28,8 @@ Route::group(['middleware' => ['auth:api']], function() {
 		Route::post('/learning-outcome', 'Resource\ProfileController@add_edit_learning_outcome');
 
 		Route::get('/comments', 'Resource\ProfileController@getTrainerComments');
+
+		Route::get('/session-listing', 'Resource\ProfileController@getSessionListing');
 	});
 	Route::group(['prefix' => 'trainer'], function() {
 		Route::post('/add_comment', 'Resource\ProfileController@add_comment');
