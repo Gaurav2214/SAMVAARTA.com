@@ -1372,14 +1372,14 @@ Samvaarta.system = (() => {
     const userDashboard = () => {
         var userdashInfo = `
         <ul>
-            <li id="" class="active" onclick="Samvaarta.userDashboard.docConversation();">
+            <li class="active" onclick="Samvaarta.userDashboard.codeOfEthics()">
                 <div class="dashboard__elements--item">
                     <h2>
-                        <img alt="" src="/images/conversation.png" width="25" height="25" />
-                        Documenting Conversations
+                        <img alt="" src="/images/ethics.png" width="25" height="25" />
+                        Code of ethics
                     </h2>
-                </div>
-            </li>
+                </div>                
+            </li>            
             <li onclick="Samvaarta.userDashboard.desObjective();">
                 <div class="dashboard__elements--item">
                     <h2>
@@ -1395,6 +1395,14 @@ Samvaarta.system = (() => {
                         Desired Outcomes
                     </h2>
                 </div>                
+            </li>
+            <li id=""  onclick="Samvaarta.userDashboard.docConversation();">
+                <div class="dashboard__elements--item">
+                    <h2>
+                        <img alt="" src="/images/conversation.png" width="25" height="25" />
+                        Documenting Conversations
+                    </h2>
+                </div>
             </li>
             <li class="hide">
                 <div class="dashboard__elements--item">
@@ -1412,14 +1420,7 @@ Samvaarta.system = (() => {
                     </div>
                 </div>
             </li>            
-            <li onclick="Samvaarta.userDashboard.codeOfEthics()">
-                <div class="dashboard__elements--item">
-                    <h2>
-                        <img alt="" src="/images/ethics.png" width="25" height="25" />
-                        Code of ethics
-                    </h2>
-                </div>                
-            </li>
+            
         </ul>
         <div class="user-activity-details">
             <div class="user-activity-details__inner"></div>
@@ -1585,7 +1586,7 @@ Samvaarta.system = (() => {
             trainerDashboard();
         } else {
             userDashboard();
-            coachInfo = `<li>Coach Name: <span>${response.coach ? response.coach : ''}</span></li>`;
+            coachInfo = `<li>Coach Name: <span style="text-transform:capitalize;">${response.trainer.length ? response.trainer[0].name : ''}</span></li>`;
             plannedSess = `<li>Planned Sessions: <span>${response.plannedSession ? response.plannedSession : ''}</span></li>`;
             concluded = `<li>Concluded: <span></span></li>`;
             nextSession = `<li>Next Session Date: <span></span></li>`;
@@ -2412,7 +2413,7 @@ Samvaarta.userDashboard = (() => {
 
 const dashboardTab = () => {
     const elm = document.querySelector(".dashboard__elements--inner");
-    Samvaarta.userDashboard.docConversation();
+    Samvaarta.userDashboard.codeOfEthics();
     if (elm) {
         $("body").on("click", ".user-dashboard-info li", (event) => {
             if (!event.currentTarget.classList.contains("active")) {
