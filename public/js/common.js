@@ -35,11 +35,13 @@ Samvaarta.messageLog = {
 var valError = true;
 var apiUrl = typeof appUrl != "undefined" ? appUrl : "http://127.0.0.1:8000/";
 var expireTime = 1 / (24 * 60);
+var userType = '';
 Samvaarta.globalVar = Samvaarta.globalVar || {
   errorValueInFlow: "",
   is_Loggedin: 0,
   oauthToken: "",
-  currlocation: ""
+  currlocation: "",
+  userType: userType
 };
 var sessionStatus = {
   'completed': 'Completed',
@@ -58,6 +60,13 @@ var debounce = function debounce(fn, delay) {
       fn.apply(void 0, args);
     }, delay);
   };
+};
+var getDateFormat = function getDateFormat(validDate) {
+  if (validDate) {
+    var date = new Date(validDate);
+    formattedDate = date.toISOString().split('T')[0];
+    return formattedDate;
+  }
 };
 var generateOptions = function generateOptions(response) {
   var options = '';
@@ -235,6 +244,12 @@ Samvaarta.common = function () {
       case "session_name":
       case "session_status":
       case "assign_trainer":
+      case "user_focus":
+      case "user_last_commitment":
+      case "user_conversation":
+      case "user_week_commitment":
+      case "next_interaction_date":
+      case "interaction_name":
         handleBlankNameVal(13);
     }
     return error;
@@ -336,7 +351,13 @@ Samvaarta.common = function () {
       session_desc: validateName,
       session_name: validateName,
       session_status: validateName,
-      assign_trainer: validateName
+      assign_trainer: validateName,
+      user_focus: validateName,
+      user_last_commitment: validateName,
+      user_conversation: validateName,
+      user_week_commitment: validateName,
+      next_interaction_date: validateName,
+      interaction_name: validateName
     };
 
     // Iterate through the validation functions
@@ -690,6 +711,10 @@ Samvaarta.system = function () {
   };
   var logout = function logout() {
     Samvaarta.common.deleteLocalStorage("oauthUserData");
+    Samvaarta.common.deleteLocalStorage("AccessToken");
+    Samvaarta.common.deleteLocalStorage("sessionList");
+    Samvaarta.common.deleteLocalStorage("trainer_data");
+    Samvaarta.common.deleteLocalStorage("users_data");
     Samvaarta.globalVar.is_loggedin = 0;
     window.location.href = "/";
   };
@@ -1088,7 +1113,7 @@ Samvaarta.system = function () {
       Samvaarta.globalVar.oauthToken = Samvaarta.common.getLocalStorage("AccessToken");
       Samvaarta.globalVar.is_loggedin = 1;
       var username = userDetails.name.split(" ")[0];
-      var userType = userDetails.user_type;
+      userType = userDetails.user_type;
       var userTypreDescription = "";
       document.querySelector(".dashboard__header--welcome span").innerHTML = username;
       if (userType === "trainer") {
@@ -1261,9 +1286,8 @@ Samvaarta.userDashboard = function () {
         }
       };
       var ajaxSuccessCall = function ajaxSuccessCall(response) {
-        console.log(response);
         $('.upcoming_session_container input').val('');
-        getSessionList();
+        getSessionList("api/admin/sessions");
       };
       var ajaxErrorCall = function ajaxErrorCall(error) {
         if (error.response) {
@@ -1281,9 +1305,9 @@ Samvaarta.userDashboard = function () {
     });
     $('.upcoming_session_list tbody').html(sessionList);
   };
-  var getSessionList = function getSessionList() {
+  var getSessionList = function getSessionList(sessionURL) {
     var paramObject = {
-      url: apiUrl + "api/admin/sessions",
+      url: apiUrl + sessionURL,
       type: "GET",
       headers: {
         Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
@@ -1309,7 +1333,7 @@ Samvaarta.userDashboard = function () {
   var interactionList = function interactionList() {
     var _interactionNameList$;
     var interactionNameList = Samvaarta.common.getLocalStorage('sessionList');
-    var interactions = '<option>Choose Session</option>';
+    var interactions = '<option value="">Choose Session</option>';
     if (interactionNameList !== null && interactionNameList !== void 0 && (_interactionNameList$ = interactionNameList.data) !== null && _interactionNameList$ !== void 0 && (_interactionNameList$ = _interactionNameList$.data) !== null && _interactionNameList$ !== void 0 && _interactionNameList$.length) {
       var _interactionNameList$2;
       interactionNameList === null || interactionNameList === void 0 || (_interactionNameList$2 = interactionNameList.data) === null || _interactionNameList$2 === void 0 || _interactionNameList$2.data.map(function (item, index) {
@@ -1319,10 +1343,11 @@ Samvaarta.userDashboard = function () {
     }
   };
   var docConversation = function docConversation() {
-    var docCon = "\n        <div class=\"details\">\n            <h3>Documenting Conversations</h3>\n            <p>They are filled in weekly ideally</p>\n            <p>Firstly \u2013 When a formal conversation with coach has taken place</p>\n            <p>Secondly \u2013 When you want to discuss any situation, share any development</p>\n            <p>You can upload a voice or video file, ppt, pdf, word or excel file</p>\n            <div id=\"\" class=\"details--items previous\">\n                <h3>Previous Interactions</h3>\n                <p>No previous interactions</p>\n            </div>\n            <div id=\"\" class=\"details--items current\">\n                <h3>Current Interactions</h3>\n                <ul class=\"details--items__topics\">\n                    <li class=\"\">\n                        <label for=\"user_focus\" class=\"topic\">Focus of the day</label>\n                        <input type=\"text\" id=\"user_focus\" value=\"\" class=\"input_txt_box\" />\n                    </li>\n                    <li>\n                        <label for=\"user_last_commitment\" class=\"topic\">Last weeks commitment</label>\n                        <input type=\"text\" id=\"user_last_commitment\" value=\"\" class=\"input_txt_box\" />\n                    </li>\n                    <li>\n                        <label for=\"user_conversation\" class=\"topic\">Today\u2019s conversation</label>\n                        <input type=\"text\" id=\"user_conversation\" value=\"\" class=\"input_txt_box\" />\n                    </li>\n                    <li>\n                        <label for=\"user_week_commitment\" class=\"topic\">Commitment for the week</label>\n                        <input type=\"text\" id=\"user_week_commitment\" value=\"\" class=\"input_txt_box\" />\n                    </li>\n                    <li>\n                        <label for=\"user_comments\" class=\"topic\">Coach\u2019s Comments</label>\n                        <input type=\"text\" id=\"user_comments\" value=\"\" class=\"input_txt_box\" />\n                    </li>\n                    <li>\n                        <label for=\"next_interaction_date\" class=\"topic\">Next Interaction Date</label>\n                        <input readonly placeholder=\"Next Interaction Date\" type=\"text\" id=\"next_interaction_date\" value=\"\" class=\"input_txt_box\" />\n                        <script>$('#next_interaction_date').datepicker();</script>\n                    </li>\n                    <li>\n                        <label for=\"interaction_name\" class=\"topic\">Interaction Name</label>                        \n                        <div class=\"interaction_name\">\n                            <select id=\"interaction_name\" class=\"input_txt_box\">\n                                \n                            </select>\n                        </div>\n                    </li>\n                </ul>\n            </div>\n            <div class=\"form-elm-section btn-container marg-t10\">\n                <button class=\"btn\">Upload</button>\n                <button class=\"btn\">Save</button>\n                <button class=\"btn\">Edit</button>\n            </div>\n        </div>\n        ";
+    var docCon = "\n        <div class=\"details\">\n            <h3>Documenting Conversations</h3>\n            <p>They are filled in weekly ideally</p>\n            <p>Firstly \u2013 When a formal conversation with coach has taken place</p>\n            <p>Secondly \u2013 When you want to discuss any situation, share any development</p>\n            <p>You can upload a voice or video file, ppt, pdf, word or excel file</p>\n            <div id=\"\" class=\"details--items previous\">\n                <h3>Previous Interactions</h3>\n                <div class=\"previous-transactions\">\n                </div>\n            </div>\n            <div id=\"\" class=\"details--items current\">\n                <h3>Current Interactions</h3>\n                <ul class=\"details--items__topics\">\n                    <li class=\"\">\n                        <label for=\"user_focus\" class=\"topic\">Focus of the day</label>\n                        <input type=\"text\" id=\"user_focus\" value=\"\" class=\"input_txt_box\" />\n                        <p id=\"user_focus_err\" class=\"error\"></p>\n                    </li>\n                    <li>\n                        <label for=\"user_last_commitment\" class=\"topic\">Last weeks commitment</label>\n                        <input type=\"text\" id=\"user_last_commitment\" value=\"\" class=\"input_txt_box\" />\n                        <p id=\"user_last_commitment_err\" class=\"error\"></p>\n                    </li>\n                    <li>\n                        <label for=\"user_conversation\" class=\"topic\">Today\u2019s conversation</label>\n                        <input type=\"text\" id=\"user_conversation\" value=\"\" class=\"input_txt_box\" />\n                        <p id=\"user_conversation_err\" class=\"error\"></p>\n                    </li>\n                    <li>\n                        <label for=\"user_week_commitment\" class=\"topic\">Commitment for the week</label>\n                        <input type=\"text\" id=\"user_week_commitment\" value=\"\" class=\"input_txt_box\" />\n                        <p id=\"user_week_commitment_err\" class=\"error\"></p>\n                    </li>\n                    <li>\n                        <label for=\"user_comments\" class=\"topic\">Coach\u2019s Comments</label>\n                        <input readonly type=\"text\" id=\"user_comments\" value=\"\" class=\"input_txt_box\" />\n                    </li>\n                    <li>\n                        <label for=\"next_interaction_date\" class=\"topic\">Next Interaction Date</label>\n                        <input readonly placeholder=\"Next Interaction Date\" type=\"text\" id=\"next_interaction_date\" value=\"\" class=\"input_txt_box\" />\n                        <script>$('#next_interaction_date').datepicker();</script>\n                        <p id=\"next_interaction_date_err\" class=\"error\"></p>\n                    </li>\n                    <li>\n                        <label for=\"interaction_name\" class=\"topic\">Interaction Name</label>                        \n                        <div class=\"interaction_name\">\n                            <select id=\"interaction_name\" class=\"input_txt_box\">\n                                \n                            </select>\n                            <p id=\"interaction_name_err\" class=\"error\"></p>\n                        </div>\n                    </li>\n                </ul>\n            </div>\n            <div class=\"form-elm-section btn-container marg-t10\">\n                <input type=\"file\" id=\"hiddenFileInput\" style=\"display:none;\" onchange=\"displayFileName()\">\n                <button class=\"btn\" onclick=\"document.getElementById('hiddenFileInput').click();\">Upload File</button>\n                <span id=\"fileNameDisplay\"></span>\n                <button class=\"btn\" onclick=\"Samvaarta.setGetUserDashboard.setDocConversation()\">Save</button>\n                <button class=\"btn\">Edit</button>\n                <script>\n                    function displayFileName() {\n                        const fileInput = document.getElementById('hiddenFileInput');\n                        const fileNameDisplay = document.getElementById('fileNameDisplay');\n                        \n                        if (fileInput.files.length > 0) {\n                            // Get the name of the selected file\n                            const fileName = fileInput.files[0].name;\n                            fileNameDisplay.textContent = fileName;\n                        } else {\n                            fileNameDisplay.textContent = \"\";\n                        }\n                    }\n                </script>\n            </div>\n        </div>\n        ";
     $('.user-activity-details__inner').html(docCon);
     setTimeout(function () {
       interactionList();
+      Samvaarta.setGetUserDashboard.getDocConversation();
     }, 1000);
   };
   var desObjective = function desObjective() {
@@ -1344,6 +1369,114 @@ Samvaarta.userDashboard = function () {
     trainerOptionList: trainerOptionList,
     displaySessionList: displaySessionList,
     closureInteraction: closureInteraction
+  };
+}();
+Samvaarta.setGetUserDashboard = function () {
+  var setDocConversation = function setDocConversation() {
+    var user_focus = document.getElementById("user_focus").value;
+    var last_commitment = document.getElementById("user_last_commitment").value;
+    var user_conversation = document.getElementById("user_conversation").value;
+    var week_commitment = document.getElementById("user_week_commitment").value;
+    var next_interaction_date = document.getElementById("next_interaction_date").value;
+    var interaction_name = document.getElementById("interaction_name").value;
+    var fileupload = document.getElementById("hiddenFileInput").files[0].name;
+    var errorElements = document.querySelectorAll(".error");
+    var formattedDate = '';
+    if (next_interaction_date) {
+      var date = new Date(next_interaction_date);
+      formattedDate = date.toISOString().split('T')[0];
+    }
+    errorElements.forEach(function (el) {
+      el.innerHTML = "";
+    });
+    var inputElements = document.querySelectorAll(".details--items__topics .input_txt_box");
+    for (var i = 0; i < inputElements.length; i++) {
+      if (inputElements[i].type !== "button" && inputElements[i].type !== "checkbox") {
+        Samvaarta.common.removeRequiredFields(inputElements[i]);
+        if (valError) {
+          return false;
+        }
+      }
+    }
+    if (valError) {
+      return false;
+    } else {
+      var paramObject = {
+        url: apiUrl + "api/profile/documenting-conversations",
+        type: "POST",
+        headers: {
+          Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
+          Accept: "application/json"
+        },
+        data: {
+          next_date: formattedDate,
+          focus_of_the_day: user_focus,
+          today_conversion: user_conversation,
+          feedback: week_commitment,
+          session_id: interaction_name,
+          last_week_comments: last_commitment,
+          doc_file: fileupload
+        }
+      };
+      var ajaxSuccessCall = function ajaxSuccessCall(response) {
+        var _response$data4;
+        $('.details--items__topics input').val('');
+        if ((response === null || response === void 0 || (_response$data4 = response.data) === null || _response$data4 === void 0 ? void 0 : _response$data4.success) === 'true') {
+          getDocConversation();
+        } else {
+          $("#interaction_name_err").html(response === null || response === void 0 ? void 0 : response.data).show();
+        }
+      };
+      var ajaxErrorCall = function ajaxErrorCall(error) {
+        if (error.response) {
+          $("#interaction_name_err").html(error.response.data.message).show();
+        }
+      };
+      Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
+    }
+  };
+  var previousTransactions = function previousTransactions(response) {
+    var _response$data5;
+    console.log(response);
+    var previous = "";
+    if (response !== null && response !== void 0 && (_response$data5 = response.data) !== null && _response$data5 !== void 0 && _response$data5.length) {
+      previous += "<table>\n                <tr class=\"user-dashboard-info__head-list\">\n                    <td>S.No</td>\n                    <td>Date</td>\n                    <td>Transaction</td>\n                </tr>\n            ";
+      response === null || response === void 0 || response.data.map(function (item, index) {
+        previous += "<tr>\n                    <td>".concat(index + 1, "</td>\n                    <td>").concat(getDateFormat(item.created_at), "</td>\n                    <td session-id=\"").concat(item.session.session_id, "\">").concat(item.session.topic, "</td>\n                </tr>");
+      });
+      $('.previous-transactions').html(previous);
+    } else {
+      $('.previous-transactions').html('<p>No previous interactions</p>');
+    }
+  };
+  var getDocConversation = function getDocConversation() {
+    var paramObject = {
+      url: apiUrl + "api/profile/documenting-conversations",
+      type: "GET",
+      headers: {
+        Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
+        Accept: "application/json"
+      }
+    };
+    var ajaxSuccessCall = function ajaxSuccessCall(response) {
+      var _response$data6;
+      if ((response === null || response === void 0 || (_response$data6 = response.data) === null || _response$data6 === void 0 ? void 0 : _response$data6.success) === 'true') {
+        previousTransactions(response === null || response === void 0 ? void 0 : response.data);
+      } else {
+        $("#interaction_name_err").html(response === null || response === void 0 ? void 0 : response.data).show();
+      }
+    };
+    var ajaxErrorCall = function ajaxErrorCall(error) {
+      if (error.response) {
+        $("#interaction_name_err").html(error.response.data.message).show();
+      }
+    };
+    Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
+  };
+  return {
+    setDocConversation: setDocConversation,
+    getDocConversation: getDocConversation,
+    previousTransactions: previousTransactions
   };
 }();
 var dashboardTab = function dashboardTab() {
@@ -1407,7 +1540,7 @@ document.addEventListener("readystatechange", function (event) {
   if (event.target.readyState === "complete") {
     unvielImg();
     if (!Samvaarta.common.getLocalStorage('sessionList')) {
-      Samvaarta.userDashboard.getSessionList();
+      Samvaarta.userDashboard.getSessionList(userType === 'admin' ? "api/admin/sessions" : "api/profile/session-listing");
     } else {
       Samvaarta.userDashboard.displaySessionList(Samvaarta.common.getLocalStorage('sessionList'));
     }
