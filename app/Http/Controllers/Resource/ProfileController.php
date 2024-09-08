@@ -16,7 +16,8 @@ use App\Models\LearningOutcomes;
 use App\Models\LearningObjective;
 use App\Models\TrainerComment;
 use App\Models\TrainingSession;
-
+use App\Models\DocumentConversations;
+use Carbon\Carbon;
 class ProfileController extends Controller
 {
 	/**
@@ -444,18 +445,74 @@ class ProfileController extends Controller
 			$TrainingSession = $TrainingSession->whereRaw("date(session_date) >= date(now())");
 		}
 
-
         if($trainer_id>0){
             $TrainingSession =  $TrainingSession->where('trainer_id',$trainer_id);
         }
 
         $TrainingSession=$TrainingSession->orderBy('session_date', 'DESC')->get();
-
-		
-
         return response()->json(['success' =>'true','count'=>count($TrainingSession),'data'=>$TrainingSession]);
 
 	}
+
+	public function addDocumentingConversations(Request $request){
+		$validator =Validator::make($request->all(), [
+			'focus_of_the_day' => 'required|max:255',
+			'today_conversion'=>'required|max:255',
+			'feedback'=>'required|max:2000',
+			'next_date'=>'required|date_format:Y-m-d|after:today',
+			'session_id'=>'required'
+		]);    
+
+		if (!$validator->fails())
+		{
+			
+			$user_id =  $request->user()->id;
+
+
+			$next_date = Carbon::parse($request->next_date);
+			
+			$DocumentConversations = DocumentConversations::create(
+				[
+					'user_id'=>$user_id,
+					'focus_of_the_day'=>$request->focus_of_the_day,
+					'today_conversion'=>$request->today_conversion,
+					'feedback'=>$request->feedback,
+					'next_date'=>$next_date->format('Y-m-d'),
+					'status'=>'1',
+					'session_id'=>$request->session_id
+				]);
+
+			if($request->has('doc_file')) {
+				$DocumentConversations->doc_file = asset('storage/'.$request->doc_file->store('user/docs'));
+				$DocumentConversations->save();
+			}
+			
+			//$DocumentConversations= DocumentConversations::where('user_id', $request->user()->id)->orderBy('id','desc')->first();
+
+			if($DocumentConversations){
+				
+				return response()->json(['data' => $DocumentConversations,"success"=>"true","message"=>"Successfully Updated"]);
+			}else{
+				return response()->json(['data' => $DocumentConversations,"success"=>"false"]);
+			}
+
+		}else{
+			return $validator->errors();
+		}
+	}
+
+	public function documentingConversations(Request $request){
+
+		$DocumentConversations= DocumentConversations::trainerComment()->with('session','session.trainer')->where('document_conversations.user_id', $request->user()->id)->select('document_conversations.*','trainer_comments.comments')->orderBy('document_conversations.id','desc')->get();
+
+		if($DocumentConversations){
+			return response()->json(['data' => $DocumentConversations,"success"=>"true","count"=>count($DocumentConversations)]);
+		}else{
+			return response()->json(['data' =>[],"success"=>"false"]);
+		}
+	}
+
+
 	
 	
 }
