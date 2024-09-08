@@ -31,7 +31,10 @@ Route::group(['middleware' => ['auth:api']], function() {
 
 		Route::get('/session-listing', 'Resource\ProfileController@getSessionListing');
 		Route::post('documenting-conversations','Resource\ProfileController@addDocumentingConversations');
+		Route::post('update-documenting-conversations','Resource\ProfileController@updateDocumentingConversations');
 		Route::get('documenting-conversations','Resource\ProfileController@documentingConversations');
+		Route::get('desired-objective','Resource\ProfileController@desiredObjective');
+		Route::post('desired-objective','Resource\ProfileController@addDesiredObjective');
 	});
 	Route::group(['prefix' => 'trainer'], function() {
 		Route::post('/add_comment', 'Resource\ProfileController@add_comment');
