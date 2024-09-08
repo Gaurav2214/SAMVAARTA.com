@@ -137,6 +137,10 @@
         }
     }
 }
+.error{
+    color: #ED1C24;
+    @include set-typography(10, 15);
+}
 .input-section-main {
     @include set-flex-box();
     gap: rem(15);
@@ -180,6 +184,13 @@
         flex-direction: row;
         justify-content: flex-start;
         gap: rem(18);
+        position: relative;
+        #fileNameDisplay{
+            position: absolute;
+            top: rem(60);
+            left: rem(10);
+            @include desc-3();
+        }
     }
     label {
         @include desc-6();
@@ -496,6 +507,10 @@
                     p {
                         @include desc-2();
                         margin-top: rem(5);
+                        &.error{
+                            color: #ED1C24;
+                            @include set-typography(10, 15);
+                        }
                     }
                     &--items {
                         margin-top: rem(20);
@@ -549,6 +564,9 @@
                                     }
                                 }
                             }
+                        }
+                        .previous-transactions{
+                            margin-top: rem(12);
                         }
                     }
                     textarea {

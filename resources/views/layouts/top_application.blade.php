@@ -21,7 +21,7 @@
 
     <script>
         var appUrl ='<?php echo env('APP_URL')?>';
-        var fileVersion = '4';
+        var fileVersion = '5';
     </script>
 </head>
 <body>

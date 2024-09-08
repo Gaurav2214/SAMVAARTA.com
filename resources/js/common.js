@@ -17,12 +17,14 @@ Samvaarta.messageLog = {
 var valError = true;
 var apiUrl = typeof(appUrl) != "undefined" ? appUrl : "http://127.0.0.1:8000/";
 var expireTime = 1 / (24 * 60);
+var userType = '';
 
 Samvaarta.globalVar = Samvaarta.globalVar || {
     errorValueInFlow: "",
     is_Loggedin: 0,
     oauthToken: "",
     currlocation: "",
+    userType: userType,
 };
 
 var sessionStatus = {
@@ -41,6 +43,13 @@ const debounce = (fn, delay) => {
     }
 }
 
+const getDateFormat = (validDate) => {
+    if(validDate){
+        const date = new Date(validDate);
+        formattedDate = date.toISOString().split('T')[0];
+        return formattedDate;
+    }
+}
 const generateOptions = (response) => {
     let options = '';
     for (const [key, value] of Object.entries(response)) {
@@ -263,6 +272,12 @@ Samvaarta.common = (() => {
             case "session_name":
             case "session_status":
             case "assign_trainer":
+            case "user_focus":            
+            case "user_last_commitment":            
+            case "user_conversation":            
+            case "user_week_commitment":          
+            case "next_interaction_date":            
+            case "interaction_name":  
                 handleBlankNameVal(13);            
         }
         return error;
@@ -380,6 +395,12 @@ Samvaarta.common = (() => {
             session_name: validateName,
             session_status: validateName,
             assign_trainer: validateName,            
+            user_focus: validateName,            
+            user_last_commitment: validateName,            
+            user_conversation: validateName,            
+            user_week_commitment: validateName,            
+            next_interaction_date: validateName,            
+            interaction_name: validateName,            
         };
 
         // Iterate through the validation functions
@@ -1089,6 +1110,10 @@ Samvaarta.system = (() => {
 
     const logout = () => {
         Samvaarta.common.deleteLocalStorage("oauthUserData");
+        Samvaarta.common.deleteLocalStorage("AccessToken");
+        Samvaarta.common.deleteLocalStorage("sessionList");
+        Samvaarta.common.deleteLocalStorage("trainer_data");
+        Samvaarta.common.deleteLocalStorage("users_data");
         Samvaarta.globalVar.is_loggedin = 0;
         window.location.href = "/";
     };
@@ -1646,7 +1671,7 @@ Samvaarta.system = (() => {
                 Samvaarta.common.getLocalStorage("AccessToken");
             Samvaarta.globalVar.is_loggedin = 1;
             let username = userDetails.name.split(" ")[0];
-            let userType = userDetails.user_type;
+            userType = userDetails.user_type;
             let userTypreDescription = "";
             document.querySelector(
                 ".dashboard__header--welcome span"
@@ -1994,9 +2019,8 @@ Samvaarta.userDashboard = (() => {
             };
 
             const ajaxSuccessCall = (response) => {
-                console.log(response);
                 $('.upcoming_session_container input').val('');
-                getSessionList();
+                getSessionList("api/admin/sessions");
             };
 
             const ajaxErrorCall = (error) => {
@@ -2029,9 +2053,9 @@ Samvaarta.userDashboard = (() => {
         });
         $('.upcoming_session_list tbody').html(sessionList);
     }
-    const getSessionList = () => {
+    const getSessionList = (sessionURL) => {
         let paramObject = {
-            url: apiUrl + "api/admin/sessions",
+            url: apiUrl + sessionURL,
             type: "GET",
             headers: {
                 Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
@@ -2065,7 +2089,7 @@ Samvaarta.userDashboard = (() => {
     }
     const interactionList = () => {
         const interactionNameList = Samvaarta.common.getLocalStorage('sessionList');
-        let interactions = '<option>Choose Session</option>';
+        let interactions = '<option value="">Choose Session</option>';
         if(interactionNameList?.data?.data?.length){
             interactionNameList?.data?.data.map((item, index) => {
                 interactions += `<option value="${item.session_id}">${item.topic}</option>`;
@@ -2083,7 +2107,8 @@ Samvaarta.userDashboard = (() => {
             <p>You can upload a voice or video file, ppt, pdf, word or excel file</p>
             <div id="" class="details--items previous">
                 <h3>Previous Interactions</h3>
-                <p>No previous interactions</p>
+                <div class="previous-transactions">
+                </div>
             </div>
             <div id="" class="details--items current">
                 <h3>Current Interactions</h3>
@@ -2091,27 +2116,32 @@ Samvaarta.userDashboard = (() => {
                     <li class="">
                         <label for="user_focus" class="topic">Focus of the day</label>
                         <input type="text" id="user_focus" value="" class="input_txt_box" />
+                        <p id="user_focus_err" class="error"></p>
                     </li>
                     <li>
                         <label for="user_last_commitment" class="topic">Last weeks commitment</label>
                         <input type="text" id="user_last_commitment" value="" class="input_txt_box" />
+                        <p id="user_last_commitment_err" class="error"></p>
                     </li>
                     <li>
                         <label for="user_conversation" class="topic">Today’s conversation</label>
                         <input type="text" id="user_conversation" value="" class="input_txt_box" />
+                        <p id="user_conversation_err" class="error"></p>
                     </li>
                     <li>
                         <label for="user_week_commitment" class="topic">Commitment for the week</label>
                         <input type="text" id="user_week_commitment" value="" class="input_txt_box" />
+                        <p id="user_week_commitment_err" class="error"></p>
                     </li>
                     <li>
                         <label for="user_comments" class="topic">Coach’s Comments</label>
-                        <input type="text" id="user_comments" value="" class="input_txt_box" />
+                        <input readonly type="text" id="user_comments" value="" class="input_txt_box" />
                     </li>
                     <li>
                         <label for="next_interaction_date" class="topic">Next Interaction Date</label>
                         <input readonly placeholder="Next Interaction Date" type="text" id="next_interaction_date" value="" class="input_txt_box" />
                         <script>$('#next_interaction_date').datepicker();</script>
+                        <p id="next_interaction_date_err" class="error"></p>
                     </li>
                     <li>
                         <label for="interaction_name" class="topic">Interaction Name</label>                        
@@ -2119,19 +2149,39 @@ Samvaarta.userDashboard = (() => {
                             <select id="interaction_name" class="input_txt_box">
                                 
                             </select>
+                            <p id="interaction_name_err" class="error"></p>
                         </div>
                     </li>
                 </ul>
             </div>
             <div class="form-elm-section btn-container marg-t10">
-                <button class="btn">Upload</button>
-                <button class="btn">Save</button>
+                <input type="file" id="hiddenFileInput" style="display:none;" onchange="displayFileName()">
+                <button class="btn" onclick="document.getElementById('hiddenFileInput').click();">Upload File</button>
+                <span id="fileNameDisplay"></span>
+                <button class="btn" onclick="Samvaarta.setGetUserDashboard.setDocConversation()">Save</button>
                 <button class="btn">Edit</button>
+                <script>
+                    function displayFileName() {
+                        const fileInput = document.getElementById('hiddenFileInput');
+                        const fileNameDisplay = document.getElementById('fileNameDisplay');
+                        
+                        if (fileInput.files.length > 0) {
+                            // Get the name of the selected file
+                            const fileName = fileInput.files[0].name;
+                            fileNameDisplay.textContent = fileName;
+                        } else {
+                            fileNameDisplay.textContent = "";
+                        }
+                    }
+                </script>
             </div>
         </div>
         `;
         $('.user-activity-details__inner').html(docCon);
-        setTimeout(() => {interactionList()},1000);
+        setTimeout(() => {
+            interactionList();
+            Samvaarta.setGetUserDashboard.getDocConversation();
+        },1000);
     }
     const desObjective = () => {
         let objective = `
@@ -2354,8 +2404,6 @@ Samvaarta.userDashboard = (() => {
         `;
         $('.user-activity-details__inner').html(outcome);
     }
-
-
     return {
         codeOfEthics: codeOfEthics,
         updateSession: updateSession,
@@ -2367,6 +2415,152 @@ Samvaarta.userDashboard = (() => {
         trainerOptionList: trainerOptionList,
         displaySessionList: displaySessionList,
         closureInteraction: closureInteraction,
+    }
+})();
+
+Samvaarta.setGetUserDashboard = (() => {
+    const setDocConversation = () => {
+        var user_focus = document.getElementById("user_focus").value;
+        var last_commitment = document.getElementById("user_last_commitment").value;
+        var user_conversation = document.getElementById("user_conversation").value;
+        var week_commitment = document.getElementById("user_week_commitment").value;
+        var next_interaction_date = document.getElementById("next_interaction_date").value;
+        var interaction_name = document.getElementById("interaction_name").value;
+        var fileupload = document.getElementById("hiddenFileInput").files[0].name;
+        var errorElements = document.querySelectorAll(".error");
+        var formattedDate = '';
+        if(next_interaction_date){
+            const date = new Date(next_interaction_date);
+            formattedDate = date.toISOString().split('T')[0];
+        }
+        errorElements.forEach(function (el) {
+            el.innerHTML = "";
+        });
+
+        var inputElements = document.querySelectorAll(
+            ".details--items__topics .input_txt_box"
+        );
+        for (let i = 0; i < inputElements.length; i++) {
+            if (
+                inputElements[i].type !== "button" &&
+                inputElements[i].type !== "checkbox"
+            ) {
+                Samvaarta.common.removeRequiredFields(inputElements[i]);
+                if (valError) {
+                    return false;
+                }
+            }
+        }
+
+        if (valError) {
+            return false;
+        } else {
+            let paramObject = {
+                url: apiUrl + "api/profile/documenting-conversations",
+                type: "POST",
+                headers: {
+                    Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+                    Accept: "application/json",
+                },
+                data: {
+                    next_date: formattedDate,
+                    focus_of_the_day: user_focus,
+                    today_conversion: user_conversation,
+                    feedback: week_commitment,
+                    session_id: interaction_name,
+                    last_week_comments: last_commitment,
+                    doc_file: fileupload,
+                },
+            };
+
+            const ajaxSuccessCall = (response) => {
+                $('.details--items__topics input').val('');
+                if(response?.data?.success === 'true'){
+                    getDocConversation();
+                } else {
+                    $("#interaction_name_err")
+                        .html(response?.data)
+                        .show();
+                }
+            };
+
+            const ajaxErrorCall = (error) => {
+                if (error.response) {
+                    $("#interaction_name_err")
+                        .html(error.response.data.message)
+                        .show();
+                }
+            };
+
+            Samvaarta.common.hitAjaxApi(
+                paramObject,
+                ajaxSuccessCall,
+                ajaxErrorCall
+            );
+        }
+    }
+    const previousTransactions = (response) => {
+        console.log(response);
+        let previous = ``;
+        if(response?.data?.length){
+            previous += `<table>
+                <tr class="user-dashboard-info__head-list">
+                    <td>S.No</td>
+                    <td>Date</td>
+                    <td>Transaction</td>
+                </tr>
+            `;
+            response?.data.map((item, index) => {
+                previous += `<tr>
+                    <td>${index+1}</td>
+                    <td>${getDateFormat(item.created_at)}</td>
+                    <td session-id="${item.session.session_id}">${item.session.topic}</td>
+                </tr>`;
+            })
+            $('.previous-transactions').html(previous);
+        } else {
+            $('.previous-transactions').html('<p>No previous interactions</p>');
+        }
+        
+    }
+    const getDocConversation = () => {
+        let paramObject = {
+            url: apiUrl + "api/profile/documenting-conversations",
+            type: "GET",
+            headers: {
+                Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+                Accept: "application/json",
+            },            
+        };
+
+        const ajaxSuccessCall = (response) => {
+            if(response?.data?.success === 'true'){
+                previousTransactions(response?.data);
+            } else {
+                $("#interaction_name_err")
+                    .html(response?.data)
+                    .show();
+            }
+        };
+
+        const ajaxErrorCall = (error) => {
+            if (error.response) {
+                $("#interaction_name_err")
+                    .html(error.response.data.message)
+                    .show();
+            }
+        };
+
+        Samvaarta.common.hitAjaxApi(
+            paramObject,
+            ajaxSuccessCall,
+            ajaxErrorCall
+        );
+    }
+    return{
+        setDocConversation: setDocConversation, 
+        getDocConversation: getDocConversation,
+        previousTransactions: previousTransactions
     }
 })();
 
@@ -2438,11 +2632,11 @@ document.addEventListener("readystatechange", (event) => {
 
     if (event.target.readyState === "complete") {
         unvielImg();   
-        if(!Samvaarta.common.getLocalStorage('sessionList')){ 
-            Samvaarta.userDashboard.getSessionList();
+        if(!Samvaarta.common.getLocalStorage('sessionList')){                    
+            Samvaarta.userDashboard.getSessionList(userType === 'admin' ? "api/admin/sessions" : "api/profile/session-listing");
         } else {
             Samvaarta.userDashboard.displaySessionList(Samvaarta.common.getLocalStorage('sessionList'));
-        }
+        }        
     }
 });
 
