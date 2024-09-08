@@ -650,6 +650,9 @@
                                 span {
                                     color: #736e6e;
                                 }
+                                &.download-report{
+                                    margin-top: rem(10);
+                                }
                             }
                         }
                         @include breakpointmax($end-small){

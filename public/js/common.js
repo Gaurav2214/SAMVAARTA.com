@@ -1057,7 +1057,8 @@ Samvaarta.system = function () {
       nextSession = '',
       completeSessCount = '',
       userExp = '',
-      userFun = '';
+      userFun = '',
+      downloadReport = '';
     if (response.user_type === "admin") {
       cochees = "<li>No of Coachees: <span></span></li>";
       trainer = "<li>No of Coaches: <span></span></li>";
@@ -1074,8 +1075,9 @@ Samvaarta.system = function () {
       nextSession = "<li>Next Session Date: <span></span></li>";
       userExp = "<li>Experience: <span>".concat(response.experience, "</span></li>");
       userFun = "<li>Function: <span>".concat(response.user_function, "</span></li>");
+      downloadReport = "<li class=\"download-report\"><button class=\"btn\">Download Report</button></li>";
     }
-    var userInfo = "\n        <h3 class=\"userName\">Welcome ".concat(response.name.split(" ")[0], " </h3>\n        <div class=\"upcoming-session\">\n            <a href=\"/upcoming_session\" data-type=\"upcoming-session\">\n                <i class=\"fa fa-circle fa-fw\"></i>\n                <span class=\"desktop-view\">Upcoming Session</span>\n            </a>\n        </div>\n        <div class=\"show-user-details__inner\">\n            <div class=\"show-user-details__inner--left detail-items\">\n                <ul>\n                    <li>Code: <span>").concat(response.id, "</span></li>\n                    <li>Date of Joining: <span>").concat(Samvaarta.common.dateMonthYear(response.created_at), "</span></li>\n                    ").concat(coachInfo, "\n                    ").concat(userExp, "\n                    ").concat(userFun, "\n                    <li class=\"role\">Role: <span>").concat(response.user_type, "</span></li>\n                    <li>Location: <span>").concat(response.location ? response.location : (_Samvaarta$common$get2 = Samvaarta.common.getLocalStorage("location")) === null || _Samvaarta$common$get2 === void 0 ? void 0 : _Samvaarta$common$get2.data.city, "</span></li>\n                </ul>\n            </div>\n            <div class=\"show-user-details__inner--mid detail-items\">\n                <ul>\n                    <li>Vision: <span>").concat(response.vision, "</span></li>\n                    <li>Brief Description: <span>").concat(response.description, "</span></li>\n                    ").concat(plannedSess, "  ").concat(cochees, "  ").concat(trainer, " \n                    ").concat(concluded, " ").concat(nextSession, "  ").concat(completeSessCount, "                 \n                </ul>\n            </div>\n            <div class=\"show-user-details__inner--right detail-items\">\n                <ul>\n                    <li class=\"profile-img\"><img src=\"").concat(response.avatar ? response.avatar : '/images/default-face.jpg', "\" width=\"100\" height=\"100\" alt=\"profile\"></li>\n                    <li>LinkedIn: <span>").concat(response.linkedin_url, "</span></li>\n                    <li>Email Id: <span>").concat(response.email, "</span></li>\n                    <li>Mobile No: <span>").concat(response.phone, "</span></li>\n                </ul>\n            </div>\n        </div>\n        ");
+    var userInfo = "\n        <h3 class=\"userName\">Welcome ".concat(response.name.split(" ")[0], " </h3>\n        <div class=\"upcoming-session\">\n            <a href=\"/upcoming_session\" data-type=\"upcoming-session\">\n                <i class=\"fa fa-circle fa-fw\"></i>\n                <span class=\"desktop-view\">Upcoming Session</span>\n            </a>\n        </div>\n        <div class=\"show-user-details__inner\">\n            <div class=\"show-user-details__inner--left detail-items\">\n                <ul>\n                    <li>Code: <span>").concat(response.id, "</span></li>\n                    <li>Date of Joining: <span>").concat(Samvaarta.common.dateMonthYear(response.created_at), "</span></li>\n                    ").concat(coachInfo, "\n                    ").concat(userExp, "\n                    ").concat(userFun, "\n                    <li class=\"role\">Role: <span>").concat(response.user_type, "</span></li>\n                    <li>Location: <span>").concat(response.location ? response.location : (_Samvaarta$common$get2 = Samvaarta.common.getLocalStorage("location")) === null || _Samvaarta$common$get2 === void 0 ? void 0 : _Samvaarta$common$get2.data.city, "</span></li>\n                </ul>\n            </div>\n            <div class=\"show-user-details__inner--mid detail-items\">\n                <ul>\n                    <li>Vision: <span>").concat(response.vision, "</span></li>\n                    <li>Brief Description: <span>").concat(response.description, "</span></li>\n                    ").concat(plannedSess, "  ").concat(cochees, "  ").concat(trainer, " \n                    ").concat(concluded, " ").concat(nextSession, "  ").concat(completeSessCount, "                 \n                </ul>\n            </div>\n            <div class=\"show-user-details__inner--right detail-items\">\n                <ul>\n                    <li class=\"profile-img\"><img src=\"").concat(response.avatar ? response.avatar : '/images/default-face.jpg', "\" width=\"100\" height=\"100\" alt=\"profile\"></li>\n                    <li>LinkedIn: <span>").concat(response.linkedin_url, "</span></li>\n                    <li>Email Id: <span>").concat(response.email, "</span></li>\n                    <li>Mobile No: <span>").concat(response.phone, "</span></li>\n                    ").concat(downloadReport, "\n                </ul>\n            </div>\n        </div>\n        ");
     $(".show-user-details").html(userInfo);
   };
   var displayUserInfo = function displayUserInfo(data) {
@@ -1193,29 +1195,6 @@ Samvaarta.system = function () {
   };
 }();
 Samvaarta.userDashboard = function () {
-  var codeOfEthics1 = function codeOfEthics1() {
-    var ethicsdata = $('.codeofethics ul').text();
-    var paramObject = {
-      url: apiUrl + "api/profile/code-of-ethics",
-      type: "POST",
-      data: {
-        'comments': ethicsdata
-      },
-      headers: {
-        Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
-        Accept: "application/json"
-      }
-    };
-    var ajaxSuccessCall = function ajaxSuccessCall(response) {
-      console.log(response);
-    };
-    var ajaxErrorCall = function ajaxErrorCall(error) {
-      if (error.response) {
-        $("#oauth_log_email_err").html(error.response.data.message).show();
-      }
-    };
-    Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
-  };
   var codeOfEthics = function codeOfEthics() {
     var codeOfEthics = "\n        <div class=\"details codeofethics\">\n            <h3>Code of ethics</h3>\n            <p>CoE refers to the responsible behavior that will be displayed by partied involved during the interaction period</p>\n            <div class=\"details--items\">\n                <h3>Coachee\u2019s Code of Ethics</h3>\n                <ul class=\"list-view\">\n                    <li>I shall be sharing the details truthfully without any fear</li>\n                    <li>I commit to implement my commitments made in the interaction</li>\n                    <li>The responsibility of my growth life within me</li>\n                </ul>\n            </div>\n            <div class=\"details--items\">\n                <h3>The coach / Mentor has agreed to the following</h3>\n                <ul class=\"list-view\">\n                    <li>The coach will be 100% invested in you during the interaction</li>\n                    <li>The coach\u2019s role will be to ask you question to help you explore</li>\n                    <li>The coach maintain the confidentiality of the interaction\u2026\u2026</li>\n                </ul>\n            </div>            \n        </div>\n        ";
     $('.user-activity-details__inner').html(codeOfEthics);
@@ -1223,25 +1202,6 @@ Samvaarta.userDashboard = function () {
   var closureInteraction = function closureInteraction() {
     var closure = "\n        <div class=\"details codeofethics\">\n            <h3>Closure</h3>\n            <p>Please document your experience on your journey </p>\n            <div class=\"details--items\">\n                <h3>User Experience</h3>\n                <ul class=\"list-view\">\n                    <li>I enjoyed.... </li>\n                    <li>I wish....</li>\n                    <li>I gained by way of....</li>\n                </ul>\n            </div>\n            <div class=\"details--items\">\n                <h3>Manager Experience</h3>\n                <ul class=\"list-view\">\n                    <li>I enjoyed....</li>\n                    <li>I wish....</li>\n                </ul>\n            </div>            \n        </div>\n        ";
     $('.user-activity-details__inner').html(closure);
-  };
-  var getCodeOfEthics = function getCodeOfEthics() {
-    var paramObject = {
-      url: apiUrl + "api/profile/code-of-ethics",
-      type: "GET",
-      headers: {
-        Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
-        Accept: "application/json"
-      }
-    };
-    var ajaxSuccessCall = function ajaxSuccessCall(response) {
-      console.log(response);
-    };
-    var ajaxErrorCall = function ajaxErrorCall(error) {
-      if (error.response) {
-        $("#oauth_log_email_err").html(error.response.data.message).show();
-      }
-    };
-    Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
   };
   var trainerOptionList = function trainerOptionList() {
     var trainerdata = Samvaarta.common.getLocalStorage('trainer_data');
@@ -1375,7 +1335,6 @@ Samvaarta.userDashboard = function () {
   };
   return {
     codeOfEthics: codeOfEthics,
-    getCodeOfEthics: getCodeOfEthics,
     updateSession: updateSession,
     getSessionList: getSessionList,
     updateSessionForm: updateSessionForm,
