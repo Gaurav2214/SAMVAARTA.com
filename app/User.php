@@ -54,4 +54,8 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class,'trainer_learner_mapping','trainer_id','trainer_learner_mapping.user_id');
     }
 
+    public function scopeTrainerFilter($query,$user_id){
+        return $query->join('trainer_learner_mapping', 'trainer_learner_mapping.user_id', '=', 'users.id','inner')->where(["trainer_learner_mapping.trainer_id"=>$user_id])->where('users.user_type','user')->select('trainer_learner_mapping.user_id','users.*');
+    }
+
 }
