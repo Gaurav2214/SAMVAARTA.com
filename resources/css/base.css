@@ -814,13 +814,13 @@ button,
       .dashboard__elements--inner .user-activity-details .details--items .previous-transactions {
         margin-top: 12px; }
     .dashboard__elements--inner .user-activity-details .details textarea {
-      margin-top: 30px;
-      border-radius: 12px;
+      margin-top: 5px;
+      border-radius: 8px;
       border: 1px solid #e0e0e0;
       width: -webkit-fill-available;
       resize: none;
       outline: none;
-      padding: 20px; }
+      padding: 10px 16px; }
     .dashboard__elements--inner .user-activity-details .details .btn {
       margin-top: 15px; }
   .dashboard__elements--inner.activate-list {
@@ -1033,6 +1033,8 @@ button,
           color: #397532; }
         .dashboard__elements--inner table tr td .denied {
           color: #a7262b; }
+        .dashboard__elements--inner table tr td.edit-transaction {
+          color: #1a73e9; }
       .dashboard__elements--inner table tr:last-of-type {
         border-radius: 0 0 6px 6px; }
       .dashboard__elements--inner table tr:not(:first-of-type) {
@@ -1289,3 +1291,6 @@ button,
 
 .trainer-list {
   width: 100%; }
+
+.update-transaction-container {
+  margin-bottom: 20px; }
