@@ -2426,7 +2426,7 @@ Samvaarta.setGetUserDashboard = (() => {
         var week_commitment = document.getElementById("user_week_commitment").value;
         var next_interaction_date = document.getElementById("next_interaction_date").value;
         var interaction_name = document.getElementById("interaction_name").value;
-        var fileupload = document.getElementById("hiddenFileInput").files[0].name;
+        var fileupload = document.getElementById("hiddenFileInput").files[0];
         var errorElements = document.querySelectorAll(".error");
         var formattedDate = '';
         if(next_interaction_date){
@@ -2508,13 +2508,15 @@ Samvaarta.setGetUserDashboard = (() => {
                     <td>S.No</td>
                     <td>Date</td>
                     <td>Transaction</td>
+                    <td>Trainer</td>
                 </tr>
             `;
             response?.data.map((item, index) => {
                 previous += `<tr>
-                    <td>${index+1}</td>
+                    <td doc-id="${item.id}">${index+1}</td>
                     <td>${getDateFormat(item.created_at)}</td>
                     <td session-id="${item.session.session_id}">${item.session.topic}</td>
+                    <td session-id="${item.session.trainer.id}">${item.session.trainer.name}</td>
                 </tr>`;
             })
             $('.previous-transactions').html(previous);
