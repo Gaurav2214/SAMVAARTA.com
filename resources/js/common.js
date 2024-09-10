@@ -16,7 +16,7 @@ Samvaarta.messageLog = {
 
 var valError = true;
 var apiUrl = typeof(appUrl) != "undefined" ? appUrl : "http://127.0.0.1:8000/";
-var expireTime = 1 / (24 * 60);
+var expireTime = 20 / (24 * 60);
 var userType = '';
 
 Samvaarta.globalVar = Samvaarta.globalVar || {
@@ -44,6 +44,7 @@ const debounce = (fn, delay) => {
 }
 
 const getDateFormat = (validDate) => {
+    let formattedDate = '';
     if(validDate){
         const date = new Date(validDate);
         formattedDate = date.toISOString().split('T')[0];
@@ -1857,7 +1858,7 @@ Samvaarta.userDashboard = (() => {
                 <ul class="list-view">
                     <li>The coach will be 100% invested in you during the interaction</li>
                     <li>The coach’s role will be to ask you question to help you explore</li>
-                    <li>The coach maintain the confidentiality of the interaction……</li>
+                    <li>The coach maintain the confidentiality of the interaction.</li>
                 </ul>
             </div>            
         </div>
@@ -1977,8 +1978,11 @@ Samvaarta.userDashboard = (() => {
         var session_desc = document.getElementById("session_desc").value;
         var assign_trainer = document.getElementById("assign_trainer").value;
         var errorElements = document.querySelectorAll(".error");
-        const date = new Date(datepicker);
-        const formattedDate = date.toISOString().split('T')[0];
+        let formattedDate = '';
+        if(datepicker){
+            const date = new Date(datepicker);
+            formattedDate = date.toISOString().split('T')[0];
+        }
         errorElements.forEach(function (el) {
             el.innerHTML = "";
         });
@@ -2115,22 +2119,22 @@ Samvaarta.userDashboard = (() => {
                 <ul class="details--items__topics">
                     <li class="">
                         <label for="user_focus" class="topic">Focus of the day</label>
-                        <input type="text" id="user_focus" value="" class="input_txt_box" />
+                        <textarea rows="2" cols="50" type="text" id="user_focus" value="" class="input_txt_box" ></textarea>
                         <p id="user_focus_err" class="error"></p>
                     </li>
                     <li>
                         <label for="user_last_commitment" class="topic">Last weeks commitment</label>
-                        <input type="text" id="user_last_commitment" value="" class="input_txt_box" />
+                        <textarea rows="2" cols="50" type="text" id="user_last_commitment" value="" class="input_txt_box" ></textarea>
                         <p id="user_last_commitment_err" class="error"></p>
                     </li>
                     <li>
                         <label for="user_conversation" class="topic">Today’s conversation</label>
-                        <input type="text" id="user_conversation" value="" class="input_txt_box" />
+                        <textarea rows="2" cols="50" type="text" id="user_conversation" value="" class="input_txt_box" ></textarea>
                         <p id="user_conversation_err" class="error"></p>
                     </li>
                     <li>
                         <label for="user_week_commitment" class="topic">Commitment for the week</label>
-                        <input type="text" id="user_week_commitment" value="" class="input_txt_box" />
+                        <textarea rows="2" cols="50" type="text" id="user_week_commitment" value="" class="input_txt_box" ></textarea>
                         <p id="user_week_commitment_err" class="error"></p>
                     </li>
                     <li>
@@ -2159,7 +2163,6 @@ Samvaarta.userDashboard = (() => {
                 <button class="btn" onclick="document.getElementById('hiddenFileInput').click();">Upload File</button>
                 <span id="fileNameDisplay"></span>
                 <button class="btn" onclick="Samvaarta.setGetUserDashboard.setDocConversation()">Save</button>
-                <button class="btn">Edit</button>
                 <script>
                     function displayFileName() {
                         const fileInput = document.getElementById('hiddenFileInput');
@@ -2292,10 +2295,8 @@ Samvaarta.userDashboard = (() => {
                     <li>They should be influencing the quantitative parameter</li>
                     <li>For Example 
                         <ul>
-                            <li>Parameter</li>
-                            <li>Customer Relationship</li>
-                            <li>Brief Des</li>
-                            <li>Develop and maintain strong relationships with key clients and accounts</li>
+                            <li>Parameter - Customer Relationship</li>
+                            <li>Brief Description - Develop and maintain strong relationships with key clients and accounts</li>
                         </ul>
                     </li>
                 </ul>
@@ -2509,6 +2510,7 @@ Samvaarta.setGetUserDashboard = (() => {
                     <td>Date</td>
                     <td>Transaction</td>
                     <td>Trainer</td>
+                    <td>Edit/Update</td>
                 </tr>
             `;
             response?.data.map((item, index) => {
@@ -2517,6 +2519,40 @@ Samvaarta.setGetUserDashboard = (() => {
                     <td>${getDateFormat(item.created_at)}</td>
                     <td session-id="${item.session.session_id}">${item.session.topic}</td>
                     <td session-id="${item.session.trainer.id}">${item.session.trainer.name}</td>
+                    <td class="edit-transaction" onclick="Samvaarta.setGetUserDashboard.editTransaction(${item.id})">Edit</td>
+                    <div class="update-transaction-container hide" id="edit-doc-${item.id}" data-docId="${item.id}" data-session="${item.session.session_id}">
+                        <ul class="details--items__topics">
+                            <li class="section_${index+1}">
+                                <label for="user_focus_${item.id}" class="topic">Focus of the day</label>
+                                <textarea rows="2" cols="50" type="text" id="user_focus_${item.id}" class="input_txt_box"></textarea>
+                            </li>
+                            <li class="section_${index+1}">
+                                <label for="user_last_commitment_${item.id}" class="topic">Last weeks commitment</label>
+                                <textarea rows="2" cols="50" type="text" id="user_last_commitment_${item.id}" class="input_txt_box"></textarea>
+                            </li>
+                            <li class="section_${index+1}">
+                                <label for="user_conversation_${item.id}" class="topic">Today’s conversation</label>
+                                <textarea rows="2" cols="50" type="text" id="user_conversation_${item.id}" class="input_txt_box"></textarea>
+                            </li>
+                            <li class="section_${index+1}">
+                                <label for="user_week_commitment_${item.id}" class="topic">Commitment for the week</label>
+                                <textarea rows="2" cols="50" type="text" id="user_week_commitment_${item.id}" class="input_txt_box"></textarea>
+                            </li>
+                        </ul>
+                        <input type="hidden" id="next_interaction_date_${item.id}" value="${item.next_date}" />
+                        <input type="hidden" id="hiddenFileInput_${item.id}" value="${item.doc_file}" />
+                        <button onclick="Samvaarta.setGetUserDashboard.updateTransaction(${item.id}, ${item.session_id})" class="btn">Update</button>
+                        <button style="margin-left:10px;" class="btn close-transaction">Close</button>
+                        <script>
+                            $('#user_focus_${item.id}').val("${item.focus_of_the_day}");
+                            $('#user_last_commitment_${item.id}').val("${item.last_week_comments}");
+                            $('#user_conversation_${item.id}').val("${item.today_conversion}");
+                            $('#user_week_commitment_${item.id}').val("${item.feedback}");
+                            $('body').on('click', '.close-transaction', ()=>{
+                                $('.update-transaction-container').addClass('hide');
+                            })
+                        </script>
+                    </div>
                 </tr>`;
             })
             $('.previous-transactions').html(previous);
@@ -2524,6 +2560,91 @@ Samvaarta.setGetUserDashboard = (() => {
             $('.previous-transactions').html('<p>No previous interactions</p>');
         }
         
+    }
+    const editTransaction = (docId) => {
+        $('.update-transaction-container').addClass('hide');
+        $('#edit-doc-'+docId).removeClass('hide');
+        console.log('edit-transaction-'+docId);
+    }
+    const updateTransaction = (docId, sesId) => {
+        var user_focus = document.getElementById("user_focus_"+docId).value;
+        var last_commitment = document.getElementById("user_last_commitment_"+docId).value;
+        var user_conversation = document.getElementById("user_conversation_"+docId).value;
+        var week_commitment = document.getElementById("user_week_commitment_"+docId).value;
+        var next_interaction_date = document.getElementById("next_interaction_date_"+docId).value;
+        var fileupload = document.getElementById("hiddenFileInput_"+docId).value;
+        var errorElements = document.querySelectorAll(".error");
+        var formattedDate = '';
+        if(next_interaction_date){
+            const date = new Date(next_interaction_date);
+            formattedDate = date.toISOString().split('T')[0];
+        }
+        errorElements.forEach(function (el) {
+            el.innerHTML = "";
+        });
+
+        var inputElements = document.querySelectorAll(
+            "#edit-doc-"+docId+" .input_txt_box"
+        );
+        for (let i = 0; i < inputElements.length; i++) {
+            if (
+                inputElements[i].type !== "button" &&
+                inputElements[i].type !== "checkbox"
+            ) {
+                Samvaarta.common.removeRequiredFields(inputElements[i]);
+                if (valError) {
+                    return false;
+                }
+            }
+        }
+
+        if (valError) {
+            return false;
+        } else {
+            let paramObject = {
+                url: apiUrl + "api/profile/update-documenting-conversations",
+                type: "POST",
+                headers: {
+                    Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+                    Accept: "application/json",
+                },
+                data: {
+                    next_date: formattedDate,
+                    focus_of_the_day: user_focus,
+                    today_conversion: user_conversation,
+                    feedback: week_commitment,
+                    session_id: sesId,
+                    last_week_comments: last_commitment,
+                    doc_file: fileupload,
+                    document_conversation_id: docId,
+                },
+            };
+
+            const ajaxSuccessCall = (response) => {
+                if(response?.data?.success === 'true'){
+                    $('.update-transaction-container').addClass('hide');
+                    getDocConversation();
+                } else {
+                    $("#interaction_name_err")
+                        .html(response?.data)
+                        .show();
+                }
+            };
+
+            const ajaxErrorCall = (error) => {
+                if (error.response) {
+                    $("#interaction_name_err")
+                        .html(error.response.data.message)
+                        .show();
+                }
+            };
+
+            Samvaarta.common.hitAjaxApi(
+                paramObject,
+                ajaxSuccessCall,
+                ajaxErrorCall
+            );
+        }
     }
     const getDocConversation = () => {
         let paramObject = {
@@ -2562,7 +2683,9 @@ Samvaarta.setGetUserDashboard = (() => {
     return{
         setDocConversation: setDocConversation, 
         getDocConversation: getDocConversation,
-        previousTransactions: previousTransactions
+        previousTransactions: previousTransactions,
+        editTransaction: editTransaction,
+        updateTransaction: updateTransaction,
     }
 })();
 
