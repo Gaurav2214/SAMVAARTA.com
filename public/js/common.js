@@ -1379,7 +1379,7 @@ Samvaarta.setGetUserDashboard = function () {
     var week_commitment = document.getElementById("user_week_commitment").value;
     var next_interaction_date = document.getElementById("next_interaction_date").value;
     var interaction_name = document.getElementById("interaction_name").value;
-    var fileupload = document.getElementById("hiddenFileInput").files[0].name;
+    var fileupload = document.getElementById("hiddenFileInput").files[0];
     var errorElements = document.querySelectorAll(".error");
     var formattedDate = '';
     if (next_interaction_date) {
@@ -1440,9 +1440,9 @@ Samvaarta.setGetUserDashboard = function () {
     console.log(response);
     var previous = "";
     if (response !== null && response !== void 0 && (_response$data5 = response.data) !== null && _response$data5 !== void 0 && _response$data5.length) {
-      previous += "<table>\n                <tr class=\"user-dashboard-info__head-list\">\n                    <td>S.No</td>\n                    <td>Date</td>\n                    <td>Transaction</td>\n                </tr>\n            ";
+      previous += "<table>\n                <tr class=\"user-dashboard-info__head-list\">\n                    <td>S.No</td>\n                    <td>Date</td>\n                    <td>Transaction</td>\n                    <td>Trainer</td>\n                </tr>\n            ";
       response === null || response === void 0 || response.data.map(function (item, index) {
-        previous += "<tr>\n                    <td>".concat(index + 1, "</td>\n                    <td>").concat(getDateFormat(item.created_at), "</td>\n                    <td session-id=\"").concat(item.session.session_id, "\">").concat(item.session.topic, "</td>\n                </tr>");
+        previous += "<tr>\n                    <td doc-id=\"".concat(item.id, "\">").concat(index + 1, "</td>\n                    <td>").concat(getDateFormat(item.created_at), "</td>\n                    <td session-id=\"").concat(item.session.session_id, "\">").concat(item.session.topic, "</td>\n                    <td session-id=\"").concat(item.session.trainer.id, "\">").concat(item.session.trainer.name, "</td>\n                </tr>");
       });
       $('.previous-transactions').html(previous);
     } else {
