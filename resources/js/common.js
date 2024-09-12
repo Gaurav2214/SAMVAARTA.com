@@ -2211,77 +2211,10 @@ Samvaarta.userDashboard = (() => {
                                 <td>Parameter</td>
                                 <td>Unit of Measurement</td>
                                 <td>Performance</td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                    <table class="table-layer-2">
-                                        <tr>
-                                            <td><span>M-1</span></td>
-                                            <td><span>C</span></td>
-                                            <td><span>M+1</span></td>
-                                            <td><span>M+2</span></td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
+                            </tr>                            
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>
-                                    <input id="qualitative_param_1" class="input_txt_box" type="text" value="" />
-                                </td>
-                                <td>
-                                    <input id="qualitative_desc_1" class="input_txt_box" type="text" value="" />
-                                </td>
-                                <td>
-                                    <table class="table-layer-2">
-                                        <tr>
-                                            <td><input id="qualitative_param_1_performance" class="input_txt_box" type="text" value=""></td>
-                                            <td><input id="qualitative_param_2_performance" class="input_txt_box" type="text" value=""></td>
-                                            <td><input id="qualitative_param_3_performance" class="input_txt_box" type="text" value=""></td>
-                                            <td><input id="qualitative_param_4_performance" class="input_txt_box" type="text" value=""></td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input id="qualitative_param_2" class="input_txt_box" type="text" value="" />
-                                </td>
-                                <td>
-                                    <input id="qualitative_desc_2" class="input_txt_box" type="text" value="" />
-                                </td>
-                                <td>
-                                    <table class="table-layer-2">
-                                        <tr>
-                                            <td><input id="qualitative_param_1_performance" class="input_txt_box" type="text" value=""></td>
-                                            <td><input id="qualitative_param_2_performance" class="input_txt_box" type="text" value=""></td>
-                                            <td><input id="qualitative_param_3_performance" class="input_txt_box" type="text" value=""></td>
-                                            <td><input id="qualitative_param_4_performance" class="input_txt_box" type="text" value=""></td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input id="qualitative_param_3" class="input_txt_box" type="text" value="" />
-                                </td>
-                                <td>
-                                    <input id="qualitative_desc_3" class="input_txt_box" type="text" value="" />
-                                </td>
-                                <td>
-                                    <table class="table-layer-2">
-                                        <tr>
-                                            <td><input id="qualitative_param_1_performance" class="input_txt_box" type="text" value=""></td>
-                                            <td><input id="qualitative_param_2_performance" class="input_txt_box" type="text" value=""></td>
-                                            <td><input id="qualitative_param_3_performance" class="input_txt_box" type="text" value=""></td>
-                                            <td><input id="qualitative_param_4_performance" class="input_txt_box" type="text" value=""></td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
+                            
                         </tbody>
                     </table>
                 </div>
@@ -2309,40 +2242,18 @@ Samvaarta.userDashboard = (() => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>
-                                    <input id="qualitative_param_1" class="input_txt_box" type="text" value="" />
-                                </td>
-                                <td>
-                                    <input id="qualitative_desc_1" class="input_txt_box" type="text" value="" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input id="qualitative_param_2" class="input_txt_box" type="text" value="" />
-                                </td>
-                                <td>
-                                    <input id="qualitative_desc_2" class="input_txt_box" type="text" value="" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input id="qualitative_param_3" class="input_txt_box" type="text" value="" />
-                                </td>
-                                <td>
-                                    <input id="qualitative_desc_3" class="input_txt_box" type="text" value="" />
-                                </td>
-                            </tr>
+                            
                         </tbody>
                     </table>
                 </div>
             </div>
             <div class="form-elm-section marg-t10">
-                <button class="btn">Submit</button>
+                <button onclick="Samvaarta.setGetUserDashboard.setDesiredObjective()" class="btn">Submit</button>
             </div>
         </div>
         `;
         $('.user-activity-details__inner').html(objective);
+        Samvaarta.setGetUserDashboard.getDesiredObjective();
     }
     const desOutcomes = () => {
         let outcome = `
@@ -2680,12 +2591,128 @@ Samvaarta.setGetUserDashboard = (() => {
             ajaxErrorCall
         );
     }
+    const setDesiredObjective = () => {
+        console.log("set desiered objective");
+        var qparam1 = document.getElementById("quantitative_param_1").value;
+        var qparam2 = document.getElementById("quantitative_param_2").value;
+        var qparam3 = document.getElementById("quantitative_param_3").value;
+        var qparam4 = document.getElementById("qualitative_param_1").value;
+        var qparam5 = document.getElementById("qualitative_param_2").value;
+        var qparam6 = document.getElementById("qualitative_param_3").value;
+        var qdesc1 = document.getElementById("quantitative_desc_1").value;
+        var qdesc2 = document.getElementById("quantitative_desc_2").value;
+        var qdesc3 = document.getElementById("quantitative_desc_3").value;
+        var qdesc4 = document.getElementById("qualitative_desc_1").value;
+        var qdesc5 = document.getElementById("qualitative_desc_2").value;
+        var qdesc6 = document.getElementById("qualitative_desc_3").value;
+
+        var errorElements = document.querySelectorAll(".error");        
+        errorElements.forEach(function (el) {
+            el.innerHTML = "";
+        });
+    }
+    const getDesiredObjective = () => {
+        quantitativeData();
+        qualitativeData();
+    }
+    const quantitativeData = (response) => {
+        let quanData = `
+        <tr>
+            <td></td>
+            <td></td>
+            <td>
+                <table class="table-layer-2">
+                    <tr>
+                        <td><span>Current</span></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input ${response?.quantitativeData ? 'readonly' : ''} id="quantitative_param_1" class="input_txt_box" type="text" value="" />
+            </td>
+            <td>
+                <input ${response?.quantitativeData ? 'readonly' : ''} id="quantitative_desc_1" class="input_txt_box" type="text" value="" />
+            </td>
+            <td>
+                <table class="table-layer-2">
+                    <tr>
+                        <td><input id="c_performance_1" class="input_txt_box" type="text" value=""></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input ${response?.quantitativeData ? 'readonly' : ''} id="quantitative_param_2" class="input_txt_box" type="text" value="" />
+            </td>
+            <td>
+                <input ${response?.quantitativeData ? 'readonly' : ''} id="quantitative_desc_2" class="input_txt_box" type="text" value="" />
+            </td>
+            <td>
+                <table class="table-layer-2">
+                    <tr>
+                        <td><input id="c_performance_2" class="input_txt_box" type="text" value=""></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input ${response?.quantitativeData ? 'readonly' : ''} id="quantitative_param_3" class="input_txt_box" type="text" value="" />
+            </td>
+            <td>
+                <input ${response?.quantitativeData ? 'readonly' : ''} id="quantitative_desc_3" class="input_txt_box" type="text" value="" />
+            </td>
+            <td>
+                <table class="table-layer-2">
+                    <tr>
+                        <td><input id="c_performance_3" class="input_txt_box" type="text" value=""></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        `;
+        $('.quantitative__data tbody').html(quanData);
+    }
+    const qualitativeData = (response) => {
+        let qualityData = `
+        <tr>
+            <td>
+                <input ${response?.qualitative ? 'readonly' : ''} id="qualitative_param_1" class="input_txt_box" type="text" value="" />
+            </td>
+            <td>
+                <input ${response?.qualitative ? 'readonly' : ''} id="qualitative_desc_1" class="input_txt_box" type="text" value="" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input ${response?.qualitative ? 'readonly' : ''} id="qualitative_param_2" class="input_txt_box" type="text" value="" />
+            </td>
+            <td>
+                <input ${response?.qualitative ? 'readonly' : ''} id="qualitative_desc_2" class="input_txt_box" type="text" value="" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input ${response?.qualitative ? 'readonly' : ''} id="qualitative_param_3" class="input_txt_box" type="text" value="" />
+            </td>
+            <td>
+                <input ${response?.qualitative ? 'readonly' : ''} id="qualitative_desc_3" class="input_txt_box" type="text" value="" />
+            </td>
+        </tr>
+        `;
+        $('.qualitative__data tbody').html(qualityData);
+    }
     return{
         setDocConversation: setDocConversation, 
         getDocConversation: getDocConversation,
         previousTransactions: previousTransactions,
         editTransaction: editTransaction,
         updateTransaction: updateTransaction,
+        setDesiredObjective: setDesiredObjective,
+        getDesiredObjective: getDesiredObjective
     }
 })();
 
