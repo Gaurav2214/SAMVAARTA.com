@@ -987,7 +987,8 @@ button,
         font-family: "Open Sans", sans-serif;
         font-weight: 500;
         color: #262626;
-        padding: 8px; }
+        padding: 8px;
+        position: relative; }
         .dashboard__elements--inner table tr td:first-of-type {
           width: 6%; }
         .dashboard__elements--inner table tr td:nth-child(2) {
@@ -1011,6 +1012,8 @@ button,
           color: #a7262b; }
         .dashboard__elements--inner table tr td.edit-transaction {
           color: #1a73e9; }
+        .dashboard__elements--inner table tr td .error {
+          position: absolute; }
       .dashboard__elements--inner table tr:last-of-type {
         border-radius: 0 0 6px 6px; }
       .dashboard__elements--inner table tr:not(:first-of-type) {

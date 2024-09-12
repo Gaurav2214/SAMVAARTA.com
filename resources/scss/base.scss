@@ -768,6 +768,7 @@
                     td {
                         @include desc-5();
                         padding: rem(8);
+                        position: relative;
                         &:first-of-type() {
                             width: 6%;
                         }
@@ -799,6 +800,9 @@
                         }
                         &.edit-transaction{
                             color: #1a73e9;
+                        }
+                        .error{
+                            position: absolute;
                         }
                     }                        
                     &:last-of-type() {

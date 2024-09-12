@@ -278,7 +278,22 @@ Samvaarta.common = (() => {
             case "user_conversation":            
             case "user_week_commitment":          
             case "next_interaction_date":            
-            case "interaction_name":  
+            case "interaction_name": 
+            case "qualitative_param_3":        
+            case "qualitative_param_2":        
+            case "quantitative_param_1": 
+            case "quantitative_param_1":
+            case "quantitative_param_2":         
+            case "quantitative_param_3":         
+            case "quantitative_desc_1":         
+            case "quantitative_desc_2":         
+            case "quantitative_desc_3":         
+            case "c_performance_1":         
+            case "c_performance_2":         
+            case "c_performance_3":         
+            case "qualitative_desc_1":         
+            case "qualitative_desc_2":         
+            case "qualitative_desc_3":   
                 handleBlankNameVal(13);            
         }
         return error;
@@ -401,7 +416,22 @@ Samvaarta.common = (() => {
             user_conversation: validateName,            
             user_week_commitment: validateName,            
             next_interaction_date: validateName,            
-            interaction_name: validateName,            
+            interaction_name: validateName, 
+            qualitative_param_3: validateName,        
+            qualitative_param_2: validateName,        
+            qualitative_param_1: validateName,        
+            quantitative_param_1: validateName,        
+            quantitative_param_2: validateName,        
+            quantitative_param_3: validateName,        
+            quantitative_desc_1: validateName,        
+            quantitative_desc_2: validateName,        
+            quantitative_desc_3: validateName,        
+            c_performance_1: validateName,        
+            c_performance_2: validateName,        
+            c_performance_3: validateName,        
+            qualitative_desc_1: validateName,        
+            qualitative_desc_2: validateName,        
+            qualitative_desc_3: validateName,        
         };
 
         // Iterate through the validation functions
@@ -1404,7 +1434,15 @@ Samvaarta.system = (() => {
                         Code of ethics
                     </h2>
                 </div>                
-            </li>            
+            </li> 
+            <li id="" onclick="Samvaarta.userDashboard.docConversation();">
+                <div class="dashboard__elements--item">
+                    <h2>
+                        <img alt="" src="/images/conversation.png" width="25" height="25" />
+                        Documenting Conversations
+                    </h2>
+                </div>
+            </li>           
             <li onclick="Samvaarta.userDashboard.desObjective();">
                 <div class="dashboard__elements--item">
                     <h2>
@@ -1421,14 +1459,7 @@ Samvaarta.system = (() => {
                     </h2>
                 </div>                
             </li>
-            <li id="" onclick="Samvaarta.userDashboard.docConversation();">
-                <div class="dashboard__elements--item">
-                    <h2>
-                        <img alt="" src="/images/conversation.png" width="25" height="25" />
-                        Documenting Conversations
-                    </h2>
-                </div>
-            </li>
+            
             <li onclick="Samvaarta.userDashboard.closureInteraction();">
                 <div class="dashboard__elements--item">
                     <h2>
@@ -2605,11 +2636,65 @@ Samvaarta.setGetUserDashboard = (() => {
         var qdesc4 = document.getElementById("qualitative_desc_1").value;
         var qdesc5 = document.getElementById("qualitative_desc_2").value;
         var qdesc6 = document.getElementById("qualitative_desc_3").value;
+        var cperf1 = document.getElementById("c_performance_1").value;
+        var cperf2 = document.getElementById("c_performance_2").value;
+        var cperf3 = document.getElementById("c_performance_3").value;
 
         var errorElements = document.querySelectorAll(".error");        
         errorElements.forEach(function (el) {
             el.innerHTML = "";
         });
+        var inputElements = document.querySelectorAll(
+            ".user-activity-details__inner .input_txt_box"
+        );
+        for (let i = 0; i < inputElements.length; i++) {
+            if (
+                inputElements[i].type !== "button" &&
+                inputElements[i].type !== "checkbox"
+            ) {
+                Samvaarta.common.removeRequiredFields(inputElements[i]);
+                if (valError) {
+                    return false;
+                }
+            }
+        }
+
+        if (valError) {
+            return false;
+        } else {
+            let paramObject = {
+                url: apiUrl + "api/profile/desired-objective",
+                type: "POST",
+                headers: {
+                    Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+                    Accept: "application/json",
+                },
+                data: {
+                    parameter:[qparam1, qparam2, qparam3, qparam4, qparam5, qparam6],
+                    performance:[cperf1, cperf2, cperf3],
+                    unit_measurement: [qdesc1, qdesc2, qdesc3, qdesc4, qdesc5, qdesc6],
+                    session_id: 1,
+                },
+            };
+
+            const ajaxSuccessCall = (response) => {
+                getDesiredObjective();
+            };
+
+            const ajaxErrorCall = (error) => {
+                if (error.response) {
+                    $("#interaction_name_err")
+                        .html(error.response.data.message)
+                        .show();
+                }
+            };
+
+            Samvaarta.common.hitAjaxApi(
+                paramObject,
+                ajaxSuccessCall,
+                ajaxErrorCall
+            );
+        }
     }
     const getDesiredObjective = () => {
         quantitativeData();
@@ -2631,14 +2716,17 @@ Samvaarta.setGetUserDashboard = (() => {
         <tr>
             <td>
                 <input ${response?.quantitativeData ? 'readonly' : ''} id="quantitative_param_1" class="input_txt_box" type="text" value="" />
+                <p id="quantitative_param_1_err" class="error"></p>
             </td>
             <td>
                 <input ${response?.quantitativeData ? 'readonly' : ''} id="quantitative_desc_1" class="input_txt_box" type="text" value="" />
+                <p id="quantitative_desc_1_err" class="error"></p>
             </td>
             <td>
                 <table class="table-layer-2">
                     <tr>
-                        <td><input id="c_performance_1" class="input_txt_box" type="text" value=""></td>
+                        <td><input id="c_performance_1" maxlength="3" class="input_txt_box" type="number" value="">
+                        <p id="c_performance_1_err" class="error"></p></td>
                     </tr>
                 </table>
             </td>
@@ -2646,14 +2734,18 @@ Samvaarta.setGetUserDashboard = (() => {
         <tr>
             <td>
                 <input ${response?.quantitativeData ? 'readonly' : ''} id="quantitative_param_2" class="input_txt_box" type="text" value="" />
+                <p id="quantitative_param_2_err" class="error"></p>
             </td>
             <td>
                 <input ${response?.quantitativeData ? 'readonly' : ''} id="quantitative_desc_2" class="input_txt_box" type="text" value="" />
+                <p id="quantitative_desc_2_err" class="error"></p>
             </td>
             <td>
                 <table class="table-layer-2">
                     <tr>
-                        <td><input id="c_performance_2" class="input_txt_box" type="text" value=""></td>
+                        <td><input id="c_performance_2" maxlength="3" class="input_txt_box" type="number" value="">
+                            <p id="c_performance_2_err" class="error"></p>
+                        </td>
                     </tr>
                 </table>
             </td>
@@ -2661,14 +2753,19 @@ Samvaarta.setGetUserDashboard = (() => {
         <tr>
             <td>
                 <input ${response?.quantitativeData ? 'readonly' : ''} id="quantitative_param_3" class="input_txt_box" type="text" value="" />
+                <p id="quantitative_param_3_err" class="error"></p>
             </td>
             <td>
                 <input ${response?.quantitativeData ? 'readonly' : ''} id="quantitative_desc_3" class="input_txt_box" type="text" value="" />
+                <p id="quantitative_desc_3_err" class="error"></p>
             </td>
             <td>
                 <table class="table-layer-2">
                     <tr>
-                        <td><input id="c_performance_3" class="input_txt_box" type="text" value=""></td>
+                        <td>
+                            <input id="c_performance_3" class="input_txt_box" maxlength="3" type="number" value="">
+                            <p id="c_performance_3_err" class="error"></p>
+                        </td>
                     </tr>
                 </table>
             </td>
@@ -2681,25 +2778,31 @@ Samvaarta.setGetUserDashboard = (() => {
         <tr>
             <td>
                 <input ${response?.qualitative ? 'readonly' : ''} id="qualitative_param_1" class="input_txt_box" type="text" value="" />
+                <p id="qualitative_param_1_err" class="error"></p>
             </td>
             <td>
                 <input ${response?.qualitative ? 'readonly' : ''} id="qualitative_desc_1" class="input_txt_box" type="text" value="" />
+                <p id="qualitative_desc_1_err" class="error"></p>
             </td>
         </tr>
         <tr>
             <td>
                 <input ${response?.qualitative ? 'readonly' : ''} id="qualitative_param_2" class="input_txt_box" type="text" value="" />
+                <p id="qualitative_param_2_err" class="error"></p>
             </td>
             <td>
                 <input ${response?.qualitative ? 'readonly' : ''} id="qualitative_desc_2" class="input_txt_box" type="text" value="" />
+                <p id="qualitative_desc_2_err" class="error"></p>
             </td>
         </tr>
         <tr>
             <td>
                 <input ${response?.qualitative ? 'readonly' : ''} id="qualitative_param_3" class="input_txt_box" type="text" value="" />
+                <p id="qualitative_param_3_err" class="error"></p>
             </td>
             <td>
                 <input ${response?.qualitative ? 'readonly' : ''} id="qualitative_desc_3" class="input_txt_box" type="text" value="" />
+                <p id="qualitative_desc_3_err" class="error"></p>
             </td>
         </tr>
         `;
@@ -2712,7 +2815,7 @@ Samvaarta.setGetUserDashboard = (() => {
         editTransaction: editTransaction,
         updateTransaction: updateTransaction,
         setDesiredObjective: setDesiredObjective,
-        getDesiredObjective: getDesiredObjective
+        getDesiredObjective: getDesiredObjective,
     }
 })();
 
