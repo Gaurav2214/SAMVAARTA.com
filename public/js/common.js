@@ -251,6 +251,21 @@ Samvaarta.common = function () {
       case "user_week_commitment":
       case "next_interaction_date":
       case "interaction_name":
+      case "qualitative_param_3":
+      case "qualitative_param_2":
+      case "quantitative_param_1":
+      case "quantitative_param_1":
+      case "quantitative_param_2":
+      case "quantitative_param_3":
+      case "quantitative_desc_1":
+      case "quantitative_desc_2":
+      case "quantitative_desc_3":
+      case "c_performance_1":
+      case "c_performance_2":
+      case "c_performance_3":
+      case "qualitative_desc_1":
+      case "qualitative_desc_2":
+      case "qualitative_desc_3":
         handleBlankNameVal(13);
     }
     return error;
@@ -358,7 +373,22 @@ Samvaarta.common = function () {
       user_conversation: validateName,
       user_week_commitment: validateName,
       next_interaction_date: validateName,
-      interaction_name: validateName
+      interaction_name: validateName,
+      qualitative_param_3: validateName,
+      qualitative_param_2: validateName,
+      qualitative_param_1: validateName,
+      quantitative_param_1: validateName,
+      quantitative_param_2: validateName,
+      quantitative_param_3: validateName,
+      quantitative_desc_1: validateName,
+      quantitative_desc_2: validateName,
+      quantitative_desc_3: validateName,
+      c_performance_1: validateName,
+      c_performance_2: validateName,
+      c_performance_3: validateName,
+      qualitative_desc_1: validateName,
+      qualitative_desc_2: validateName,
+      qualitative_desc_3: validateName
     };
 
     // Iterate through the validation functions
@@ -929,7 +959,7 @@ Samvaarta.system = function () {
     }
   };
   var userDashboard = function userDashboard() {
-    var userdashInfo = "\n        <ul>\n            <li class=\"active\" onclick=\"Samvaarta.userDashboard.codeOfEthics()\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/ethics.png\" width=\"25\" height=\"25\" />\n                        Code of ethics\n                    </h2>\n                </div>                \n            </li>            \n            <li onclick=\"Samvaarta.userDashboard.desObjective();\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/objective.png\" width=\"25\" height=\"25\" />\n                        Desired Objective\n                    </h2>\n                </div>                \n            </li>\n            <li onclick=\"Samvaarta.userDashboard.desOutcomes();\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/outcomes.png\" width=\"25\" height=\"25\" />\n                        Desired Outcomes\n                    </h2>\n                </div>                \n            </li>\n            <li id=\"\" onclick=\"Samvaarta.userDashboard.docConversation();\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/conversation.png\" width=\"25\" height=\"25\" />\n                        Documenting Conversations\n                    </h2>\n                </div>\n            </li>\n            <li onclick=\"Samvaarta.userDashboard.closureInteraction();\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/closure.png\" width=\"25\" height=\"25\" />\n                        Closing of Interaction\n                    </h2>\n                </div>                \n            </li>            \n            \n        </ul>\n        <div class=\"user-activity-details\">\n            <div class=\"user-activity-details__inner\"></div>\n        </div>\n        ";
+    var userdashInfo = "\n        <ul>\n            <li class=\"active\" onclick=\"Samvaarta.userDashboard.codeOfEthics()\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/ethics.png\" width=\"25\" height=\"25\" />\n                        Code of ethics\n                    </h2>\n                </div>                \n            </li> \n            <li id=\"\" onclick=\"Samvaarta.userDashboard.docConversation();\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/conversation.png\" width=\"25\" height=\"25\" />\n                        Documenting Conversations\n                    </h2>\n                </div>\n            </li>           \n            <li onclick=\"Samvaarta.userDashboard.desObjective();\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/objective.png\" width=\"25\" height=\"25\" />\n                        Desired Objective\n                    </h2>\n                </div>                \n            </li>\n            <li onclick=\"Samvaarta.userDashboard.desOutcomes();\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/outcomes.png\" width=\"25\" height=\"25\" />\n                        Desired Outcomes\n                    </h2>\n                </div>                \n            </li>\n            \n            <li onclick=\"Samvaarta.userDashboard.closureInteraction();\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/closure.png\" width=\"25\" height=\"25\" />\n                        Closing of Interaction\n                    </h2>\n                </div>                \n            </li>            \n            \n        </ul>\n        <div class=\"user-activity-details\">\n            <div class=\"user-activity-details__inner\"></div>\n        </div>\n        ";
     $(".user-dashboard-info").html(userdashInfo);
   };
   var trainerDashboard = function trainerDashboard() {};
@@ -1560,21 +1590,60 @@ Samvaarta.setGetUserDashboard = function () {
     var qdesc4 = document.getElementById("qualitative_desc_1").value;
     var qdesc5 = document.getElementById("qualitative_desc_2").value;
     var qdesc6 = document.getElementById("qualitative_desc_3").value;
+    var cperf1 = document.getElementById("c_performance_1").value;
+    var cperf2 = document.getElementById("c_performance_2").value;
+    var cperf3 = document.getElementById("c_performance_3").value;
     var errorElements = document.querySelectorAll(".error");
     errorElements.forEach(function (el) {
       el.innerHTML = "";
     });
+    var inputElements = document.querySelectorAll(".user-activity-details__inner .input_txt_box");
+    for (var i = 0; i < inputElements.length; i++) {
+      if (inputElements[i].type !== "button" && inputElements[i].type !== "checkbox") {
+        Samvaarta.common.removeRequiredFields(inputElements[i]);
+        if (valError) {
+          return false;
+        }
+      }
+    }
+    if (valError) {
+      return false;
+    } else {
+      var paramObject = {
+        url: apiUrl + "api/profile/desired-objective",
+        type: "POST",
+        headers: {
+          Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
+          Accept: "application/json"
+        },
+        data: {
+          parameter: [qparam1, qparam2, qparam3, qparam4, qparam5, qparam6],
+          performance: [cperf1, cperf2, cperf3],
+          unit_measurement: [qdesc1, qdesc2, qdesc3, qdesc4, qdesc5, qdesc6],
+          session_id: 1
+        }
+      };
+      var ajaxSuccessCall = function ajaxSuccessCall(response) {
+        getDesiredObjective();
+      };
+      var ajaxErrorCall = function ajaxErrorCall(error) {
+        if (error.response) {
+          $("#interaction_name_err").html(error.response.data.message).show();
+        }
+      };
+      Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
+    }
   };
   var getDesiredObjective = function getDesiredObjective() {
     quantitativeData();
     qualitativeData();
   };
   var quantitativeData = function quantitativeData(response) {
-    var quanData = "\n        <tr>\n            <td></td>\n            <td></td>\n            <td>\n                <table class=\"table-layer-2\">\n                    <tr>\n                        <td><span>Current</span></td>\n                    </tr>\n                </table>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <input ".concat(response !== null && response !== void 0 && response.quantitativeData ? 'readonly' : '', " id=\"quantitative_param_1\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n            </td>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.quantitativeData ? 'readonly' : '', " id=\"quantitative_desc_1\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n            </td>\n            <td>\n                <table class=\"table-layer-2\">\n                    <tr>\n                        <td><input id=\"c_performance_1\" class=\"input_txt_box\" type=\"text\" value=\"\"></td>\n                    </tr>\n                </table>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.quantitativeData ? 'readonly' : '', " id=\"quantitative_param_2\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n            </td>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.quantitativeData ? 'readonly' : '', " id=\"quantitative_desc_2\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n            </td>\n            <td>\n                <table class=\"table-layer-2\">\n                    <tr>\n                        <td><input id=\"c_performance_2\" class=\"input_txt_box\" type=\"text\" value=\"\"></td>\n                    </tr>\n                </table>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.quantitativeData ? 'readonly' : '', " id=\"quantitative_param_3\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n            </td>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.quantitativeData ? 'readonly' : '', " id=\"quantitative_desc_3\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n            </td>\n            <td>\n                <table class=\"table-layer-2\">\n                    <tr>\n                        <td><input id=\"c_performance_3\" class=\"input_txt_box\" type=\"text\" value=\"\"></td>\n                    </tr>\n                </table>\n            </td>\n        </tr>\n        ");
+    var quanData = "\n        <tr>\n            <td></td>\n            <td></td>\n            <td>\n                <table class=\"table-layer-2\">\n                    <tr>\n                        <td><span>Current</span></td>\n                    </tr>\n                </table>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <input ".concat(response !== null && response !== void 0 && response.quantitativeData ? 'readonly' : '', " id=\"quantitative_param_1\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"quantitative_param_1_err\" class=\"error\"></p>\n            </td>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.quantitativeData ? 'readonly' : '', " id=\"quantitative_desc_1\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"quantitative_desc_1_err\" class=\"error\"></p>\n            </td>\n            <td>\n                <table class=\"table-layer-2\">\n                    <tr>\n                        <td><input id=\"c_performance_1\" maxlength=\"3\" class=\"input_txt_box\" type=\"number\" value=\"\">\n                        <p id=\"c_performance_1_err\" class=\"error\"></p></td>\n                    </tr>\n                </table>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.quantitativeData ? 'readonly' : '', " id=\"quantitative_param_2\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"quantitative_param_2_err\" class=\"error\"></p>\n            </td>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.quantitativeData ? 'readonly' : '', " id=\"quantitative_desc_2\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"quantitative_desc_2_err\" class=\"error\"></p>\n            </td>\n            <td>\n                <table class=\"table-layer-2\">\n                    <tr>\n                        <td><input id=\"c_performance_2\" maxlength=\"3\" class=\"input_txt_box\" type=\"number\" value=\"\">\n                            <p id=\"c_performance_2_err\" class=\"error\"></p>\n                        </td>\n                    </tr>\n                </table>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.quantitativeData ? 'readonly' : '', " id=\"quantitative_param_3\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"quantitative_param_3_err\" class=\"error\"></p>\n            </td>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.quantitativeData ? 'readonly' : '', " id=\"quantitative_desc_3\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"quantitative_desc_3_err\" class=\"error\"></p>\n            </td>\n            <td>\n                <table class=\"table-layer-2\">\n                    <tr>\n                        <td>\n                            <input id=\"c_performance_3\" class=\"input_txt_box\" maxlength=\"3\" type=\"number\" value=\"\">\n                            <p id=\"c_performance_3_err\" class=\"error\"></p>\n                        </td>\n                    </tr>\n                </table>\n            </td>\n        </tr>\n        ");
     $('.quantitative__data tbody').html(quanData);
   };
   var qualitativeData = function qualitativeData(response) {
-    var qualityData = "\n        <tr>\n            <td>\n                <input ".concat(response !== null && response !== void 0 && response.qualitative ? 'readonly' : '', " id=\"qualitative_param_1\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n            </td>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.qualitative ? 'readonly' : '', " id=\"qualitative_desc_1\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.qualitative ? 'readonly' : '', " id=\"qualitative_param_2\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n            </td>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.qualitative ? 'readonly' : '', " id=\"qualitative_desc_2\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.qualitative ? 'readonly' : '', " id=\"qualitative_param_3\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n            </td>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.qualitative ? 'readonly' : '', " id=\"qualitative_desc_3\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n            </td>\n        </tr>\n        ");
+    var qualityData = "\n        <tr>\n            <td>\n                <input ".concat(response !== null && response !== void 0 && response.qualitative ? 'readonly' : '', " id=\"qualitative_param_1\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"qualitative_param_1_err\" class=\"error\"></p>\n            </td>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.qualitative ? 'readonly' : '', " id=\"qualitative_desc_1\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"qualitative_desc_1_err\" class=\"error\"></p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.qualitative ? 'readonly' : '', " id=\"qualitative_param_2\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"qualitative_param_2_err\" class=\"error\"></p>\n            </td>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.qualitative ? 'readonly' : '', " id=\"qualitative_desc_2\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"qualitative_desc_2_err\" class=\"error\"></p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.qualitative ? 'readonly' : '', " id=\"qualitative_param_3\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"qualitative_param_3_err\" class=\"error\"></p>\n            </td>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.qualitative ? 'readonly' : '', " id=\"qualitative_desc_3\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"qualitative_desc_3_err\" class=\"error\"></p>\n            </td>\n        </tr>\n        ");
     $('.qualitative__data tbody').html(qualityData);
   };
   return {
