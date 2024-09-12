@@ -266,6 +266,12 @@ Samvaarta.common = function () {
       case "qualitative_desc_1":
       case "qualitative_desc_2":
       case "qualitative_desc_3":
+      case "outcomes_param_1":
+      case "outcomes_param_2":
+      case "outcomes_param_3":
+      case "outcomes_desc_1":
+      case "outcomes_desc_2":
+      case "outcomes_desc_3":
         handleBlankNameVal(13);
     }
     return error;
@@ -388,7 +394,13 @@ Samvaarta.common = function () {
       c_performance_3: validateName,
       qualitative_desc_1: validateName,
       qualitative_desc_2: validateName,
-      qualitative_desc_3: validateName
+      qualitative_desc_3: validateName,
+      outcomes_param_1: validateName,
+      outcomes_param_2: validateName,
+      outcomes_param_3: validateName,
+      outcomes_desc_1: validateName,
+      outcomes_desc_2: validateName,
+      outcomes_desc_3: validateName
     };
 
     // Iterate through the validation functions
@@ -1390,8 +1402,9 @@ Samvaarta.userDashboard = function () {
     Samvaarta.setGetUserDashboard.getDesiredObjective();
   };
   var desOutcomes = function desOutcomes() {
-    var outcome = "\n        <div class=\"details\">\n            <h3>Desired Outcomes</h3>\n            <p>Desired outcomes refers to the state you desire at the end of the period                    </p>\n            <div class=\"details--items outcomes\">\n                <h4>The following details needs to be filled up</h4>\n                <ul class=\"details--items__topics\">\n                    <li>Mention the parameter</li>\n                    <li>Describe the outcome you like. This will include the way you will feel, hear, say and do after a desired a period of time</li>\n                    <li>For example\n                        <ul>\n                            <li>Parameter \u2013 Manager Relationship</li>\n                            <li>Brief Description \u2013 My manager is talking is trusting me by giving important tasks beyond the KRAs</li>\n                        </ul>\n                    </li>\n                </ul>\n                <div class=\"outcomes__data\">\n                    <table class=\"light-view\">\n                        <thead>\n                            <tr class=\"user-dashboard-info__head-list\">\n                                <td>Parameter</td>\n                                <td>Brief Description</td>\n                            </tr>\n                        </thead>\n                        <tbody>\n                            <tr>\n                                <td>\n                                    <input id=\"outcomes_param_1\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                                </td>\n                                <td>\n                                    <input id=\"outcomes_desc_1\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                                </td>\n                            </tr>\n                            <tr>\n                                <td>\n                                    <input id=\"outcomes_param_2\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                                </td>\n                                <td>\n                                    <input id=\"outcomes_desc_2\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                                </td>\n                            </tr>\n                            <tr>\n                                <td>\n                                    <input id=\"outcomes_param_3\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                                </td>\n                                <td>\n                                    <input id=\"outcomes_desc_3\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                                </td>\n                            </tr>\n                        </tbody>\n                    </table>\n                </div>\n            </div>\n            <div class=\"form-elm-section marg-t10\">\n                <button class=\"btn\">Submit</button>\n            </div>\n        </div>\n        ";
+    var outcome = "\n        <div class=\"details\">\n            <h3>Desired Outcomes</h3>\n            <p>Desired outcomes refers to the state you desire at the end of the period                    </p>\n            <div class=\"details--items outcomes\">\n                <h4>The following details needs to be filled up</h4>\n                <ul class=\"details--items__topics\">\n                    <li>Mention the parameter</li>\n                    <li>Describe the outcome you like. This will include the way you will feel, hear, say and do after a desired a period of time</li>\n                    <li>For example\n                        <ul>\n                            <li>Parameter \u2013 Manager Relationship</li>\n                            <li>Brief Description \u2013 My manager is talking is trusting me by giving important tasks beyond the KRAs</li>\n                        </ul>\n                    </li>\n                </ul>\n                <div class=\"outcomes__data\">\n                    <table class=\"light-view\">\n                        <thead>\n                            <tr class=\"user-dashboard-info__head-list\">\n                                <td>Parameter</td>\n                                <td>Brief Description</td>\n                            </tr>\n                        </thead>\n                        <tbody>\n                            \n                        </tbody>\n                    </table>\n                </div>\n            </div>\n            <div class=\"form-elm-section marg-t10\">\n                <button onclick=\"Samvaarta.setGetUserDashboard.setDesiredOutcomes()\" class=\"btn\">Submit</button>\n            </div>\n        </div>\n        ";
     $('.user-activity-details__inner').html(outcome);
+    Samvaarta.setGetUserDashboard.getDesiredOutcomes();
   };
   return {
     codeOfEthics: codeOfEthics,
@@ -1577,7 +1590,6 @@ Samvaarta.setGetUserDashboard = function () {
     Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
   };
   var setDesiredObjective = function setDesiredObjective() {
-    console.log("set desiered objective");
     var qparam1 = document.getElementById("quantitative_param_1").value;
     var qparam2 = document.getElementById("quantitative_param_2").value;
     var qparam3 = document.getElementById("quantitative_param_3").value;
@@ -1646,6 +1658,60 @@ Samvaarta.setGetUserDashboard = function () {
     var qualityData = "\n        <tr>\n            <td>\n                <input ".concat(response !== null && response !== void 0 && response.qualitative ? 'readonly' : '', " id=\"qualitative_param_1\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"qualitative_param_1_err\" class=\"error\"></p>\n            </td>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.qualitative ? 'readonly' : '', " id=\"qualitative_desc_1\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"qualitative_desc_1_err\" class=\"error\"></p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.qualitative ? 'readonly' : '', " id=\"qualitative_param_2\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"qualitative_param_2_err\" class=\"error\"></p>\n            </td>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.qualitative ? 'readonly' : '', " id=\"qualitative_desc_2\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"qualitative_desc_2_err\" class=\"error\"></p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.qualitative ? 'readonly' : '', " id=\"qualitative_param_3\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"qualitative_param_3_err\" class=\"error\"></p>\n            </td>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.qualitative ? 'readonly' : '', " id=\"qualitative_desc_3\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"qualitative_desc_3_err\" class=\"error\"></p>\n            </td>\n        </tr>\n        ");
     $('.qualitative__data tbody').html(qualityData);
   };
+  var setDesiredOutcomes = function setDesiredOutcomes() {
+    var qparam1 = document.getElementById("outcomes_param_1").value;
+    var qparam2 = document.getElementById("outcomes_param_2").value;
+    var qparam3 = document.getElementById("outcomes_param_3").value;
+    var qparam4 = document.getElementById("outcomes_desc_1").value;
+    var qparam5 = document.getElementById("outcomes_desc_2").value;
+    var qparam6 = document.getElementById("outcomes_desc_3").value;
+    var errorElements = document.querySelectorAll(".error");
+    errorElements.forEach(function (el) {
+      el.innerHTML = "";
+    });
+    var inputElements = document.querySelectorAll(".outcomes__data .input_txt_box");
+    for (var i = 0; i < inputElements.length; i++) {
+      if (inputElements[i].type !== "button" && inputElements[i].type !== "checkbox") {
+        Samvaarta.common.removeRequiredFields(inputElements[i]);
+        if (valError) {
+          return false;
+        }
+      }
+    }
+    if (valError) {
+      return false;
+    } else {
+      var paramObject = {
+        url: apiUrl + "api/profile/learning-outcome",
+        type: "POST",
+        headers: {
+          Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
+          Accept: "application/json"
+        },
+        data: {
+          parameter: [qparam1, qparam2, qparam3],
+          description: [qparam4, qparam5, qparam6],
+          session_id: 1
+        }
+      };
+      var ajaxSuccessCall = function ajaxSuccessCall(response) {
+        getDesiredOutcomes();
+      };
+      var ajaxErrorCall = function ajaxErrorCall(error) {
+        if (error.response) {
+          $("#interaction_name_err").html(error.response.data.message).show();
+        }
+      };
+      Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
+    }
+  };
+  var getDesiredOutcomes = function getDesiredOutcomes() {
+    desiredData();
+  };
+  var desiredData = function desiredData() {
+    var desieredData = "\n        <tr>\n            <td>\n                <input id=\"outcomes_param_1\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"outcomes_param_1_err\" class=\"error\"></p>\n            </td>\n            <td>\n                <input id=\"outcomes_desc_1\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"outcomes_desc_1_err\" class=\"error\"></p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <input id=\"outcomes_param_2\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"outcomes_param_2_err\" class=\"error\"></p>\n            </td>\n            <td>\n                <input id=\"outcomes_desc_2\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"outcomes_desc_2_err\" class=\"error\"></p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <input id=\"outcomes_param_3\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"outcomes_param_3_err\" class=\"error\"></p>\n            </td>\n            <td>\n                <input id=\"outcomes_desc_3\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"outcomes_desc_3_err\" class=\"error\"></p>\n            </td>\n        </tr>\n        ";
+    $('.outcomes__data tbody').html(desieredData);
+  };
   return {
     setDocConversation: setDocConversation,
     getDocConversation: getDocConversation,
@@ -1653,7 +1719,9 @@ Samvaarta.setGetUserDashboard = function () {
     editTransaction: editTransaction,
     updateTransaction: updateTransaction,
     setDesiredObjective: setDesiredObjective,
-    getDesiredObjective: getDesiredObjective
+    getDesiredObjective: getDesiredObjective,
+    setDesiredOutcomes: setDesiredOutcomes,
+    getDesiredOutcomes: getDesiredOutcomes
   };
 }();
 var dashboardTab = function dashboardTab() {
