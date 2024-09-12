@@ -294,6 +294,12 @@ Samvaarta.common = (() => {
             case "qualitative_desc_1":         
             case "qualitative_desc_2":         
             case "qualitative_desc_3":   
+            case "outcomes_param_1":    
+            case "outcomes_param_2":    
+            case "outcomes_param_3":    
+            case "outcomes_desc_1":    
+            case "outcomes_desc_2":    
+            case "outcomes_desc_3":    
                 handleBlankNameVal(13);            
         }
         return error;
@@ -432,6 +438,12 @@ Samvaarta.common = (() => {
             qualitative_desc_1: validateName,        
             qualitative_desc_2: validateName,        
             qualitative_desc_3: validateName,        
+            outcomes_param_1: validateName,   
+            outcomes_param_2: validateName,   
+            outcomes_param_3: validateName,   
+            outcomes_desc_1: validateName,   
+            outcomes_desc_2: validateName,   
+            outcomes_desc_3: validateName,   
         };
 
         // Iterate through the validation functions
@@ -2312,40 +2324,18 @@ Samvaarta.userDashboard = (() => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>
-                                    <input id="outcomes_param_1" class="input_txt_box" type="text" value="" />
-                                </td>
-                                <td>
-                                    <input id="outcomes_desc_1" class="input_txt_box" type="text" value="" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input id="outcomes_param_2" class="input_txt_box" type="text" value="" />
-                                </td>
-                                <td>
-                                    <input id="outcomes_desc_2" class="input_txt_box" type="text" value="" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input id="outcomes_param_3" class="input_txt_box" type="text" value="" />
-                                </td>
-                                <td>
-                                    <input id="outcomes_desc_3" class="input_txt_box" type="text" value="" />
-                                </td>
-                            </tr>
+                            
                         </tbody>
                     </table>
                 </div>
             </div>
             <div class="form-elm-section marg-t10">
-                <button class="btn">Submit</button>
+                <button onclick="Samvaarta.setGetUserDashboard.setDesiredOutcomes()" class="btn">Submit</button>
             </div>
         </div>
         `;
         $('.user-activity-details__inner').html(outcome);
+        Samvaarta.setGetUserDashboard.getDesiredOutcomes();
     }
     return {
         codeOfEthics: codeOfEthics,
@@ -2623,7 +2613,6 @@ Samvaarta.setGetUserDashboard = (() => {
         );
     }
     const setDesiredObjective = () => {
-        console.log("set desiered objective");
         var qparam1 = document.getElementById("quantitative_param_1").value;
         var qparam2 = document.getElementById("quantitative_param_2").value;
         var qparam3 = document.getElementById("quantitative_param_3").value;
@@ -2808,6 +2797,107 @@ Samvaarta.setGetUserDashboard = (() => {
         `;
         $('.qualitative__data tbody').html(qualityData);
     }
+    const setDesiredOutcomes = () => {
+        var qparam1 = document.getElementById("outcomes_param_1").value;
+        var qparam2 = document.getElementById("outcomes_param_2").value;
+        var qparam3 = document.getElementById("outcomes_param_3").value;
+        var qparam4 = document.getElementById("outcomes_desc_1").value;
+        var qparam5 = document.getElementById("outcomes_desc_2").value;
+        var qparam6 = document.getElementById("outcomes_desc_3").value;
+
+        var errorElements = document.querySelectorAll(".error");        
+        errorElements.forEach(function (el) {
+            el.innerHTML = "";
+        });
+        var inputElements = document.querySelectorAll(
+            ".outcomes__data .input_txt_box"
+        );
+        for (let i = 0; i < inputElements.length; i++) {
+            if (
+                inputElements[i].type !== "button" &&
+                inputElements[i].type !== "checkbox"
+            ) {
+                Samvaarta.common.removeRequiredFields(inputElements[i]);
+                if (valError) {
+                    return false;
+                }
+            }
+        }
+
+        if (valError) {
+            return false;
+        } else {
+            let paramObject = {
+                url: apiUrl + "api/profile/learning-outcome",
+                type: "POST",
+                headers: {
+                    Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+                    Accept: "application/json",
+                },
+                data: {
+                    parameter:[qparam1, qparam2, qparam3],
+                    description: [qparam4, qparam5, qparam6],
+                    session_id: 1,
+                },
+            };
+
+            const ajaxSuccessCall = (response) => {
+                getDesiredOutcomes();
+            };
+
+            const ajaxErrorCall = (error) => {
+                if (error.response) {
+                    $("#interaction_name_err")
+                        .html(error.response.data.message)
+                        .show();
+                }
+            };
+
+            Samvaarta.common.hitAjaxApi(
+                paramObject,
+                ajaxSuccessCall,
+                ajaxErrorCall
+            );
+        }
+    }
+    const getDesiredOutcomes = () => {
+        desiredData();
+    }
+    const desiredData = () => {
+        let desieredData = `
+        <tr>
+            <td>
+                <input id="outcomes_param_1" class="input_txt_box" type="text" value="" />
+                <p id="outcomes_param_1_err" class="error"></p>
+            </td>
+            <td>
+                <input id="outcomes_desc_1" class="input_txt_box" type="text" value="" />
+                <p id="outcomes_desc_1_err" class="error"></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input id="outcomes_param_2" class="input_txt_box" type="text" value="" />
+                <p id="outcomes_param_2_err" class="error"></p>
+            </td>
+            <td>
+                <input id="outcomes_desc_2" class="input_txt_box" type="text" value="" />
+                <p id="outcomes_desc_2_err" class="error"></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input id="outcomes_param_3" class="input_txt_box" type="text" value="" />
+                <p id="outcomes_param_3_err" class="error"></p>
+            </td>
+            <td>
+                <input id="outcomes_desc_3" class="input_txt_box" type="text" value="" />
+                <p id="outcomes_desc_3_err" class="error"></p>
+            </td>
+        </tr>
+        `;
+        $('.outcomes__data tbody').html(desieredData);
+    }
     return{
         setDocConversation: setDocConversation, 
         getDocConversation: getDocConversation,
@@ -2816,6 +2906,8 @@ Samvaarta.setGetUserDashboard = (() => {
         updateTransaction: updateTransaction,
         setDesiredObjective: setDesiredObjective,
         getDesiredObjective: getDesiredObjective,
+        setDesiredOutcomes: setDesiredOutcomes,
+        getDesiredOutcomes: getDesiredOutcomes,
     }
 })();
 
