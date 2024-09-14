@@ -1428,12 +1428,20 @@ Samvaarta.setGetUserDashboard = function () {
     var next_interaction_date = document.getElementById("next_interaction_date").value;
     var interaction_name = document.getElementById("interaction_name").value;
     var fileupload = document.getElementById("hiddenFileInput").files[0];
-    var errorElements = document.querySelectorAll(".error");
     var formattedDate = '';
     if (next_interaction_date) {
       var date = new Date(next_interaction_date);
       formattedDate = date.toISOString().split('T')[0];
     }
+    var formData = new FormData();
+    formData.append("doc_file", fileupload);
+    formData.append("focus_of_the_day", user_focus);
+    formData.append("today_conversion", user_conversation);
+    formData.append("feedback", week_commitment);
+    formData.append("next_date", formattedDate);
+    formData.append("last_week_comments", last_commitment);
+    formData.append("session_id", interaction_name);
+    var errorElements = document.querySelectorAll(".error");
     errorElements.forEach(function (el) {
       el.innerHTML = "";
     });
@@ -1456,15 +1464,8 @@ Samvaarta.setGetUserDashboard = function () {
           Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
           Accept: "application/json"
         },
-        data: {
-          next_date: formattedDate,
-          focus_of_the_day: user_focus,
-          today_conversion: user_conversation,
-          feedback: week_commitment,
-          session_id: interaction_name,
-          last_week_comments: last_commitment,
-          doc_file: fileupload
-        }
+        "mimeType": "multipart/form-data",
+        data: formData
       };
       var ajaxSuccessCall = function ajaxSuccessCall(response) {
         var _response$data4;
