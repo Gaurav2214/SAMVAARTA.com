@@ -8,7 +8,7 @@ use App\Models\LearningObjectiveTypes;
 
 class LearningOutcomes extends Pivot{
 
-    protected $fillable = ['id', 'objective_type','status','user_id','outcome_description','skill_level','experience_at_end'];
+    protected $fillable = ['id', 'objective_type','status','user_id','outcome_description','skill_level','experience_at_end','parameter'];
 
     protected $table ='learning_outcomes';
 

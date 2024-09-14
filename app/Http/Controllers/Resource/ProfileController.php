@@ -339,25 +339,35 @@ class ProfileController extends Controller
 	public function add_edit_learning_outcome(Request $request)
 	{
 		$validator =Validator::make($request->all(), [
-			'description' => 'required',
+			"outcome_description"    => "required|array|min:3",
+			"outcome_description.*"  => "required",
+			"parameter"    => "required|array|min:3",
+			"parameter.*"  => "required",
 		]);    
 
 		if (!$validator->fails())
 		{
 			
 			$user_id =  $request->user()->id;
-			$LearningOutcomes= LearningOutcomes::where('user_id',$user_id)->first();			
+			$LearningOutcomes= LearningOutcomes::where('user_id',$user_id)->first();	
+			
+			$request_data=$request->post();
 
 			if(!empty($LearningOutcomes)){
 				$LearningOutcomes->outcome_description=json_encode($request->outcome_description);
+				$LearningOutcomes->parameter=json_encode($request->parameter);
+				$LearningOutcomes->save();
+
 			}else{
-				$LearningOutcomes = LearningOutcomes::create(['user_id'=>$user_id,'outcome_description'=>json_encode($request->outcome_description)]);
+				$LearningOutcomes = LearningOutcomes::create(['user_id'=>$user_id,'outcome_description'=>json_encode($request->outcome_description),'parameter'=>json_encode($request->parameter)]);
 			}
 
 			$LearningOutcomes= LearningOutcomes::where('user_id', $request->user()->id)->first();
 
 			if($LearningOutcomes){
 				$LearningOutcomes->outcome_description=json_decode($LearningOutcomes->outcome_description,true);
+
+				$LearningOutcomes->parameter=json_decode($LearningOutcomes->parameter,true);
 				return response()->json(['data' => $LearningOutcomes,"success"=>"true","message"=>"Successfully Updated"]);
 			}else{
 				return response()->json(['data' => $LearningOutcomes,"success"=>"false"]);
