@@ -561,14 +561,15 @@ class ProfileController extends Controller
 			$DocumentConversations=$DocumentConversations->orderBy('document_conversations.id','desc')->first();
 		}else{
 			if($request_for=="past"){
-				$DocumentConversations= $DocumentConversations->whereRaw('date(document_conversations.created_at) < DATE(now())')->get();
+				$DocumentConversations= $DocumentConversations->whereRaw('date(document_conversations.created_at) < DATE(now())')->get()->toArray();
 			}else{
-				$DocumentConversations= $DocumentConversations->get();
+				$DocumentConversations= $DocumentConversations->get()->toArray();
 			}
-			
 		}
 
 		if($DocumentConversations){
+			
+
 			return response()->json(['data' => $DocumentConversations,"success"=>"true","count"=>($request_for=="current"?1:count($DocumentConversations))]);
 		}else{
 			return response()->json(['data' =>[],"success"=>"false"]);
@@ -577,10 +578,16 @@ class ProfileController extends Controller
 
 	public function desiredObjective(Request $request){
 		$user_id =  $request->user()->id;
-		$PerformanceData=PerformanceData::with('session')->where("user_id",$user_id)->orderBy('id',"desc")->get();
+		$PerformanceData=PerformanceData::with('session')->where("user_id",$user_id)->orderBy('id',"desc")->get()->toArray();
 
 		if($PerformanceData){
-			return response()->json(['data' => $PerformanceData,"success"=>"true","count"=>count($PerformanceData)]);
+
+			$temp=[];
+			foreach($PerformanceData as $val){
+				$temp[$val['performance_status']][$val['session_id']][]=($val);
+			}
+
+			return response()->json(['data' => $temp,"success"=>"true","count"=>count($PerformanceData)]);
 		}else{
 			return response()->json(['data' =>[],"success"=>"false"]);
 		}
@@ -597,6 +604,8 @@ class ProfileController extends Controller
     			"performance.*"  => "required|numeric",
 				"unit_measurement"    => "required|array|min:3",
     			"unit_measurement.*"  => "required",
+				"description"    => "required|array|min:3",
+    			"description.*"  => "required",
 				"parameter"    => "required|array|min:3",
     			"parameter.*"  => "required",
 				'session_id'=>'required',
@@ -606,7 +615,7 @@ class ProfileController extends Controller
 		if (!$validator->fails())
 		{
 
-			$PerformanceData=PerformanceData::where("user_id",$user_id)->where("session_id",$request->session_id)->orderBy('id',"desc")->get();
+			$PerformanceData=PerformanceData::where("user_id",$user_id)->where("session_id",$request->session_id)->orderBy('id',"desc")->get()->toArray();
 
 			if(!empty($PerformanceData)){
 				return response()->json(['message' =>"Performance data is alreardy added for this session","success"=>"false"]);
@@ -617,6 +626,7 @@ class ProfileController extends Controller
 			$performance = $request_data['performance'];
 			$parameter = $request_data['parameter'];
 			$unit_measurement = $request_data['unit_measurement'];
+			$description = $request_data['description'];
 
 			foreach($performance as $key=>$val){
 
@@ -627,6 +637,7 @@ class ProfileController extends Controller
 					'kpi_score'=>0,
 					'parameter'=>$parameter[$key],
 					'unit_measurement'=>$unit_measurement[$key],
+					'description'=>$description[$key],
 					'status'=>'1',
 					'performance_status'=>'current',
 					'session_id'=>$request->session_id
