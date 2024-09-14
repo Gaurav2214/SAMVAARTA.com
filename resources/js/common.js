@@ -2360,6 +2360,11 @@ Samvaarta.setGetUserDashboard = (() => {
         var next_interaction_date = document.getElementById("next_interaction_date").value;
         var interaction_name = document.getElementById("interaction_name").value;
         var fileupload = document.getElementById("hiddenFileInput").files[0];
+        var formattedDate = '';
+        if(next_interaction_date){
+            const date = new Date(next_interaction_date);
+            formattedDate = date.toISOString().split('T')[0];
+        }
         let formData = new FormData();
         formData.append("doc_file", fileupload);
         formData.append("focus_of_the_day", user_focus);
@@ -2370,11 +2375,7 @@ Samvaarta.setGetUserDashboard = (() => {
         formData.append("session_id", interaction_name);
         
         var errorElements = document.querySelectorAll(".error");
-        var formattedDate = '';
-        if(next_interaction_date){
-            const date = new Date(next_interaction_date);
-            formattedDate = date.toISOString().split('T')[0];
-        }
+        
         errorElements.forEach(function (el) {
             el.innerHTML = "";
         });
@@ -2404,6 +2405,7 @@ Samvaarta.setGetUserDashboard = (() => {
                     Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
                     Accept: "application/json",
                 },
+                "mimeType": "multipart/form-data",
                 data: formData
                 
             };
