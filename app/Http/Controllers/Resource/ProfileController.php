@@ -460,7 +460,13 @@ class ProfileController extends Controller
             $TrainingSession =  $TrainingSession->where('trainer_id',$trainer_id);
         }
 
-        $TrainingSession=$TrainingSession->orderBy('session_date', 'DESC')->get();
+        $TrainingSession=$TrainingSession->orderBy('session_date', 'DESC')->get()->toArray();
+
+		$TrainingSession2=TrainingSession::where('trainer_id',0)->where('status','1')->get()->toArray();
+
+		$TrainingSession=array_merge($TrainingSession,$TrainingSession2);
+
+
         return response()->json(['success' =>'true','count'=>count($TrainingSession),'data'=>$TrainingSession]);
 
 	}
