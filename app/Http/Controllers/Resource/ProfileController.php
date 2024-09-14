@@ -441,7 +441,7 @@ class ProfileController extends Controller
 		if($User->user_type=="user"){
 			$User = User::with('trainer')->find($User->id);  
 			
-			$trainer_id= $User['trainer'][0]->id;
+			$trainer_id= isset($User['trainer'][0])?$User['trainer'][0]->id:0;
 			
 		}else if($User->user_type=="trainer"){
 			$User = User::with('users')->find($User->id);             
@@ -671,6 +671,39 @@ class ProfileController extends Controller
 		}else{
 			return $validator->errors();
 		}
+	}
+
+	public function downloadReport(Request $request){
+		$user =$request->user();
+		$user_id =  $request->user()->id;
+
+		$path = storage_path('user/reports/');
+
+    $fileName = "report-".$user_id."-".date('YmdHis').'.csv';
+
+    $file = fopen($path.$fileName, 'w');
+
+    $columns = array('First Name', 'Email Address');
+
+    fputcsv($file, $columns);
+
+        $data = [
+            'First Name' => $user->first_name,  
+            'Email Address' => $user->email,    
+        ];
+
+
+    fputcsv($file, $data);
+
+    fclose($file);
+
+    $symlink = $path;
+
+    $fileModel = new UserDocument;
+    $fileModel->name = 'csv';
+    $fileModel->file_path = $symlink.$fileName;
+    $fileModel->save();
+
 	}
 	
 	

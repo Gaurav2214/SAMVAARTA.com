@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Routing\RouteParameterBinder;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,7 @@ Route::group(['middleware' => ['auth:api']], function() {
 		Route::get('documenting-conversations','Resource\ProfileController@documentingConversations');
 		Route::get('desired-objective','Resource\ProfileController@desiredObjective');
 		Route::post('desired-objective','Resource\ProfileController@addDesiredObjective');
+		Route::get('download-report',"Resource\ProfileController@downloadReport");
 	});
 	Route::group(['prefix' => 'trainer'], function() {
 		Route::post('/add_comment', 'Resource\ProfileController@add_comment');
