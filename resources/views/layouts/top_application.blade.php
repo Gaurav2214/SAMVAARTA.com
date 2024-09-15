@@ -1,3 +1,6 @@
+<?php
+    $fileVersion = 7;
+?>
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -13,7 +16,7 @@
 
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.0/themes/base/jquery-ui.css">
 
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/base.css?mod=3') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/base.css?mod='.$fileVersion) }}">
     
     <script src="https://code.jquery.com/jquery-3.7.1.js" crossorigin="anonymous">
     </script>
@@ -21,7 +24,7 @@
 
     <script>
         var appUrl ='<?php echo env('APP_URL')?>';
-        var fileVersion = '5';
+        var fileVersion = '6';
     </script>
 </head>
 <body>
