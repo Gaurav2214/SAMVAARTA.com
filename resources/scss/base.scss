@@ -259,6 +259,11 @@
             background: #d57521;
             color: #fff;
         }
+        &.disabled{
+            cursor: none;
+            pointer-events: none;
+            background: $clr-5;
+        }
     }
     .upcoming_session_container &{
         .error {

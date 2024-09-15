@@ -30,7 +30,10 @@ Samvaarta.messageLog = {
   10: "Please enter a new password",
   11: "Password has been changed successfully.",
   12: "Your Profile has been updated successfully.",
-  13: "Please provide valid input"
+  13: "Please provide valid input",
+  14: "You have successfully submitted your desired outcomes.",
+  15: "You have successfully submitted your desired objectives.",
+  16: "You have successfully submitted your documenting conversions."
 };
 var valError = true;
 var apiUrl = typeof appUrl != "undefined" ? appUrl : "http://127.0.0.1:8000/";
@@ -1137,9 +1140,9 @@ Samvaarta.system = function () {
       completeSessCount = "<li>No of sessions completed: <span></span></li>";
       trainerDashboard();
     } else {
-      var _response$trainer$, _response$trainer$2;
+      var _response$trainer, _response$trainer$, _response$trainer2, _response$trainer$2;
       userDashboard();
-      coachInfo = "<li id=\"".concat(response.trainer.length ? response === null || response === void 0 || (_response$trainer$ = response.trainer[0]) === null || _response$trainer$ === void 0 ? void 0 : _response$trainer$.id : '', "\">Coach Name: <span style=\"text-transform:capitalize;\">").concat(response.trainer.length ? (_response$trainer$2 = response.trainer[0]) === null || _response$trainer$2 === void 0 ? void 0 : _response$trainer$2.name : '', "</span></li>");
+      coachInfo = "<li id=\"".concat(response !== null && response !== void 0 && (_response$trainer = response.trainer) !== null && _response$trainer !== void 0 && _response$trainer.length ? response === null || response === void 0 || (_response$trainer$ = response.trainer[0]) === null || _response$trainer$ === void 0 ? void 0 : _response$trainer$.id : '', "\">Coach Name: <span style=\"text-transform:capitalize;\">").concat(response !== null && response !== void 0 && (_response$trainer2 = response.trainer) !== null && _response$trainer2 !== void 0 && _response$trainer2.length ? (_response$trainer$2 = response.trainer[0]) === null || _response$trainer$2 === void 0 ? void 0 : _response$trainer$2.name : '', "</span></li>");
       plannedSess = "<li>Planned Sessions: <span>".concat(response.plannedSession ? response.plannedSession : '', "</span></li>");
       concluded = "<li>Concluded: <span></span></li>";
       nextSession = "<li>Next Session Date: <span></span></li>";
@@ -1406,7 +1409,7 @@ Samvaarta.userDashboard = function () {
     Samvaarta.setGetUserDashboard.getDesiredObjective();
   };
   var desOutcomes = function desOutcomes() {
-    var outcome = "\n        <div class=\"details\">\n            <h3>Desired Outcomes</h3>\n            <p>Desired outcomes refers to the state you desire at the end of the period                    </p>\n            <div class=\"details--items outcomes\">\n                <h4>The following details needs to be filled up</h4>\n                <ul class=\"details--items__topics\">\n                    <li>Mention the parameter</li>\n                    <li>Describe the outcome you like. This will include the way you will feel, hear, say and do after a desired a period of time</li>\n                    <li>For example\n                        <ul>\n                            <li>Parameter \u2013 Manager Relationship</li>\n                            <li>Brief Description \u2013 My manager is talking is trusting me by giving important tasks beyond the KRAs</li>\n                        </ul>\n                    </li>\n                </ul>\n                <div class=\"outcomes__data\">\n                    <table class=\"light-view\">\n                        <thead>\n                            <tr class=\"user-dashboard-info__head-list\">\n                                <td>Parameter</td>\n                                <td>Brief Description</td>\n                            </tr>\n                        </thead>\n                        <tbody>\n                            \n                        </tbody>\n                    </table>\n                </div>\n            </div>\n            <div class=\"form-elm-section marg-t10\">\n                <button onclick=\"Samvaarta.setGetUserDashboard.setDesiredOutcomes()\" class=\"btn\">Submit</button>\n            </div>\n        </div>\n        ";
+    var outcome = "\n        <div class=\"details\">\n            <h3>Desired Outcomes</h3>\n            <p>Desired outcomes refers to the state you desire at the end of the period                    </p>\n            <div class=\"details--items outcomes\">\n                <h4>The following details needs to be filled up</h4>\n                <ul class=\"details--items__topics\">\n                    <li>Mention the parameter</li>\n                    <li>Describe the outcome you like. This will include the way you will feel, hear, say and do after a desired a period of time</li>\n                    <li>For example\n                        <ul>\n                            <li>Parameter \u2013 Manager Relationship</li>\n                            <li>Brief Description \u2013 My manager is talking is trusting me by giving important tasks beyond the KRAs</li>\n                        </ul>\n                    </li>\n                </ul>\n                <div class=\"outcomes__data\">\n                    <table class=\"light-view\">\n                        <thead>\n                            <tr class=\"user-dashboard-info__head-list\">\n                                <td>Parameter</td>\n                                <td>Brief Description</td>\n                            </tr>\n                        </thead>\n                        <tbody>\n                            \n                        </tbody>\n                    </table>\n                    <div class=\"form-elm-section marg-t10\">\n                        <button onclick=\"Samvaarta.setGetUserDashboard.setDesiredOutcomes()\" class=\"btn\">Submit</button>\n                    </div>\n                </div>\n            </div>\n            \n        </div>\n        ";
     $('.user-activity-details__inner').html(outcome);
     Samvaarta.setGetUserDashboard.getDesiredOutcomes();
   };
@@ -1476,6 +1479,7 @@ Samvaarta.setGetUserDashboard = function () {
         $('.details--items__topics input').val('');
         if ((response === null || response === void 0 || (_response$data4 = response.data) === null || _response$data4 === void 0 ? void 0 : _response$data4.success) === 'true') {
           getDocConversation();
+          Samvaarta.model.showSuccessMessage("<h2>Thank You</h2><p class=\"marg-t20\">".concat(Samvaarta.messageLog[16], "</p>"), "y");
         } else {
           $("#interaction_name_err").html(response === null || response === void 0 ? void 0 : response.data).show();
         }
@@ -1629,7 +1633,7 @@ Samvaarta.setGetUserDashboard = function () {
       return false;
     } else {
       var paramObject = {
-        url: apiUrl + "api/profile/desired-objective",
+        url: apiUrl + "api/profile/learning-objective",
         type: "POST",
         headers: {
           Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
@@ -1638,12 +1642,15 @@ Samvaarta.setGetUserDashboard = function () {
         data: {
           parameter: [qparam1, qparam2, qparam3, qparam4, qparam5, qparam6],
           performance: [cperf1, cperf2, cperf3],
-          unit_measurement: [qdesc1, qdesc2, qdesc3, qdesc4, qdesc5, qdesc6],
-          session_id: 1
+          unit_measurement: [qdesc1, qdesc2, qdesc3],
+          description: [qdesc4, qdesc5, qdesc6],
+          session_id: 5,
+          objective_type: 5
         }
       };
       var ajaxSuccessCall = function ajaxSuccessCall(response) {
         getDesiredObjective();
+        Samvaarta.model.showSuccessMessage("<h2>Thank You</h2><p class=\"marg-t20\">".concat(Samvaarta.messageLog[15], "</p>"), "y");
       };
       var ajaxErrorCall = function ajaxErrorCall(error) {
         if (error.response) {
@@ -1697,12 +1704,13 @@ Samvaarta.setGetUserDashboard = function () {
         },
         data: {
           parameter: [qparam1, qparam2, qparam3],
-          description: [qparam4, qparam5, qparam6],
-          session_id: 1
+          outcome_description: [qparam4, qparam5, qparam6],
+          objective_type: 5
         }
       };
       var ajaxSuccessCall = function ajaxSuccessCall(response) {
         getDesiredOutcomes();
+        Samvaarta.model.showSuccessMessage("<h2>Thank You</h2><p class=\"marg-t20\">".concat(Samvaarta.messageLog[14], "</p>"), "y");
       };
       var ajaxErrorCall = function ajaxErrorCall(error) {
         if (error.response) {
@@ -1713,10 +1721,42 @@ Samvaarta.setGetUserDashboard = function () {
     }
   };
   var getDesiredOutcomes = function getDesiredOutcomes() {
-    desiredData();
+    var paramObject = {
+      url: apiUrl + "api/profile/learning-outcome",
+      type: "GET",
+      headers: {
+        Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
+        Accept: "application/json"
+      }
+    };
+    var ajaxSuccessCall = function ajaxSuccessCall(response) {
+      desiredData(response);
+    };
+    var ajaxErrorCall = function ajaxErrorCall(error) {
+      if (error.response) {
+        $("#interaction_name_err").html(error.response.data.message).show();
+      }
+    };
+    Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
   };
-  var desiredData = function desiredData() {
-    var desieredData = "\n        <tr>\n            <td>\n                <input id=\"outcomes_param_1\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"outcomes_param_1_err\" class=\"error\"></p>\n            </td>\n            <td>\n                <input id=\"outcomes_desc_1\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"outcomes_desc_1_err\" class=\"error\"></p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <input id=\"outcomes_param_2\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"outcomes_param_2_err\" class=\"error\"></p>\n            </td>\n            <td>\n                <input id=\"outcomes_desc_2\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"outcomes_desc_2_err\" class=\"error\"></p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <input id=\"outcomes_param_3\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"outcomes_param_3_err\" class=\"error\"></p>\n            </td>\n            <td>\n                <input id=\"outcomes_desc_3\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"outcomes_desc_3_err\" class=\"error\"></p>\n            </td>\n        </tr>\n        ";
+  var desiredData = function desiredData(response) {
+    var _response$data8;
+    var desieredData = '',
+      outcome_description = '',
+      parameter = '';
+    if ((_response$data8 = response.data) !== null && _response$data8 !== void 0 && (_response$data8 = _response$data8.data) !== null && _response$data8 !== void 0 && _response$data8.outcome_description) {
+      outcome_description = JSON.parse(response.data.data.outcome_description);
+      parameter = JSON.parse(response.data.data.parameter);
+      for (var i = 0; i < 3; i++) {
+        desieredData += "\n                <tr>\n                    <td>\n                        <input readonly id=\"outcomes_param_".concat(i + 1, "\" class=\"input_txt_box\" type=\"text\" value=\"").concat(parameter[i], "\" />\n                    </td>\n                    <td>\n                        <input readonly id=\"outcomes_desc_").concat(i + 1, "\" class=\"input_txt_box\" type=\"text\" value=\"").concat(outcome_description[i], "\" />\n                    </td>\n                </tr>");
+      }
+      $('.outcomes__data .form-elm-section .btn').addClass('disabled');
+    } else {
+      response = [1, 2, 3];
+      response.map(function (item, index) {
+        desieredData += "\n                <tr>\n                    <td>\n                        <input id=\"outcomes_param_".concat(item, "\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                        <p id=\"outcomes_param_").concat(item, "_err\" class=\"error\"></p>\n                    </td>\n                    <td>\n                        <input id=\"outcomes_desc_").concat(item, "\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                        <p id=\"outcomes_desc_").concat(item, "_err\" class=\"error\"></p>\n                    </td>\n                </tr>");
+      });
+    }
     $('.outcomes__data tbody').html(desieredData);
   };
   return {

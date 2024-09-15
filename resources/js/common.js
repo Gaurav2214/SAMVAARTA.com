@@ -12,6 +12,9 @@ Samvaarta.messageLog = {
     11: "Password has been changed successfully.",
     12: "Your Profile has been updated successfully.",
     13: "Please provide valid input",
+    14: "You have successfully submitted your desired outcomes.",
+    15: "You have successfully submitted your desired objectives.",
+    16: "You have successfully submitted your documenting conversions.",
 };
 
 var valError = true;
@@ -1647,7 +1650,7 @@ Samvaarta.system = (() => {
             trainerDashboard();
         } else {
             userDashboard();
-            coachInfo = `<li id="${response.trainer.length ? response?.trainer[0]?.id : ''}">Coach Name: <span style="text-transform:capitalize;">${response.trainer.length ? response.trainer[0]?.name : ''}</span></li>`;
+            coachInfo = `<li id="${response?.trainer?.length ? response?.trainer[0]?.id : ''}">Coach Name: <span style="text-transform:capitalize;">${response?.trainer?.length ? response.trainer[0]?.name : ''}</span></li>`;
             plannedSess = `<li>Planned Sessions: <span>${response.plannedSession ? response.plannedSession : ''}</span></li>`;
             concluded = `<li>Concluded: <span></span></li>`;
             nextSession = `<li>Next Session Date: <span></span></li>`;
@@ -2329,11 +2332,12 @@ Samvaarta.userDashboard = (() => {
                             
                         </tbody>
                     </table>
+                    <div class="form-elm-section marg-t10">
+                        <button onclick="Samvaarta.setGetUserDashboard.setDesiredOutcomes()" class="btn">Submit</button>
+                    </div>
                 </div>
             </div>
-            <div class="form-elm-section marg-t10">
-                <button onclick="Samvaarta.setGetUserDashboard.setDesiredOutcomes()" class="btn">Submit</button>
-            </div>
+            
         </div>
         `;
         $('.user-activity-details__inner').html(outcome);
@@ -2408,14 +2412,17 @@ Samvaarta.setGetUserDashboard = (() => {
                     Accept: "application/json",
                 },
                 "mimeType": "multipart/form-data",
-                data: formData
-                
+                data: formData                
             };
 
             const ajaxSuccessCall = (response) => {
                 $('.details--items__topics input').val('');
                 if(response?.data?.success === 'true'){
                     getDocConversation();
+                    Samvaarta.model.showSuccessMessage(
+                        `<h2>Thank You</h2><p class="marg-t20">${Samvaarta.messageLog[16]}</p>`,
+                        "y"
+                    );
                 } else {
                     $("#interaction_name_err")
                         .html(response?.data)
@@ -2660,7 +2667,7 @@ Samvaarta.setGetUserDashboard = (() => {
             return false;
         } else {
             let paramObject = {
-                url: apiUrl + "api/profile/desired-objective",
+                url: apiUrl + "api/profile/learning-objective",
                 type: "POST",
                 headers: {
                     Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
@@ -2669,13 +2676,19 @@ Samvaarta.setGetUserDashboard = (() => {
                 data: {
                     parameter:[qparam1, qparam2, qparam3, qparam4, qparam5, qparam6],
                     performance:[cperf1, cperf2, cperf3],
-                    unit_measurement: [qdesc1, qdesc2, qdesc3, qdesc4, qdesc5, qdesc6],
-                    session_id: 1,
+                    unit_measurement: [qdesc1, qdesc2, qdesc3],
+                    description: [qdesc4, qdesc5, qdesc6],
+                    session_id: 5,
+                    objective_type: 5,
                 },
             };
 
             const ajaxSuccessCall = (response) => {
                 getDesiredObjective();
+                Samvaarta.model.showSuccessMessage(
+                    `<h2>Thank You</h2><p class="marg-t20">${Samvaarta.messageLog[15]}</p>`,
+                    "y"
+                );
             };
 
             const ajaxErrorCall = (error) => {
@@ -2844,13 +2857,17 @@ Samvaarta.setGetUserDashboard = (() => {
                 },
                 data: {
                     parameter:[qparam1, qparam2, qparam3],
-                    description: [qparam4, qparam5, qparam6],
-                    session_id: 1,
+                    outcome_description: [qparam4, qparam5, qparam6],
+                    objective_type: 5,
                 },
             };
 
             const ajaxSuccessCall = (response) => {
                 getDesiredOutcomes();
+                Samvaarta.model.showSuccessMessage(
+                    `<h2>Thank You</h2><p class="marg-t20">${Samvaarta.messageLog[14]}</p>`,
+                    "y"
+                );
             };
 
             const ajaxErrorCall = (error) => {
@@ -2869,41 +2886,65 @@ Samvaarta.setGetUserDashboard = (() => {
         }
     }
     const getDesiredOutcomes = () => {
-        desiredData();
+        let paramObject = {
+            url: apiUrl + "api/profile/learning-outcome",
+            type: "GET",
+            headers: {
+                Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+                Accept: "application/json",
+            },            
+        };
+
+        const ajaxSuccessCall = (response) => {
+            desiredData(response);
+        };
+
+        const ajaxErrorCall = (error) => {
+            if (error.response) {
+                $("#interaction_name_err")
+                    .html(error.response.data.message)
+                    .show();
+            }
+        };
+        Samvaarta.common.hitAjaxApi(
+            paramObject,
+            ajaxSuccessCall,
+            ajaxErrorCall
+        );        
     }
-    const desiredData = () => {
-        let desieredData = `
-        <tr>
-            <td>
-                <input id="outcomes_param_1" class="input_txt_box" type="text" value="" />
-                <p id="outcomes_param_1_err" class="error"></p>
-            </td>
-            <td>
-                <input id="outcomes_desc_1" class="input_txt_box" type="text" value="" />
-                <p id="outcomes_desc_1_err" class="error"></p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input id="outcomes_param_2" class="input_txt_box" type="text" value="" />
-                <p id="outcomes_param_2_err" class="error"></p>
-            </td>
-            <td>
-                <input id="outcomes_desc_2" class="input_txt_box" type="text" value="" />
-                <p id="outcomes_desc_2_err" class="error"></p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input id="outcomes_param_3" class="input_txt_box" type="text" value="" />
-                <p id="outcomes_param_3_err" class="error"></p>
-            </td>
-            <td>
-                <input id="outcomes_desc_3" class="input_txt_box" type="text" value="" />
-                <p id="outcomes_desc_3_err" class="error"></p>
-            </td>
-        </tr>
-        `;
+    const desiredData = (response) => {
+        let desieredData = '', outcome_description = '', parameter = '';
+        if(response.data?.data?.outcome_description){
+            outcome_description = JSON.parse(response.data.data.outcome_description);
+            parameter = JSON.parse(response.data.data.parameter);
+            for(let i=0;i<3;i++){
+                desieredData += `
+                <tr>
+                    <td>
+                        <input readonly id="outcomes_param_${i+1}" class="input_txt_box" type="text" value="${parameter[i]}" />
+                    </td>
+                    <td>
+                        <input readonly id="outcomes_desc_${i+1}" class="input_txt_box" type="text" value="${outcome_description[i]}" />
+                    </td>
+                </tr>`;
+            }
+            $('.outcomes__data .form-elm-section .btn').addClass('disabled');
+        } else {
+            response = [1, 2, 3];
+            response.map((item, index) => {
+                desieredData += `
+                <tr>
+                    <td>
+                        <input id="outcomes_param_${item}" class="input_txt_box" type="text" value="" />
+                        <p id="outcomes_param_${item}_err" class="error"></p>
+                    </td>
+                    <td>
+                        <input id="outcomes_desc_${item}" class="input_txt_box" type="text" value="" />
+                        <p id="outcomes_desc_${item}_err" class="error"></p>
+                    </td>
+                </tr>`;
+            })
+        }        
         $('.outcomes__data tbody').html(desieredData);
     }
     return{

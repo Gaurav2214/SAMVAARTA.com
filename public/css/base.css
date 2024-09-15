@@ -498,6 +498,10 @@ button,
     .form-elm-section .btn:hover, .form-elm-section .btn:focus {
       background: #d57521;
       color: #fff; }
+    .form-elm-section .btn.disabled {
+      cursor: none;
+      pointer-events: none;
+      background: #808080; }
   .upcoming_session_container .form-elm-section .error.validation {
     top: 64px; }
 
