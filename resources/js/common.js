@@ -2442,6 +2442,7 @@ Samvaarta.setGetUserDashboard = (() => {
         console.log(response);
         let previous = ``;
         if(response?.data?.length){
+            debugger;
             previous += `<table>
                 <tr class="user-dashboard-info__head-list">
                     <td>S.No</td>
@@ -2602,9 +2603,7 @@ Samvaarta.setGetUserDashboard = (() => {
             if(response?.data?.success === 'true'){
                 previousTransactions(response?.data);
             } else {
-                $("#interaction_name_err")
-                    .html(response?.data)
-                    .show();
+                $('.previous-transactions').html('<p>No previous interactions</p>');                
             }
         };
 
