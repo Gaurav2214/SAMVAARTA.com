@@ -1586,7 +1586,7 @@ Samvaarta.setGetUserDashboard = function () {
       if ((response === null || response === void 0 || (_response$data7 = response.data) === null || _response$data7 === void 0 ? void 0 : _response$data7.success) === 'true') {
         previousTransactions(response === null || response === void 0 ? void 0 : response.data);
       } else {
-        $("#interaction_name_err").html(response === null || response === void 0 ? void 0 : response.data).show();
+        $('.previous-transactions').html('<p>No previous interactions</p>');
       }
     };
     var ajaxErrorCall = function ajaxErrorCall(error) {

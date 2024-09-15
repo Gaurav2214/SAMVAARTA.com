@@ -2602,9 +2602,7 @@ Samvaarta.setGetUserDashboard = (() => {
             if(response?.data?.success === 'true'){
                 previousTransactions(response?.data);
             } else {
-                $("#interaction_name_err")
-                    .html(response?.data)
-                    .show();
+                $('.previous-transactions').html('<p>No previous interactions</p>');                
             }
         };
 
