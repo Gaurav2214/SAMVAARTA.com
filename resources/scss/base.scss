@@ -824,6 +824,11 @@
                         background: linear-gradient(180deg, #eff5ff 0%, rgba(239, 245, 255, 0) 100%);
                         border: none;
                     }
+                    &.pre-tracs-data{
+                        td{
+                            text-transform: capitalize;
+                        }
+                    }
                 }
                 &.light-view{
                     tr{                            

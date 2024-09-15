@@ -1049,6 +1049,8 @@ button,
         border-radius: 4px;
         background: linear-gradient(180deg, #eff5ff 0%, rgba(239, 245, 255, 0) 100%);
         border: none; }
+      .dashboard__elements--inner table tr.pre-tracs-data td {
+        text-transform: capitalize; }
     .dashboard__elements--inner table.light-view tr td:nth-child(2) {
       width: 70%; }
     .dashboard__elements--inner table.light-view tr:not(:first-of-type):hover, .dashboard__elements--inner table.light-view tr:not(:first-of-type):focus {
