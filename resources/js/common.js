@@ -1647,7 +1647,7 @@ Samvaarta.system = (() => {
             trainerDashboard();
         } else {
             userDashboard();
-            coachInfo = `<li id="${response.trainer[0].id}">Coach Name: <span style="text-transform:capitalize;">${response.trainer.length ? response.trainer[0].name : ''}</span></li>`;
+            coachInfo = `<li id="${response.trainer.length ? response?.trainer[0]?.id : ''}">Coach Name: <span style="text-transform:capitalize;">${response.trainer.length ? response.trainer[0]?.name : ''}</span></li>`;
             plannedSess = `<li>Planned Sessions: <span>${response.plannedSession ? response.plannedSession : ''}</span></li>`;
             concluded = `<li>Concluded: <span></span></li>`;
             nextSession = `<li>Next Session Date: <span></span></li>`;
