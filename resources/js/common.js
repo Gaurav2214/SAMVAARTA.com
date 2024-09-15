@@ -2442,7 +2442,6 @@ Samvaarta.setGetUserDashboard = (() => {
         console.log(response);
         let previous = ``;
         if(response?.data?.length){
-            debugger;
             previous += `<table>
                 <tr class="user-dashboard-info__head-list">
                     <td>S.No</td>

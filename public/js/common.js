@@ -1493,7 +1493,6 @@ Samvaarta.setGetUserDashboard = function () {
     console.log(response);
     var previous = "";
     if (response !== null && response !== void 0 && (_response$data5 = response.data) !== null && _response$data5 !== void 0 && _response$data5.length) {
-      debugger;
       previous += "<table>\n                <tr class=\"user-dashboard-info__head-list\">\n                    <td>S.No</td>\n                    <td>Date</td>\n                    <td>Transaction</td>\n                    <td>Trainer</td>\n                    <td>Edit/Update</td>\n                </tr>\n            ";
       response === null || response === void 0 || response.data.map(function (item, index) {
         var _item$session, _item$session2, _item$session3, _item$session4, _oauthUserData, _item$session5, _item$session6, _oauthUserData2, _item$session7;
