@@ -18,6 +18,7 @@ var valError = true;
 var apiUrl = typeof(appUrl) != "undefined" ? appUrl : "http://127.0.0.1:8000/";
 var expireTime = 20 / (24 * 60);
 var userType = '';
+var oauthUserData = '';
 
 Samvaarta.globalVar = Samvaarta.globalVar || {
     errorValueInFlow: "",
@@ -1646,7 +1647,7 @@ Samvaarta.system = (() => {
             trainerDashboard();
         } else {
             userDashboard();
-            coachInfo = `<li>Coach Name: <span style="text-transform:capitalize;">${response.trainer.length ? response.trainer[0].name : ''}</span></li>`;
+            coachInfo = `<li id="${response.trainer[0].id}">Coach Name: <span style="text-transform:capitalize;">${response.trainer.length ? response.trainer[0].name : ''}</span></li>`;
             plannedSess = `<li>Planned Sessions: <span>${response.plannedSession ? response.plannedSession : ''}</span></li>`;
             concluded = `<li>Concluded: <span></span></li>`;
             nextSession = `<li>Next Session Date: <span></span></li>`;
@@ -1708,6 +1709,7 @@ Samvaarta.system = (() => {
     };
 
     var displayUserInfo = (data) => {
+        oauthUserData = data.data;
         let userDetails = data.data.data?.name ? data.data.data : data.data;
         if (data) {
             showUserInfo(userDetails);
@@ -2094,7 +2096,7 @@ Samvaarta.userDashboard = (() => {
                     <td>${(item.session_date).split(' ')[0]}</td>
                     <td>${item.topic}</td>
                     <td>${item.duration}</td>
-                    <td>${item.trainer.name}</td>
+                    <td>${item?.trainer?.name}</td>
                 </tr>
             `;
         });
@@ -2450,13 +2452,13 @@ Samvaarta.setGetUserDashboard = (() => {
                 </tr>
             `;
             response?.data.map((item, index) => {
-                previous += `<tr>
-                    <td doc-id="${item.id}">${index+1}</td>
-                    <td>${getDateFormat(item.created_at)}</td>
-                    <td session-id="${item.session.session_id}">${item.session.topic}</td>
-                    <td session-id="${item.session.trainer.id}">${item.session.trainer.name}</td>
+                previous += `<tr class="pre-tracs-data">
+                    <td doc-id="${item?.id}">${index+1}</td>
+                    <td>${getDateFormat(item?.created_at)}</td>
+                    <td session-id="${item?.session?.session_id}">${item.session?.topic}</td>
+                    <td trainer-id="${item?.session?.trainer?.id ? item?.session?.trainer?.id : oauthUserData?.trainer[0]?.id}">${item.session?.trainer?.name ? item.session?.trainer?.name : oauthUserData?.trainer[0]?.name}</td>
                     <td class="edit-transaction" onclick="Samvaarta.setGetUserDashboard.editTransaction(${item.id})">Edit</td>
-                    <div class="update-transaction-container hide" id="edit-doc-${item.id}" data-docId="${item.id}" data-session="${item.session.session_id}">
+                    <div class="update-transaction-container hide" id="edit-doc-${item.id}" data-docId="${item.id}" data-session="${item?.session?.session_id}">
                         <ul class="details--items__topics">
                             <li class="section_${index+1}">
                                 <label for="user_focus_${item.id}" class="topic">Focus of the day</label>
@@ -2476,14 +2478,15 @@ Samvaarta.setGetUserDashboard = (() => {
                             </li>
                         </ul>
                         <input type="hidden" id="next_interaction_date_${item.id}" value="${item.next_date}" />
-                        <input type="hidden" id="hiddenFileInput_${item.id}" value="${item.doc_file}" />
-                        <button onclick="Samvaarta.setGetUserDashboard.updateTransaction(${item.id}, ${item.session_id})" class="btn">Update</button>
+                        <input type="file" style="display:none;" id="hiddenFileInput_${item.id}" value="${item.doc_file}" />
+                        <input type="hidden" id="hiddenFileInputValue_${item.id}" value="${item.doc_file}" />
+                        <button onclick="Samvaarta.setGetUserDashboard.updateTransaction(${item.id}, ${item?.session_id})" class="btn">Update</button>
                         <button style="margin-left:10px;" class="btn close-transaction">Close</button>
                         <script>
-                            $('#user_focus_${item.id}').val("${item.focus_of_the_day}");
-                            $('#user_last_commitment_${item.id}').val("${item.last_week_comments}");
-                            $('#user_conversation_${item.id}').val("${item.today_conversion}");
-                            $('#user_week_commitment_${item.id}').val("${item.feedback}");
+                            $('#user_focus_${item.id}').val("${item?.focus_of_the_day}");
+                            $('#user_last_commitment_${item.id}').val("${item?.last_week_comments}");
+                            $('#user_conversation_${item.id}').val("${item?.today_conversion}");
+                            $('#user_week_commitment_${item.id}').val("${item?.feedback}");
                             $('body').on('click', '.close-transaction', ()=>{
                                 $('.update-transaction-container').addClass('hide');
                             })
@@ -2508,13 +2511,24 @@ Samvaarta.setGetUserDashboard = (() => {
         var user_conversation = document.getElementById("user_conversation_"+docId).value;
         var week_commitment = document.getElementById("user_week_commitment_"+docId).value;
         var next_interaction_date = document.getElementById("next_interaction_date_"+docId).value;
-        var fileupload = document.getElementById("hiddenFileInput_"+docId).value;
+        var fileupload = document.getElementById("hiddenFileInputValue_"+docId).value;
+        var filesdata = document.getElementById("hiddenFileInput_"+docId).files[0];
         var errorElements = document.querySelectorAll(".error");
         var formattedDate = '';
         if(next_interaction_date){
             const date = new Date(next_interaction_date);
             formattedDate = date.toISOString().split('T')[0];
         }
+
+        let formData = new FormData();
+        formData.append("focus_of_the_day", user_focus);
+        formData.append("today_conversion", user_conversation);
+        formData.append("feedback", week_commitment);
+        formData.append("next_date", next_interaction_date);
+        formData.append("last_week_comments", last_commitment);
+        formData.append("session_id", sesId);
+        formData.append("document_conversation_id", docId);
+
         errorElements.forEach(function (el) {
             el.innerHTML = "";
         });
@@ -2544,16 +2558,8 @@ Samvaarta.setGetUserDashboard = (() => {
                     Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
                     Accept: "application/json",
                 },
-                data: {
-                    next_date: formattedDate,
-                    focus_of_the_day: user_focus,
-                    today_conversion: user_conversation,
-                    feedback: week_commitment,
-                    session_id: sesId,
-                    last_week_comments: last_commitment,
-                    doc_file: fileupload,
-                    document_conversation_id: docId,
-                },
+                "mimeType": "multipart/form-data",
+                data: formData,
             };
 
             const ajaxSuccessCall = (response) => {
