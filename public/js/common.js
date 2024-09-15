@@ -1137,8 +1137,9 @@ Samvaarta.system = function () {
       completeSessCount = "<li>No of sessions completed: <span></span></li>";
       trainerDashboard();
     } else {
+      var _response$trainer$, _response$trainer$2;
       userDashboard();
-      coachInfo = "<li id=\"".concat(response.trainer[0].id, "\">Coach Name: <span style=\"text-transform:capitalize;\">").concat(response.trainer.length ? response.trainer[0].name : '', "</span></li>");
+      coachInfo = "<li id=\"".concat(response.trainer.length ? response === null || response === void 0 || (_response$trainer$ = response.trainer[0]) === null || _response$trainer$ === void 0 ? void 0 : _response$trainer$.id : '', "\">Coach Name: <span style=\"text-transform:capitalize;\">").concat(response.trainer.length ? (_response$trainer$2 = response.trainer[0]) === null || _response$trainer$2 === void 0 ? void 0 : _response$trainer$2.name : '', "</span></li>");
       plannedSess = "<li>Planned Sessions: <span>".concat(response.plannedSession ? response.plannedSession : '', "</span></li>");
       concluded = "<li>Concluded: <span></span></li>";
       nextSession = "<li>Next Session Date: <span></span></li>";
