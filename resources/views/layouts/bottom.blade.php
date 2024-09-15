@@ -1,5 +1,5 @@
 <?php
-    $fileVersion = 7;
+    $fileVersion = 8;
 ?>
 <script>
     var Samvaarta = Samvaarta || {};
