@@ -142,6 +142,13 @@ class ProfileController extends Controller
 				}
 				
 				$User->save();
+
+				if($User->user_type=="user"){
+					$User = User::with('trainer')->find($User->id);             
+				}else if($User->user_type=="trainer"){
+					$User = User::with('users')->find($User->id);             
+				}
+
 				return response()->json(['success' =>'true','message'=>'Profile has been successfully updated','data'=>$User]);
 				
 
