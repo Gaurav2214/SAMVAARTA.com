@@ -1384,6 +1384,7 @@ Samvaarta.system = (() => {
 
     var checkLoginStatus = () => {
         var userData = Samvaarta.common.getLocalStorage("oauthUserData");
+        var token = Samvaarta.common.getLocalStorage("AccessToken");
         if (userData) {
             Samvaarta.globalVar.is_loggedin = 1;
             if (window.location.pathname === "/") {
@@ -1391,6 +1392,30 @@ Samvaarta.system = (() => {
             }
             displayUserInfo(userData);
             window.loginCallback ? loginCallback(response) : false;
+        } else if(token){
+            var paramObject = {
+                url: apiUrl + "api/profile",
+                type: "GET",
+                headers: {
+                    Authorization: `Bearer ${Samvaarta.common.getLocalStorage("AccessToken").access_token}`,
+                    Accept: "application/json",
+                },                
+            };
+
+            const ajaxSuccessCall = (response) => {
+                Samvaarta.common.setLocalStorage("oauthUserData", response, 1);
+                displayUserInfo(response);
+            };
+
+            const ajaxErrorCall = (response) => {
+                console.log(response);
+            };
+
+            Samvaarta.common.hitAjaxApi(
+                paramObject,
+                ajaxSuccessCall,
+                ajaxErrorCall
+            );
         } else {
             if (window.location.pathname !== "/") {
                 window.location.href = "/";
