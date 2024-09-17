@@ -487,6 +487,7 @@ class ProfileController extends Controller
 			'session_id'=>'required',
 			"last_week_comments"=>'required|max:500',
 			"document_conversation_date"=>'required|date_format:Y-m-d|after:today',
+			'doc_file'=>'file'
 		]);    
 
 		if (!$validator->fails())
@@ -547,6 +548,7 @@ class ProfileController extends Controller
 			'document_conversation_id'=>"required",
 			"last_week_comments"=>'required|max:500',
 			'document_conversation_date'=>'required|date_format:Y-m-d|after:today',
+			'doc_file'=>'file'
 		]);    
 
 		if (!$validator->fails())
