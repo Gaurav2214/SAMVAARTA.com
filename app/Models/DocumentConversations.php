@@ -33,7 +33,9 @@ class DocumentConversations extends Model
         'focus_of_the_day',
         'today_conversion',
         'next_date',
-        'last_week_comments'
+        'last_week_comments',
+        'document_conversation_date'
+        
     ];
    
     public  function session(){

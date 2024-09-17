@@ -486,6 +486,7 @@ class ProfileController extends Controller
 			'next_date'=>'required|date_format:Y-m-d|after:today',
 			'session_id'=>'required',
 			"last_week_comments"=>'required|max:500',
+			"document_conversation_date"=>'required|date_format:Y-m-d|after:today',
 		]);    
 
 		if (!$validator->fails())
@@ -495,7 +496,17 @@ class ProfileController extends Controller
 
 
 			$next_date = Carbon::parse($request->next_date);
+
+			$doc_file ="";
 			
+
+			try{
+				if($request->has('doc_file') && $request->file('doc_file')) {
+					$doc_file = asset('storage/'.$request->doc_file->store('user/docs'));
+				}
+			}catch(Exception $e){
+				return response()->json(['error' => $e->getMessage(),'status'=>'false'], 500);
+			}
 			$DocumentConversations = DocumentConversations::create(
 				[
 					'user_id'=>$user_id,
@@ -505,14 +516,13 @@ class ProfileController extends Controller
 					'next_date'=>$next_date->format('Y-m-d'),
 					'status'=>'1',
 					'session_id'=>$request->session_id,
-					"last_week_comments"=>$request->last_week_comments
+					"last_week_comments"=>$request->last_week_comments,
+					"document_conversation_date"=>$request->document_conversation_date,
+					'doc_file' =>$doc_file 
 				]);
 
-			if($request->has('doc_file')) {
-				$DocumentConversations->doc_file = asset('storage/'.$request->doc_file->store('user/docs'));
-				$DocumentConversations->save();
-			}
 			
+
 			//$DocumentConversations= DocumentConversations::where('user_id', $request->user()->id)->orderBy('id','desc')->first();
 
 			if($DocumentConversations){
@@ -536,6 +546,7 @@ class ProfileController extends Controller
 			'session_id'=>'required',
 			'document_conversation_id'=>"required",
 			"last_week_comments"=>'required|max:500',
+			'document_conversation_date'=>'required|date_format:Y-m-d|after:today',
 		]);    
 
 		if (!$validator->fails())
@@ -556,10 +567,16 @@ class ProfileController extends Controller
 			$DocumentConversations->next_date=$request->next_date;
 			$DocumentConversations->session_id=$request->session_id;
 			$DocumentConversations->last_week_comments=$request->last_week_comments;
+			$DocumentConversations->document_conversation_date=$request->document_conversation_date;
 
-			if($request->has('doc_file')) {
-				$DocumentConversations->doc_file = asset('storage/'.$request->doc_file->store('user/docs'));
+			try{
+				if($request->has('doc_file') && $request->file('doc_file')) {
+					$DocumentConversations->doc_file = asset('storage/'.$request->doc_file->store('user/docs'));
+				}
+			}catch(Exception $e){
+				return response()->json(['error' => $e->getMessage(),'status'=>'false'], 500);
 			}
+
 			$DocumentConversations->save();
 
 			if($DocumentConversations){
