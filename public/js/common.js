@@ -622,7 +622,7 @@ Samvaarta.system = function () {
   };
   var createLoginForm = function createLoginForm() {
     var loginForm = "\n        <div class=\"login-form\">\n            <div class=\"heading\">\n                <h2>Log in to your account</h2>\n                <p class=\"hide\">Kindly fill in your details to create an account</p>\n            </div>\n            <form class=\"signin-form\">\n\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"oauth_log_email\"> Email Id</label>\n                    <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_email\" class=\"input_txt_box\" value=\"\">\n                    <p id=\"oauth_log_email_err\" class=\"validation error\"></p>\n                </div>\n                <div class=\"form-elm-section input_sec \">\n                    <label for=\"oauth_log_password\"> Password</label>\n                    <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"password\" id=\"oauth_log_password\" class=\"input_txt_box\" value=\"\">\n                    <p id=\"oauth_log_password_err\" class=\"validation error\"></p>\n                </div>\n\n                <div class=\"form-elm-section input_sec_center btn-container \">\n                    <button class=\"btn\" type=\"button\" onclick=\"Samvaarta.system.loginUser()\">Submit</button>\n                </div>\n            </form>\n            <p class=\"reg-login-toggle\">Don't have the Goalsnu account?\n                <a role=\"button\" tabindex=\"0\" rel=\"noreferrer nofollow\" class=\"signup-link\">Create one</a>\n            </p>\n        </div>\n        ";
-    document.querySelector(".login-module__main--right").innerHTML = loginForm;
+    $(".login-module__main--right").length ? document.querySelector(".login-module__main--right").innerHTML = loginForm : '';
     showFormToggle();
   };
   var showFormToggle = function showFormToggle() {
@@ -950,12 +950,12 @@ Samvaarta.system = function () {
       };
       Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
     } else {
-      if (window.location.pathname !== "/") {
+      if (window.location.pathname === "/dashboard") {
         window.location.href = "/";
-        Samvaarta.system.createLoginForm();
       } else {
         Samvaarta.system.createLoginForm();
       }
+      //Samvaarta.system.createLoginForm();
     }
   };
   var activateDeactivateUser = function activateDeactivateUser(id, status) {
@@ -1190,7 +1190,7 @@ Samvaarta.system = function () {
         Samvaarta.userDashboard.updateSessionForm();
       } else {}
       var userData = "\n\t\t\t\t<div class=\"d-flex align-items-center\">\n\t\t\t\t\t<div class=\"flex-shrink-0\">\n\t\t\t\t\t<img width=\"20\" height=\"20\" data-src=\"".concat(userDetails.avatar, "\" src=\"/images/user-default.svg\" class=\"unveil avatar\" alt=\"").concat(username, "\" />\n\t\t\t\t\t</div>\t\t\t\t\t\n\t\t\t\t</div>\n\t\t\t\t\n\t\t\t\t<div class=\"header-user-nav\">\n\t\t\t\t\t<div class=\"hvr_bx\">\n\t\t\t\t\t\t<ul>\n                            <li>\n                                <a tabindex=\"0\" role=\"button\" href=\"/dashboard\">\n                                <i class=\"fa fa-tachometer\" aria-hidden=\"true\"></i>Dashboard\n                                </a>\n                            </li>\t\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<a tabindex=\"0\" role=\"button\" href=\"/myaccount\">\n\t\t\t\t\t\t\t\t\t<i class=\"fa fa-pencil\"></i>Edit Profile\n\t\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t</li>\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<li class=\"change-password\">\n\t\t\t\t\t\t\t\t<a href=\"/change-password\" tabindex=\"0\" role=\"button\">\n\t\t\t\t\t\t\t\t\t<i class=\"fa fa-key\"></i>Change Password\n\t\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t</li>\n                            ").concat(userTypreDescription, "\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<a href=\"javascript:void(0);\" tabindex=\"0\" role=\"button\" onclick=\"Samvaarta.system.logout()\">\n\t\t\t\t\t\t\t\t\t<i class=\"fa fa-power-off\"></i>Logout\n\t\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t</ul>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t");
-      $(".dashboard__header--loggedin-user").html(userData);
+      $(".dashboard__header--loggedin-user").html(userData).addClass('oauth');
     }
   };
   var forgetPassword = function forgetPassword() {
@@ -1292,7 +1292,7 @@ Samvaarta.userDashboard = function () {
     $('.user-activity-details__inner').html(codeOfEthics);
   };
   var closureInteraction = function closureInteraction() {
-    var closure = "\n        <div class=\"details codeofethics\">\n            <h3>Closure</h3>\n            <p>Please document your experience on your journey </p>\n            <div class=\"details--items\">\n                <h3>User Experience</h3>\n                <ul class=\"list-view\">\n                    <li>I enjoyed.... </li>\n                    <li>I wish....</li>\n                    <li>I gained by way of....</li>\n                </ul>\n            </div>\n            <div class=\"details--items\">\n                <h3>Manager Experience</h3>\n                <ul class=\"list-view\">\n                    <li>I enjoyed....</li>\n                    <li>I wish....</li>\n                </ul>\n            </div>            \n        </div>\n        ";
+    var closure = "\n        <div class=\"details codeofethics\">\n            <h3>Closure</h3>\n            <p>Please document your experience on your journey </p>\n            <div class=\"details--items\">\n                <h3>User Experience</h3>\n                <ul class=\"list-view\">\n                    <li>\n                        <label for=\"user_enjoyed\">I enjoyed....</label>\n                        <textarea rows=\"2\" cols=\"50\" type=\"text\" id=\"user_enjoyed\" value=\"\" class=\"input_txt_box\"></textarea>\n                    </li>\n                    <li>\n                        <label for=\"user_wished\">I wish....</label>\n                        <textarea rows=\"2\" cols=\"50\" type=\"text\" id=\"user_wished\" value=\"\" class=\"input_txt_box\"></textarea>\n                    </li>\n                    <li>\n                        <label for=\"user_gained\">I gained by way of....</label>\n                        <textarea rows=\"2\" cols=\"50\" type=\"text\" id=\"user_gained\" value=\"\" class=\"input_txt_box\"></textarea>\n                    </li>\n                </ul>\n            </div>\n            <div class=\"details--items\">\n                <h3>Manager Experience</h3>\n                <ul class=\"list-view\">\n                    <li>\n                        <label for=\"manager_enjoyed\">I enjoyed....</label>\n                        <textarea rows=\"2\" cols=\"50\" type=\"text\" id=\"manager_enjoyed\" value=\"\" class=\"input_txt_box\"></textarea>\n                    </li>\n                    <li>\n                        <label for=\"manager_wished\">I wish....</label>\n                        <textarea rows=\"2\" cols=\"50\" type=\"text\" id=\"manager_wished\" value=\"\" class=\"input_txt_box\"></textarea>\n                    </li>\n                </ul>\n            </div>   \n            <button class=\"btn\" onclick=\"Samvaarta.setGetUserDashboard.closure()\">Submit</button>         \n        </div>\n        ";
     $('.user-activity-details__inner').html(closure);
   };
   var trainerOptionList = function trainerOptionList() {
@@ -1651,7 +1651,7 @@ Samvaarta.setGetUserDashboard = function () {
       return false;
     } else {
       var paramObject = {
-        url: apiUrl + "api/profile/learning-objective",
+        url: apiUrl + "api/profile/desired-objective",
         type: "POST",
         headers: {
           Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
@@ -1679,8 +1679,24 @@ Samvaarta.setGetUserDashboard = function () {
     }
   };
   var getDesiredObjective = function getDesiredObjective() {
-    quantitativeData();
-    qualitativeData();
+    var paramObject = {
+      url: apiUrl + "api/profile/desired-objective",
+      type: "GET",
+      headers: {
+        Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
+        Accept: "application/json"
+      }
+    };
+    var ajaxSuccessCall = function ajaxSuccessCall(response) {
+      quantitativeData();
+      qualitativeData();
+    };
+    var ajaxErrorCall = function ajaxErrorCall(error) {
+      if (error.response) {
+        $("#interaction_name_err").html(error.response.data.message).show();
+      }
+    };
+    Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
   };
   var quantitativeData = function quantitativeData(response) {
     var quanData = "\n        <tr>\n            <td></td>\n            <td></td>\n            <td>\n                <table class=\"table-layer-2\">\n                    <tr>\n                        <td><span>Current</span></td>\n                    </tr>\n                </table>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <input ".concat(response !== null && response !== void 0 && response.quantitativeData ? 'readonly' : '', " id=\"quantitative_param_1\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"quantitative_param_1_err\" class=\"error\"></p>\n            </td>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.quantitativeData ? 'readonly' : '', " id=\"quantitative_desc_1\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"quantitative_desc_1_err\" class=\"error\"></p>\n            </td>\n            <td>\n                <table class=\"table-layer-2\">\n                    <tr>\n                        <td><input id=\"c_performance_1\" maxlength=\"3\" class=\"input_txt_box\" type=\"number\" value=\"\">\n                        <p id=\"c_performance_1_err\" class=\"error\"></p></td>\n                    </tr>\n                </table>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.quantitativeData ? 'readonly' : '', " id=\"quantitative_param_2\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"quantitative_param_2_err\" class=\"error\"></p>\n            </td>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.quantitativeData ? 'readonly' : '', " id=\"quantitative_desc_2\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"quantitative_desc_2_err\" class=\"error\"></p>\n            </td>\n            <td>\n                <table class=\"table-layer-2\">\n                    <tr>\n                        <td><input id=\"c_performance_2\" maxlength=\"3\" class=\"input_txt_box\" type=\"number\" value=\"\">\n                            <p id=\"c_performance_2_err\" class=\"error\"></p>\n                        </td>\n                    </tr>\n                </table>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.quantitativeData ? 'readonly' : '', " id=\"quantitative_param_3\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"quantitative_param_3_err\" class=\"error\"></p>\n            </td>\n            <td>\n                <input ").concat(response !== null && response !== void 0 && response.quantitativeData ? 'readonly' : '', " id=\"quantitative_desc_3\" class=\"input_txt_box\" type=\"text\" value=\"\" />\n                <p id=\"quantitative_desc_3_err\" class=\"error\"></p>\n            </td>\n            <td>\n                <table class=\"table-layer-2\">\n                    <tr>\n                        <td>\n                            <input id=\"c_performance_3\" class=\"input_txt_box\" maxlength=\"3\" type=\"number\" value=\"\">\n                            <p id=\"c_performance_3_err\" class=\"error\"></p>\n                        </td>\n                    </tr>\n                </table>\n            </td>\n        </tr>\n        ");
@@ -1780,6 +1796,7 @@ Samvaarta.setGetUserDashboard = function () {
     }
     $('.outcomes__data tbody').html(desieredData);
   };
+  var closure = function closure() {};
   return {
     setDocConversation: setDocConversation,
     getDocConversation: getDocConversation,
@@ -1789,7 +1806,8 @@ Samvaarta.setGetUserDashboard = function () {
     setDesiredObjective: setDesiredObjective,
     getDesiredObjective: getDesiredObjective,
     setDesiredOutcomes: setDesiredOutcomes,
-    getDesiredOutcomes: getDesiredOutcomes
+    getDesiredOutcomes: getDesiredOutcomes,
+    closure: closure
   };
 }();
 var dashboardTab = function dashboardTab() {

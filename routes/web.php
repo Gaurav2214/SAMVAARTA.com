@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {return view('outer');});
+Route::get('/login', 'UserController@login');
 Route::get('/dashboard', 'UserController@dashboard');
 Route::get('/myaccount', 'UserController@myaccount');
 Route::get('/change-password', 'UserController@change_password');

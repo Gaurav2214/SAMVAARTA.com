@@ -1,4 +1,5 @@
 @include('layouts.top_application')
-@include('login')
+@include('layouts.header')
+@include('welcome')
 @include('layouts.footer')
 @include('layouts.bottom')

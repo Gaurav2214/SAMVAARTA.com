@@ -803,8 +803,8 @@ Samvaarta.system = (() => {
             </p>
         </div>
         `;
-        document.querySelector(".login-module__main--right").innerHTML =
-            loginForm;
+        $(".login-module__main--right").length ? document.querySelector(".login-module__main--right").innerHTML =
+            loginForm : '';
         showFormToggle();
     };
 
@@ -1417,12 +1417,12 @@ Samvaarta.system = (() => {
                 ajaxErrorCall
             );
         } else {
-            if (window.location.pathname !== "/") {
+            if (window.location.pathname === "/dashboard") {
                 window.location.href = "/";
-                Samvaarta.system.createLoginForm();
             } else {
                 Samvaarta.system.createLoginForm();
             }
+            //Samvaarta.system.createLoginForm();
         }
     };
 
@@ -1809,7 +1809,7 @@ Samvaarta.system = (() => {
 				</div>
 			`;
 
-            $(".dashboard__header--loggedin-user").html(userData);
+            $(".dashboard__header--loggedin-user").html(userData).addClass('oauth');
         }
     };
 
@@ -1946,18 +1946,34 @@ Samvaarta.userDashboard = (() => {
             <div class="details--items">
                 <h3>User Experience</h3>
                 <ul class="list-view">
-                    <li>I enjoyed.... </li>
-                    <li>I wish....</li>
-                    <li>I gained by way of....</li>
+                    <li>
+                        <label for="user_enjoyed">I enjoyed....</label>
+                        <textarea rows="2" cols="50" type="text" id="user_enjoyed" value="" class="input_txt_box"></textarea>
+                    </li>
+                    <li>
+                        <label for="user_wished">I wish....</label>
+                        <textarea rows="2" cols="50" type="text" id="user_wished" value="" class="input_txt_box"></textarea>
+                    </li>
+                    <li>
+                        <label for="user_gained">I gained by way of....</label>
+                        <textarea rows="2" cols="50" type="text" id="user_gained" value="" class="input_txt_box"></textarea>
+                    </li>
                 </ul>
             </div>
             <div class="details--items">
                 <h3>Manager Experience</h3>
                 <ul class="list-view">
-                    <li>I enjoyed....</li>
-                    <li>I wish....</li>
+                    <li>
+                        <label for="manager_enjoyed">I enjoyed....</label>
+                        <textarea rows="2" cols="50" type="text" id="manager_enjoyed" value="" class="input_txt_box"></textarea>
+                    </li>
+                    <li>
+                        <label for="manager_wished">I wish....</label>
+                        <textarea rows="2" cols="50" type="text" id="manager_wished" value="" class="input_txt_box"></textarea>
+                    </li>
                 </ul>
-            </div>            
+            </div>   
+            <button class="btn" onclick="Samvaarta.setGetUserDashboard.closure()">Submit</button>         
         </div>
         `;
         $('.user-activity-details__inner').html(closure);
@@ -2692,7 +2708,7 @@ Samvaarta.setGetUserDashboard = (() => {
             return false;
         } else {
             let paramObject = {
-                url: apiUrl + "api/profile/learning-objective",
+                url: apiUrl + "api/profile/desired-objective",
                 type: "POST",
                 headers: {
                     Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
@@ -2732,8 +2748,33 @@ Samvaarta.setGetUserDashboard = (() => {
         }
     }
     const getDesiredObjective = () => {
-        quantitativeData();
-        qualitativeData();
+        let paramObject = {
+            url: apiUrl + "api/profile/desired-objective",
+            type: "GET",
+            headers: {
+                Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+                Accept: "application/json",
+            },            
+        };
+
+        const ajaxSuccessCall = (response) => {
+            quantitativeData();
+            qualitativeData();
+        };
+
+        const ajaxErrorCall = (error) => {
+            if (error.response) {
+                $("#interaction_name_err")
+                    .html(error.response.data.message)
+                    .show();
+            }
+        };
+
+        Samvaarta.common.hitAjaxApi(
+            paramObject,
+            ajaxSuccessCall,
+            ajaxErrorCall
+        );        
     }
     const quantitativeData = (response) => {
         let quanData = `
@@ -2958,6 +2999,9 @@ Samvaarta.setGetUserDashboard = (() => {
         }        
         $('.outcomes__data tbody').html(desieredData);
     }
+    const closure = () => {
+
+    }
     return{
         setDocConversation: setDocConversation, 
         getDocConversation: getDocConversation,
@@ -2968,6 +3012,7 @@ Samvaarta.setGetUserDashboard = (() => {
         getDesiredObjective: getDesiredObjective,
         setDesiredOutcomes: setDesiredOutcomes,
         getDesiredOutcomes: getDesiredOutcomes,
+        closure: closure,
     }
 })();
 

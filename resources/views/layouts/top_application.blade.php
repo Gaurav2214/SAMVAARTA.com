@@ -1,5 +1,5 @@
 <?php
-    $fileVersion = 8;
+    $fileVersion = 9;
 ?>
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">

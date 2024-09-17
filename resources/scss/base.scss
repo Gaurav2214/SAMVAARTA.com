@@ -432,11 +432,26 @@
                     border-radius: 50%;
                 }
             }
-            &:before {
-                content: "";
-                position: absolute;
-                width: 100%;
-                padding: rem(20);
+            &.oauth{
+                &:before {
+                    content: "";
+                    position: absolute;
+                    width: 100%;
+                    padding: rem(20);
+                }
+            }
+            .non-login{
+                @include set-flex-box($ai:center);
+                gap: rem(20);
+                a{
+                    @include desc-5();
+                    color: #1a73e9;
+                    &:last-child{
+                        border: 1px solid #e5e5e5;
+                        border-radius: rem(30);
+                        padding: rem(10) rem(25);
+                    }
+                }
             }
         }
     }
@@ -532,6 +547,9 @@
                             li {
                                 list-style-type: decimal;
                                 @include desc-5();
+                                textarea{
+                                    margin-bottom: rem(10);
+                                }
                             }
                         }
                         &__topics{

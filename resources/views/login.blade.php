@@ -1,10 +1,12 @@
-<header class="login-header">
+<!-- <header class="login-header">
     <div class="container">
         <a href="/">
             <img width="103" height="60" src="/images/goalnu-logo.png" alt="" />
         </a>
     </div>
-</header>
+</header> -->
+@extends('app')
+@section('content')
 
 <section class="login-module">
     <div class="login-module__inner container">
@@ -28,3 +30,4 @@
         </div>
     </div>
 </section>
+@endsection
