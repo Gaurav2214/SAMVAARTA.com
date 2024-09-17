@@ -480,7 +480,7 @@
                             flex-direction: column;
                             justify-content: center;
                             align-items: center;
-                            width: rem(90);
+                            max-width: rem(85);
                             gap: rem(5);
                             color: $clr-4;
                             line-height: rem(20);

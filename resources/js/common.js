@@ -2784,38 +2784,21 @@ Samvaarta.setGetUserDashboard = (() => {
         $('.quantitative__data tbody').html(quanData);
     }
     const qualitativeData = (response) => {
-        let qualityData = `
-        <tr>
-            <td>
-                <input ${response?.qualitative ? 'readonly' : ''} id="qualitative_param_1" class="input_txt_box" type="text" value="" />
-                <p id="qualitative_param_1_err" class="error"></p>
-            </td>
-            <td>
-                <input ${response?.qualitative ? 'readonly' : ''} id="qualitative_desc_1" class="input_txt_box" type="text" value="" />
-                <p id="qualitative_desc_1_err" class="error"></p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input ${response?.qualitative ? 'readonly' : ''} id="qualitative_param_2" class="input_txt_box" type="text" value="" />
-                <p id="qualitative_param_2_err" class="error"></p>
-            </td>
-            <td>
-                <input ${response?.qualitative ? 'readonly' : ''} id="qualitative_desc_2" class="input_txt_box" type="text" value="" />
-                <p id="qualitative_desc_2_err" class="error"></p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input ${response?.qualitative ? 'readonly' : ''} id="qualitative_param_3" class="input_txt_box" type="text" value="" />
-                <p id="qualitative_param_3_err" class="error"></p>
-            </td>
-            <td>
-                <input ${response?.qualitative ? 'readonly' : ''} id="qualitative_desc_3" class="input_txt_box" type="text" value="" />
-                <p id="qualitative_desc_3_err" class="error"></p>
-            </td>
-        </tr>
-        `;
+        let qualityData = '';
+        for(let i=0;i<3;i++){
+            qualityData += `
+            <tr>
+                <td>
+                    <input ${response?.qualitative ? 'readonly' : ''} id="qualitative_param_${i}" class="input_txt_box" type="text" value="" />
+                    <p id="qualitative_param_${i}_err" class="error"></p>
+                </td>
+                <td>
+                    <textarea ${response?.qualitative ? 'readonly' : ''} id="qualitative_desc_${i}" class="input_txt_box" type="text" value="" ></textarea>
+                    <p id="qualitative_desc_${i}_err" class="error"></p>
+                </td>
+            </tr>
+            `;
+        }
         $('.qualitative__data tbody').html(qualityData);
     }
     const setDesiredOutcomes = () => {
@@ -2924,7 +2907,10 @@ Samvaarta.setGetUserDashboard = (() => {
                         <input readonly id="outcomes_param_${i+1}" class="input_txt_box" type="text" value="${parameter[i]}" />
                     </td>
                     <td>
-                        <input readonly id="outcomes_desc_${i+1}" class="input_txt_box" type="text" value="${outcome_description[i]}" />
+                        <textarea readonly rows="2" cols="50" type="text" id="outcomes_desc_${i+1}" value="${outcome_description[i]}" class="input_txt_box"></textarea>                        
+                        <script>
+                            $('#outcomes_desc_${i+1}').val("${outcome_description[i]}");                            
+                        </script>
                     </td>
                 </tr>`;
             }
@@ -2939,7 +2925,7 @@ Samvaarta.setGetUserDashboard = (() => {
                         <p id="outcomes_param_${item}_err" class="error"></p>
                     </td>
                     <td>
-                        <input id="outcomes_desc_${item}" class="input_txt_box" type="text" value="" />
+                        <textarea rows="2" cols="50" type="text" id="outcomes_desc_${item}" value="" class="input_txt_box"></textarea>
                         <p id="outcomes_desc_${item}_err" class="error"></p>
                     </td>
                 </tr>`;

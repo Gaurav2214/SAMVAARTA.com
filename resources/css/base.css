@@ -720,7 +720,7 @@ button,
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        width: 90px;
+        max-width: 85px;
         gap: 5px;
         color: #262626;
         line-height: 20px; }
