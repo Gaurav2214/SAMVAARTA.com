@@ -19,6 +19,7 @@ use App\Models\TrainingSession;
 use App\Models\DocumentConversations;
 use Carbon\Carbon;
 use App\Models\PerformanceData;
+use App\Models\PerformanceDataOthers;
 class ProfileController extends Controller
 {
 	/**
@@ -626,10 +627,24 @@ class ProfileController extends Controller
 
 			$temp=[];
 			foreach($PerformanceData as $val){
-				$temp[$val['performance_status']][$val['session_id']][]=($val);
+				$val['unit_measurement']=json_decode($val['unit_measurement'],true);
+				$val['performance']=json_decode($val['performance'],true);
+				$val['parameter']=json_decode($val['parameter'],true);
+
+
+				$temp[$val['performance_status']][]=($val);
 			}
 
-			return response()->json(['data' => $temp,"success"=>"true","count"=>count($PerformanceData)]);
+			$PerformanceDataOthers=PerformanceDataOthers::where("user_id",$user_id)->orderBy('id',"desc")->first()->toArray();
+
+			if(!empty($PerformanceDataOthers)){
+				
+				$PerformanceDataOthers['parameter']=json_decode($PerformanceDataOthers['parameter'],true);
+				$PerformanceDataOthers['description']=json_decode($PerformanceDataOthers['description'],true);
+
+			}
+
+			return response()->json(['data' => $temp,"odata"=>$PerformanceDataOthers,"success"=>"true","count"=>count($PerformanceData)]);
 		}else{
 			return response()->json(['data' =>[],"success"=>"false"]);
 		}
@@ -644,12 +659,14 @@ class ProfileController extends Controller
 		$validator =Validator::make($request->all(), [
 				"performance"    => "required|array|min:3",
     			"performance.*"  => "required|numeric",
-				"unit_measurement"    => "required|array|min:3",
+				"unit_measurement"    => "required|array|min:3|max:3",
     			"unit_measurement.*"  => "required",
-				"description"    => "required|array|min:3",
+				"description"    => "required|array|min:3|max:3",
     			"description.*"  => "required",
-				"parameter"    => "required|array|min:3",
+				"parameter"    => "required|array|min:3|max:3",
     			"parameter.*"  => "required",
+				"other_parameter"    => "required|array|min:3|max:3",
+    			"other_parameter.*"  => "required",
 				'session_id'=>'required',
 			]);    
 		
@@ -658,6 +675,8 @@ class ProfileController extends Controller
 		{
 
 			$PerformanceData=PerformanceData::where("user_id",$user_id)->where("session_id",$request->session_id)->orderBy('id',"desc")->get()->toArray();
+
+			$PerformanceDataOthers=PerformanceDataOthers::where("user_id",$user_id)->orderBy('id',"desc")->get()->toArray();
 
 			if(!empty($PerformanceData)){
 				return response()->json(['message' =>"Performance data is alreardy added for this session","success"=>"false"]);
@@ -669,27 +688,51 @@ class ProfileController extends Controller
 			$parameter = $request_data['parameter'];
 			$unit_measurement = $request_data['unit_measurement'];
 			$description = $request_data['description'];
+			$other_parameter = $request_data['other_parameter'];
 
-			foreach($performance as $key=>$val){
 
-				PerformanceData::create(
-				[
-					'user_id'=>$user_id,
-					'performance'=>$val,
-					'kpi_score'=>0,
-					'parameter'=>$parameter[$key],
-					'unit_measurement'=>$unit_measurement[$key],
-					'description'=>$description[$key],
-					'status'=>'1',
-					'performance_status'=>'current',
-					'session_id'=>$request->session_id
-				]);
+			PerformanceData::create(
+			[
+				'user_id'=>$user_id,
+				'performance'=>json_encode($performance),
+				'kpi_score'=>0,
+				'parameter'=>json_encode($parameter),
+				'unit_measurement'=>json_encode($unit_measurement),
+				'status'=>'1',
+				'performance_status'=>'current',
+				'session_id'=>$request->session_id
+			]);
+
+			if(!empty($PerformanceDataOthers)){
+				PerformanceDataOthers::where("user_id",$user_id)->update(['parameter'=>json_encode($other_parameter),
+				'description'=>json_encode($description)]);
+			}else{
+				PerformanceDataOthers::create(
+					[
+						'user_id'=>$user_id,
+						'parameter'=>json_encode($other_parameter),
+						'description'=>json_encode($description),
+						'status'=>'1',
+					]);
 			}
 			
-			$PerformanceData=PerformanceData::where("user_id",$user_id)->where("session_id",$request->session_id)->orderBy('id',"desc")->get();
+
+			
+			$PerformanceData=PerformanceData::where("user_id",$user_id)->where("session_id",$request->session_id)->orderBy('id',"desc")->first()->toArray();
+
+
+			$PerformanceDataOthers=PerformanceDataOthers::where("user_id",$user_id)->orderBy('id',"desc")->first()->toArray();
+
 
 			if($PerformanceData){
-				return response()->json(['data' => $PerformanceData,"success"=>"true","message"=>"Successfully Added"]);
+				$PerformanceData['unit_measurement']=json_decode($PerformanceData['unit_measurement'],true);
+				$PerformanceData['performance']=json_decode($PerformanceData['performance'],true);
+				$PerformanceData['parameter']=json_decode($PerformanceData['parameter'],true);
+
+				$PerformanceDataOthers['parameter']=json_decode($PerformanceDataOthers['parameter'],true);
+				$PerformanceDataOthers['description']=json_decode($PerformanceDataOthers['description'],true);
+
+				return response()->json(['data' => $PerformanceData,"odata"=>$PerformanceDataOthers,"success"=>"true","message"=>"Successfully Added"]);
 			}else{
 				return response()->json(['data' => $PerformanceData,"success"=>"false"]);
 			}
