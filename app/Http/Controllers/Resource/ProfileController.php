@@ -20,6 +20,8 @@ use App\Models\DocumentConversations;
 use Carbon\Carbon;
 use App\Models\PerformanceData;
 use App\Models\PerformanceDataOthers;
+use App\Models\ClosureUserExperinces;
+use App\Models\ClosureTrainerExperinces;
 class ProfileController extends Controller
 {
 	/**
@@ -741,6 +743,141 @@ class ProfileController extends Controller
 			return $validator->errors();
 		}
 	}
+
+	public function closingOfIntraction(Request $request){
+		$user_id =  $request->user()->id;
+		$ClosureUserExperinces=ClosureUserExperinces::where("user_id",$user_id)->orderBy('id',"desc")->get()->toArray();
+
+		$User = User::with('trainer')->find($user_id)->toArray();   
+		
+		$trainer_id=isset($User['trainer'][0]['id'])?$User['trainer'][0]['id']:0;
+
+		$ClosureTrainerExperinces=ClosureTrainerExperinces::where("trainer_id",$trainer_id)->orderBy('id',"desc")->get()->toArray();
+
+		return response()->json(['data' => $ClosureUserExperinces,'traienr_data'=>$ClosureTrainerExperinces,"success"=>"true"]);
+	}
+
+	public function trainerClosingOfIntraction(Request $request){
+		$trainer_id =  $request->user()->id;
+
+		if(empty($request->user_id)){
+			return response()->json(['message' =>"User Id is required","success"=>"false"]);
+		}
+		
+		$user_id=$request->user_id;
+
+		$User = User::find($trainer_id)->toArray();    
+
+		$ClosureTrainerExperinces=ClosureTrainerExperinces::where("trainer_id",$trainer_id)->orderBy('id',"desc")->get()->toArray();
+
+		$ClosureUserExperinces=ClosureUserExperinces::where("user_id",$user_id)->orderBy('id',"desc")->get()->toArray();
+
+		return response()->json(['user_data' => $ClosureUserExperinces,'data'=>$ClosureTrainerExperinces,"success"=>"true"]);
+	}
+
+	public function addClosingOfIntraction(Request $request){
+		$request_data=$request->post();
+
+		$user_id =  $request->user()->id;
+
+		$validator =Validator::make($request->all(), [
+				'experience_enjoyed'=>'required',
+				'experience_wish'=>'required',
+				'experience_gained'=>'required',
+			]);    
+		
+
+		if (!$validator->fails())
+		{
+
+			$ClosureUserExperinces=ClosureUserExperinces::where("user_id",$user_id)->orderBy('id',"desc")->get()->toArray();
+
+
+			if(!empty($ClosureUserExperinces)){
+				return response()->json(['message' =>"Closer data is alreardy added","success"=>"false"]);
+			}
+			
+			$User = User::with('trainer')->find($user_id)->toArray();    
+
+			$trainer_id=isset($User['trainer'][0]['id'])?$User['trainer'][0]['id']:0;
+
+
+			ClosureUserExperinces::create(
+			[
+				'user_id'=>$user_id,
+				'trainer_id'=>$trainer_id,
+				'experience_enjoyed'=>$request->experience_enjoyed,
+				'experience_wish'=>$request->experience_wish,
+				'experience_gained'=>$request->experience_gained,
+				'status'=>'1',
+			]);
+
+			$ClosureUserExperinces=ClosureUserExperinces::where("user_id",$user_id)->orderBy('id',"desc")->get()->toArray();
+
+
+			if($ClosureUserExperinces){
+				return response()->json(['data' => $ClosureUserExperinces,"success"=>"true","message"=>"Successfully Added"]);
+			}else{
+				return response()->json(['data' => [],"success"=>"false","message"=>"Something found."]);
+			}
+
+		}else{
+			return $validator->errors();
+		}
+	}
+
+	public function addTrainerClosingOfIntraction(Request $request){
+		$request_data=$request->post();
+
+		$trainer_id =  $request->user()->id;
+
+		$validator =Validator::make($request->all(), [
+				'experience_enjoyed'=>'required',
+				'experience_wish'=>'required',
+				'user_id'=>'required'
+			]);    
+		
+
+		if (!$validator->fails())
+		{
+
+			$user_id=$request->user_id;
+
+			$ClosureTrainerExperinces=ClosureTrainerExperinces::where("trainer_id",$trainer_id)->where('user_id',$user_id)->orderBy('id',"desc")->get()->toArray();
+
+
+			if(!empty($ClosureTrainerExperinces)){
+				return response()->json(['message' =>"Closer data is alreardy added","success"=>"false"]);
+			}
+			
+			$User = User::with('trainer')->find($user_id);    
+			$Trainer = User::find($trainer_id);   
+
+
+			ClosureTrainerExperinces::create(
+			[
+				'trainer_id'=>$trainer_id,
+				'user_id'=>$user_id,
+				'experience_enjoyed'=>$request->experience_enjoyed,
+				'experience_wish'=>$request->experience_wish,
+				'status'=>'1',
+			]);
+
+			$ClosureTrainerExperinces=ClosureTrainerExperinces::where("trainer_id",$trainer_id)->where('user_id',$user_id)->orderBy('id',"desc")->get()->toArray();
+
+
+			if($ClosureTrainerExperinces){
+				return response()->json(['data' => $ClosureTrainerExperinces,"success"=>"true","message"=>"Successfully Added"]);
+			}else{
+				return response()->json(['data' => [],"success"=>"false","message"=>"Something found."]);
+			}
+
+		}else{
+			return $validator->errors();
+		}
+	}
+
+
 
 	public function downloadReport(Request $request){
 		$user =$request->user();

@@ -37,10 +37,16 @@ Route::group(['middleware' => ['auth:api']], function() {
 		Route::get('desired-objective','Resource\ProfileController@desiredObjective');
 		Route::post('desired-objective','Resource\ProfileController@addDesiredObjective');
 		Route::get('download-report',"Resource\ProfileController@downloadReport");
+
+		Route::get('closing-of-intraction','Resource\ProfileController@closingOfIntraction');
+		Route::post('closing-of-intraction','Resource\ProfileController@addClosingOfIntraction');
 	});
 	Route::group(['prefix' => 'trainer'], function() {
 		Route::post('/add_comment', 'Resource\ProfileController@add_comment');
 		Route::get('/comments', 'Resource\ProfileController@comments');
+
+		Route::get('closing-of-intraction','Resource\ProfileController@trainerClosingOfIntraction');
+		Route::post('closing-of-intraction','Resource\ProfileController@addTrainerClosingOfIntraction');
 	});
 	Route::get('/logout', 'Resource\ProfileController@logout');
 });
