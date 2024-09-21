@@ -626,15 +626,12 @@ class ProfileController extends Controller
 		$PerformanceData=PerformanceData::with('session')->where("user_id",$user_id)->orderBy('id',"desc")->get()->toArray();
 
 		if($PerformanceData){
-
 			$temp=[];
 			foreach($PerformanceData as $val){
 				$val['unit_measurement']=json_decode($val['unit_measurement'],true);
 				$val['performance']=json_decode($val['performance'],true);
 				$val['parameter']=json_decode($val['parameter'],true);
-
-
-				$temp[$val['performance_status']][]=($val);
+				$temp[]=($val);
 			}
 
 			$PerformanceDataOthers=PerformanceDataOthers::where("user_id",$user_id)->orderBy('id',"desc")->first()->toArray();
@@ -669,6 +666,7 @@ class ProfileController extends Controller
     			"parameter.*"  => "required",
 				"other_parameter"    => "required|array|min:3|max:3",
     			"other_parameter.*"  => "required",
+				'performance_date'=>'required|date_format:Y-m-d|after:today',
 				'session_id'=>'required',
 			]);    
 		
@@ -702,7 +700,8 @@ class ProfileController extends Controller
 				'unit_measurement'=>json_encode($unit_measurement),
 				'status'=>'1',
 				'performance_status'=>'current',
-				'session_id'=>$request->session_id
+				'session_id'=>$request->session_id,
+				'performance_date'=>$request->performance_date,
 			]);
 
 			if(!empty($PerformanceDataOthers)){
