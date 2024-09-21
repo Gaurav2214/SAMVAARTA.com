@@ -3184,6 +3184,26 @@ const showRoleTab = () => {
     }
 }
 
+const faqEventBind = () => {
+    const main = document.querySelector('.faq-panel__lists');
+    main?.addEventListener('click', event => {
+      if (event.target.className.includes('question')) {
+        const isActive = event.target.classList.contains('active');
+
+        const questions = main.querySelectorAll('.question');
+        const answers = main.querySelectorAll('.answer');
+
+        questions.forEach(q => q.classList.remove('active'));
+        answers.forEach(a => a.classList.remove('opend'));
+
+        if (!isActive) {
+          event.target.classList.add('active');
+          event.target.nextElementSibling.classList.add('opend');
+        }
+      }
+    });
+  }
+
 document.addEventListener("readystatechange", (event) => {
     // When HTML/DOM elements are ready:
     if (event.target.readyState === "interactive") {
@@ -3208,9 +3228,11 @@ document.addEventListener("readystatechange", (event) => {
             Samvaarta.userDashboard.getSessionList(userType === 'admin' ? "api/admin/sessions" : "api/profile/session-listing");
         } else {
             Samvaarta.userDashboard.displaySessionList(Samvaarta.common.getLocalStorage('sessionList'));
-        }        
+        } 
+        faqEventBind();       
     }
 });
+
 
 // const people = [
 //     {name:'john', hobbies:['cricket', 'javascript']},
