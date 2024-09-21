@@ -208,3 +208,10 @@ button,
   @media screen and (max-width: 1000px) {
     #maincontent {
       z-index: 2; } }
+
+p {
+  font-size: 14px;
+  line-height: 22px;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 500;
+  color: #808080; }

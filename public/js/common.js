@@ -37,7 +37,7 @@ Samvaarta.messageLog = {
 };
 var valError = true;
 var apiUrl = typeof appUrl != "undefined" ? appUrl : "http://127.0.0.1:8000/";
-var expireTime = 20 / (24 * 60);
+var expireTime = 10 / (24 * 60);
 var userType = '';
 var oauthUserData = '';
 Samvaarta.globalVar = Samvaarta.globalVar || {
@@ -755,7 +755,7 @@ Samvaarta.system = function () {
       };
       var ajaxSuccessCall = function ajaxSuccessCall(response) {
         Samvaarta.model.showSuccessMessage("<h2>Thank You</h2><p class=\"marg-t20\">".concat(Samvaarta.messageLog[12], "</p>"), "y");
-        Samvaarta.common.setLocalStorage("oauthUserData", response, 1);
+        Samvaarta.common.setLocalStorage("oauthUserData", response, expireTime);
       };
       var ajaxErrorCall = function ajaxErrorCall(response) {
         console.log(response);
@@ -787,7 +787,7 @@ Samvaarta.system = function () {
       }
     };
     var ajaxSuccessCall = function ajaxSuccessCall(response) {
-      Samvaarta.common.setLocalStorage("oauthUserData", response, 1);
+      Samvaarta.common.setLocalStorage("oauthUserData", response, expireTime);
       window.location.href = "/dashboard";
     };
     var ajaxErrorCall = function ajaxErrorCall(response) {
@@ -949,7 +949,7 @@ Samvaarta.system = function () {
         }
       };
       var ajaxSuccessCall = function ajaxSuccessCall(response) {
-        Samvaarta.common.setLocalStorage("oauthUserData", response, 1);
+        Samvaarta.common.setLocalStorage("oauthUserData", response, expireTime);
         displayUserInfo(response);
       };
       var ajaxErrorCall = function ajaxErrorCall(response) {

@@ -22,7 +22,7 @@
 
                 <div class="desc">
                     <h2>Welcome User</h2>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+                    <p>The greatest enemy of knowledge is not ignorance; it is the illusion of knowledge</p>
                 </div>
             </div>
             <div class="login-module__main--right">
