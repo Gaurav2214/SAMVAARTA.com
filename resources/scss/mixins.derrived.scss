@@ -100,6 +100,18 @@
     font-weight: $medium;
     color: $clr-1;
   }
+  @mixin desc-9() {
+    @include set-typography($fs: 14, $lh: 21);
+    font-family: $font-montserrat;
+    font-weight: $medium;
+    color: $clr-4;
+  }
+  @mixin desc-10() {
+    @include set-typography($fs: 14, $lh: 22);
+    font-family: $font-openSans;
+    font-weight: $medium;
+    color: $clr-5;
+  }
   
   
   
