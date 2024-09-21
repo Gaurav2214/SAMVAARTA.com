@@ -33,6 +33,7 @@ class PerformanceData extends Model
         'session_id',
         'unit_measurement',
         'description',
+        'performance_date'
     ];
 
     public  function session(){
