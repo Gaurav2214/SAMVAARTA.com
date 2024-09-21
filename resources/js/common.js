@@ -2326,9 +2326,9 @@ Samvaarta.userDashboard = (() => {
                                 <table class="table-layer-2">
                                     <tbody><tr>
                                         <td>
-                                            <input data-date="" onchange="changeDateFormat();" placeholder="Select Date" type="text" id="next_interaction_date" value="" class="input_txt_box sdate hasDatepicker">
+                                            <input data-date="" onchange="changeDateFormat();" placeholder="Select Date" type="text" id="next_interaction_date" value="" class="input_txt_box sdate">
                                             <script>
-                                            setTimeout(()=>{
+                                            
                                                 $('#next_interaction_date').datepicker();
                                                 function changeDateFormat(){
                                                     const date = new Date(document.getElementById("next_interaction_date").value);
@@ -2336,8 +2336,7 @@ Samvaarta.userDashboard = (() => {
                                                     formattedDate = date.toUTCString().split(' ');
                                                     let acDate = formattedDate[1] +' '+ formattedDate[2] +' '+ formattedDate[3];
                                                     $('#next_interaction_date').val(acDate);
-                                                }
-                                            },1000);
+                                                }                                            
                                             </script>
                                             <p id="next_interaction_date_err" class="error"></p>
                                         </td>
