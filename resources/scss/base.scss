@@ -883,7 +883,7 @@
                             .table-layer-2{
                                 tr{
                                     td{
-                                        width: rem(70);
+                                        max-width: rem(100);
                                         min-width: unset;
                                         text-align: center; 
                                         padding-bottom: 0;                                           
@@ -896,8 +896,16 @@
                                         }
                                         .input_txt_box{
                                             margin-top: 0;
-                                            width: rem(56);
+                                            width: rem(82);
                                             padding: rem(5);
+                                            &.sdate{
+                                                background: #d5d5d5;
+                                                text-align: center;
+                                                &::placeholder {
+                                                    color: $clr-4;
+                                                    opacity: 1; 
+                                                  }
+                                            }
                                         }     
                                     }
                                 }
@@ -1216,6 +1224,9 @@
 }
 .update-transaction-container{
     margin-bottom: rem(20);
+}
+.session-data{
+    margin-top: rem(10);
 }
 
 

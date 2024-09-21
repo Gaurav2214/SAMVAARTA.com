@@ -254,6 +254,13 @@ Samvaarta.common = (() => {
         }
     }
 
+    const dayMonthNameYear = (dateString) => {
+        const date = new Date(dateString);
+        formattedDate = date.toUTCString().split(' ');
+        let acDate = formattedDate[1] +' '+ formattedDate[2] +' '+ formattedDate[3];
+        return acDate;
+    }
+
     var validateName = (name, key) => {
         var error = "";
         name = name.replace(/ /g, "");
@@ -579,6 +586,7 @@ Samvaarta.common = (() => {
         getLocation: getLocation,
         toastMsg: toastMsg,
         dataPicker: dataPicker,
+        dayMonthNameYear: dayMonthNameYear,
     };
 })();
 
@@ -2187,7 +2195,7 @@ Samvaarta.userDashboard = (() => {
             interactionNameList?.data?.data.map((item, index) => {
                 interactions += `<option value="${item.session_id}">${item.topic}</option>`;
             })
-            $('.details--items__topics #interaction_name').html(interactions);
+            $('.details--items__topics #interaction_name, .session-data #interaction_name').html(interactions);
         }
     }
     const docConversation = () => {
@@ -2279,6 +2287,14 @@ Samvaarta.userDashboard = (() => {
         let objective = `
         <div class="details">
             <h3>Desired Objective</h3>
+            <div class="session-data">
+                <div class="interaction_name">
+                    <select id="interaction_name" class="input_txt_box">
+                        
+                    </select>
+                    <p id="interaction_name_err" class="error"></p>
+                </div>
+            </div>
             <div class="details--items quantitative">
                 <h3>Quantitative Parameters – <span>They refer to the past, current and future performance</span></h3>
                 <h4>The following details needs to be filled up</h4>
@@ -2343,6 +2359,7 @@ Samvaarta.userDashboard = (() => {
         `;
         $('.user-activity-details__inner').html(objective);
         Samvaarta.setGetUserDashboard.getDesiredObjective();
+        interactionList();
     }
     const desOutcomes = () => {
         let outcome = `
@@ -2684,6 +2701,8 @@ Samvaarta.setGetUserDashboard = (() => {
         var cperf1 = document.getElementById("c_performance_1").value;
         var cperf2 = document.getElementById("c_performance_2").value;
         var cperf3 = document.getElementById("c_performance_3").value;
+        var interaction_name = document.getElementById("interaction_name").value;
+        var pDate = document.getElementById("next_interaction_date").getAttribute('data-date');
 
         var errorElements = document.querySelectorAll(".error");        
         errorElements.forEach(function (el) {
@@ -2715,12 +2734,13 @@ Samvaarta.setGetUserDashboard = (() => {
                     Accept: "application/json",
                 },
                 data: {
-                    parameter:[qparam1, qparam2, qparam3, qparam4, qparam5, qparam6],
+                    parameter:[qparam1, qparam2, qparam3],
+                    other_parameter:[qparam4, qparam5, qparam6],
                     performance:[cperf1, cperf2, cperf3],
                     unit_measurement: [qdesc1, qdesc2, qdesc3],
                     description: [qdesc4, qdesc5, qdesc6],
-                    session_id: 5,
-                    objective_type: 5,
+                    session_id: interaction_name,
+                    performance_date: pDate,
                 },
             };
 
@@ -2758,8 +2778,10 @@ Samvaarta.setGetUserDashboard = (() => {
         };
 
         const ajaxSuccessCall = (response) => {
-            quantitativeData();
-            qualitativeData();
+            if(response.data){
+                quantitativeData(response.data.data);
+                qualitativeData(response.data.odata);
+            }
         };
 
         const ajaxErrorCall = (error) => {
@@ -2776,7 +2798,47 @@ Samvaarta.setGetUserDashboard = (() => {
             ajaxErrorCall
         );        
     }
+    
     const quantitativeData = (response) => {
+        let prevMonthDate = '';
+        let prevAllData = '';
+        let allPerformanceData = '';
+        response.reverse().map((item, index) => {
+            prevMonthDate += `<td>
+                <input data-date="" readonly type="text" id="next_interaction_date_${index}" 
+                    value="${Samvaarta.common.dayMonthNameYear(item.performance_date)}" 
+                    class="input_txt_box sdate">
+                </td>
+            `;            
+            if([0].includes(index)){
+                for(let i=0;i<3;i++){
+                    prevAllData += `
+                    <tr id="qant_${i+1}">
+                        <td>
+                            <input ${item?.parameter ? 'readonly' : ''} 
+                                id="quantitative_param_${i+1}" class="input_txt_box" 
+                                type="text" value="${item?.parameter ? item?.parameter[i] : ''} " />
+                            <p id="quantitative_param_${i+1}_err" class="error"></p>
+                        </td>
+                        <td>
+                            <input ${item?.unit_measurement ? 'readonly' : ''} 
+                            id="quantitative_desc_${i+1}" class="input_txt_box" 
+                            type="text" value="${item?.unit_measurement ? item?.unit_measurement[i] : ''}" />
+                            <p id="quantitative_desc_${i+1}_err" class="error"></p>
+                        </td>
+                        <td>
+                            <table class="table-layer-2">
+                                <tr>                                    
+                                    <td><input id="c_performance_${i+1}" maxlength="3" class="input_txt_box" type="number" value="">
+                                    <p id="c_performance_${i+1}_err" class="error"></p></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    `;
+                }
+            }
+        })
         let quanData = `
         <tr>
             <td></td>
@@ -2784,70 +2846,39 @@ Samvaarta.setGetUserDashboard = (() => {
             <td>
                 <table class="table-layer-2">
                     <tr>
-                        <td><span>Current</span></td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input ${response?.quantitativeData ? 'readonly' : ''} id="quantitative_param_1" class="input_txt_box" type="text" value="" />
-                <p id="quantitative_param_1_err" class="error"></p>
-            </td>
-            <td>
-                <input ${response?.quantitativeData ? 'readonly' : ''} id="quantitative_desc_1" class="input_txt_box" type="text" value="" />
-                <p id="quantitative_desc_1_err" class="error"></p>
-            </td>
-            <td>
-                <table class="table-layer-2">
-                    <tr>
-                        <td><input id="c_performance_1" maxlength="3" class="input_txt_box" type="number" value="">
-                        <p id="c_performance_1_err" class="error"></p></td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input ${response?.quantitativeData ? 'readonly' : ''} id="quantitative_param_2" class="input_txt_box" type="text" value="" />
-                <p id="quantitative_param_2_err" class="error"></p>
-            </td>
-            <td>
-                <input ${response?.quantitativeData ? 'readonly' : ''} id="quantitative_desc_2" class="input_txt_box" type="text" value="" />
-                <p id="quantitative_desc_2_err" class="error"></p>
-            </td>
-            <td>
-                <table class="table-layer-2">
-                    <tr>
-                        <td><input id="c_performance_2" maxlength="3" class="input_txt_box" type="number" value="">
-                            <p id="c_performance_2_err" class="error"></p>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input ${response?.quantitativeData ? 'readonly' : ''} id="quantitative_param_3" class="input_txt_box" type="text" value="" />
-                <p id="quantitative_param_3_err" class="error"></p>
-            </td>
-            <td>
-                <input ${response?.quantitativeData ? 'readonly' : ''} id="quantitative_desc_3" class="input_txt_box" type="text" value="" />
-                <p id="quantitative_desc_3_err" class="error"></p>
-            </td>
-            <td>
-                <table class="table-layer-2">
-                    <tr>
+                        ${prevMonthDate}
                         <td>
-                            <input id="c_performance_3" class="input_txt_box" maxlength="3" type="number" value="">
-                            <p id="c_performance_3_err" class="error"></p>
+                            <input data-date="" onchange="changeDateFormat();" placeholder="Select Date" type="text" id="next_interaction_date" value="" class="input_txt_box sdate">
+                            <script>
+                                $('#next_interaction_date').datepicker();
+                                function changeDateFormat(){
+                                    const date = new Date(document.getElementById("next_interaction_date").value);
+                                    $("#next_interaction_date").attr('data-date', date.toISOString().split('T')[0]);
+                                    formattedDate = date.toUTCString().split(' ');
+                                    let acDate = formattedDate[1] +' '+ formattedDate[2] +' '+ formattedDate[3];
+                                    $('#next_interaction_date').val(acDate);
+                                }
+                            </script>
+                            <p id="next_interaction_date_err" class="error"></p>
                         </td>
                     </tr>
                 </table>
             </td>
         </tr>
+        ${prevAllData}
         `;
         $('.quantitative__data tbody').html(quanData);
+        response.reverse().map((item, index) => {
+            for(let i=0;i<3;i++){
+                allPerformanceData = '';
+                allPerformanceData = `<td>
+                    <input readonly id="c_performance_1_${index}" 
+                        class="input_txt_box" type="number" value="${item.performance[i]}">
+                    </td>
+                `;
+                $('#qant_'+(i+1)+ ' .table-layer-2 tr').prepend(allPerformanceData);
+            }
+        })
     }
     const qualitativeData = (response) => {
         let qualityData = '';
@@ -2855,15 +2886,18 @@ Samvaarta.setGetUserDashboard = (() => {
             qualityData += `
             <tr>
                 <td>
-                    <input ${response?.qualitative ? 'readonly' : ''} id="qualitative_param_${i}" class="input_txt_box" type="text" value="" />
-                    <p id="qualitative_param_${i}_err" class="error"></p>
+                    <input ${response?.parameter ? 'readonly' : ''} id="qualitative_param_${i+1}" class="input_txt_box" type="text" value="${response?.parameter ? response?.parameter[i] : ''}" />
+                    <p id="qualitative_param_${i+1}_err" class="error"></p>
                 </td>
                 <td>
-                    <textarea ${response?.qualitative ? 'readonly' : ''} id="qualitative_desc_${i}" class="input_txt_box" type="text" value="" ></textarea>
-                    <p id="qualitative_desc_${i}_err" class="error"></p>
+                    <textarea ${response?.description ? 'readonly' : ''} id="qualitative_desc_${i+1}" class="input_txt_box" type="text" value="" ></textarea>
+                    <p id="qualitative_desc_${i+1}_err" class="error"></p>
                 </td>
             </tr>
-            `;
+            <script>
+                $('#qualitative_desc_${i+1}').val("${response?.description[i]}");
+            </script>
+            `;            
         }
         $('.qualitative__data tbody').html(qualityData);
     }
@@ -2907,7 +2941,6 @@ Samvaarta.setGetUserDashboard = (() => {
                 data: {
                     parameter:[qparam1, qparam2, qparam3],
                     outcome_description: [qparam4, qparam5, qparam6],
-                    objective_type: 5,
                 },
             };
 
