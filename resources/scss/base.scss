@@ -927,8 +927,8 @@
     border-image: linear-gradient(90deg, #fff, #ccc, #fff);
     border-image-slice: 1;
     border-top: 1px solid #ccc;
-    padding-top: rem(24);
-    margin-top: rem(24);
+    padding-top: rem(28);
+    margin-top: rem(28);
 }
 
 .photo-upload-container {
@@ -1314,11 +1314,7 @@
     &__content{
         max-width: rem(820);
         text-align: center;
-        margin: 0 auto;
-        .btn{
-            margin-top: rem(20);
-            display: inline-block;
-        }
+        margin: 0 auto;        
     }
     &__img-container{
         @include set-flex-box($jc:center);
@@ -1331,6 +1327,85 @@
             border-radius: rem(10);
         }
     }
+    &__member-container{
+        text-align: center;
+        h3{
+            @include heading-6();
+            text-align: center;
+            margin-top: rem(16);
+            text-transform: capitalize;
+        }
+        .think-container__img-container{
+            img{
+                height: rem(70);
+                width: rem(70);
+            }
+        }
+    }
+    .btn{
+        margin-top: rem(20);
+        display: inline-block;
+        text-transform: capitalize;
+    }
+}
+.faq-panel{
+    &__list{
+        margin: 40px auto 0 auto;
+        max-width: 880px; 
+    }
+    &__item{
+        border: 1px solid #dbe1eb;
+        border-radius: 8px;
+        padding: 16px;
+        position: relative;
+        &:not(:first-child){
+            margin-top: rem(10);
+        }
+        .question {
+            font-size: 14px;
+            line-height: 22px;
+            font-family: $font-montserrat;
+            font-weight: 500;
+            color: #191b1f;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            padding-right: 16px;
+            &::after{
+                content: "";
+                background-image: url(/images/sprite-icons.svg?mod=26);
+                background-repeat: no-repeat;
+                position: absolute;
+                top: 3px;
+                right: 0;
+                display: block;
+                width: 20px;
+                height: 20px;
+                background-position: -284px -296px;
+            }
+            &.active{
+                &::after{
+                    background-position: -251px -296px;
+                }
+            }
+        }
+        .answer{
+            display: none;
+            font-size: 14px;
+            line-height: 22px;
+            font-family: Montserrat, sans-serif;
+            font-weight: 500;
+            color: #5f666e;
+            margin-top: 10px;
+            &.opend{
+                display: block;
+            }
+        }
+    }
+}
+
+footer{
+    margin-top: rem(20);
 }
 
 

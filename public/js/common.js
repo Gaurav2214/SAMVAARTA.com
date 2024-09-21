@@ -1883,6 +1883,26 @@ var showRoleTab = function showRoleTab() {
     });
   }
 };
+var faqEventBind = function faqEventBind() {
+  var main = document.querySelector('.faq-panel__lists');
+  main === null || main === void 0 || main.addEventListener('click', function (event) {
+    if (event.target.className.includes('question')) {
+      var isActive = event.target.classList.contains('active');
+      var questions = main.querySelectorAll('.question');
+      var answers = main.querySelectorAll('.answer');
+      questions.forEach(function (q) {
+        return q.classList.remove('active');
+      });
+      answers.forEach(function (a) {
+        return a.classList.remove('opend');
+      });
+      if (!isActive) {
+        event.target.classList.add('active');
+        event.target.nextElementSibling.classList.add('opend');
+      }
+    }
+  });
+};
 document.addEventListener("readystatechange", function (event) {
   // When HTML/DOM elements are ready:
   if (event.target.readyState === "interactive") {
@@ -1907,6 +1927,7 @@ document.addEventListener("readystatechange", function (event) {
     } else {
       Samvaarta.userDashboard.displaySessionList(Samvaarta.common.getLocalStorage('sessionList'));
     }
+    faqEventBind();
   }
 });
 
