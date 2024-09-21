@@ -2319,7 +2319,91 @@ Samvaarta.userDashboard = (() => {
                             </tr>                            
                         </thead>
                         <tbody>
-                            
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <table class="table-layer-2">
+                                    <tbody><tr>
+                                        <td>
+                                            <input data-date="" onchange="changeDateFormat();" placeholder="Select Date" type="text" id="next_interaction_date" value="" class="input_txt_box sdate hasDatepicker">
+                                            <script>
+                                            setTimeout(()=>{
+                                                $('#next_interaction_date').datepicker();
+                                                function changeDateFormat(){
+                                                    const date = new Date(document.getElementById("next_interaction_date").value);
+                                                    $("#next_interaction_date").attr('data-date', date.toISOString().split('T')[0]);
+                                                    formattedDate = date.toUTCString().split(' ');
+                                                    let acDate = formattedDate[1] +' '+ formattedDate[2] +' '+ formattedDate[3];
+                                                    $('#next_interaction_date').val(acDate);
+                                                }
+                                            },1000);
+                                            </script>
+                                            <p id="next_interaction_date_err" class="error"></p>
+                                        </td>
+                                    </tr>
+                                </tbody></table>
+                            </td>
+                        </tr>
+                        
+                                    <tr id="qant_1">
+                                        <td>
+                                            <input id="quantitative_param_1" class="input_txt_box" type="text" value=" ">
+                                            <p id="quantitative_param_1_err" class="error"></p>
+                                        </td>
+                                        <td>
+                                            <input id="quantitative_desc_1" class="input_txt_box" type="text" value="">
+                                            <p id="quantitative_desc_1_err" class="error"></p>
+                                        </td>
+                                        <td>
+                                            <table class="table-layer-2">
+                                                <tbody><tr>                                                                    
+                                                    <td><input id="c_performance_1" maxlength="3" class="input_txt_box" type="number" value="">
+                                                    <p id="c_performance_1_err" class="error"></p></td>
+                                                </tr>
+                                            </tbody></table>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr id="qant_2">
+                                        <td>
+                                            <input id="quantitative_param_2" class="input_txt_box" type="text" value="">
+                                            <p id="quantitative_param_2_err" class="error"></p>
+                                        </td>
+                                        <td>
+                                            <input id="quantitative_desc_2" class="input_txt_box" type="text" value="">
+                                            <p id="quantitative_desc_2_err" class="error"></p>
+                                        </td>
+                                        <td>
+                                            <table class="table-layer-2">
+                                                <tbody><tr>                                                                    
+                                                    <td><input id="c_performance_2" maxlength="3" class="input_txt_box" type="number" value="">
+                                                    <p id="c_performance_2_err" class="error"></p></td>
+                                                </tr>
+                                            </tbody></table>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr id="qant_3">
+                                        <td>
+                                            <input id="quantitative_param_3" class="input_txt_box" type="text" value="">
+                                            <p id="quantitative_param_3_err" class="error"></p>
+                                        </td>
+                                        <td>
+                                            <input id="quantitative_desc_3" class="input_txt_box" type="text" value="">
+                                            <p id="quantitative_desc_3_err" class="error"></p>
+                                        </td>
+                                        <td>
+                                            <table class="table-layer-2">
+                                                <tbody><tr>
+                                                                    
+                                                    <td><input id="c_performance_3" maxlength="3" class="input_txt_box" type="number" value="">
+                                                    <p id="c_performance_3_err" class="error"></p></td>
+                                                </tr>
+                                            </tbody></table>
+                                        </td>
+                                    </tr>                                    
+                        
                         </tbody>
                     </table>
                 </div>
@@ -2803,82 +2887,86 @@ Samvaarta.setGetUserDashboard = (() => {
         let prevMonthDate = '';
         let prevAllData = '';
         let allPerformanceData = '';
-        response.reverse().map((item, index) => {
-            prevMonthDate += `<td>
-                <input data-date="" readonly type="text" id="next_interaction_date_${index}" 
-                    value="${Samvaarta.common.dayMonthNameYear(item.performance_date)}" 
-                    class="input_txt_box sdate">
-                </td>
-            `;            
-            if([0].includes(index)){
-                for(let i=0;i<3;i++){
-                    prevAllData += `
-                    <tr id="qant_${i+1}">
-                        <td>
-                            <input ${item?.parameter ? 'readonly' : ''} 
-                                id="quantitative_param_${i+1}" class="input_txt_box" 
-                                type="text" value="${item?.parameter ? item?.parameter[i] : ''} " />
-                            <p id="quantitative_param_${i+1}_err" class="error"></p>
-                        </td>
-                        <td>
-                            <input ${item?.unit_measurement ? 'readonly' : ''} 
-                            id="quantitative_desc_${i+1}" class="input_txt_box" 
-                            type="text" value="${item?.unit_measurement ? item?.unit_measurement[i] : ''}" />
-                            <p id="quantitative_desc_${i+1}_err" class="error"></p>
-                        </td>
-                        <td>
-                            <table class="table-layer-2">
-                                <tr>                                    
-                                    <td><input id="c_performance_${i+1}" maxlength="3" class="input_txt_box" type="number" value="">
-                                    <p id="c_performance_${i+1}_err" class="error"></p></td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    `;
-                }
-            }
-        })
-        let quanData = `
-        <tr>
-            <td></td>
-            <td></td>
-            <td>
-                <table class="table-layer-2">
-                    <tr>
-                        ${prevMonthDate}
-                        <td>
-                            <input data-date="" onchange="changeDateFormat();" placeholder="Select Date" type="text" id="next_interaction_date" value="" class="input_txt_box sdate">
-                            <script>
-                                $('#next_interaction_date').datepicker();
-                                function changeDateFormat(){
-                                    const date = new Date(document.getElementById("next_interaction_date").value);
-                                    $("#next_interaction_date").attr('data-date', date.toISOString().split('T')[0]);
-                                    formattedDate = date.toUTCString().split(' ');
-                                    let acDate = formattedDate[1] +' '+ formattedDate[2] +' '+ formattedDate[3];
-                                    $('#next_interaction_date').val(acDate);
-                                }
-                            </script>
-                            <p id="next_interaction_date_err" class="error"></p>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        ${prevAllData}
-        `;
-        $('.quantitative__data tbody').html(quanData);
-        response.reverse().map((item, index) => {
-            for(let i=0;i<3;i++){
-                allPerformanceData = '';
-                allPerformanceData = `<td>
-                    <input readonly id="c_performance_1_${index}" 
-                        class="input_txt_box" type="number" value="${item.performance[i]}">
+        if(response.length){
+            response.reverse().map((item, index) => {
+                prevMonthDate += `<td>
+                    <input data-date="" readonly type="text" id="next_interaction_date_${index}" 
+                        value="${Samvaarta.common.dayMonthNameYear(item.performance_date)}" 
+                        class="input_txt_box sdate">
                     </td>
-                `;
-                $('#qant_'+(i+1)+ ' .table-layer-2 tr').prepend(allPerformanceData);
-            }
-        })
+                `;            
+                if([0].includes(index)){
+                    for(let i=0;i<3;i++){
+                        prevAllData += `
+                        <tr id="qant_${i+1}">
+                            <td>
+                                <input ${item?.parameter ? 'readonly' : ''} 
+                                    id="quantitative_param_${i+1}" class="input_txt_box" 
+                                    type="text" value="${item?.parameter ? item?.parameter[i] : ''} " />
+                                <p id="quantitative_param_${i+1}_err" class="error"></p>
+                            </td>
+                            <td>
+                                <input ${item?.unit_measurement ? 'readonly' : ''} 
+                                id="quantitative_desc_${i+1}" class="input_txt_box" 
+                                type="text" value="${item?.unit_measurement ? item?.unit_measurement[i] : ''}" />
+                                <p id="quantitative_desc_${i+1}_err" class="error"></p>
+                            </td>
+                            <td>
+                                <table class="table-layer-2">
+                                    <tr>                                    
+                                        <td><input id="c_performance_${i+1}" maxlength="3" class="input_txt_box" type="number" value="">
+                                        <p id="c_performance_${i+1}_err" class="error"></p></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        `;
+                    }
+                }
+            })
+            let quanData = `
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    <table class="table-layer-2">
+                        <tr>
+                            ${prevMonthDate}
+                            <td>
+                                <input data-date="" onchange="changeDateFormat();" placeholder="Select Date" type="text" id="next_interaction_date" value="" class="input_txt_box sdate">
+                                <script>
+                                    $('#next_interaction_date').datepicker();
+                                    function changeDateFormat(){
+                                        const date = new Date(document.getElementById("next_interaction_date").value);
+                                        $("#next_interaction_date").attr('data-date', date.toISOString().split('T')[0]);
+                                        formattedDate = date.toUTCString().split(' ');
+                                        let acDate = formattedDate[1] +' '+ formattedDate[2] +' '+ formattedDate[3];
+                                        $('#next_interaction_date').val(acDate);
+                                    }
+                                </script>
+                                <p id="next_interaction_date_err" class="error"></p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            ${prevAllData}
+            `;
+            $('.quantitative__data tbody').html(quanData);
+            response.reverse().map((item, index) => {
+                for(let i=0;i<3;i++){
+                    allPerformanceData = '';
+                    allPerformanceData = `<td>
+                        <input readonly id="c_performance_1_${index}" 
+                            class="input_txt_box" type="number" value="${item.performance[i]}">
+                        </td>
+                    `;
+                    $('#qant_'+(i+1)+ ' .table-layer-2 tr').prepend(allPerformanceData);
+                }
+            })
+        } else {
+
+        }
     }
     const qualitativeData = (response) => {
         let qualityData = '';
@@ -2895,7 +2983,7 @@ Samvaarta.setGetUserDashboard = (() => {
                 </td>
             </tr>
             <script>
-                $('#qualitative_desc_${i+1}').val("${response?.description[i]}");
+                $('#qualitative_desc_${i+1}').val("${response?.description ? response?.description[i]: ''}");
             </script>
             `;            
         }
