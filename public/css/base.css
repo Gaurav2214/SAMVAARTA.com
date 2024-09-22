@@ -1179,6 +1179,19 @@ p {
   .edit-profile__inner--right {
     width: 70%; }
 
+@media screen and (min-width: 1000px) {
+  .skeleton-container {
+    width: 700px;
+    margin: 0 auto; } }
+
+.skeleton-container__list {
+  flex-direction: column !important; }
+  .skeleton-container__list li {
+    border: 1px solid #dbe1eb;
+    border-radius: 12px;
+    padding: 20px;
+    width: -webkit-fill-available; }
+
 .skeleton {
   padding: 15px;
   width: 300px;
@@ -1253,6 +1266,9 @@ p {
     width: auto;
     padding: 24px;
     box-shadow: none; }
+    @media screen and (min-width: 1000px) {
+      .skeleton.large {
+        width: 600px; } }
     .skeleton.large .skeleton__left {
       width: 60%; }
     .skeleton.large .skeleton__right {

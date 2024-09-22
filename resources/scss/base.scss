@@ -1000,7 +1000,21 @@
         }
     }
 }
-
+.skeleton-container{    
+    @include breakpoint($end-small){
+        width: rem(700);
+        margin: 0 auto;
+    }
+    &__list{
+        flex-direction: column!important;
+        li{
+            border: 1px solid #dbe1eb;
+            border-radius: 12px;
+            padding: rem(20);
+            width: -webkit-fill-available;
+        }
+    }
+}
 .skeleton {
     padding: 15px;
     width: 300px;
@@ -1134,6 +1148,9 @@
         width: auto;
         padding: rem(24);
         box-shadow: none;
+        @include breakpoint($end-small){
+            width: rem(600);
+        }
         .skeleton__left {
             width: 60%;
         }

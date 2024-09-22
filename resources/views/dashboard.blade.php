@@ -4,42 +4,41 @@
 <div class="dashboard__elements">
     <div class="container dashboard__elements--inner">
         <div class="show-user-details">
-            <h3 class="userName">Welcome </h3>            
-            <div class="show-user-details__inner">
-                <div class="show-user-details__inner--left detail-items">
-                    <ul>
-                        <li>Code: </li>
-                        <li>Date of Joining: </li>
-                        <li>Experience: </li>
-                        <li>Function: </li>
-                        <li>Role: </li>
-                        <li>Location: </li>
-                    </ul>
-                </div>
-
-                <div class="show-user-details__inner--mid detail-items">
-                    <ul>
-                        <li>Vision: </li>
-                        <li>Brief Description: </li>
-                        <li>No of Coachees: </li>
-                        <li>No of Coaches: </li>
-                    </ul>
-                </div>
-
-                <div class="show-user-details__inner--right detail-items">
-                    <ul>
-                        <li>
-                            <div class="skeleton no-shadow">
-                                <div class="skeleton__right">
-                                    <div class="square"></div>
-                                </div>
+            <div class="skeleton-container">
+                <ul class="skeleton-container__list">
+                    <li>
+                        <div class="skeleton large">
+                            <div class="skeleton__left">
+                                <div class="line w40"></div>
+                                <div class="line h18"></div>
+                                <div class="line h12"></div>
+                                <div class="line h12"></div>
+                                <div class="line-space"></div>
+                                <div class="line w40"></div>
                             </div>
-                        </li>
-                        <li>LinkedIn: </li>
-                        <li>Email Id: </li>
-                        <li>Mobile No: </li>
-                    </ul>
-                </div>
+                            <div class="skeleton__right">
+                                <div class="square circle"></div>
+                                <div class="square circle"></div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="skeleton large">
+                            <div class="skeleton__left">
+                                <div class="line w40"></div>
+                                <div class="line h18"></div>
+                                <div class="line h12"></div>
+                                <div class="line h12"></div>
+                                <div class="line-space"></div>
+                                <div class="line w40"></div>
+                            </div>
+                            <div class="skeleton__right">
+                                <div class="square circle"></div>
+                                <div class="square circle"></div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
         <div class="user-dashboard-info component-divider">
