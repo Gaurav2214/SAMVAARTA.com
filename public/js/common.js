@@ -959,10 +959,11 @@ Samvaarta.system = function () {
     } else {
       if (window.location.pathname === "/dashboard") {
         window.location.href = "/";
+      } else if (Samvaarta.common.getLocalStorage('showRegForm')) {
+        Samvaarta.system.createRegForm();
       } else {
         Samvaarta.system.createLoginForm();
       }
-      //Samvaarta.system.createLoginForm();
     }
   };
   var activateDeactivateUser = function activateDeactivateUser(id, status) {
@@ -1283,6 +1284,7 @@ Samvaarta.system = function () {
     verifyEmail: verifyEmail,
     forgetPassword: forgetPassword,
     createLoginForm: createLoginForm,
+    createRegForm: createRegForm,
     logout: logout,
     changePassword: changePassword,
     editProfile: editProfile,
@@ -1903,6 +1905,14 @@ var faqEventBind = function faqEventBind() {
     }
   });
 };
+var joinHere = function joinHere() {
+  $('.non-login').on('click', '.join-here', function () {
+    Samvaarta.common.setLocalStorage('showRegForm', true, expireTime);
+  });
+  $('.non-login').on('click', '.login-here', function () {
+    Samvaarta.common.deleteLocalStorage('showRegForm');
+  });
+};
 document.addEventListener("readystatechange", function (event) {
   // When HTML/DOM elements are ready:
   if (event.target.readyState === "interactive") {
@@ -1919,6 +1929,7 @@ document.addEventListener("readystatechange", function (event) {
     if ($('.trainer-details-page').length) {
       Samvaarta.system.adminDashboard('trainer');
     }
+    joinHere();
   }
   if (event.target.readyState === "complete") {
     unvielImg();

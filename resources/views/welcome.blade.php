@@ -1,6 +1,6 @@
 <section class="container">
     <div class="navigation">
-        <ul>
+        <ul class="desktop-view">
             <li><a href="/">Welcome</a></li>
             <li><a href="/">About Us</a></li>
             <li><a href="/">Upcoming Events</a></li>
@@ -15,7 +15,7 @@
             </li>
             <li><a href="/contact">Connect</a></li>
         </ul>
-        <div class="component-divider"></div>
+        <div class="component-divider desktop-view"></div>
     </div>
 </section>
 
