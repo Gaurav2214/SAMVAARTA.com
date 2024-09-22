@@ -33,7 +33,8 @@ Samvaarta.messageLog = {
   13: "Please provide valid input",
   14: "You have successfully submitted your desired outcomes.",
   15: "You have successfully submitted your desired objectives.",
-  16: "You have successfully submitted your documenting conversions."
+  16: "You have successfully submitted your documenting conversions.",
+  17: "You have successfully submitted your experience with Goalsnu."
 };
 var valError = true;
 var apiUrl = typeof appUrl != "undefined" ? appUrl : "http://127.0.0.1:8000/";
@@ -1001,7 +1002,7 @@ Samvaarta.system = function () {
     }
   };
   var userDashboard = function userDashboard() {
-    var userdashInfo = "\n        <ul>\n            <li class=\"active\" onclick=\"Samvaarta.userDashboard.codeOfEthics()\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/ethics.png\" width=\"25\" height=\"25\" />\n                        Code of ethics\n                    </h2>\n                </div>                \n            </li> \n            <li id=\"\" onclick=\"Samvaarta.userDashboard.docConversation();\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/conversation.png\" width=\"25\" height=\"25\" />\n                        Documenting Conversations\n                    </h2>\n                </div>\n            </li>           \n            <li onclick=\"Samvaarta.userDashboard.desObjective();\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/objective.png\" width=\"25\" height=\"25\" />\n                        Desired Objective\n                    </h2>\n                </div>                \n            </li>\n            <li onclick=\"Samvaarta.userDashboard.desOutcomes();\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/outcomes.png\" width=\"25\" height=\"25\" />\n                        Desired Outcomes\n                    </h2>\n                </div>                \n            </li>\n            \n            <li onclick=\"Samvaarta.userDashboard.closureInteraction();\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/closure.png\" width=\"25\" height=\"25\" />\n                        Closing of Interaction\n                    </h2>\n                </div>                \n            </li>            \n            \n        </ul>\n        <div class=\"user-activity-details\">\n            <div class=\"user-activity-details__inner\"></div>\n        </div>\n        ";
+    var userdashInfo = "\n        <ul>\n            <li class=\"active\" onclick=\"Samvaarta.userDashboard.codeOfEthics()\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/ethics.png\" width=\"25\" height=\"25\" />\n                        Code of ethics\n                    </h2>\n                </div>                \n            </li> \n            <li id=\"\" onclick=\"Samvaarta.userDashboard.docConversation();\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/conversation.png\" width=\"25\" height=\"25\" />\n                        Documenting Conversations\n                    </h2>\n                </div>\n            </li>           \n            <li onclick=\"Samvaarta.userDashboard.desObjective();\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/objective.png\" width=\"25\" height=\"25\" />\n                        Desired Objective\n                    </h2>\n                </div>                \n            </li>\n            <li onclick=\"Samvaarta.userDashboard.desOutcomes();\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/outcomes.png\" width=\"25\" height=\"25\" />\n                        Desired Outcomes\n                    </h2>\n                </div>                \n            </li>\n            \n            <li onclick=\"Samvaarta.setGetUserDashboard.getClosure();\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/closure.png\" width=\"25\" height=\"25\" />\n                        Closing of Interaction\n                    </h2>\n                </div>                \n            </li>            \n            \n        </ul>\n        <div class=\"user-activity-details\">\n            <div class=\"user-activity-details__inner\"></div>\n        </div>\n        ";
     $(".user-dashboard-info").html(userdashInfo);
   };
   var trainerDashboard = function trainerDashboard() {};
@@ -1169,14 +1170,14 @@ Samvaarta.system = function () {
       var _response$trainer, _response$trainer$, _response$trainer2, _response$trainer$2;
       userDashboard();
       coachInfo = "<li id=\"".concat(response !== null && response !== void 0 && (_response$trainer = response.trainer) !== null && _response$trainer !== void 0 && _response$trainer.length ? response === null || response === void 0 || (_response$trainer$ = response.trainer[0]) === null || _response$trainer$ === void 0 ? void 0 : _response$trainer$.id : '', "\">Coach Name: <span style=\"text-transform:capitalize;\">").concat(response !== null && response !== void 0 && (_response$trainer2 = response.trainer) !== null && _response$trainer2 !== void 0 && _response$trainer2.length ? (_response$trainer$2 = response.trainer[0]) === null || _response$trainer$2 === void 0 ? void 0 : _response$trainer$2.name : '', "</span></li>");
-      plannedSess = "<li>Planned Sessions: <span>".concat(response.plannedSession ? response.plannedSession : '', "</span></li>");
+      plannedSess = response !== null && response !== void 0 && response.plannedSession ? "<li>Planned Sessions: <span>".concat(response.plannedSession, "</span></li>") : '';
       concluded = "<li>Concluded: <span></span></li>";
       nextSession = "<li>Next Session Date: <span></span></li>";
-      userExp = "<li>Experience: <span>".concat(response.experience, "</span></li>");
-      userFun = "<li>Function: <span>".concat(response.user_function, "</span></li>");
+      userExp = response !== null && response !== void 0 && response.experience ? "<li>Experience: <span>".concat(response.experience, "</span></li>") : '';
+      userFun = response !== null && response !== void 0 && response.user_function ? "<li>Function: <span>".concat(response.user_function, "</span></li>") : '';
       downloadReport = "<li class=\"download-report\"><button class=\"btn\">Download Report</button></li>";
     }
-    var userInfo = "\n        <h3 class=\"userName\">Welcome ".concat(response.name.split(" ")[0], " </h3>\n        <div class=\"upcoming-session\">\n            <a href=\"/upcoming_session\" data-type=\"upcoming-session\">\n                <i class=\"fa fa-circle fa-fw\"></i>\n                <span class=\"desktop-view\">Upcoming Session</span>\n            </a>\n        </div>\n        <div class=\"show-user-details__inner\">\n            <div class=\"show-user-details__inner--left detail-items\">\n                <ul>\n                    <li>Code: <span>").concat(response.id, "</span></li>\n                    <li>Date of Joining: <span>").concat(Samvaarta.common.dateMonthYear(response.created_at), "</span></li>\n                    ").concat(coachInfo, "\n                    ").concat(userExp, "\n                    ").concat(userFun, "\n                    <li class=\"role\">Role: <span>").concat(response.user_type, "</span></li>\n                    <li>Location: <span>").concat(response.location ? response.location : (_Samvaarta$common$get2 = Samvaarta.common.getLocalStorage("location")) === null || _Samvaarta$common$get2 === void 0 ? void 0 : _Samvaarta$common$get2.data.city, "</span></li>\n                </ul>\n            </div>\n            <div class=\"show-user-details__inner--mid detail-items\">\n                <ul>\n                    <li>Vision: <span>").concat(response.vision, "</span></li>\n                    <li>Brief Description: <span>").concat(response.description, "</span></li>\n                    ").concat(plannedSess, "  ").concat(cochees, "  ").concat(trainer, " \n                    ").concat(concluded, " ").concat(nextSession, "  ").concat(completeSessCount, "                 \n                </ul>\n            </div>\n            <div class=\"show-user-details__inner--right detail-items\">\n                <ul>\n                    <li class=\"profile-img\"><img src=\"").concat(response.avatar ? response.avatar : '/images/default-face.jpg', "\" width=\"100\" height=\"100\" alt=\"profile\"></li>\n                    <li>LinkedIn: <span>").concat(response.linkedin_url, "</span></li>\n                    <li>Email Id: <span>").concat(response.email, "</span></li>\n                    <li>Mobile No: <span>").concat(response.phone, "</span></li>\n                    ").concat(downloadReport, "\n                </ul>\n            </div>\n        </div>\n        ");
+    var userInfo = "\n        <h3 class=\"userName\">Welcome ".concat(response.name.split(" ")[0], " </h3>\n        <div class=\"upcoming-session\">\n            <a href=\"/upcoming_session\" data-type=\"upcoming-session\">\n                <i class=\"fa fa-circle fa-fw\"></i>\n                <span class=\"desktop-view\">Upcoming Session</span>\n            </a>\n        </div>\n        <div class=\"show-user-details__inner\">\n            <div class=\"show-user-details__inner--left detail-items\">\n                <ul>\n                    <li>Code: <span>").concat(response.id, "</span></li>\n                    <li>Date of Joining: <span>").concat(Samvaarta.common.dateMonthYear(response.created_at), "</span></li>\n                    ").concat(coachInfo, "\n                    ").concat(userExp, "\n                    ").concat(userFun, "\n                    <li class=\"role\">Role: <span>").concat(response.user_type, "</span></li>\n                    <li>Location: <span>").concat(response.location ? response.location : (_Samvaarta$common$get2 = Samvaarta.common.getLocalStorage("location")) === null || _Samvaarta$common$get2 === void 0 ? void 0 : _Samvaarta$common$get2.data.city, "</span></li>\n                </ul>\n            </div>\n            <div class=\"show-user-details__inner--mid detail-items\">\n                <ul>\n                ").concat(response !== null && response !== void 0 && response.vision ? '<li>Vision: <span>' + (response === null || response === void 0 ? void 0 : response.vision) + '</span></li>' : '', "\n                ").concat(response !== null && response !== void 0 && response.description ? '<li>Brief Description: <span>' + response.description + '</span></li>' : '', "\n                ").concat(plannedSess, "  ").concat(cochees, "  ").concat(trainer, " \n                ").concat(concluded, " ").concat(nextSession, "  ").concat(completeSessCount, "                 \n                </ul>\n            </div>\n            <div class=\"show-user-details__inner--right detail-items\">\n                <ul>\n                    <li class=\"profile-img\"><img src=\"").concat(response !== null && response !== void 0 && response.avatar ? response.avatar : '/images/default-face.jpg', "\" width=\"100\" height=\"100\" alt=\"profile\"></li>\n                    <li>LinkedIn: <span>").concat(response === null || response === void 0 ? void 0 : response.linkedin_url, "</span></li>\n                    <li>Email Id: <span>").concat(response === null || response === void 0 ? void 0 : response.email, "</span></li>\n                    <li>Mobile No: <span>").concat(response === null || response === void 0 ? void 0 : response.phone, "</span></li>\n                    ").concat(downloadReport, "\n                </ul>\n            </div>\n        </div>\n        ");
     $(".show-user-details").html(userInfo);
   };
   var displayUserInfo = function displayUserInfo(data) {
@@ -1300,9 +1301,13 @@ Samvaarta.userDashboard = function () {
     var codeOfEthics = "\n        <div class=\"details codeofethics\">\n            <h3>Code of ethics</h3>\n            <p>CoE refers to the responsible behavior that will be displayed by partied involved during the interaction period</p>\n            <div class=\"details--items\">\n                <h3>Coachee\u2019s Code of Ethics</h3>\n                <ul class=\"list-view\">\n                    <li>I shall be sharing the details truthfully without any fear</li>\n                    <li>I commit to implement my commitments made in the interaction</li>\n                    <li>The responsibility of my growth life within me</li>\n                </ul>\n            </div>\n            <div class=\"details--items\">\n                <h3>The coach / Mentor has agreed to the following</h3>\n                <ul class=\"list-view\">\n                    <li>The coach will be 100% invested in you during the interaction</li>\n                    <li>The coach\u2019s role will be to ask you question to help you explore</li>\n                    <li>The coach maintain the confidentiality of the interaction.</li>\n                </ul>\n            </div>            \n        </div>\n        ";
     $('.user-activity-details__inner').html(codeOfEthics);
   };
-  var closureInteraction = function closureInteraction() {
-    var closure = "\n        <div class=\"details codeofethics\">\n            <h3>Closure</h3>\n            <p>Please document your experience on your journey </p>\n            <div class=\"details--items\">\n                <h3>User Experience</h3>\n                <ul class=\"list-view\">\n                    <li>\n                        <label for=\"user_enjoyed\">I enjoyed....</label>\n                        <textarea rows=\"2\" cols=\"50\" type=\"text\" id=\"user_enjoyed\" value=\"\" class=\"input_txt_box\"></textarea>\n                    </li>\n                    <li>\n                        <label for=\"user_wished\">I wish....</label>\n                        <textarea rows=\"2\" cols=\"50\" type=\"text\" id=\"user_wished\" value=\"\" class=\"input_txt_box\"></textarea>\n                    </li>\n                    <li>\n                        <label for=\"user_gained\">I gained by way of....</label>\n                        <textarea rows=\"2\" cols=\"50\" type=\"text\" id=\"user_gained\" value=\"\" class=\"input_txt_box\"></textarea>\n                    </li>\n                </ul>\n            </div>\n            <div class=\"details--items\">\n                <h3>Manager Experience</h3>\n                <ul class=\"list-view\">\n                    <li>\n                        <label for=\"manager_enjoyed\">I enjoyed....</label>\n                        <textarea rows=\"2\" cols=\"50\" type=\"text\" id=\"manager_enjoyed\" value=\"\" class=\"input_txt_box\"></textarea>\n                    </li>\n                    <li>\n                        <label for=\"manager_wished\">I wish....</label>\n                        <textarea rows=\"2\" cols=\"50\" type=\"text\" id=\"manager_wished\" value=\"\" class=\"input_txt_box\"></textarea>\n                    </li>\n                </ul>\n            </div>   \n            <button class=\"btn\" onclick=\"Samvaarta.setGetUserDashboard.closure()\">Submit</button>         \n        </div>\n        ";
+  var closureInteraction = function closureInteraction(response) {
+    var _response$, _response$2, _response$3, _response$4, _response$5, _response$6;
+    var closure = "\n        <div class=\"details codeofethics\">\n            <h3>Closure</h3>\n            <p>Please document your experience on your journey </p>\n            <div class=\"details--items user-closure-input\">\n                <h3>User Experience</h3>\n                <ul class=\"list-view\">\n                    <li>\n                        <label for=\"outcomes_param_1\">I enjoyed....</label>\n                        <textarea ".concat((_response$ = response[0]) !== null && _response$ !== void 0 && _response$.experience_enjoyed ? 'readonly' : '', " rows=\"2\" cols=\"50\" type=\"text\" id=\"outcomes_param_1\" value=\"\" class=\"input_txt_box\"></textarea>\n                        <p id=\"outcomes_param_1_err\" class=\"error\"></p>\n                    </li>\n                    <li>\n                        <label for=\"outcomes_param_2\">I wish....</label>\n                        <textarea ").concat((_response$2 = response[0]) !== null && _response$2 !== void 0 && _response$2.experience_wish ? 'readonly' : '', " rows=\"2\" cols=\"50\" type=\"text\" id=\"outcomes_param_2\" value=\"\" class=\"input_txt_box\"></textarea>\n                        <p id=\"outcomes_param_2_err\" class=\"error\"></p>\n                    </li>\n                    <li>\n                        <label for=\"outcomes_param_3\">I gained by way of....</label>\n                        <textarea ").concat((_response$3 = response[0]) !== null && _response$3 !== void 0 && _response$3.experience_gained ? 'readonly' : '', " rows=\"2\" cols=\"50\" type=\"text\" id=\"outcomes_param_3\" value=\"\" class=\"input_txt_box\"></textarea>\n                        <p id=\"outcomes_param_3_err\" class=\"error\"></p>\n                    </li>\n                </ul>                \n            </div>\n            <div class=\"details--items manager-closure-input\">\n                <h3>Manager Experience</h3>\n                <ul class=\"list-view\">\n                    <li>\n                        <label for=\"manager_enjoyed\">I enjoyed....</label>\n                        <textarea readonly rows=\"2\" cols=\"50\" type=\"text\" id=\"manager_enjoyed\" value=\"\" class=\"input_txt_box\"></textarea>\n                    </li>\n                    <li>\n                        <label for=\"manager_wished\">I wish....</label>\n                        <textarea readonly rows=\"2\" cols=\"50\" type=\"text\" id=\"manager_wished\" value=\"\" class=\"input_txt_box\"></textarea>\n                    </li>\n                </ul>\n            </div>   \n            <div class=\"form-elm-section\">\n                <button class=\"btn\" onclick=\"Samvaarta.setGetUserDashboard.setClosure()\">Submit</button>         \n            </div>\n        </div>\n        ");
     $('.user-activity-details__inner').html(closure);
+    $('#outcomes_param_1').val((_response$4 = response[0]) === null || _response$4 === void 0 ? void 0 : _response$4.experience_enjoyed);
+    $('#outcomes_param_2').val((_response$5 = response[0]) === null || _response$5 === void 0 ? void 0 : _response$5.experience_wish);
+    $('#outcomes_param_3').val((_response$6 = response[0]) === null || _response$6 === void 0 ? void 0 : _response$6.experience_gained);
   };
   var trainerOptionList = function trainerOptionList() {
     var trainerdata = Samvaarta.common.getLocalStorage('trainer_data');
@@ -1830,7 +1835,75 @@ Samvaarta.setGetUserDashboard = function () {
     }
     $('.outcomes__data tbody').html(desieredData);
   };
-  var closure = function closure() {};
+  var setClosure = function setClosure() {
+    var qparam1 = document.getElementById("outcomes_param_1").value;
+    var qparam2 = document.getElementById("outcomes_param_2").value;
+    var qparam3 = document.getElementById("outcomes_param_3").value;
+    var errorElements = document.querySelectorAll(".error");
+    errorElements.forEach(function (el) {
+      el.innerHTML = "";
+    });
+    var inputElements = document.querySelectorAll(".user-closure-input .input_txt_box");
+    for (var i = 0; i < inputElements.length; i++) {
+      if (inputElements[i].type !== "button" && inputElements[i].type !== "checkbox") {
+        Samvaarta.common.removeRequiredFields(inputElements[i]);
+        if (valError) {
+          return false;
+        }
+      }
+    }
+    if (valError) {
+      return false;
+    } else {
+      var paramObject = {
+        url: apiUrl + "api/profile/closing-of-intraction",
+        type: "POST",
+        headers: {
+          Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
+          Accept: "application/json"
+        },
+        data: {
+          experience_enjoyed: qparam1,
+          experience_wish: qparam2,
+          experience_gained: qparam3
+        }
+      };
+      var ajaxSuccessCall = function ajaxSuccessCall(response) {
+        getClosure();
+        Samvaarta.model.showSuccessMessage("<h2>Thank You</h2><p class=\"marg-t20\">".concat(Samvaarta.messageLog[17], "</p>"), "y");
+        $('.user-activity-details__inner .btn').addClass('disabled');
+      };
+      var ajaxErrorCall = function ajaxErrorCall(error) {
+        if (error.response) {
+          $("#interaction_name_err").html(error.response.data.message).show();
+        }
+      };
+      Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
+    }
+  };
+  var getClosure = function getClosure() {
+    var paramObject = {
+      url: apiUrl + "api/profile/closing-of-intraction",
+      type: "GET",
+      headers: {
+        Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
+        Accept: "application/json"
+      }
+    };
+    var ajaxSuccessCall = function ajaxSuccessCall(response) {
+      var closureData = response.data.data;
+      Samvaarta.userDashboard.closureInteraction(closureData);
+      if (closureData.length) {
+        $('.user-activity-details__inner .btn').addClass('disabled');
+      }
+    };
+    var ajaxErrorCall = function ajaxErrorCall(error) {
+      if (error.response) {
+        $("#interaction_name_err").html(error.response.data.message).show();
+      }
+    };
+    Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
+  };
   return {
     setDocConversation: setDocConversation,
     getDocConversation: getDocConversation,
@@ -1841,7 +1914,8 @@ Samvaarta.setGetUserDashboard = function () {
     getDesiredObjective: getDesiredObjective,
     setDesiredOutcomes: setDesiredOutcomes,
     getDesiredOutcomes: getDesiredOutcomes,
-    closure: closure
+    setClosure: setClosure,
+    getClosure: getClosure
   };
 }();
 var dashboardTab = function dashboardTab() {

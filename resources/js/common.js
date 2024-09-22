@@ -15,6 +15,7 @@ Samvaarta.messageLog = {
     14: "You have successfully submitted your desired outcomes.",
     15: "You have successfully submitted your desired objectives.",
     16: "You have successfully submitted your documenting conversions.",
+    17: "You have successfully submitted your experience with Goalsnu.",
 };
 
 var valError = true;
@@ -1510,7 +1511,7 @@ Samvaarta.system = (() => {
                 </div>                
             </li>
             
-            <li onclick="Samvaarta.userDashboard.closureInteraction();">
+            <li onclick="Samvaarta.setGetUserDashboard.getClosure();">
                 <div class="dashboard__elements--item">
                     <h2>
                         <img alt="" src="/images/closure.png" width="25" height="25" />
@@ -1685,11 +1686,11 @@ Samvaarta.system = (() => {
         } else {
             userDashboard();
             coachInfo = `<li id="${response?.trainer?.length ? response?.trainer[0]?.id : ''}">Coach Name: <span style="text-transform:capitalize;">${response?.trainer?.length ? response.trainer[0]?.name : ''}</span></li>`;
-            plannedSess = `<li>Planned Sessions: <span>${response.plannedSession ? response.plannedSession : ''}</span></li>`;
+            plannedSess = response?.plannedSession ? `<li>Planned Sessions: <span>${response.plannedSession}</span></li>`: '';
             concluded = `<li>Concluded: <span></span></li>`;
             nextSession = `<li>Next Session Date: <span></span></li>`;
-            userExp = `<li>Experience: <span>${response.experience}</span></li>`;
-            userFun = `<li>Function: <span>${response.user_function}</span></li>`;
+            userExp = response?.experience ? `<li>Experience: <span>${response.experience}</span></li>` : '';
+            userFun = response?.user_function ? `<li>Function: <span>${response.user_function}</span></li>` : '';
             downloadReport = `<li class="download-report"><button class="btn">Download Report</button></li>`;
 
         }
@@ -1723,20 +1724,20 @@ Samvaarta.system = (() => {
             </div>
             <div class="show-user-details__inner--mid detail-items">
                 <ul>
-                    <li>Vision: <span>${response.vision}</span></li>
-                    <li>Brief Description: <span>${response.description}</span></li>
-                    ${plannedSess}  ${cochees}  ${trainer} 
-                    ${concluded} ${nextSession}  ${completeSessCount}                 
+                ${response?.vision ? '<li>Vision: <span>'+response?.vision+'</span></li>' : ''}
+                ${response?.description ? '<li>Brief Description: <span>'+response.description+'</span></li>' : ''}
+                ${plannedSess}  ${cochees}  ${trainer} 
+                ${concluded} ${nextSession}  ${completeSessCount}                 
                 </ul>
             </div>
             <div class="show-user-details__inner--right detail-items">
                 <ul>
                     <li class="profile-img"><img src="${
-                        response.avatar ? response.avatar : '/images/default-face.jpg'
+                        response?.avatar ? response.avatar : '/images/default-face.jpg'
                     }" width="100" height="100" alt="profile"></li>
-                    <li>LinkedIn: <span>${response.linkedin_url}</span></li>
-                    <li>Email Id: <span>${response.email}</span></li>
-                    <li>Mobile No: <span>${response.phone}</span></li>
+                    <li>LinkedIn: <span>${response?.linkedin_url}</span></li>
+                    <li>Email Id: <span>${response?.email}</span></li>
+                    <li>Mobile No: <span>${response?.phone}</span></li>
                     ${downloadReport}
                 </ul>
             </div>
@@ -1948,45 +1949,53 @@ Samvaarta.userDashboard = (() => {
         `;
         $('.user-activity-details__inner').html(codeOfEthics);
     }
-    const closureInteraction = () => {
+    const closureInteraction = (response) => {
         let closure = `
         <div class="details codeofethics">
             <h3>Closure</h3>
             <p>Please document your experience on your journey </p>
-            <div class="details--items">
+            <div class="details--items user-closure-input">
                 <h3>User Experience</h3>
                 <ul class="list-view">
                     <li>
-                        <label for="user_enjoyed">I enjoyed....</label>
-                        <textarea rows="2" cols="50" type="text" id="user_enjoyed" value="" class="input_txt_box"></textarea>
+                        <label for="outcomes_param_1">I enjoyed....</label>
+                        <textarea ${response[0]?.experience_enjoyed ? 'readonly' : ''} rows="2" cols="50" type="text" id="outcomes_param_1" value="" class="input_txt_box"></textarea>
+                        <p id="outcomes_param_1_err" class="error"></p>
                     </li>
                     <li>
-                        <label for="user_wished">I wish....</label>
-                        <textarea rows="2" cols="50" type="text" id="user_wished" value="" class="input_txt_box"></textarea>
+                        <label for="outcomes_param_2">I wish....</label>
+                        <textarea ${response[0]?.experience_wish ? 'readonly' : ''} rows="2" cols="50" type="text" id="outcomes_param_2" value="" class="input_txt_box"></textarea>
+                        <p id="outcomes_param_2_err" class="error"></p>
                     </li>
                     <li>
-                        <label for="user_gained">I gained by way of....</label>
-                        <textarea rows="2" cols="50" type="text" id="user_gained" value="" class="input_txt_box"></textarea>
+                        <label for="outcomes_param_3">I gained by way of....</label>
+                        <textarea ${response[0]?.experience_gained ? 'readonly' : ''} rows="2" cols="50" type="text" id="outcomes_param_3" value="" class="input_txt_box"></textarea>
+                        <p id="outcomes_param_3_err" class="error"></p>
                     </li>
-                </ul>
+                </ul>                
             </div>
-            <div class="details--items">
+            <div class="details--items manager-closure-input">
                 <h3>Manager Experience</h3>
                 <ul class="list-view">
                     <li>
                         <label for="manager_enjoyed">I enjoyed....</label>
-                        <textarea rows="2" cols="50" type="text" id="manager_enjoyed" value="" class="input_txt_box"></textarea>
+                        <textarea readonly rows="2" cols="50" type="text" id="manager_enjoyed" value="" class="input_txt_box"></textarea>
                     </li>
                     <li>
                         <label for="manager_wished">I wish....</label>
-                        <textarea rows="2" cols="50" type="text" id="manager_wished" value="" class="input_txt_box"></textarea>
+                        <textarea readonly rows="2" cols="50" type="text" id="manager_wished" value="" class="input_txt_box"></textarea>
                     </li>
                 </ul>
             </div>   
-            <button class="btn" onclick="Samvaarta.setGetUserDashboard.closure()">Submit</button>         
+            <div class="form-elm-section">
+                <button class="btn" onclick="Samvaarta.setGetUserDashboard.setClosure()">Submit</button>         
+            </div>
         </div>
         `;
         $('.user-activity-details__inner').html(closure);
+        $('#outcomes_param_1').val(response[0]?.experience_enjoyed);
+        $('#outcomes_param_2').val(response[0]?.experience_wish);
+        $('#outcomes_param_3').val(response[0]?.experience_gained);
     }    
     const trainerOptionList = () => {
         var trainerdata = Samvaarta.common.getLocalStorage('trainer_data');
@@ -2882,8 +2891,7 @@ Samvaarta.setGetUserDashboard = (() => {
             ajaxSuccessCall,
             ajaxErrorCall
         );        
-    }
-    
+    }    
     const quantitativeData = (response) => {
         let prevMonthDate = '';
         let prevAllData = '';
@@ -3121,8 +3129,102 @@ Samvaarta.setGetUserDashboard = (() => {
         }        
         $('.outcomes__data tbody').html(desieredData);
     }
-    const closure = () => {
+    const setClosure = () => {        
+        var qparam1 = document.getElementById("outcomes_param_1").value;
+        var qparam2 = document.getElementById("outcomes_param_2").value;
+        var qparam3 = document.getElementById("outcomes_param_3").value;
 
+        var errorElements = document.querySelectorAll(".error");        
+        errorElements.forEach(function (el) {
+            el.innerHTML = "";
+        });
+        var inputElements = document.querySelectorAll(
+            ".user-closure-input .input_txt_box"
+        );
+        for (let i = 0; i < inputElements.length; i++) {
+            if (
+                inputElements[i].type !== "button" &&
+                inputElements[i].type !== "checkbox"
+            ) {
+                Samvaarta.common.removeRequiredFields(inputElements[i]);
+                if (valError) {
+                    return false;
+                }
+            }
+        }
+
+        if (valError) {
+            return false;
+        } else {
+            let paramObject = {
+                url: apiUrl + "api/profile/closing-of-intraction",
+                type: "POST",
+                headers: {
+                    Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+                    Accept: "application/json",
+                },
+                data: {
+                    experience_enjoyed:qparam1,
+                    experience_wish: qparam2,
+                    experience_gained: qparam3,
+                },
+            };
+
+            const ajaxSuccessCall = (response) => {
+                getClosure();
+                Samvaarta.model.showSuccessMessage(
+                    `<h2>Thank You</h2><p class="marg-t20">${Samvaarta.messageLog[17]}</p>`,
+                    "y"
+                );
+                $('.user-activity-details__inner .btn').addClass('disabled');
+            };
+
+            const ajaxErrorCall = (error) => {
+                if (error.response) {
+                    $("#interaction_name_err")
+                        .html(error.response.data.message)
+                        .show();
+                }
+            };
+
+            Samvaarta.common.hitAjaxApi(
+                paramObject,
+                ajaxSuccessCall,
+                ajaxErrorCall
+            );
+        }
+    }
+    const getClosure = () => {
+        let paramObject = {
+            url: apiUrl + "api/profile/closing-of-intraction",
+            type: "GET",
+            headers: {
+                Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+                Accept: "application/json",
+            },            
+        };
+
+        const ajaxSuccessCall = (response) => {
+            let closureData = response.data.data;
+            Samvaarta.userDashboard.closureInteraction(closureData);   
+            if(closureData.length){         
+                $('.user-activity-details__inner .btn').addClass('disabled');
+            }
+        };
+
+        const ajaxErrorCall = (error) => {
+            if (error.response) {
+                $("#interaction_name_err")
+                    .html(error.response.data.message)
+                    .show();
+            }
+        };
+
+        Samvaarta.common.hitAjaxApi(
+            paramObject,
+            ajaxSuccessCall,
+            ajaxErrorCall
+        );
     }
     return{
         setDocConversation: setDocConversation, 
@@ -3134,7 +3236,8 @@ Samvaarta.setGetUserDashboard = (() => {
         getDesiredObjective: getDesiredObjective,
         setDesiredOutcomes: setDesiredOutcomes,
         getDesiredOutcomes: getDesiredOutcomes,
-        closure: closure,
+        setClosure: setClosure,
+        getClosure: getClosure,
     }
 })();
 
