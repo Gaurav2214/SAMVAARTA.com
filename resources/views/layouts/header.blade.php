@@ -10,8 +10,8 @@
                 </div>
                 <div class="dashboard__header--loggedin-user">
                     <div class="non-login">
-                        <a href="/login">Sign in</a>
-                        <a href="/login">Join Us</a>
+                        <a class="login-here" href="/login">Sign in</a>
+                        <a class="join-here" href="/login">Join Us</a>
                     </div>
                 </div>
             </div>

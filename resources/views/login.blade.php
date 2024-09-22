@@ -1,10 +1,4 @@
-<!-- <header class="login-header">
-    <div class="container">
-        <a href="/">
-            <img width="103" height="60" src="/images/goalnu-logo.png" alt="" />
-        </a>
-    </div>
-</header> -->
+
 @extends('app')
 @section('content')
 

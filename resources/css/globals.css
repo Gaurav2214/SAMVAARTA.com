@@ -122,3 +122,15 @@
     background: url(/images/upload.png) 0 0 no-repeat; }
   .sprite-icon.ethics {
     background: url(/images/ethics.png) 0 0 no-repeat; }
+
+.sprite-icon-img {
+  background-image: url(/images/sprite-icons.svg?mod=26);
+  background-repeat: no-repeat;
+  display: inline-block;
+  height: 14px;
+  width: 14px; }
+  .sprite-icon-img.hamberger-icon {
+    background-position: -562px -414px;
+    width: 26px;
+    height: 26px;
+    outline: 0; }

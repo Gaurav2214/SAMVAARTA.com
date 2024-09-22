@@ -1427,10 +1427,11 @@ Samvaarta.system = (() => {
         } else {
             if (window.location.pathname === "/dashboard") {
                 window.location.href = "/";
+            } else if(Samvaarta.common.getLocalStorage('showRegForm')){
+                Samvaarta.system.createRegForm();
             } else {
                 Samvaarta.system.createLoginForm();
             }
-            //Samvaarta.system.createLoginForm();
         }
     };
 
@@ -1908,6 +1909,7 @@ Samvaarta.system = (() => {
         verifyEmail: verifyEmail,
         forgetPassword: forgetPassword,
         createLoginForm: createLoginForm,
+        createRegForm: createRegForm,
         logout: logout,
         changePassword: changePassword,
         editProfile: editProfile,
@@ -3202,7 +3204,16 @@ const faqEventBind = () => {
         }
       }
     });
-  }
+}
+
+const joinHere = () => {
+    $('.non-login').on('click', '.join-here', () => {
+        Samvaarta.common.setLocalStorage('showRegForm', true, expireTime);
+    });
+    $('.non-login').on('click', '.login-here', () => {
+        Samvaarta.common.deleteLocalStorage('showRegForm');
+    });
+}
 
 document.addEventListener("readystatechange", (event) => {
     // When HTML/DOM elements are ready:
@@ -3220,6 +3231,7 @@ document.addEventListener("readystatechange", (event) => {
         if($('.trainer-details-page').length){
             Samvaarta.system.adminDashboard('trainer');
         }
+        joinHere();
     }
 
     if (event.target.readyState === "complete") {
