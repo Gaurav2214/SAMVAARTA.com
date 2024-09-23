@@ -1474,6 +1474,8 @@ p {
   max-width: 820px;
   text-align: center;
   margin: 0 auto; }
+  .think-container__content p {
+    margin-bottom: 12px; }
 
 .think-container__img-container {
   -ms-display: flex;

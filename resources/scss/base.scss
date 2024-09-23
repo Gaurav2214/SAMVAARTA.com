@@ -1334,7 +1334,10 @@
     &__content{
         max-width: rem(820);
         text-align: center;
-        margin: 0 auto;        
+        margin: 0 auto;   
+        p{
+            margin-bottom: rem(12);
+        }     
     }
     &__img-container{
         @include set-flex-box($jc:center);
