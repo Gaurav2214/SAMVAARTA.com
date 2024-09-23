@@ -29,9 +29,9 @@
         <a href="/" class="btn">Learn More</a>
     </div>
     <div class="think-container__img-container">
-        <img width="100" height="100" src="/images/user-img/anurag.webp" alt="" />
-        <img width="100" height="100" src="/images/user-img/deepak.webp" alt="" />
-        <img width="100" height="100" src="/images/user-img/anurag.webp" alt="" />
+        <img width="200" height="200" src="/images/user-img/grow-3.webp" alt="" />
+        <img width="200" height="200" src="/images/user-img/grow-2.webp" alt="" />
+        <img width="200" height="200" src="/images/user-img/grow-1.webp" alt="" />
     </div>
     <div class="component-divider">
         <div class="rev-main-heading main-sol-head">
@@ -64,11 +64,7 @@
         <div class="think-container__member-container">
             <h3>Our new coaches</h3>
             <div class="think-container__img-container">
-                <img width="70" height="70" src="/images/user-img/anurag.webp" alt="" />
-                <img width="70" height="70" src="/images/user-img/anurag.webp" alt="" />
-                <img width="70" height="70" src="/images/user-img/anurag.webp" alt="" />
-                <img width="70" height="70" src="/images/user-img/anurag.webp" alt="" />
-                <img width="70" height="70" src="/images/user-img/anurag.webp" alt="" />
+                <img width="150" height="150" src="/images/user-img/mentor-1.webp" alt="" />
             </div>
             <a href="/" class="btn">join as a mentor </a>
         </div>

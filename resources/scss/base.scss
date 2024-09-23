@@ -1345,12 +1345,16 @@
         gap: rem(30);
         margin: rem(24) auto rem(10) auto;
         img{
-            height: rem(100);
-            width: rem(100);
+            height: rem(200);
+            width: rem(200);
             border-radius: rem(10);
         }
         @include breakpointmax($end-small){
             flex-wrap: wrap;
+            img{
+                height: rem(120);
+                width: rem(120);
+            }
         }
     }
     &__member-container{
@@ -1363,8 +1367,8 @@
         }
         .think-container__img-container{
             img{
-                height: rem(70);
-                width: rem(70);
+                height: rem(150);
+                width: rem(150);
             }
         }
     }

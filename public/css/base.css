@@ -1453,12 +1453,15 @@ p {
   gap: 30px;
   margin: 24px auto 10px auto; }
   .think-container__img-container img {
-    height: 100px;
-    width: 100px;
+    height: 200px;
+    width: 200px;
     border-radius: 10px; }
   @media screen and (max-width: 1000px) {
     .think-container__img-container {
-      flex-wrap: wrap; } }
+      flex-wrap: wrap; }
+      .think-container__img-container img {
+        height: 120px;
+        width: 120px; } }
 
 .think-container__member-container {
   text-align: center; }
@@ -1472,8 +1475,8 @@ p {
     margin-top: 16px;
     text-transform: capitalize; }
   .think-container__member-container .think-container__img-container img {
-    height: 70px;
-    width: 70px; }
+    height: 150px;
+    width: 150px; }
 
 .think-container .btn {
   margin-top: 20px;
