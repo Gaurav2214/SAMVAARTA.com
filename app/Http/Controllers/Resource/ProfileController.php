@@ -502,7 +502,24 @@ class ProfileController extends Controller
 			$next_date = Carbon::parse($request->next_date);
 
 			$doc_file ="";
+
+
+			$TrainingSession = TrainingSession::where('session_id',$request->session_id)->first();
 			
+
+			if(empty($TrainingSession)){
+				return response()->json(['message' =>"Session Id is not valid","success"=>"false"]);
+			}else{
+				if($TrainingSession->trainer_id==0){
+
+				}else{
+					$DocumentConversations= DocumentConversations::where('user_id', $request->user()->id)->where('session_id',$request->session_id)->orderBy('id','desc')->first();
+
+					if(!empty($DocumentConversations)){
+						return response()->json(['message' =>"Document Conversation Already Added for this session","success"=>"false"]);
+					}
+				}
+			}
 
 			try{
 				if($request->has('doc_file') && $request->file('doc_file')) {
