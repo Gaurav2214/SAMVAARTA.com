@@ -489,7 +489,7 @@ class ProfileController extends Controller
 			'next_date'=>'required|date_format:Y-m-d|after:today',
 			'session_id'=>'required',
 			"last_week_comments"=>'required|max:500',
-			"document_conversation_date"=>'required|date_format:Y-m-d|after:today',
+			//"document_conversation_date"=>'required|date_format:Y-m-d|after:today',
 			'doc_file'=>'file'
 		]);    
 
@@ -521,7 +521,7 @@ class ProfileController extends Controller
 					'status'=>'1',
 					'session_id'=>$request->session_id,
 					"last_week_comments"=>$request->last_week_comments,
-					"document_conversation_date"=>$request->document_conversation_date,
+					"document_conversation_date"=>date("Y-m-d"),
 					'doc_file' =>$doc_file 
 				]);
 
@@ -550,7 +550,7 @@ class ProfileController extends Controller
 			'session_id'=>'required',
 			'document_conversation_id'=>"required",
 			"last_week_comments"=>'required|max:500',
-			'document_conversation_date'=>'required|date_format:Y-m-d|after:today',
+			//'document_conversation_date'=>'required|date_format:Y-m-d|after:today',
 			'doc_file'=>'file'
 		]);    
 
@@ -572,7 +572,7 @@ class ProfileController extends Controller
 			$DocumentConversations->next_date=$request->next_date;
 			$DocumentConversations->session_id=$request->session_id;
 			$DocumentConversations->last_week_comments=$request->last_week_comments;
-			$DocumentConversations->document_conversation_date=$request->document_conversation_date;
+			$DocumentConversations->document_conversation_date=date("Y-m-d");
 
 			try{
 				if($request->has('doc_file') && $request->file('doc_file')) {
