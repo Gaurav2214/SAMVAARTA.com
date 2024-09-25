@@ -1528,8 +1528,35 @@ Samvaarta.system = (() => {
         $(".user-dashboard-info").html(userdashInfo);
     };
 
-    const trainerDashboard = () => {
-
+    const trainerDashboard = (response, trainerName) => {
+        let userList = '';
+        response.map((item, index) => {
+            userList += `<tr>
+                            <td>${index+1}</td>
+                            <td>${item.id}</td>
+                            <td>${item.name}</td>
+                            <td>${item.email}</td>
+                            <td>${item.status ? 'Approved' : 'Pending'}</td>
+                            <td style="text-transform:capitalize;">${trainerName}</td>
+                        </tr>` 
+        })
+        let trainer = `           
+            <table>
+                <tbody>
+                    <tr class="user-dashboard-info__head-list">
+                        <td>SNO.</td>
+                        <td>User Id</td>
+                        <td>Name</td>
+                        <td>Email</td>                
+                        <td>Status</td>
+                        <td>Assigned Trainer</td>
+                    </tr>
+                    ${userList}
+                </tbody>
+            </table>
+            
+        `;
+        $('.user-data-list').html(trainer);
     };
 
     const displayTypeWise = (response, type) => {
@@ -1680,9 +1707,10 @@ Samvaarta.system = (() => {
             trainer = `<li>No of Coaches: <span></span></li>`;            
             adminDashboard('users');
         } else if (response.user_type === "trainer") {
-            cochees = `<li>No of Coachees: <span></span></li>`;
+            cochees = `<li>No of Coachees: <span>${response?.users?.length}</span></li>`;
             completeSessCount = `<li>No of sessions completed: <span></span></li>`;
-            trainerDashboard();
+            userExp = response?.experience ? `<li>Experience: <span>${response.experience}</span></li>` : '';
+            trainerDashboard(response?.users, response.name);
         } else {
             userDashboard();
             coachInfo = `<li id="${response?.trainer?.length ? response?.trainer[0]?.id : ''}">Coach Name: <span style="text-transform:capitalize;">${response?.trainer?.length ? response.trainer[0]?.name : ''}</span></li>`;
@@ -3328,11 +3356,16 @@ document.addEventListener("readystatechange", (event) => {
             Samvaarta.system.editProfile();
         }
         Samvaarta.common.getLocation();
-        if($('.user-details-page').length){            
-            Samvaarta.system.adminDashboard('users');
-        }
-        if($('.trainer-details-page').length){
-            Samvaarta.system.adminDashboard('trainer');
+        let getOuathData = Samvaarta.common.getLocalStorage("oauthUserData");
+        if(getOuathData?.data?.data?.user_type === 'admin'){
+            if($('.user-details-page').length){            
+                Samvaarta.system.adminDashboard('users');
+            }
+            if($('.trainer-details-page').length){
+                Samvaarta.system.adminDashboard('trainer');
+            }
+        } else if(getOuathData?.data?.data?.user_type === 'trainer'){
+
         }
         joinHere();
     }
