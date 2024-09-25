@@ -899,32 +899,34 @@ class ProfileController extends Controller
 		$user =$request->user();
 		$user_id =  $request->user()->id;
 
-		$path = storage_path('user/reports/');
+		if($user){
+			if($user->user_type=="user"){
+				$user = User::with('trainer')->find($user_id)->toArray();             
+			}
+		}
 
-    $fileName = "report-".$user_id."-".date('YmdHis').'.csv';
+		$fileName = "user/reports/report-".$user_id."-".date('YmdHis').'.csv';
+    	$columns = array('name', 'email','phone','vision','description','created_at','Trainer');
+		$csv =implode(",",$columns);
 
-    $file = fopen($path.$fileName, 'w');
+		
+		$data=[];
+		$data[]=$user['name'];
+		$data[]=$user['email'];
+		$data[]=$user['phone'];
+		$data[]=$user['vision'];
+		$data[]=$user['description'];
+		$data[]=$user['created_at'];
+		$data[]=isset($user['trainer'][0]['name'])?$user['trainer'][0]['name']:"";
 
-    $columns = array('First Name', 'Email Address');
+	
+	   $csv .=PHP_EOL;
+	   $csv .=implode(",",$data);
 
-    fputcsv($file, $columns);
+	   Storage::disk('public')->put($fileName, $csv);
 
-        $data = [
-            'First Name' => $user->first_name,  
-            'Email Address' => $user->email,    
-        ];
-
-
-    fputcsv($file, $data);
-
-    fclose($file);
-
-    $symlink = $path;
-
-    $fileModel = new UserDocument;
-    $fileModel->name = 'csv';
-    $fileModel->file_path = $symlink.$fileName;
-    $fileModel->save();
+		return response()->json(['data' =>asset('storage/'.$fileName),"success"=>"true","message"=>"Successfully generated"]);
+   
 
 	}
 	
