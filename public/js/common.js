@@ -1005,7 +1005,14 @@ Samvaarta.system = function () {
     var userdashInfo = "\n        <ul>\n            <li class=\"active\" onclick=\"Samvaarta.userDashboard.codeOfEthics()\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/ethics.png\" width=\"25\" height=\"25\" />\n                        Code of ethics\n                    </h2>\n                </div>                \n            </li> \n            <li id=\"\" onclick=\"Samvaarta.userDashboard.docConversation();\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/conversation.png\" width=\"25\" height=\"25\" />\n                        Documenting Conversations\n                    </h2>\n                </div>\n            </li>           \n            <li onclick=\"Samvaarta.userDashboard.desObjective();\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/objective.png\" width=\"25\" height=\"25\" />\n                        Desired Objective\n                    </h2>\n                </div>                \n            </li>\n            <li onclick=\"Samvaarta.userDashboard.desOutcomes();\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/outcomes.png\" width=\"25\" height=\"25\" />\n                        Desired Outcomes\n                    </h2>\n                </div>                \n            </li>\n            \n            <li onclick=\"Samvaarta.setGetUserDashboard.getClosure();\">\n                <div class=\"dashboard__elements--item\">\n                    <h2>\n                        <img alt=\"\" src=\"/images/closure.png\" width=\"25\" height=\"25\" />\n                        Closing of Interaction\n                    </h2>\n                </div>                \n            </li>            \n            \n        </ul>\n        <div class=\"user-activity-details\">\n            <div class=\"user-activity-details__inner\"></div>\n        </div>\n        ";
     $(".user-dashboard-info").html(userdashInfo);
   };
-  var trainerDashboard = function trainerDashboard() {};
+  var trainerDashboard = function trainerDashboard(response, trainerName) {
+    var userList = '';
+    response.map(function (item, index) {
+      userList += "<tr>\n                            <td>".concat(index + 1, "</td>\n                            <td>").concat(item.id, "</td>\n                            <td>").concat(item.name, "</td>\n                            <td>").concat(item.email, "</td>\n                            <td>").concat(item.status ? 'Approved' : 'Pending', "</td>\n                            <td style=\"text-transform:capitalize;\">").concat(trainerName, "</td>\n                        </tr>");
+    });
+    var trainer = "           \n            <table>\n                <tbody>\n                    <tr class=\"user-dashboard-info__head-list\">\n                        <td>SNO.</td>\n                        <td>User Id</td>\n                        <td>Name</td>\n                        <td>Email</td>                \n                        <td>Status</td>\n                        <td>Assigned Trainer</td>\n                    </tr>\n                    ".concat(userList, "\n                </tbody>\n            </table>\n            \n        ");
+    $('.user-data-list').html(trainer);
+  };
   var displayTypeWise = function displayTypeWise(response, type) {
     var userInfo = '';
     var statusInfo = "",
@@ -1163,9 +1170,11 @@ Samvaarta.system = function () {
       trainer = "<li>No of Coaches: <span></span></li>";
       adminDashboard('users');
     } else if (response.user_type === "trainer") {
-      cochees = "<li>No of Coachees: <span></span></li>";
+      var _response$users;
+      cochees = "<li>No of Coachees: <span>".concat(response === null || response === void 0 || (_response$users = response.users) === null || _response$users === void 0 ? void 0 : _response$users.length, "</span></li>");
       completeSessCount = "<li>No of sessions completed: <span></span></li>";
-      trainerDashboard();
+      userExp = response !== null && response !== void 0 && response.experience ? "<li>Experience: <span>".concat(response.experience, "</span></li>") : '';
+      trainerDashboard(response === null || response === void 0 ? void 0 : response.users, response.name);
     } else {
       var _response$trainer, _response$trainer$, _response$trainer2, _response$trainer$2;
       userDashboard();
@@ -1990,6 +1999,7 @@ var joinHere = function joinHere() {
 document.addEventListener("readystatechange", function (event) {
   // When HTML/DOM elements are ready:
   if (event.target.readyState === "interactive") {
+    var _getOuathData$data, _getOuathData$data2;
     Samvaarta.system.checkLoginStatus();
     dashboardTab();
     photoUploadView();
@@ -1997,12 +2007,15 @@ document.addEventListener("readystatechange", function (event) {
       Samvaarta.system.editProfile();
     }
     Samvaarta.common.getLocation();
-    if ($('.user-details-page').length) {
-      Samvaarta.system.adminDashboard('users');
-    }
-    if ($('.trainer-details-page').length) {
-      Samvaarta.system.adminDashboard('trainer');
-    }
+    var getOuathData = Samvaarta.common.getLocalStorage("oauthUserData");
+    if ((getOuathData === null || getOuathData === void 0 || (_getOuathData$data = getOuathData.data) === null || _getOuathData$data === void 0 || (_getOuathData$data = _getOuathData$data.data) === null || _getOuathData$data === void 0 ? void 0 : _getOuathData$data.user_type) === 'admin') {
+      if ($('.user-details-page').length) {
+        Samvaarta.system.adminDashboard('users');
+      }
+      if ($('.trainer-details-page').length) {
+        Samvaarta.system.adminDashboard('trainer');
+      }
+    } else if ((getOuathData === null || getOuathData === void 0 || (_getOuathData$data2 = getOuathData.data) === null || _getOuathData$data2 === void 0 || (_getOuathData$data2 = _getOuathData$data2.data) === null || _getOuathData$data2 === void 0 ? void 0 : _getOuathData$data2.user_type) === 'trainer') {}
     joinHere();
   }
   if (event.target.readyState === "complete") {
