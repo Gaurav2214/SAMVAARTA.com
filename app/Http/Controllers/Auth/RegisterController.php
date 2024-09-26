@@ -129,6 +129,15 @@ class RegisterController extends Controller
 				$User->avatar = asset('storage/'.$request->avatar->store('user/profile'));
 				$User->save();
 			}
+
+            if($User->user_type=="user"){
+                $User->unique_number = "U-".$User->id;
+            }else if($User->user_type=="trainer"){
+                $User->unique_number = "C-".$User->id;
+            }else if($User->user_type=="admin"){
+                $User->unique_number = "A-".$User->id;
+            }
+            $User->save();
 			
 			if($User){
                 return response()->json(['success' =>'A Profile is under review. <br />A Confirmation will be sent to your email id on '.$request['email']]);
