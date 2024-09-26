@@ -54,7 +54,8 @@ class ProfileController extends Controller
 		if($User->user_type=="user"){
 			$User = User::with('trainer')->find($User->id);             
 		}else if($User->user_type=="trainer"){
-			$User = User::with('users')->find($User->id);             
+			$User = User::with('users')->find($User->id);     
+			$User->no_of_coachees = count($User->users);     
 		}
         return $User;
 	
@@ -81,7 +82,7 @@ class ProfileController extends Controller
             $validator =Validator::make($request->all(), [
                     'name' => 'required|string|max:255',
                     'phone'  => 'required|max:15',
-                    'linkedin_url'=>'url',
+                    //'linkedin_url'=>'url',
             ]);    
 
             if (!$validator->fails())
@@ -95,6 +96,8 @@ class ProfileController extends Controller
 				}
 				if($request->has('linkedin_url')){
 					$User->linkedin_url = $request->linkedin_url;
+				}else{
+					$User->linkedin_url ="";
 				}
 				if($request->has('phone')){
 					$User->phone = $request->phone;
@@ -149,7 +152,8 @@ class ProfileController extends Controller
 				if($User->user_type=="user"){
 					$User = User::with('trainer')->find($User->id);             
 				}else if($User->user_type=="trainer"){
-					$User = User::with('users')->find($User->id);             
+					$User = User::with('users')->find($User->id);   
+					$User->no_of_coachees = count($User->users);     
 				}
 
 				return response()->json(['success' =>'true','message'=>'Profile has been successfully updated','data'=>$User]);
@@ -157,7 +161,7 @@ class ProfileController extends Controller
 
 			} catch (Exception $e) {
 				
-					return response()->json(['error' => trans('form.whoops'),'status'=>'false'], 500);
+					return response()->json(['error' => $e->getMessage(),'status'=>'false'], 500);
 				
 			}
         }else{
@@ -447,6 +451,8 @@ class ProfileController extends Controller
 		$User = $request->user();
 
 		$request_for=$request->request_for??'';
+
+		$trainer_id=0;
 
 		if($User->user_type=="user"){
 			$User = User::with('trainer')->find($User->id);  
