@@ -689,7 +689,7 @@ class ProfileController extends Controller
     			"parameter.*"  => "required",
 				"other_parameter"    => "required|array|min:3|max:3",
     			"other_parameter.*"  => "required",
-				'performance_date'=>'required|date_format:Y-m-d|after:today',
+				'performance_date'=>'required',//|date_format:Y-m-d|after:today
 				'session_id'=>'required',
 			]);    
 		
