@@ -2326,14 +2326,7 @@ Samvaarta.userDashboard = (() => {
         let objective = `
         <div class="details">
             <h3>Desired Objective</h3>
-            <div class="session-data">
-                <div class="interaction_name">
-                    <select id="interaction_name" class="input_txt_box">
-                        
-                    </select>
-                    <p id="interaction_name_err" class="error"></p>
-                </div>
-            </div>
+            
             <div class="details--items quantitative">
                 <h3>Quantitative Parameters – <span>They refer to the past, current and future performance</span></h3>
                 <h4>The following details needs to be filled up</h4>
@@ -2371,6 +2364,7 @@ Samvaarta.userDashboard = (() => {
                                             setTimeout(() => {
                                                 $('#next_interaction_date').datepicker();
                                             }, 1000);
+                                            $('#next_interaction_date').datepicker();
                                                 function changeDateFormat(){
                                                     const date = new Date(document.getElementById("next_interaction_date").value);
                                                     $("#next_interaction_date").attr('data-date', date.toISOString().split('T')[0]);
@@ -2825,7 +2819,7 @@ Samvaarta.setGetUserDashboard = (() => {
         var cperf1 = document.getElementById("c_performance_1").value;
         var cperf2 = document.getElementById("c_performance_2").value;
         var cperf3 = document.getElementById("c_performance_3").value;
-        var interaction_name = document.getElementById("interaction_name").value;
+        // var interaction_name = document.getElementById("interaction_name").value;
         var pDate = document.getElementById("next_interaction_date").getAttribute('data-date');
 
         var errorElements = document.querySelectorAll(".error");        
@@ -2863,7 +2857,7 @@ Samvaarta.setGetUserDashboard = (() => {
                     performance:[cperf1, cperf2, cperf3],
                     unit_measurement: [qdesc1, qdesc2, qdesc3],
                     description: [qdesc4, qdesc5, qdesc6],
-                    session_id: interaction_name,
+                    session_id: 3,
                     performance_date: pDate,
                 },
             };
@@ -2977,6 +2971,7 @@ Samvaarta.setGetUserDashboard = (() => {
                                     setTimeout(() => {
                                         $('#next_interaction_date').datepicker();
                                     }, 1000);
+                                    $('#next_interaction_date').datepicker();
                                     function changeDateFormat(){
                                         const date = new Date(document.getElementById("next_interaction_date").value);
                                         $("#next_interaction_date").attr('data-date', date.toISOString().split('T')[0]);
@@ -2985,7 +2980,8 @@ Samvaarta.setGetUserDashboard = (() => {
                                         $('#next_interaction_date').val(acDate);
                                     }
                                 </script>
-                                <p id="next_interaction_date_err" class="error"></p>
+                                <p id="next_interaction_date_err" style="width: 150px;top: 39px; left: 0;" class="error"></p>
+
                             </td>
                         </tr>
                     </table>
