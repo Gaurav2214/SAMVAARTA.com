@@ -1088,7 +1088,8 @@ p {
       max-width: 100px;
       min-width: unset;
       text-align: center;
-      padding-bottom: 0; }
+      padding-bottom: 0;
+      width: 10%; }
       .dashboard__elements--inner table.complex-view tr td .table-layer-2 tr td span {
         border-radius: 3px;
         padding: 5px;
