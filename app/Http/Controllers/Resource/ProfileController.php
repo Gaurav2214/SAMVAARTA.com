@@ -646,7 +646,7 @@ class ProfileController extends Controller
 
 	public function desiredObjective(Request $request){
 		$user_id =  $request->user()->id;
-		$PerformanceData=PerformanceData::with('session')->where("user_id",$user_id)->orderBy('id',"desc")->get()->toArray();
+		$PerformanceData=PerformanceData::where("user_id",$user_id)->orderBy('id',"desc")->get()->toArray();
 
 		if($PerformanceData){
 			$temp=[];
@@ -690,19 +690,19 @@ class ProfileController extends Controller
 				"other_parameter"    => "required|array|min:3|max:3",
     			"other_parameter.*"  => "required",
 				'performance_date'=>'required',//|date_format:Y-m-d|after:today
-				'session_id'=>'required',
+				//'session_id'=>'required',
 			]);    
 		
 
 		if (!$validator->fails())
 		{
 
-			$PerformanceData=PerformanceData::where("user_id",$user_id)->where("session_id",$request->session_id)->orderBy('id',"desc")->get()->toArray();
+			$PerformanceData=PerformanceData::where("user_id",$user_id)->orderBy('id',"desc")->get()->toArray();
 
 			$PerformanceDataOthers=PerformanceDataOthers::where("user_id",$user_id)->orderBy('id',"desc")->get()->toArray();
 
 			if(!empty($PerformanceData)){
-				return response()->json(['message' =>"Performance data is alreardy added for this session","success"=>"false"]);
+				//return response()->json(['message' =>"Performance data is alreardy added for this session","success"=>"false"]);
 			}
 			
 			PerformanceData::where("user_id",$user_id)->update(['performance_status'=>'past']);
@@ -723,7 +723,7 @@ class ProfileController extends Controller
 				'unit_measurement'=>json_encode($unit_measurement),
 				'status'=>'1',
 				'performance_status'=>'current',
-				'session_id'=>$request->session_id,
+				'session_id'=>$request->session_id??0,
 				'performance_date'=>$request->performance_date,
 			]);
 
@@ -742,7 +742,7 @@ class ProfileController extends Controller
 			
 
 			
-			$PerformanceData=PerformanceData::where("user_id",$user_id)->where("session_id",$request->session_id)->orderBy('id',"desc")->first()->toArray();
+			$PerformanceData=PerformanceData::where("user_id",$user_id)->orderBy('id',"desc")->first()->toArray();
 
 
 			$PerformanceDataOthers=PerformanceDataOthers::where("user_id",$user_id)->orderBy('id',"desc")->first()->toArray();
