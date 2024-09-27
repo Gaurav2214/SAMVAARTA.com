@@ -2368,7 +2368,9 @@ Samvaarta.userDashboard = (() => {
                                             <input data-date="" onchange="changeDateFormat();" placeholder="Select Date" type="text" id="next_interaction_date" value="" class="input_txt_box sdate">
                                             <script>
                                             
+                                            setTimeout(() => {
                                                 $('#next_interaction_date').datepicker();
+                                            }, 1000);
                                                 function changeDateFormat(){
                                                     const date = new Date(document.getElementById("next_interaction_date").value);
                                                     $("#next_interaction_date").attr('data-date', date.toISOString().split('T')[0]);
@@ -2972,7 +2974,9 @@ Samvaarta.setGetUserDashboard = (() => {
                             <td>
                                 <input data-date="" onchange="changeDateFormat();" placeholder="Select Date" type="text" id="next_interaction_date" value="" class="input_txt_box sdate">
                                 <script>
-                                    $('#next_interaction_date').datepicker();
+                                    setTimeout(() => {
+                                        $('#next_interaction_date').datepicker();
+                                    }, 1000);
                                     function changeDateFormat(){
                                         const date = new Date(document.getElementById("next_interaction_date").value);
                                         $("#next_interaction_date").attr('data-date', date.toISOString().split('T')[0]);
