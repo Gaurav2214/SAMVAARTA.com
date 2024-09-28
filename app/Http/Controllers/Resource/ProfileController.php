@@ -496,7 +496,7 @@ class ProfileController extends Controller
 			'session_id'=>'required',
 			"last_week_comments"=>'required|max:500',
 			//"document_conversation_date"=>'required|date_format:Y-m-d|after:today',
-			'doc_file'=>'file'
+			//'doc_file'=>'file'
 		]);    
 
 		if (!$validator->fails())
@@ -569,19 +569,21 @@ class ProfileController extends Controller
 			'focus_of_the_day' => 'required|max:255',
 			'today_conversion'=>'required|max:255',
 			'feedback'=>'required|max:2000',
-			'next_date'=>'required|date_format:Y-m-d|after:today',
+			//'next_date'=>'required|date_format:Y-m-d|after:today',
 			'session_id'=>'required',
 			'document_conversation_id'=>"required",
 			"last_week_comments"=>'required|max:500',
 			//'document_conversation_date'=>'required|date_format:Y-m-d|after:today',
-			'doc_file'=>'file'
+			//'doc_file'=>'file'
 		]);    
 
 		if (!$validator->fails())
 		{
 			
 			$user_id =  $request->user()->id;
-			$next_date = Carbon::parse($request->next_date);
+			if($request->has('next_date')){
+				$next_date = Carbon::parse($request->next_date);
+			}
 
 			$DocumentConversations=DocumentConversations::where('id',$request->document_conversation_id)->where("user_id",$user_id)->first();
 
@@ -592,7 +594,9 @@ class ProfileController extends Controller
 			$DocumentConversations->focus_of_the_day=$request->focus_of_the_day;
 			$DocumentConversations->today_conversion=$request->today_conversion;
 			$DocumentConversations->feedback=$request->feedback;
-			$DocumentConversations->next_date=$request->next_date;
+			if($request->has('next_date')){
+				$DocumentConversations->next_date=$next_date;
+			}
 			$DocumentConversations->session_id=$request->session_id;
 			$DocumentConversations->last_week_comments=$request->last_week_comments;
 			$DocumentConversations->document_conversation_date=date("Y-m-d");
@@ -646,7 +650,7 @@ class ProfileController extends Controller
 
 	public function desiredObjective(Request $request){
 		$user_id =  $request->user()->id;
-		$PerformanceData=PerformanceData::with('session')->where("user_id",$user_id)->orderBy('id',"desc")->get()->toArray();
+		$PerformanceData=PerformanceData::where("user_id",$user_id)->orderBy('id',"desc")->get()->toArray();
 
 		if($PerformanceData){
 			$temp=[];
@@ -690,19 +694,19 @@ class ProfileController extends Controller
 				"other_parameter"    => "required|array|min:3|max:3",
     			"other_parameter.*"  => "required",
 				'performance_date'=>'required',//|date_format:Y-m-d|after:today
-				'session_id'=>'required',
+				//'session_id'=>'required',
 			]);    
 		
 
 		if (!$validator->fails())
 		{
 
-			$PerformanceData=PerformanceData::where("user_id",$user_id)->where("session_id",$request->session_id)->orderBy('id',"desc")->get()->toArray();
+			$PerformanceData=PerformanceData::where("user_id",$user_id)->orderBy('id',"desc")->get()->toArray();
 
 			$PerformanceDataOthers=PerformanceDataOthers::where("user_id",$user_id)->orderBy('id',"desc")->get()->toArray();
 
 			if(!empty($PerformanceData)){
-				return response()->json(['message' =>"Performance data is alreardy added for this session","success"=>"false"]);
+				//return response()->json(['message' =>"Performance data is alreardy added for this session","success"=>"false"]);
 			}
 			
 			PerformanceData::where("user_id",$user_id)->update(['performance_status'=>'past']);
@@ -723,7 +727,7 @@ class ProfileController extends Controller
 				'unit_measurement'=>json_encode($unit_measurement),
 				'status'=>'1',
 				'performance_status'=>'current',
-				'session_id'=>$request->session_id,
+				'session_id'=>$request->session_id??0,
 				'performance_date'=>$request->performance_date,
 			]);
 
@@ -742,7 +746,7 @@ class ProfileController extends Controller
 			
 
 			
-			$PerformanceData=PerformanceData::where("user_id",$user_id)->where("session_id",$request->session_id)->orderBy('id',"desc")->first()->toArray();
+			$PerformanceData=PerformanceData::where("user_id",$user_id)->orderBy('id',"desc")->first()->toArray();
 
 
 			$PerformanceDataOthers=PerformanceDataOthers::where("user_id",$user_id)->orderBy('id',"desc")->first()->toArray();
