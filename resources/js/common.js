@@ -1399,11 +1399,13 @@ Samvaarta.system = (() => {
             
             displayUserInfo(userData);
             window.loginCallback ? loginCallback(response) : false;
-            if(Samvaarta.common.getLocalStorage('DocConversationDetail')){
-                Samvaarta.setGetUserDashboard.previousTransactions(Samvaarta.common.getLocalStorage('DocConversationDetail'));
-            } else {
-                Samvaarta.setGetUserDashboard.getDocConversation();
-            }
+            setTimeout(() => {
+                if(Samvaarta.common.getLocalStorage('DocConversationDetail')){
+                    Samvaarta.setGetUserDashboard.previousTransactions(Samvaarta.common.getLocalStorage('DocConversationDetail'));
+                } else {
+                    Samvaarta.setGetUserDashboard.getDocConversation();
+                }
+            }, 1000);
         } else if(token){
             var paramObject = {
                 url: apiUrl + "api/profile",
@@ -2647,8 +2649,8 @@ Samvaarta.setGetUserDashboard = (() => {
                     <td>${getDateFormat(item?.created_at)}</td>
                     <td session-id="${item?.session?.session_id}">${item.session?.topic}</td>
                     <td trainer-id="${item?.session?.trainer?.id ? item?.session?.trainer?.id : oauthUserData?.trainer[0]?.id}">${item.session?.trainer?.name ? item.session?.trainer?.name : oauthUserData?.trainer[0]?.name}</td>
-                    <td class="edit-transaction" onclick="Samvaarta.setGetUserDashboard.editTransaction(${item.id})">Edit</td>
-                    <div class="update-transaction-container hide" id="edit-doc-${item.id}" data-docId="${item.id}" data-session="${item?.session?.session_id}">
+                    <td class="edit-transaction" onclick="Samvaarta.setGetUserDashboard.editTransaction(${item?.id})">Edit</td>
+                    <div class="update-transaction-container hide" id="edit-doc-${item?.id}" data-docId="${item?.id}" data-session="${item?.session?.session_id}">
                         <ul class="details--items__topics">
                             <li class="section_${index+1}">
                                 <label for="user_focus_${item.id}" class="topic">Focus of the day</label>
