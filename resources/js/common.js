@@ -1007,7 +1007,7 @@ Samvaarta.system = (() => {
                     </div>
                     <div class="form-elm-section input_sec ">
                         <label for="oauth_experience">
-                            Experience
+                            Experience in Years
                         </label>
                         <input required="" data-id="" placeholder="" name="" type="text" id="oauth_experience" class="input_txt_box valid" value="${getOuathData.experience}" maxlength="45" title="">
                         <p id="oauth_experience_err" class="error">
@@ -1068,13 +1068,8 @@ Samvaarta.system = (() => {
                             <label for="oauth_location">
                                 Location
                             </label>
-                            <input required="" data-id="" readonly="true" placeholder="" name="" type="text" id="oauth_location" class="input_txt_box valid" value="${
-                                getOuathData.location
-                                    ? getOuathData.location
-                                    : Samvaarta.common.getLocalStorage(
-                                          "location"
-                                      )?.data?.city
-                            }" maxlength="50" title="">
+                            <input required="" data-id="" placeholder="" name="" type="text" id="oauth_location" 
+                            class="input_txt_box valid" value="${getOuathData?.location ? getOuathData?.location : ''}" maxlength="50" title="">
                             <p id="oauth_location_err" class="error"></p>
                     </div>
                     </div>
@@ -1098,6 +1093,7 @@ Samvaarta.system = (() => {
         var reg_phone = document.getElementById("oauth_log_number").value;
         var reg_linkedin = document.getElementById("oauth_log_lnurl").value;
         var reg_role = document.getElementById("oauth_log_role").value;
+        var location = document.getElementById("oauth_location").value;
         var reg_avatar = document.querySelector(".profile-pic").src;
         var errorElements = document.querySelectorAll(".error");
         errorElements.forEach(function (el) {
@@ -1137,6 +1133,7 @@ Samvaarta.system = (() => {
                     description: description,
                     experience: experience,
                     user_function: userfunction,
+                    location: location,
                 },
                 headers: {
                     Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
@@ -1179,7 +1176,7 @@ Samvaarta.system = (() => {
             <figure class="">
                 <img alt="/images/" src="/images/user-default.svg" width="80" height="80" />
             </figure>
-            <h3>Your profile is undes review.</h3>
+            <h3>Your profile is under review.</h3>
             <h4>A confirmation will be sent to your email ID <span>${id}</span></h4>
         `;
         //document.querySelector('model_content_1').innerHTML = msg;
@@ -1399,8 +1396,14 @@ Samvaarta.system = (() => {
             if (window.location.pathname === "/") {
                 window.location.href = "/dashboard";
             }
+            
             displayUserInfo(userData);
             window.loginCallback ? loginCallback(response) : false;
+            if(Samvaarta.common.getLocalStorage('DocConversationDetail')){
+                Samvaarta.setGetUserDashboard.previousTransactions(Samvaarta.common.getLocalStorage('DocConversationDetail'));
+            } else {
+                Samvaarta.setGetUserDashboard.getDocConversation();
+            }
         } else if(token){
             var paramObject = {
                 url: apiUrl + "api/profile",
@@ -1709,15 +1712,15 @@ Samvaarta.system = (() => {
         } else if (response.user_type === "trainer") {
             cochees = `<li>No of Coachees: <span>${response?.users?.length}</span></li>`;
             completeSessCount = `<li>No of sessions completed: <span></span></li>`;
-            userExp = response?.experience ? `<li>Experience: <span>${response.experience}</span></li>` : '';
+            userExp = response?.experience ? `<li>Experience in Years: <span>${response.experience}</span></li>` : '';
             trainerDashboard(response?.users, response.name);
         } else {
             userDashboard();
             coachInfo = `<li id="${response?.trainer?.length ? response?.trainer[0]?.id : ''}">Coach Name: <span style="text-transform:capitalize;">${response?.trainer?.length ? response.trainer[0]?.name : ''}</span></li>`;
             plannedSess = response?.plannedSession ? `<li>Planned Sessions: <span>${response.plannedSession}</span></li>`: '';
-            concluded = `<li>Concluded: <span></span></li>`;
-            nextSession = `<li>Next Session Date: <span></span></li>`;
-            userExp = response?.experience ? `<li>Experience: <span>${response.experience}</span></li>` : '';
+            //concluded = `<li>Concluded: <span></span></li>`;
+            nextSession = `<li class="user_next_interaction">Next Session Date: <span></span></li>`;
+            userExp = response?.experience ? `<li>Experience in Years: <span>${response.experience}</span></li>` : '';
             userFun = response?.user_function ? `<li>Function: <span>${response.user_function}</span></li>` : '';
             downloadReport = `<li class="download-report"><button class="btn">Download Report</button></li>`;
 
@@ -1733,7 +1736,7 @@ Samvaarta.system = (() => {
         <div class="show-user-details__inner">
             <div class="show-user-details__inner--left detail-items">
                 <ul>
-                    <li>Code: <span>${response.id}</span></li>
+                    <li>Code: <span>${response?.unique_number ? response?.unique_number : response?.id}</span></li>
                     <li>Date of Joining: <span>${Samvaarta.common.dateMonthYear(
                         response.created_at
                     )}</span></li>
@@ -1746,7 +1749,7 @@ Samvaarta.system = (() => {
                     <li>Location: <span>${
                         response.location
                             ? response.location
-                            : Samvaarta.common.getLocalStorage("location")?.data.city
+                            : ''
                     }</span></li>
                 </ul>
             </div>
@@ -1755,7 +1758,7 @@ Samvaarta.system = (() => {
                 ${response?.vision ? '<li>Vision: <span>'+response?.vision+'</span></li>' : ''}
                 ${response?.description ? '<li>Brief Description: <span>'+response.description+'</span></li>' : ''}
                 ${plannedSess}  ${cochees}  ${trainer} 
-                ${concluded} ${nextSession}  ${completeSessCount}                 
+                ${nextSession}  ${completeSessCount}                 
                 </ul>
             </div>
             <div class="show-user-details__inner--right detail-items">
@@ -2319,7 +2322,11 @@ Samvaarta.userDashboard = (() => {
         $('.user-activity-details__inner').html(docCon);
         setTimeout(() => {
             interactionList();
-            Samvaarta.setGetUserDashboard.getDocConversation();
+            if(Samvaarta.common.getLocalStorage('DocConversationDetail')){
+                Samvaarta.setGetUserDashboard.previousTransactions(Samvaarta.common.getLocalStorage('DocConversationDetail'));
+            } else {
+                Samvaarta.setGetUserDashboard.getDocConversation();
+            }
         },1000);
     }
     const desObjective = () => {
@@ -2622,9 +2629,9 @@ Samvaarta.setGetUserDashboard = (() => {
         }
     }
     const previousTransactions = (response) => {
-        console.log(response);
         let previous = ``;
         if(response?.data?.length){
+            $('.user_next_interaction span').html(`<span>${response?.data[response?.data?.length - 1].next_date}</span>`);
             previous += `<table>
                 <tr class="user-dashboard-info__head-list">
                     <td>S.No</td>
@@ -2784,6 +2791,7 @@ Samvaarta.setGetUserDashboard = (() => {
         const ajaxSuccessCall = (response) => {
             if(response?.data?.success === 'true'){
                 previousTransactions(response?.data);
+                Samvaarta.common.setLocalStorage('DocConversationDetail', response?.data, expireTime);
             } else {
                 $('.previous-transactions').html('<p>No previous interactions</p>');                
             }
