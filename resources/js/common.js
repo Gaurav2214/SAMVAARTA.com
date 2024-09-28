@@ -2262,7 +2262,7 @@ Samvaarta.userDashboard = (() => {
                         <p id="user_focus_err" class="error"></p>
                     </li>
                     <li>
-                        <label for="user_last_commitment" class="topic">Last weeks commitment</label>
+                        <label for="user_last_commitment" class="topic">Status of last week's commitment</label>
                         <textarea rows="2" cols="50" type="text" id="user_last_commitment" value="" class="input_txt_box" ></textarea>
                         <p id="user_last_commitment_err" class="error"></p>
                     </li>
@@ -2655,7 +2655,7 @@ Samvaarta.setGetUserDashboard = (() => {
                                 <textarea rows="2" cols="50" type="text" id="user_focus_${item.id}" class="input_txt_box"></textarea>
                             </li>
                             <li class="section_${index+1}">
-                                <label for="user_last_commitment_${item.id}" class="topic">Last weeks commitment</label>
+                                <label for="user_last_commitment_${item.id}" class="topic">Status of last week's commitment</label>
                                 <textarea rows="2" cols="50" type="text" id="user_last_commitment_${item.id}" class="input_txt_box"></textarea>
                             </li>
                             <li class="section_${index+1}">
