@@ -569,7 +569,7 @@ class ProfileController extends Controller
 			'focus_of_the_day' => 'required|max:255',
 			'today_conversion'=>'required|max:255',
 			'feedback'=>'required|max:2000',
-			'next_date'=>'required|date_format:Y-m-d|after:today',
+			//'next_date'=>'required|date_format:Y-m-d|after:today',
 			'session_id'=>'required',
 			'document_conversation_id'=>"required",
 			"last_week_comments"=>'required|max:500',
@@ -581,7 +581,9 @@ class ProfileController extends Controller
 		{
 			
 			$user_id =  $request->user()->id;
-			$next_date = Carbon::parse($request->next_date);
+			if($request->has('next_date')){
+				$next_date = Carbon::parse($request->next_date);
+			}
 
 			$DocumentConversations=DocumentConversations::where('id',$request->document_conversation_id)->where("user_id",$user_id)->first();
 
@@ -592,7 +594,9 @@ class ProfileController extends Controller
 			$DocumentConversations->focus_of_the_day=$request->focus_of_the_day;
 			$DocumentConversations->today_conversion=$request->today_conversion;
 			$DocumentConversations->feedback=$request->feedback;
-			$DocumentConversations->next_date=$request->next_date;
+			if($request->has('next_date')){
+				$DocumentConversations->next_date=$next_date;
+			}
 			$DocumentConversations->session_id=$request->session_id;
 			$DocumentConversations->last_week_comments=$request->last_week_comments;
 			$DocumentConversations->document_conversation_date=date("Y-m-d");
