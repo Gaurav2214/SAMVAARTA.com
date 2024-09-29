@@ -273,7 +273,7 @@ class UserResource extends Controller
         $Users = User::with(['trainer'])->where('status',1)->where(['user_type'=>'user'])->orderBy('id', 'DESC')->get();
 
 		$fileName = "user/reports/report-".date('Ymd').'.csv';//.date('YmdHis').'
-    	$columns = array('name', 'email','phone','vision','description','created_at','Trainer Name','Trainer Email','Trainer Phone','Focus of the day','Status of last week\'s commitment','Today\'s conversation','Commitment for the week','Next Interaction Date','Interaction Name','Desired Outcomes Parameter','Brief Description');
+    	$columns = array('User Code','name', 'email','phone','vision','description','created_at','Trainer Name','Trainer Email','Trainer Phone','Focus of the day','Status of last week\'s commitment','Today\'s conversation','Commitment for the week','Next Interaction Date','Interaction Name','Desired Outcomes Parameter','Brief Description');
 		$csv =implode(",",$columns);
 
 		
@@ -284,45 +284,46 @@ class UserResource extends Controller
             $DocumentConversations=$DocumentConversations->get()->toArray();
 
             
-            $data=[];            
-            $data[0]=$user['name'];
-            $data[1]=$user['email'];
-            $data[2]=$user['phone'];
-            $data[3]='"'.$user['vision'].'"';
-            $data[4]='"'.$user['description'].'"';
-            $data[5]=$user['created_at'];
-            $data[6]=isset($user['trainer'][0]['name'])?$user['trainer'][0]['name']:"";
-            $data[7]=isset($user['trainer'][0]['email'])?$user['trainer'][0]['email']:"";
-            $data[8]=isset($user['trainer'][0]['phone'])?$user['trainer'][0]['phone']:"";
+            $data=[];         
+            $data[0]=$user['unique_number'];   
+            $data[1]=$user['name'];
+            $data[2]=$user['email'];
+            $data[3]=$user['phone'];
+            $data[4]='"'.$user['vision'].'"';
+            $data[5]='"'.$user['description'].'"';
+            $data[6]=$user['created_at'];
+            $data[7]=isset($user['trainer'][0]['name'])?$user['trainer'][0]['name']:"";
+            $data[8]=isset($user['trainer'][0]['email'])?$user['trainer'][0]['email']:"";
+            $data[9]=isset($user['trainer'][0]['phone'])?$user['trainer'][0]['phone']:"";
 
-            $data[9]="";
             $data[10]="";
             $data[11]="";
             $data[12]="";
             $data[13]="";
             $data[14]="";
+            $data[15]="";
 
             $LearningOutcomes= LearningOutcomes::where('user_id', $user['id'])->first();
 
-            $data[15]="";
             $data[16]="";
+            $data[17]="";
 
             if(!empty($LearningOutcomes)){
                 $outcome_description = json_decode($LearningOutcomes->outcome_description,true);
                 $parameter = json_decode($LearningOutcomes->parameter,true);
-                $data[15]='"'.implode(",",$outcome_description).'"';
-                $data[16]='"'.implode(",",$parameter).'"';
+                $data[16]='"'.implode(",",$outcome_description).'"';
+                $data[17]='"'.implode(",",$parameter).'"';
             }
             
             if(!empty($DocumentConversations)){
                 foreach($DocumentConversations as $dc){
                     $d = $data;
-                    $d[9]=$dc["focus_of_the_day"];
-                    $d[10]='"'.$dc["last_week_comments"].'"';
-                    $d[11]=$dc["today_conversion"];
-                    $d[12]='"'.$dc["feedback"].'"';
-                    $d[13]=$dc["next_date"];
-                    $d[14]=isset($dc["session"]['topic'])?$dc["session"]['topic']:"";
+                    $d[10]=$dc["focus_of_the_day"];
+                    $d[11]='"'.$dc["last_week_comments"].'"';
+                    $d[12]=$dc["today_conversion"];
+                    $d[13]='"'.$dc["feedback"].'"';
+                    $d[14]=$dc["next_date"];
+                    $d[15]=isset($dc["session"]['topic'])?$dc["session"]['topic']:"";
                     $csv .=PHP_EOL;
                     $csv .=implode(",",$d);
                 }
