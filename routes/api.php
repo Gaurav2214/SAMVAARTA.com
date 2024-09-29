@@ -40,7 +40,6 @@ Route::group(['middleware' => ['auth:api']], function() {
 
 		Route::get('closing-of-intraction','Resource\ProfileController@closingOfIntraction');
 		Route::post('closing-of-intraction','Resource\ProfileController@addClosingOfIntraction');
-		Route::get('download-report','Resource\ProfileController@downloadReport');
 	});
 	Route::group(['prefix' => 'trainer'], function() {
 		Route::post('/add_comment', 'Resource\ProfileController@add_comment');
@@ -65,6 +64,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth:api']], function () {
 	Route::post('session/add', 'Resource\SessionController@add');
 	Route::post('session/update/{id}', 'Resource\SessionController@update');
 	
+	Route::get('download-report','Resource\UserResource@downloadReport');
 
 
 });
