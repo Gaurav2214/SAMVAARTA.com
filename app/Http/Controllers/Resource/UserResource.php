@@ -8,9 +8,14 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
 use Route;
 use Exception;
-
+use Storage;
 use App\User;
 use App\Models\TrainerLearnerMapping;
+use App\Models\DocumentConversations;
+use App\Models\TrainerComment;
+use App\Models\TrainingSession;
+use App\Models\LearningOutcomes;
+
 
 class UserResource extends Controller
 {
@@ -263,5 +268,83 @@ class UserResource extends Controller
 
     }
     
+
+	public function downloadReport(Request $request){
+        $Users = User::with(['trainer'])->where('status',1)->where(['user_type'=>'user'])->orderBy('id', 'DESC')->get();
+
+		$fileName = "user/reports/report-".date('Ymd').'.csv';//.date('YmdHis').'
+    	$columns = array('name', 'email','phone','vision','description','created_at','Trainer Name','Trainer Email','Trainer Phone','Focus of the day','Status of last week\'s commitment','Today\'s conversation','Commitment for the week','Next Interaction Date','Interaction Name','Desired Outcomes Parameter','Brief Description');
+		$csv =implode(",",$columns);
+
+		
+        foreach($Users as $user){
+
+            $DocumentConversations= DocumentConversations::trainerComment()->with('session','session.trainer')->where('document_conversations.user_id', $user['id'])->select('document_conversations.*','trainer_comments.comments');
+
+            $DocumentConversations=$DocumentConversations->get()->toArray();
+
+            
+            $data=[];            
+            $data[0]=$user['name'];
+            $data[1]=$user['email'];
+            $data[2]=$user['phone'];
+            $data[3]='"'.$user['vision'].'"';
+            $data[4]='"'.$user['description'].'"';
+            $data[5]=$user['created_at'];
+            $data[6]=isset($user['trainer'][0]['name'])?$user['trainer'][0]['name']:"";
+            $data[7]=isset($user['trainer'][0]['email'])?$user['trainer'][0]['email']:"";
+            $data[8]=isset($user['trainer'][0]['phone'])?$user['trainer'][0]['phone']:"";
+
+            $data[9]="";
+            $data[10]="";
+            $data[11]="";
+            $data[12]="";
+            $data[13]="";
+            $data[14]="";
+
+            $LearningOutcomes= LearningOutcomes::where('user_id', $user['id'])->first();
+
+            $data[15]="";
+            $data[16]="";
+
+            if(!empty($LearningOutcomes)){
+                $outcome_description = json_decode($LearningOutcomes->outcome_description,true);
+                $parameter = json_decode($LearningOutcomes->parameter,true);
+                $data[15]='"'.implode(",",$outcome_description).'"';
+                $data[16]='"'.implode(",",$parameter).'"';
+            }
+            
+            if(!empty($DocumentConversations)){
+                foreach($DocumentConversations as $dc){
+                    $d = $data;
+                    $d[9]=$dc["focus_of_the_day"];
+                    $d[10]='"'.$dc["last_week_comments"].'"';
+                    $d[11]=$dc["today_conversion"];
+                    $d[12]='"'.$dc["feedback"].'"';
+                    $d[13]=$dc["next_date"];
+                    $d[14]=isset($dc["session"]['topic'])?$dc["session"]['topic']:"";
+                    $csv .=PHP_EOL;
+                    $csv .=implode(",",$d);
+                }
+            }else{
+                $d = $data;
+                $csv .=PHP_EOL;
+                $csv .=implode(",",$d);
+            }
+
+
+
+            
+            //$csv .=PHP_EOL;
+           // $csv .=implode(",",$data);
+        }
+
+
+	   Storage::disk('public')->put($fileName, $csv);
+
+		return response()->json(['data' =>asset('storage/'.$fileName),"success"=>"true","message"=>"Successfully generated"]);
+   
+
+	}
    
 }
