@@ -434,6 +434,21 @@ p {
     .input_txt_box.select-box option {
       text-transform: capitalize; }
 
+.disabled {
+  cursor: none;
+  pointer-events: none;
+  background: #808080;
+  border: 1px solid #808080; }
+
+.view-upload-docs {
+  font-size: 14px;
+  line-height: 21px;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 500;
+  color: #262626;
+  color: #1a73e9;
+  text-decoration: underline; }
+
 .form-elm-section {
   -ms-display: flex;
   -webkit-display: flex;
@@ -511,6 +526,17 @@ p {
   .form-elm-section.btn-container {
     padding-bottom: 15px;
     margin-bottom: 0; }
+  .form-elm-section .forget_password {
+    font-size: 12px;
+    line-height: 18px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    color: #808080;
+    color: #1a73e9;
+    position: absolute;
+    right: 0;
+    bottom: -22px;
+    cursor: pointer; }
   .form-elm-section .btn {
     border-radius: 20px;
     background: #fd7702;

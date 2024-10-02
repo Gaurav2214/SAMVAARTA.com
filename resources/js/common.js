@@ -783,6 +783,36 @@ Samvaarta.system = (() => {
         showFormToggle();
     };
 
+    const forgetPassModule = () => {
+        let forgetPass = `<div class="login-form">
+        <div class="heading" style="text-align:left">
+            <h2>Reset your password</h2>
+            <p class="">Enter the email used while creating your account.</p>
+        </div>
+        <form class="signin-form">
+            <div class="form-elm-section input_sec ">
+                <label for="oauth_log_email"> Email Id</label>
+                <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_email" class="input_txt_box" value="">
+                <p id="oauth_log_email_err" class="validation error"></p>
+            </div>           
+
+            <div class="form-elm-section input_sec_center btn-container ">
+                <button class="btn" type="button" onclick="Samvaarta.system.forgetPassword()">Submit</button>
+            </div>
+        </form>
+        <p class="reg-login-toggle">Already have the Goalsnu account?
+            <a role="button" tabindex="0" rel="noreferrer nofollow" class="login-link">Log in</a>
+        </p>
+    </div>
+
+        `;
+        $('body').on('click', '.forget_password', () => {
+            $(".login-module__main--right").length ? document.querySelector(".login-module__main--right").innerHTML =
+            forgetPass : '';
+            showFormToggle();
+        });
+    }
+
     const createLoginForm = () => {
         const loginForm = `
         <div class="login-form">
@@ -801,6 +831,7 @@ Samvaarta.system = (() => {
                     <label for="oauth_log_password"> Password</label>
                     <input required="" data-id="" placeholder="" name="" type="password" id="oauth_log_password" class="input_txt_box" value="">
                     <p id="oauth_log_password_err" class="validation error"></p>
+                    <div class="forget_password">Forgot your password?</div>
                 </div>
 
                 <div class="form-elm-section input_sec_center btn-container ">
@@ -815,6 +846,7 @@ Samvaarta.system = (() => {
         $(".login-module__main--right").length ? document.querySelector(".login-module__main--right").innerHTML =
             loginForm : '';
         showFormToggle();
+        forgetPassModule();
     };
 
     const showFormToggle = () => {
@@ -1399,11 +1431,13 @@ Samvaarta.system = (() => {
             
             displayUserInfo(userData);
             window.loginCallback ? loginCallback(response) : false;
-            if(Samvaarta.common.getLocalStorage('DocConversationDetail')){
-                Samvaarta.setGetUserDashboard.previousTransactions(Samvaarta.common.getLocalStorage('DocConversationDetail'));
-            } else {
-                Samvaarta.setGetUserDashboard.getDocConversation();
-            }
+            setTimeout(() => {
+                if(Samvaarta.common.getLocalStorage('DocConversationDetail')){
+                    Samvaarta.setGetUserDashboard.previousTransactions(Samvaarta.common.getLocalStorage('DocConversationDetail'));
+                } else {
+                    Samvaarta.setGetUserDashboard.getDocConversation();
+                }
+            }, 1000);
         } else if(token){
             var paramObject = {
                 url: apiUrl + "api/profile",
@@ -1707,7 +1741,8 @@ Samvaarta.system = (() => {
         concluded = '', nextSession = '', completeSessCount = '', userExp = '', userFun = '', downloadReport = '';
         if (response.user_type === "admin") {
             cochees = `<li>No of Coachees: <span></span></li>`;
-            trainer = `<li>No of Coaches: <span></span></li>`;            
+            trainer = `<li>No of Coaches: <span></span></li>`; 
+            downloadReport = `<li class="download-report"><button class="btn" onclick="Samvaarta.system.adminReport()">Download Report</button></li>`;
             adminDashboard('users');
         } else if (response.user_type === "trainer") {
             cochees = `<li>No of Coachees: <span>${response?.users?.length}</span></li>`;
@@ -1776,6 +1811,36 @@ Samvaarta.system = (() => {
         `;
         $(".show-user-details").html(userInfo);
     };
+
+    const adminReport = () => {
+        $('.download-report .btn').addClass('disabled');
+        var paramObject = {
+            url: apiUrl + "api/admin/download-report",
+            type: "GET",
+            headers: {
+                Authorization: `Bearer ${Samvaarta.common.getLocalStorage("AccessToken").access_token}`,
+                Accept: "application/json",
+            },
+        };
+
+        const ajaxSuccessCall = async(response) => {
+            response = response.data.data;
+            setTimeout(()=>{
+                $('.download-report .btn').removeClass('disabled');
+            }, 5000);
+            window.open(response);            
+        };
+
+        const ajaxErrorCall = (response) => {
+            console.log(response);
+        };
+
+        Samvaarta.common.hitAjaxApi(
+            paramObject,
+            ajaxSuccessCall,
+            ajaxErrorCall
+        );
+    }
 
     var displayUserInfo = (data) => {
         oauthUserData = data.data;
@@ -1858,7 +1923,7 @@ Samvaarta.system = (() => {
         let reg_email = $("#oauth_log_email").val();
         $(".error").html("");
 
-        $(".authentication-form input").each(function () {
+        $(".signin-form input").each(function () {
             if (
                 $(this).attr("type") != "button" &&
                 $(this).attr("type") != "checkbox"
@@ -1874,13 +1939,17 @@ Samvaarta.system = (() => {
             return false;
         } else {
             let paramObject = {
-                url: apiUrl + "auth/forgot-password",
-                type: "post",
+                url: apiUrl + "api/forgot/password",
+                type: "POST",
                 data: { email: reg_email },
             };
 
             const ajaxSuccessCall = (response) => {
-                console.log(response);
+                Samvaarta.model.showSuccessMessage(
+                    `<h2>Thank You</h2><p class="marg-t20">We have sent a new password at
+                    <strong>${reg_email}</strong>. Please check your email.</p>`,
+                    "y"
+                );
             };
 
             const ajaxErrorCall = (error) => {
@@ -1949,7 +2018,8 @@ Samvaarta.system = (() => {
         userEditProfileUpdated: userEditProfileUpdated,
         assignedTrainer: assignedTrainer,
         activateDeactivateUser: activateDeactivateUser,
-        adminDashboard: adminDashboard,        
+        adminDashboard: adminDashboard,   
+        adminReport: adminReport,     
     };
 })();
 
@@ -2255,7 +2325,7 @@ Samvaarta.userDashboard = (() => {
             </div>
             <div id="" class="details--items current">
                 <h3>Current Interactions</h3>
-                <ul class="details--items__topics">
+                <ul class="details--items__topics details_set_conversion">
                     <li class="">
                         <label for="user_focus" class="topic">Focus of the day</label>
                         <textarea rows="2" cols="50" type="text" id="user_focus" value="" class="input_txt_box" ></textarea>
@@ -2599,7 +2669,7 @@ Samvaarta.setGetUserDashboard = (() => {
             };
 
             const ajaxSuccessCall = (response) => {
-                $('.details--items__topics input').val('');
+                $('.details_set_conversion .input_txt_box').val('');
                 if(response?.data?.success === 'true'){
                     getDocConversation();
                     Samvaarta.model.showSuccessMessage(
@@ -2629,6 +2699,7 @@ Samvaarta.setGetUserDashboard = (() => {
         }
     }
     const previousTransactions = (response) => {
+        let supportDoc = ``;
         let previous = ``;
         if(response?.data?.length){
             $('.user_next_interaction span').html(`<span>${response?.data[response?.data?.length - 1].next_date}</span>`);
@@ -2642,13 +2713,23 @@ Samvaarta.setGetUserDashboard = (() => {
                 </tr>
             `;
             response?.data.map((item, index) => {
+                if(item.doc_file){
+                    supportDoc = `                    
+                    <a class="view-upload-docs" href="${item.doc_file}" target="_blank">View Uploaded Doc</a>                   
+                    <input type="file" style="display:none;" id="hiddenFileInput_${item.id}" value="${item.doc_file}" />`;  
+                } else {
+                    supportDoc = `
+                    <label for="hiddenFileInput_${item.id}" class="topic">No support doc uploaded - </label>                    
+                    <button class="btn" onclick="document.getElementById('hiddenFileInput_${item.id}').click();">Upload Now</button>
+                    <input type="file" style="display:none;" id="hiddenFileInput_${item.id}" value="${item.doc_file}" />`;  
+                }
                 previous += `<tr class="pre-tracs-data">
                     <td doc-id="${item?.id}">${index+1}</td>
                     <td>${getDateFormat(item?.created_at)}</td>
                     <td session-id="${item?.session?.session_id}">${item.session?.topic}</td>
                     <td trainer-id="${item?.session?.trainer?.id ? item?.session?.trainer?.id : oauthUserData?.trainer[0]?.id}">${item.session?.trainer?.name ? item.session?.trainer?.name : oauthUserData?.trainer[0]?.name}</td>
-                    <td class="edit-transaction" onclick="Samvaarta.setGetUserDashboard.editTransaction(${item.id})">Edit</td>
-                    <div class="update-transaction-container hide" id="edit-doc-${item.id}" data-docId="${item.id}" data-session="${item?.session?.session_id}">
+                    <td class="edit-transaction" onclick="Samvaarta.setGetUserDashboard.editTransaction(${item?.id})">Edit</td>
+                    <div class="update-transaction-container hide" id="edit-doc-${item?.id}" data-docId="${item?.id}" data-session="${item?.session?.session_id}">
                         <ul class="details--items__topics">
                             <li class="section_${index+1}">
                                 <label for="user_focus_${item.id}" class="topic">Focus of the day</label>
@@ -2666,10 +2747,14 @@ Samvaarta.setGetUserDashboard = (() => {
                                 <label for="user_week_commitment_${item.id}" class="topic">Commitment for the week</label>
                                 <textarea rows="2" cols="50" type="text" id="user_week_commitment_${item.id}" class="input_txt_box"></textarea>
                             </li>
+                            <li class="section_${index+1}">
+                                ${supportDoc}
+                                
+                                <input type="hidden" id="hiddenFileInputValue_${item.id}" value="${item.doc_file}" />
+                            </li>
                         </ul>
                         <input type="hidden" id="next_interaction_date_${item.id}" value="${item.next_date}" />
-                        <input type="file" style="display:none;" id="hiddenFileInput_${item.id}" value="${item.doc_file}" />
-                        <input type="hidden" id="hiddenFileInputValue_${item.id}" value="${item.doc_file}" />
+                        
                         <button onclick="Samvaarta.setGetUserDashboard.updateTransaction(${item.id}, ${item?.session_id})" class="btn">Update</button>
                         <button style="margin-left:10px;" class="btn close-transaction">Close</button>
                         <script>
@@ -2711,6 +2796,7 @@ Samvaarta.setGetUserDashboard = (() => {
         }
 
         let formData = new FormData();
+        formData.append("doc_file", filesdata);
         formData.append("focus_of_the_day", user_focus);
         formData.append("today_conversion", user_conversation);
         formData.append("feedback", week_commitment);
