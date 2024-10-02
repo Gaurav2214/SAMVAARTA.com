@@ -603,7 +603,7 @@ class ProfileController extends Controller
 
 			try{
 				if($request->has('doc_file') && $request->file('doc_file')) {
-					$DocumentConversations->doc_file = asset('storage/'.$request->doc_file->store('user/docs'));
+					$DocumentConversations->doc_file = asset('storage/'.$request->doc_file->store('public/user/docs'));
 				}
 			}catch(Exception $e){
 				return response()->json(['error' => $e->getMessage(),'status'=>'false'], 500);
