@@ -430,6 +430,21 @@ p {
     .input_txt_box.select-box option {
       text-transform: capitalize; }
 
+.disabled {
+  cursor: none;
+  pointer-events: none;
+  background: #808080;
+  border: 1px solid #808080; }
+
+.view-upload-docs {
+  font-size: 14px;
+  line-height: 21px;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 500;
+  color: #262626;
+  color: #1a73e9;
+  text-decoration: underline; }
+
 .form-elm-section {
   -ms-display: flex;
   -webkit-display: flex;
