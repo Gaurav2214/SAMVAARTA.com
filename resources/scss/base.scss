@@ -244,6 +244,14 @@
         padding-bottom: rem(15);
         margin-bottom: 0;
     }
+    .forget_password{
+        @include desc-3();
+        color: #1a73e9;
+        position: absolute;
+        right: 0;
+        bottom: rem(-22);
+        cursor: pointer;
+    }
     .btn {
         border-radius: rem(20);
         background: $clr-29;

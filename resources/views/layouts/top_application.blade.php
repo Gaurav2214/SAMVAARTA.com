@@ -7,6 +7,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="google-site-verification" content="A2O8sTnSbmKqSOUQmzJHiGv_Njcd18Fw6I_433ZBrUs" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>GOALSNU | Skip The Thinking Start To Grow</title>
     <meta itemprop="name" content="GOALSNU | Skip The Thinking Start To Grow" />

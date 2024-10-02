@@ -511,6 +511,17 @@ p {
   .form-elm-section.btn-container {
     padding-bottom: 15px;
     margin-bottom: 0; }
+  .form-elm-section .forget_password {
+    font-size: 12px;
+    line-height: 18px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    color: #808080;
+    color: #1a73e9;
+    position: absolute;
+    right: 0;
+    bottom: -22px;
+    cursor: pointer; }
   .form-elm-section .btn {
     border-radius: 20px;
     background: #fd7702;

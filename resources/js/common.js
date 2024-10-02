@@ -783,6 +783,36 @@ Samvaarta.system = (() => {
         showFormToggle();
     };
 
+    const forgetPassModule = () => {
+        let forgetPass = `<div class="login-form">
+        <div class="heading" style="text-align:left">
+            <h2>Reset your password</h2>
+            <p class="">Enter the email used while creating your account.</p>
+        </div>
+        <form class="signin-form">
+            <div class="form-elm-section input_sec ">
+                <label for="oauth_log_email"> Email Id</label>
+                <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_email" class="input_txt_box" value="">
+                <p id="oauth_log_email_err" class="validation error"></p>
+            </div>           
+
+            <div class="form-elm-section input_sec_center btn-container ">
+                <button class="btn" type="button" onclick="Samvaarta.system.forgetPassword()">Submit</button>
+            </div>
+        </form>
+        <p class="reg-login-toggle">Already have the Goalsnu account?
+            <a role="button" tabindex="0" rel="noreferrer nofollow" class="login-link">Log in</a>
+        </p>
+    </div>
+
+        `;
+        $('body').on('click', '.forget_password', () => {
+            $(".login-module__main--right").length ? document.querySelector(".login-module__main--right").innerHTML =
+            forgetPass : '';
+            showFormToggle();
+        });
+    }
+
     const createLoginForm = () => {
         const loginForm = `
         <div class="login-form">
@@ -801,6 +831,7 @@ Samvaarta.system = (() => {
                     <label for="oauth_log_password"> Password</label>
                     <input required="" data-id="" placeholder="" name="" type="password" id="oauth_log_password" class="input_txt_box" value="">
                     <p id="oauth_log_password_err" class="validation error"></p>
+                    <div class="forget_password">Forgot your password?</div>
                 </div>
 
                 <div class="form-elm-section input_sec_center btn-container ">
@@ -815,6 +846,7 @@ Samvaarta.system = (() => {
         $(".login-module__main--right").length ? document.querySelector(".login-module__main--right").innerHTML =
             loginForm : '';
         showFormToggle();
+        forgetPassModule();
     };
 
     const showFormToggle = () => {
