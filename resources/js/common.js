@@ -1892,7 +1892,7 @@ Samvaarta.system = (() => {
         let reg_email = $("#oauth_log_email").val();
         $(".error").html("");
 
-        $(".authentication-form input").each(function () {
+        $(".signin-form input").each(function () {
             if (
                 $(this).attr("type") != "button" &&
                 $(this).attr("type") != "checkbox"
@@ -1908,13 +1908,17 @@ Samvaarta.system = (() => {
             return false;
         } else {
             let paramObject = {
-                url: apiUrl + "auth/forgot-password",
-                type: "post",
+                url: apiUrl + "api/forgot/password",
+                type: "POST",
                 data: { email: reg_email },
             };
 
             const ajaxSuccessCall = (response) => {
-                console.log(response);
+                Samvaarta.model.showSuccessMessage(
+                    `<h2>Thank You</h2><p class="marg-t20">We have sent a new password at
+                    <strong>${reg_email}</strong>. Please check your email.</p>`,
+                    "y"
+                );
             };
 
             const ajaxErrorCall = (error) => {

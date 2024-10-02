@@ -1230,7 +1230,7 @@ Samvaarta.system = function () {
   var forgetPassword = function forgetPassword() {
     var reg_email = $("#oauth_log_email").val();
     $(".error").html("");
-    $(".authentication-form input").each(function () {
+    $(".signin-form input").each(function () {
       if ($(this).attr("type") != "button" && $(this).attr("type") != "checkbox") {
         Samvaarta.common.removeRequiredFields($(this));
         if (valError) {
@@ -1242,14 +1242,14 @@ Samvaarta.system = function () {
       return false;
     } else {
       var paramObject = {
-        url: apiUrl + "auth/forgot-password",
-        type: "post",
+        url: apiUrl + "api/forgot/password",
+        type: "POST",
         data: {
           email: reg_email
         }
       };
       var ajaxSuccessCall = function ajaxSuccessCall(response) {
-        console.log(response);
+        Samvaarta.model.showSuccessMessage("<h2>Thank You</h2><p class=\"marg-t20\">We have sent a new password at\n                    <strong>".concat(reg_email, "</strong>. Please check your email.</p>"), "y");
       };
       var ajaxErrorCall = function ajaxErrorCall(error) {
         if (error.response) {
