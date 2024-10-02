@@ -85,15 +85,15 @@ class ForgotPasswordController extends Controller
            // $data['otp'] = $otp;
 			$message='Your Password :: '.$otp."\r".\Setting::get('site_title'); 
            
-            $from_name = \Setting::get('site_title');
+            $from_name = 'GOALSNU';//\Setting::get('site_title');
 	 
 			$mail_to = $user->email;
 			$subject = "Your ".$from_name." Password is : ".$otp;
-			
+            
 			if($mail_to!=''){
 				$param = array(
 					'to_email'  =>$mail_to,
-					'from_email'=>\Setting::get('from_email'),
+					'from_email'=>'info@goalsnu.com',//\Setting::get('from_email'),
 					'from_name' =>$from_name,
 					'to_name' 	=>$from_name,
 					'subject'   =>$subject,
