@@ -34,6 +34,11 @@ class UserController extends Controller
         return view('contact');
     }
 
+    public function report()
+    {   
+        return view('pdfreport');
+    }
+
     public function myaccount()
     {   
         return view('myaccount');
