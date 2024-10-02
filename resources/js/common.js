@@ -1955,7 +1955,7 @@ Samvaarta.system = (() => {
             const ajaxErrorCall = (error) => {
                 if (error.response) {
                     $("#oauth_log_email_err")
-                        .html(error.response.data.message)
+                        .html('Email is not registered with us.')
                         .show();
                 }
             };

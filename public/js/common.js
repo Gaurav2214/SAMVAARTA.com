@@ -1289,7 +1289,7 @@ Samvaarta.system = function () {
       };
       var ajaxErrorCall = function ajaxErrorCall(error) {
         if (error.response) {
-          $("#oauth_log_email_err").html(error.response.data.message).show();
+          $("#oauth_log_email_err").html('Email is not registered with us.').show();
         }
       };
       Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
