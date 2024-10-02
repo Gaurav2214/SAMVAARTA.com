@@ -26,6 +26,7 @@ Route::get('/trainer-details', 'UserController@trainer_details');
 Route::get('/list', function () { return view('list'); });
 Route::get('/activate_list', function () { return view('activate_list'); });
 
+Route::get('/checkmail', 'UserController@checkmail');
 
 Route::group(['prefix' => 'admin'], function () {
   Route::get('/login', 'AdminAuth\LoginController@showLoginForm')->name('admin_login');

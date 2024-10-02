@@ -83,12 +83,12 @@ class ForgotPasswordController extends Controller
             //Notification::send($user, new ResetPasswordOTP($otp));
             //$data['phone'] = $request->phone;
            // $data['otp'] = $otp;
-			$message='Your Password : '.$otp."\r".\Setting::get('site_title'); 
+			$message='Your Password :: '.$otp."\r".\Setting::get('site_title'); 
            
             $from_name = \Setting::get('site_title');
 	 
 			$mail_to = $user->email;
-			$subject = $message;
+			$subject = "Your ".$from_name." Password is : ".$otp;
 			
 			if($mail_to!=''){
 				$param = array(
@@ -97,7 +97,7 @@ class ForgotPasswordController extends Controller
 					'from_name' =>$from_name,
 					'to_name' 	=>$from_name,
 					'subject'   =>$subject,
-					'body_part' =>$message,
+					'body_part' =>$otp,
 				);					
 				Helper::send_mail($param);
 			}
