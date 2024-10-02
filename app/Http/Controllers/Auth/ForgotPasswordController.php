@@ -112,12 +112,20 @@ class ForgotPasswordController extends Controller
             	     
             
         } catch(Exception $e) {
+            
             return response()->json([
                 'error' => trans('form.whoops')
             ], 500);
         }
     }else{
-        return $validator->errors();
+        $errors = $validator->errors();
+
+        $response = response()->json([
+            'status' => 'false',
+            'error' => $errors->messages(),
+        ], 422);
+
+        return $response;
     }
     }
 }
