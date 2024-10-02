@@ -2159,7 +2159,7 @@ Samvaarta.userDashboard = (() => {
                     <label for="session_duration">
                         Session Duration
                     </label>
-                    <input placeholder="" name="" type="text" id="session_duration" class="input_txt_box" value="" title="">
+                    <input placeholder="" min="1" max="300" maxlength = "3" type="number" name="" type="text" id="session_duration" class="input_txt_box" value="" title="">
                     <p id="session_duration_err" class="error validation"></p>
                 </div>
             </div>
@@ -2204,7 +2204,7 @@ Samvaarta.userDashboard = (() => {
                 </div>
             </div>
             <div class="form-elm-section marg-t20">
-                <input type="button" class="btn submit-button2" name="submit_profile" onclick="Samvaarta.userDashboard.updateSession(1);" value="Update Session">
+                <button class="btn submit-button2" onclick="Samvaarta.userDashboard.updateSession(1);">Update Session</button>
             </div>
         `;
         $('.upcoming_session_container').html(sessionForm);
@@ -2290,7 +2290,7 @@ Samvaarta.userDashboard = (() => {
                     <td>${(item.session_date).split(' ')[0]}</td>
                     <td>${item.topic}</td>
                     <td>${item.duration}</td>
-                    <td>${item?.trainer?.name ? item?.trainer?.name : Samvaarta.common.getLocalStorage('oauthUserData').data?.trainer[0]?.name}</td>
+                    <td>${item?.trainer?.name ? item?.trainer?.name : Samvaarta.common.getLocalStorage('oauthUserData')?.data?.trainer ? Samvaarta.common.getLocalStorage('oauthUserData').data?.trainer[0]?.name : ''}</td>
                 </tr>
             `;
         });
