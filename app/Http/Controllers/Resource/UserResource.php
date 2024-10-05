@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Resource;
 
-use Illuminate\Http\Request;
+use App\Models\Enquiry;
+ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
@@ -349,5 +350,11 @@ class UserResource extends Controller
    
 
 	}
+
+    public function enquiry()
+    {
+        $Enquiry = Enquiry::where(['status'=>'1'])->orderBy('id', 'DESC')->get();
+        return response()->json(['success' =>'true','data'=>$Enquiry,'count'=>count($Enquiry)]);
+    }
    
 }

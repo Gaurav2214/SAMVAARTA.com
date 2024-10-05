@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\EnquiryController;
 use Illuminate\Routing\RouteParameterBinder;
 
 /*
@@ -10,6 +11,8 @@ Route::post('/login', 'Auth\LoginController@login');
 Route::post('/register', 'Auth\RegisterController@apiregister');
 Route::post('/forgot/password','Auth\ForgotPasswordController@forgot_password');
 Route::post('/reset/password', 'Auth\ResetPasswordController@reset_password');
+
+Route::post('enquiry', 'EnquiryController@index');
 
 Route::get('learning-objective-types','Resource\CommonController@learning_objective_types');
 
@@ -65,6 +68,5 @@ Route::group(['prefix' => 'admin','middleware' => ['auth:api']], function () {
 	Route::post('session/update/{id}', 'Resource\SessionController@update');
 	
 	Route::get('download-report','Resource\UserResource@downloadReport');
-
-
+	Route::get('enquiry','Resource\UserResource@enquiry');
 });
