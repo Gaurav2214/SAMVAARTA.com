@@ -2,7 +2,7 @@
 @include('layouts.header')
 @include('layouts.nav')
 
-<section class="contact-us">
+<section class="about-us">
 
 </section>
 

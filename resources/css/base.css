@@ -1492,7 +1492,7 @@ p {
     background: #db6d0d;
     content: "";
     display: block;
-    width: 24px;
+    width: 50px;
     height: 4px;
     margin-top: 16px; }
 
@@ -1674,3 +1674,28 @@ footer {
       font-family: Montserrat, sans-serif;
       font-weight: 500;
       color: #595959; }
+
+.useful-links {
+  margin-top: 50px; }
+  .useful-links li {
+    font-size: 18px;
+    line-height: 26px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    color: #262626;
+    display: inline-block;
+    width: 46%;
+    margin-left: 20px;
+    border-bottom: solid 1px #e6e6e6;
+    margin-bottom: 20px;
+    padding-bottom: 10px; }
+    .useful-links li a {
+      color: #191b1f; }
+      .useful-links li a svg {
+        margin-left: 5px;
+        transition: all .3s ease-in; }
+      .useful-links li a:hover, .useful-links li a:focus {
+        color: #ED1C24; }
+        .useful-links li a:hover svg, .useful-links li a:hover path, .useful-links li a:focus svg, .useful-links li a:focus path {
+          fill: #ED1C24;
+          margin-left: 10px; }

@@ -1344,9 +1344,12 @@
         background: $clr-26;
         content: "";
         display: block;
-        width: 24px;
+        width: rem(50);
         height: 4px;
         margin-top: 16px;
+    }
+    &.left-align{
+        
     }
 }
 .think-container{
@@ -1549,6 +1552,33 @@ footer{
             font-family: Montserrat, sans-serif;
             font-weight: 500;
             color: #595959;
+        }
+    }
+}
+
+.useful-links{
+    margin-top: rem(50);
+    li{
+        @include desc-11();
+        display: inline-block;
+        width: 46%;
+        margin-left: 20px;
+        border-bottom: solid 1px #e6e6e6;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        a{
+            color: #191b1f;
+            svg{
+                margin-left: 5px;
+                transition: all .3s ease-in;
+            }
+            @include hover(){
+                color: $primary;
+                svg, path{
+                    fill: $primary;
+                    margin-left: rem(10);
+                }
+            }
         }
     }
 }

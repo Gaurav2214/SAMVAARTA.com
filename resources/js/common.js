@@ -26,7 +26,7 @@ var oauthUserData = '';
 
 Samvaarta.globalVar = Samvaarta.globalVar || {
     errorValueInFlow: "",
-    is_Loggedin: 0,
+    is_loggedin: 0,
     oauthToken: "",
     currlocation: "",
     userType: userType,
@@ -1425,7 +1425,7 @@ Samvaarta.system = (() => {
         var token = Samvaarta.common.getLocalStorage("AccessToken");
         if (userData) {
             Samvaarta.globalVar.is_loggedin = 1;
-            if (window.location.pathname === "/") {
+            if (window.location.pathname === "/login") {
                 window.location.href = "/dashboard";
             }
             
@@ -1757,7 +1757,7 @@ Samvaarta.system = (() => {
             nextSession = `<li class="user_next_interaction">Next Session Date: <span></span></li>`;
             userExp = response?.experience ? `<li>Experience in Years: <span>${response.experience}</span></li>` : '';
             userFun = response?.user_function ? `<li>Function: <span>${response.user_function}</span></li>` : '';
-            downloadReport = `<li class="download-report"><button class="btn">Download Report</button></li>`;
+            downloadReport = `<li class="download-report"><button class="btn" onclick="Samvaarta.system.userReport()">Download Report</button></li>`;
 
         }
         const userInfo = `
@@ -1816,6 +1816,35 @@ Samvaarta.system = (() => {
         $('.download-report .btn').addClass('disabled');
         var paramObject = {
             url: apiUrl + "api/admin/download-report",
+            type: "GET",
+            headers: {
+                Authorization: `Bearer ${Samvaarta.common.getLocalStorage("AccessToken").access_token}`,
+                Accept: "application/json",
+            },
+        };
+
+        const ajaxSuccessCall = async(response) => {
+            response = response.data.data;
+            setTimeout(()=>{
+                $('.download-report .btn').removeClass('disabled');
+            }, 5000);
+            window.open(response);            
+        };
+
+        const ajaxErrorCall = (response) => {
+            console.log(response);
+        };
+
+        Samvaarta.common.hitAjaxApi(
+            paramObject,
+            ajaxSuccessCall,
+            ajaxErrorCall
+        );
+    }
+    const userReport = () => {
+        $('.download-report .btn').addClass('disabled');
+        var paramObject = {
+            url: apiUrl + "api/profile/download-report",
             type: "GET",
             headers: {
                 Authorization: `Bearer ${Samvaarta.common.getLocalStorage("AccessToken").access_token}`,
@@ -1955,7 +1984,7 @@ Samvaarta.system = (() => {
             const ajaxErrorCall = (error) => {
                 if (error.response) {
                     $("#oauth_log_email_err")
-                        .html(error.response.data.message)
+                        .html('Email is not registered with us.')
                         .show();
                 }
             };
@@ -2019,7 +2048,8 @@ Samvaarta.system = (() => {
         assignedTrainer: assignedTrainer,
         activateDeactivateUser: activateDeactivateUser,
         adminDashboard: adminDashboard,   
-        adminReport: adminReport,     
+        adminReport: adminReport,    
+        userReport: userReport, 
     };
 })();
 
@@ -2129,7 +2159,7 @@ Samvaarta.userDashboard = (() => {
                     <label for="session_duration">
                         Session Duration
                     </label>
-                    <input placeholder="" name="" type="text" id="session_duration" class="input_txt_box" value="" title="">
+                    <input placeholder="" min="1" max="300" maxlength = "3" type="number" name="" type="text" id="session_duration" class="input_txt_box" value="" title="">
                     <p id="session_duration_err" class="error validation"></p>
                 </div>
             </div>
@@ -2174,7 +2204,7 @@ Samvaarta.userDashboard = (() => {
                 </div>
             </div>
             <div class="form-elm-section marg-t20">
-                <input type="button" class="btn submit-button2" name="submit_profile" onclick="Samvaarta.userDashboard.updateSession(1);" value="Update Session">
+                <button class="btn submit-button2" onclick="Samvaarta.userDashboard.updateSession(1);">Update Session</button>
             </div>
         `;
         $('.upcoming_session_container').html(sessionForm);
@@ -2260,7 +2290,7 @@ Samvaarta.userDashboard = (() => {
                     <td>${(item.session_date).split(' ')[0]}</td>
                     <td>${item.topic}</td>
                     <td>${item.duration}</td>
-                    <td>${item?.trainer?.name}</td>
+                    <td>${item?.trainer?.name ? item?.trainer?.name : Samvaarta.common.getLocalStorage('oauthUserData')?.data?.trainer ? Samvaarta.common.getLocalStorage('oauthUserData').data?.trainer[0]?.name : ''}</td>
                 </tr>
             `;
         });
@@ -3466,11 +3496,16 @@ document.addEventListener("readystatechange", (event) => {
 
     if (event.target.readyState === "complete") {
         unvielImg();   
-        if(!Samvaarta.common.getLocalStorage('sessionList')){                    
-            Samvaarta.userDashboard.getSessionList(userType === 'admin' ? "api/admin/sessions" : "api/profile/session-listing");
-        } else {
-            Samvaarta.userDashboard.displaySessionList(Samvaarta.common.getLocalStorage('sessionList'));
-        } 
+        setTimeout(() => {
+            if(Samvaarta.globalVar.is_loggedin){
+                if(!Samvaarta.common.getLocalStorage('sessionList')){                    
+                    Samvaarta.userDashboard.getSessionList(userType === 'admin' ? "api/admin/sessions" : "api/profile/session-listing");
+                } else {
+                    Samvaarta.userDashboard.displaySessionList(Samvaarta.common.getLocalStorage('sessionList'));
+                } 
+            }
+        }, 1000);
+        
         faqEventBind();       
     }
 });
