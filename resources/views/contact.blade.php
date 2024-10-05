@@ -32,7 +32,7 @@
             <label for="oauth_log_msg">
                 What would you like to share?
             </label>
-            <input required="" data-id="" placeholder="" name="" type="number" id="oauth_log_msg" class="input_txt_box valid" value="" >
+            <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_msg" class="input_txt_box valid" value="" >
             <p id="oauth_log_msg_err" class="error"></p>
         </div>
         <div class="form-elm-section marg-t10">
