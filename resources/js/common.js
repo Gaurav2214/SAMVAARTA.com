@@ -1502,11 +1502,13 @@ Samvaarta.system = (() => {
             
             displayUserInfo(userData);
             window.loginCallback ? loginCallback(response) : false;
-            setTimeout(() => {
-                if(Samvaarta.common.getLocalStorage('DocConversationDetail')){
-                    Samvaarta.setGetUserDashboard.previousTransactions(Samvaarta.common.getLocalStorage('DocConversationDetail'));
-                } else {
-                    Samvaarta.setGetUserDashboard.getDocConversation();
+            setTimeout(() => {                
+                if(oauthUserData?.user_type === 'user'){
+                    if(Samvaarta.common.getLocalStorage('DocConversationDetail')){
+                        Samvaarta.setGetUserDashboard.previousTransactions(Samvaarta.common.getLocalStorage('DocConversationDetail'));
+                    } else {
+                        Samvaarta.setGetUserDashboard.getDocConversation();
+                    }
                 }
             }, 1000);
         } else if(token){
@@ -1808,13 +1810,14 @@ Samvaarta.system = (() => {
     };
 
     const showUserInfo = (response) => {
+        var typeUser = Samvaarta.common.isOperatable(window.userDefineType) ? window.userDefineType : 'users';
         var coachInfo = '', cochees = '', trainer = '', plannedSess = '', 
         concluded = '', nextSession = '', completeSessCount = '', userExp = '', userFun = '', downloadReport = '';
         if (response.user_type === "admin") {
             cochees = `<li>No of Coachees: <span></span></li>`;
             trainer = `<li>No of Coaches: <span></span></li>`; 
             downloadReport = `<li class="download-report"><button class="btn" onclick="Samvaarta.system.adminReport()">Download Report</button></li>`;
-            adminDashboard('users');
+            adminDashboard(typeUser);
         } else if (response.user_type === "trainer") {
             cochees = `<li>No of Coachees: <span>${response?.users?.length}</span></li>`;
             completeSessCount = `<li>No of sessions completed: <span></span></li>`;
@@ -1974,6 +1977,11 @@ Samvaarta.system = (() => {
                     <a tabindex="0" role="button" href="/trainer-details">
                     <i class="fa fa-info-circle" aria-hidden="true"></i>Trainer Detail
                     </a>
+                </li>
+                <li>
+                    <a tabindex="0" role="button" href="/enquiries">
+                    <i class="fa fa-question-circle" aria-hidden="true"></i>Enquires
+                    </a>
                 </li>	
                 `;
                 Samvaarta.userDashboard.updateSessionForm();
@@ -2102,6 +2110,59 @@ Samvaarta.system = (() => {
         );
     }
 
+    const enquiriesDetail = () => {
+        var paramObject = {
+            url: apiUrl + "api/admin/enquiry",
+            type: "GET",            
+            headers: {
+                Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+                Accept: "application/json",
+            },
+        };
+
+        function ajaxSuccessCall(data) {
+            //console.log(data);
+            enquiryList(data?.data?.data);
+        }
+        function ajaxErrorCall(data) {
+            
+        }
+        Samvaarta.common.hitAjaxApi(
+            paramObject,
+            ajaxSuccessCall,
+            ajaxErrorCall
+        );
+    }
+
+    const enquiryList = (list) => {
+        let userList = '';
+        list.map((item, index) => {
+            userList += `<tr>
+                            <td>${index+1}</td>
+                            <td>${item.first_name}</td>
+                            <td>${item.email}</td>
+                            <td>${item.mobile_number}</td>
+                            <td>${item.message}</td>
+                        </tr>` 
+        })
+        let enqList = `           
+            <table>
+                <tbody>
+                    <tr class="user-dashboard-info__head-list">
+                        <td>SNO.</td>
+                        <td>Name</td>
+                        <td>Email</td>                
+                        <td>Contact</td>
+                        <td>Message</td>
+                    </tr>
+                    ${userList}
+                </tbody>
+            </table>
+            
+        `;
+        $('.enquiries-page .user-data-list').html(enqList);
+    }
+
     return {
         loginUser: loginUser,
         userRegistration: userRegistration,
@@ -2122,6 +2183,7 @@ Samvaarta.system = (() => {
         adminReport: adminReport,    
         userReport: userReport, 
         userInfoDetail: userInfoDetail,
+        enquiriesDetail: enquiriesDetail,
     };
 })();
 
@@ -3564,6 +3626,7 @@ document.addEventListener("readystatechange", (event) => {
 
         }
         joinHere();
+
     }
 
     if (event.target.readyState === "complete") {
@@ -3575,6 +3638,10 @@ document.addEventListener("readystatechange", (event) => {
                 } else {
                     Samvaarta.userDashboard.displaySessionList(Samvaarta.common.getLocalStorage('sessionList'));
                 } 
+
+                if(oauthUserData?.user_type === 'admin'){
+                    Samvaarta.system.enquiriesDetail();
+                }
             }
         }, 1000);
         
