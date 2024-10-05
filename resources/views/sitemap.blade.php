@@ -2,8 +2,8 @@
 @include('layouts.header')
 @include('layouts.nav')
 
-<section class="contact-us">
-
+<section class="sitemap">
+    
 </section>
 
 @include('layouts.footer')
