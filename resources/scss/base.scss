@@ -938,6 +938,14 @@
                     }
                 }                    
             }
+            &.sitemap{
+                table tr td:nth-child(2){
+                    width: 30%;
+                }
+            }
+            .upcoming-events{
+                margin-top: rem(30);
+            }
         }
     }
 }
@@ -1331,11 +1339,7 @@
     flex-direction: column;
     margin-bottom: rem(20);
     h2{
-        font-size: 24px;
-        line-height: 32px;
-        font-family: $font-montserrat;
-        font-weight: 700;
-        color: #191b1f;
+        @include heading-1();
         text-align: -webkit-center;
         text-transform: capitalize;
     }
@@ -1582,5 +1586,64 @@ footer{
         }
     }
 }
-
+.cinfo{
+    line-height: 28px;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 500;
+    color: #191b1f;
+    font-size: 16px;
+}
+.top-sec{
+    h3{
+        @include heading-3();
+    }
+    &__item{
+        @include set-flex-box($jc:flex-start);
+        gap: rem(20);
+        margin-top: rem(10);
+        &--left{
+            @include desc-5();
+            width: 70%;
+        }
+        &--right{
+            img{
+                border-radius: rem(12);
+            }
+        }
+        @include breakpointmax($end-small){
+            flex-direction: column;
+            &--left{
+                width: 100%;
+            }
+        }
+    }
+    &__mid{
+        margin-top: rem(20);        
+        p{
+            @include desc-5();
+            margin-top: rem(10);
+        }
+        ul{
+            margin-top: rem(10);
+            padding-left: rem(20);
+            li{
+                @include desc-10();
+                list-style-type: disc;
+            }
+        }
+        h5{
+            @include desc-10();
+            line-height: rem(26);
+            span{
+                color: $clr-4;
+            }
+        }
+        h4{
+            @include desc-11();
+            margin-top: rem(10);
+            font-size: rem(16);
+            font-weight: 700;
+        }
+    }
+}
 

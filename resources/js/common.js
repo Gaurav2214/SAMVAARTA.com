@@ -783,6 +783,64 @@ Samvaarta.system = (() => {
         showFormToggle();
     };
 
+    const userInfoDetail = () => {
+        var name = document.getElementById("oauth_log_name").value;
+        var email = document.getElementById("oauth_log_email").value;
+        var phonenum = document.getElementById("oauth_log_number").value;
+        var msg = document.getElementById("oauth_log_msg").value;
+        var errorElements = document.querySelectorAll(".error");
+        errorElements.forEach(function (el) {
+            el.innerHTML = "";
+        });
+
+        var inputElements = document.querySelectorAll(
+            ".contact-form .input_txt_box"
+        );
+        for (let i = 0; i < inputElements.length; i++) {
+            if (
+                inputElements[i].type !== "button" &&
+                inputElements[i].type !== "checkbox"
+            ) {
+                Samvaarta.common.removeRequiredFields(inputElements[i]);
+                if (valError) {
+                    return false;
+                }
+            }
+        }
+        if (valError) {
+            return false;
+        } else {
+            var paramObject = {
+                url: apiUrl + "api/profile/update",
+                type: "POST",
+                data: {
+                    name: name,
+                    email: email,
+                    number: phonenum,
+                    message: msg,
+                },
+                headers: {
+                    Accept: "application/json",
+                },
+            };
+
+            function ajaxSuccessCall(data) {
+                Samvaarta.model.showSuccessMessage(
+                    `<h2>Thank You</h2><p>${Samvaarta.messageLog[11]}</p>`,
+                    "y"
+                );
+            }
+            function ajaxErrorCall(data) {
+                
+            }
+            Samvaarta.common.hitAjaxApi(
+                paramObject,
+                ajaxSuccessCall,
+                ajaxErrorCall
+            );
+        }
+    }
+
     const forgetPassModule = () => {
         let forgetPass = `<div class="login-form">
         <div class="heading" style="text-align:left">
@@ -2050,6 +2108,7 @@ Samvaarta.system = (() => {
         adminDashboard: adminDashboard,   
         adminReport: adminReport,    
         userReport: userReport, 
+        userInfoDetail: userInfoDetail,
     };
 })();
 

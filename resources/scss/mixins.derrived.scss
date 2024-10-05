@@ -6,10 +6,10 @@
 // Typography Definitions
 
 @mixin heading-1() {
-    @include set-typography($fs: 40, $lh: 48);
-    font-family: $font-openSans;
+    @include set-typography($fs: 28, $lh: 36);
+    font-family: $font-montserrat;
     font-weight: $bold;
-    color: $clr-1;
+    color: $clr-4;
   }
   
   
