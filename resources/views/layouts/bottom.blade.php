@@ -16,6 +16,7 @@
                         <li><a href="" title="">Certifications</a></li>
                         <li><a href="" title="">Developement</a></li>
                         <li><a href="" title="">Articles & Blogs</a></li>
+                        <li><a href="/sitemap" title="">Sitemap</a></li>
                     </ul>
                     <ul class="mobile-view">                
                         <li><a href="" title="">Certifications</a></li>
