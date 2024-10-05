@@ -23,6 +23,7 @@ Route::get('/sitemap.xml', 'UserController@sitemapXML');
 Route::get('/certifications', 'UserController@certifications');
 Route::get('/article-blogs', 'UserController@articleBlogs');
 Route::get('/developments', 'UserController@developments');
+Route::get('/enquiries', 'UserController@enquiries');
 Route::get('/report', 'UserController@report');
 Route::get('/dashboard', 'UserController@dashboard');
 Route::get('/myaccount', 'UserController@myaccount');

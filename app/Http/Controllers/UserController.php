@@ -63,6 +63,11 @@ class UserController extends Controller
         return view('developments');
     }
 
+    public function enquiries()
+    {   
+        return view('enquiries');
+    }
+
     public function upcomingEvents()
     {   
         return view('upcomingEvents');
