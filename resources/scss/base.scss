@@ -72,6 +72,7 @@
                 h2 {
                     @include heading-1();
                     @include set-typography(26, 38);
+                    color: $clr-1;
                 }
                 p {
                     margin-top: rem(10);
@@ -1378,8 +1379,8 @@
         @include breakpointmax($end-small){
             flex-wrap: wrap;
             img{
-                height: rem(120);
-                width: rem(120);
+                height: rem(100);
+                width: rem(100);
             }
         }
     }
@@ -1395,6 +1396,13 @@
             img{
                 height: rem(150);
                 width: rem(150);
+            }
+            @include breakpointmax($end-small){
+                flex-wrap: wrap;
+                img{
+                    height: rem(90);
+                    width: rem(90);
+                }
             }
         }
     }
