@@ -22,6 +22,7 @@ Route::get('/upcomingEvents', 'UserController@upcomingEvents');
 Route::get('/sitemap.xml', 'UserController@sitemapXML');
 Route::get('/certifications', 'UserController@certifications');
 Route::get('/article-blogs', 'UserController@articleBlogs');
+Route::get('/developments', 'UserController@developments');
 Route::get('/report', 'UserController@report');
 Route::get('/dashboard', 'UserController@dashboard');
 Route::get('/myaccount', 'UserController@myaccount');

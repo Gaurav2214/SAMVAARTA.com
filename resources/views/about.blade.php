@@ -47,7 +47,7 @@
                         Shweta Dayal is an experienced hand in leading and supporting the growth of women entrepreneurs who are trying to kickstart their journey in the business world. She creates an ecosystem where the women entrepreneurs are freely engaging with each other, discussing concerns and exploring to grow their operations as they navigate their way in the business world. Her core strength lies in creating an effective and an engaging community of women who are starting fresh. She is also an experienced teacher with amazing student following. 
                         </div>
                         <div class="top-sec__item--right">
-                            <img width="300" height="310" src="/images/sweta-dayal.jpeg" alt="">
+                            <img width="170" height="180" src="/images/sweta-dayal.jpeg" alt="">
                         </div>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                     <h4>DEEPAK KUMAR – CO-FOUNDER – GOALS N U  </h4>
                     <div class="top-sec__item">
                         <div class="top-sec__item--right">
-                            <img width="300" height="310" src="/images/deepak-kumar.jpeg" alt="">
+                            <img width="170" height="180" src="/images/deepak-kumar.jpeg" alt="">
                         </div>
                         <div class="top-sec__item--left">
                         Deepak is passionate about working with people and startups. He has helped many high potential employees and teams achieve their goals. He has also helped build innovation capabilities of hundreds of employees and students through design thinking projects. His core strength lies in building capability of teams and individuals and mentoring them. 

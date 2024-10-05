@@ -1,5 +1,5 @@
         <?php
-        $fileVersion = 15;
+        $fileVersion = 16;
         ?>
         <footer>
             <div class="top-footer">
@@ -14,13 +14,13 @@
                     </div>
                     <ul class="desktop-view">
                         <li><a href="/certifications" title="">Certifications</a></li>
-                        <li><a href="https://www.forbes.com/advisor/business/employee-development-plan/" title="">Developement</a></li>
-                        <li><a href="article-blogs" title="">Articles & Blogs</a></li>
+                        <li><a href="/developments" title="">Developement</a></li>
+                        <li><a href="/article-blogs" title="">Articles & Blogs</a></li>
                         <li><a href="/sitemap" title="">Sitemap</a></li>
                     </ul>
                     <ul class="mobile-view">
                         <li><a href="/certifications" title="">Certifications</a></li>
-                        <li><a href="https://www.forbes.com/advisor/business/employee-development-plan/" title="">Developement</a></li>
+                        <li><a href="/developments" title="">Developement</a></li>
                         <li><a href="/article-blogs" title="">Articles & Blogs</a></li>
                     </ul>
                 </div>

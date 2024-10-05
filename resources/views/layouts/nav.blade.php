@@ -8,7 +8,7 @@
                 <div class="navigation__more">
                     <nav class="navigation__more--dropdown">
                         <a href="/certifications">Certifications</a>
-                        <a href="https://www.forbes.com/advisor/business/employee-development-plan/">Development</a>
+                        <a href="/developments">Development</a>
                         <a href="/article-blogs">Articles & Blogs</a>
                     </nav>
                 </div>
