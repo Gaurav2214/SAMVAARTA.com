@@ -22,6 +22,10 @@ use App\Models\PerformanceData;
 use App\Models\PerformanceDataOthers;
 use App\Models\ClosureUserExperinces;
 use App\Models\ClosureTrainerExperinces;
+
+use Barryvdh\DomPDF\Facade\Pdf;
+
+
 class ProfileController extends Controller
 {
 	/**
@@ -915,27 +919,29 @@ class ProfileController extends Controller
 			}
 		}
 
-		$fileName = "user/reports/report-".$user_id."-".date('YmdHis').'.csv';
-    	$columns = array('name', 'email','phone','vision','description','created_at','Trainer');
-		$csv =implode(",",$columns);
+		$DocumentConversations= DocumentConversations::trainerComment()->with('session','session.trainer')->where('document_conversations.user_id', $user_id)->select('document_conversations.*','trainer_comments.comments');
 
+		$DocumentConversations= $DocumentConversations->get()->toArray();
+
+		$PerformanceData=PerformanceData::where("user_id",$user_id)->orderBy('id',"desc")->get()->toArray();
+
+		$PerformanceDataOthers=PerformanceDataOthers::where("user_id",$user_id)->orderBy('id',"desc")->first()->toArray();
+
+		$LearningOutcomes= LearningOutcomes::where('user_id', $request->user()->id)->first();
+
+			
+		$html=view('pdf.report', compact(
+					  'user','DocumentConversations','PerformanceData',
+					  'PerformanceDataOthers','LearningOutcomes'
+				  ))->render()
+			  ;
+	 
+		$file_name='storage/report-'.$user_id.'-'.date('Y-m-dHis').".pdf";
+			  
+		Pdf::loadHTML($html)->setPaper('a4', 'landscape')->setWarnings(false)->save($file_name);
 		
-		$data=[];
-		$data[]=$user['name'];
-		$data[]=$user['email'];
-		$data[]=$user['phone'];
-		$data[]=$user['vision'];
-		$data[]=$user['description'];
-		$data[]=$user['created_at'];
-		$data[]=isset($user['trainer'][0]['name'])?$user['trainer'][0]['name']:"";
 
-	
-	   $csv .=PHP_EOL;
-	   $csv .=implode(",",$data);
-
-	   Storage::disk('public')->put($fileName, $csv);
-
-		return response()->json(['data' =>asset('storage/'.$fileName),"success"=>"true","message"=>"Successfully generated"]);
+		return response()->json(['data' =>asset($file_name),"success"=>"true","message"=>"Successfully generated"]);
    
 
 	}
