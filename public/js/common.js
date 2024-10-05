@@ -34,7 +34,8 @@ Samvaarta.messageLog = {
   14: "You have successfully submitted your desired outcomes.",
   15: "You have successfully submitted your desired objectives.",
   16: "You have successfully submitted your documenting conversions.",
-  17: "You have successfully submitted your experience with Goalsnu."
+  17: "You have successfully submitted your experience with Goalsnu.",
+  18: "We will get in touch with you soon"
 };
 var valError = true;
 var apiUrl = typeof appUrl != "undefined" ? appUrl : "http://127.0.0.1:8000/";
@@ -283,6 +284,7 @@ Samvaarta.common = function () {
       case "outcomes_desc_1":
       case "outcomes_desc_2":
       case "outcomes_desc_3":
+      case "oauth_log_msg":
         handleBlankNameVal(13);
     }
     return error;
@@ -411,7 +413,8 @@ Samvaarta.common = function () {
       outcomes_param_3: validateName,
       outcomes_desc_1: validateName,
       outcomes_desc_2: validateName,
-      outcomes_desc_3: validateName
+      outcomes_desc_3: validateName,
+      oauth_log_msg: validateName
     };
 
     // Iterate through the validation functions
@@ -650,16 +653,17 @@ Samvaarta.system = function () {
       return false;
     } else {
       var ajaxSuccessCall = function ajaxSuccessCall(data) {
-        Samvaarta.model.showSuccessMessage("<h2>Thank You</h2><p>".concat(Samvaarta.messageLog[11], "</p>"), "y");
+        $(".contact-form .input_txt_box").val('');
+        Samvaarta.model.showSuccessMessage("<img width=\"50\" height=\"50\" class=\"success-img-tick\" src=\"/images/success-gif.gif\" alt=\"\">\n                    <h2>Thank You</h2><p>".concat(Samvaarta.messageLog[18], "</p>"), "y");
       };
       var ajaxErrorCall = function ajaxErrorCall(data) {};
       var paramObject = {
-        url: apiUrl + "api/profile/update",
+        url: apiUrl + "api/enquiry",
         type: "POST",
         data: {
           name: name,
           email: email,
-          number: phonenum,
+          mobile: phonenum,
           message: msg
         },
         headers: {

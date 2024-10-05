@@ -16,6 +16,7 @@ Samvaarta.messageLog = {
     15: "You have successfully submitted your desired objectives.",
     16: "You have successfully submitted your documenting conversions.",
     17: "You have successfully submitted your experience with Goalsnu.",
+    18: "We will get in touch with you soon",
 };
 
 var valError = true;
@@ -312,6 +313,7 @@ Samvaarta.common = (() => {
             case "outcomes_desc_1":    
             case "outcomes_desc_2":    
             case "outcomes_desc_3":    
+            case "oauth_log_msg":
                 handleBlankNameVal(13);            
         }
         return error;
@@ -455,7 +457,8 @@ Samvaarta.common = (() => {
             outcomes_param_3: validateName,   
             outcomes_desc_1: validateName,   
             outcomes_desc_2: validateName,   
-            outcomes_desc_3: validateName,   
+            outcomes_desc_3: validateName, 
+            oauth_log_msg: validateName,
         };
 
         // Iterate through the validation functions
@@ -811,12 +814,12 @@ Samvaarta.system = (() => {
             return false;
         } else {
             var paramObject = {
-                url: apiUrl + "api/profile/update",
+                url: apiUrl + "api/enquiry",
                 type: "POST",
                 data: {
                     name: name,
                     email: email,
-                    number: phonenum,
+                    mobile: phonenum,
                     message: msg,
                 },
                 headers: {
@@ -825,8 +828,10 @@ Samvaarta.system = (() => {
             };
 
             function ajaxSuccessCall(data) {
+                $(".contact-form .input_txt_box").val('');
                 Samvaarta.model.showSuccessMessage(
-                    `<h2>Thank You</h2><p>${Samvaarta.messageLog[11]}</p>`,
+                    `<img width="50" height="50" class="success-img-tick" src="/images/success-gif.gif" alt="">
+                    <h2>Thank You</h2><p>${Samvaarta.messageLog[18]}</p>`,
                     "y"
                 );
             }
