@@ -68,6 +68,5 @@ Route::group(['prefix' => 'admin','middleware' => ['auth:api']], function () {
 	Route::post('session/update/{id}', 'Resource\SessionController@update');
 	
 	Route::get('download-report','Resource\UserResource@downloadReport');
-
-
+	Route::get('enquiry','Resource\UserResource@enquiry');
 });
