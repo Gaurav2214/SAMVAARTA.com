@@ -190,6 +190,11 @@
     width: 26px;
     height: 26px;
     outline: 0; }
+  .sprite-icon-img.whatsapp-icon {
+    background-position: -478px -349px;
+    width: 25px;
+    height: 25px;
+    margin-left: 10px; }
 
 * {
   word-wrap: break-word; }
@@ -1815,3 +1820,24 @@ footer {
     margin-left: 0; }
     .certifications ul li:last-child {
       border-bottom: none; }
+
+.sticky-container {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  cursor: pointer; }
+  .sticky-container .btn {
+    border-radius: 12px;
+    background: #F5F5F5;
+    border: 1px solid #ccc;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #191b1f; }
+  @media screen and (max-width: 1000px) {
+    .sticky-container {
+      right: 10px;
+      bottom: 10px; }
+      .sticky-container .btn span {
+        margin-left: 0; } }

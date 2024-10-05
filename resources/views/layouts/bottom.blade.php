@@ -1,5 +1,5 @@
         <?php
-        $fileVersion = 16;
+        $fileVersion = 17;
         ?>
         <footer>
             <div class="top-footer">
@@ -27,6 +27,12 @@
                 <div class="section-copyright">
                     <p>@2024 Goalsnu.com. All Right Reserved.</p>
                 </div>
+            </div>
+            <div class="sticky-container">
+            <button onclick="Samvaarta.common.initWhatsApp();" class="btn">
+                <span class="desktop-view">Need Help</span>
+                <span class="whatsapp-icon sprite-icon-img"></span>
+            </button>
             </div>
         </footer>
         <script>

@@ -24,6 +24,7 @@ var apiUrl = typeof(appUrl) != "undefined" ? appUrl : "http://127.0.0.1:8000/";
 var expireTime = 10 / (24 * 60);
 var userType = '';
 var oauthUserData = '';
+var deviceType = ($(window).width() >= 780) ? 'desktop' : 'mobile';
 
 Samvaarta.globalVar = Samvaarta.globalVar || {
     errorValueInFlow: "",
@@ -575,6 +576,12 @@ Samvaarta.common = (() => {
         $( "#datepicker" ).datepicker("option", "dateFormat", "yy-mm-dd");      
     }
 
+    const initWhatsApp = () => {
+        var mnum = '+918511044072';
+        var msg = `Hello, could you assist me in exploring opportunities with GOALSNU?`;
+        deviceType == 'desktop' ? window.open("https://web.whatsapp.com/send?phone=" + mnum + "&text=" + msg, "_blank", "noopener") : window.open("https://wa.me/" + mnum + "?text=" + msg, "_blank", "noopener");
+    }
+
     return {
         isNull: isNull,
         isBlank: isBlank,
@@ -591,6 +598,7 @@ Samvaarta.common = (() => {
         toastMsg: toastMsg,
         dataPicker: dataPicker,
         dayMonthNameYear: dayMonthNameYear,
+        initWhatsApp: initWhatsApp,
     };
 })();
 
