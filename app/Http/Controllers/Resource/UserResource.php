@@ -15,7 +15,8 @@ use App\Models\DocumentConversations;
 use App\Models\TrainerComment;
 use App\Models\TrainingSession;
 use App\Models\LearningOutcomes;
- 
+ use App\PDFGenerate;
+
 
 
 class UserResource extends Controller
