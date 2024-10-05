@@ -1748,3 +1748,20 @@ footer {
     font-size: 16px;
     font-weight: 700; }
 
+.certifications ul {
+  margin-top: 12px;
+  list-style: decimal;
+  list-style-position: inside; }
+  .certifications ul li {
+    font-size: 14px;
+    line-height: 21px;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 500;
+    color: #191b1f;
+    width: 100%;
+    list-style-type: decimal;
+    display: list-item;
+    margin-left: 0; }
+    .certifications ul li:last-child {
+      border-bottom: none; }
+

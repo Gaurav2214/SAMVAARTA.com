@@ -1647,3 +1647,21 @@ footer{
     }
 }
 
+.certifications{
+    ul{
+        margin-top: rem(12);
+        list-style: decimal;
+        list-style-position: inside;
+        li{
+            @include desc-5();     
+            width: 100%;  
+            list-style-type: decimal; 
+            display: list-item;
+            margin-left: 0;
+            &:last-child(){
+                border-bottom: none;
+            }
+        }
+    }
+}
+
