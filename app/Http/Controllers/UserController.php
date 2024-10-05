@@ -58,6 +58,10 @@ class UserController extends Controller
     {   
         return view('articleBlogs');
     }
+    public function developments()
+    {   
+        return view('developments');
+    }
 
     public function upcomingEvents()
     {   

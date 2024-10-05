@@ -7,7 +7,7 @@
         <h2>Certifications</h2>        
     </div>
     <div class="top-sec containerMid">
-        <h4>Important Certification Linkes</h4>
+        <h4 class="hide">Important Certification Linkes</h4>
         <ul class="useful-links">
             <li><a target="_blank" title="" href="https://coachingfederation.org/">International Coaching Federation</a> </li>
             <li><a target="_blank" title="" href="https://asq.org/">American Society of Quality</a></li>

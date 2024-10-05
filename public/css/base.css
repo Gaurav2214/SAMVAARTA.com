@@ -1682,7 +1682,8 @@ footer {
   line-height: 32px;
   font-family: "Open Sans", sans-serif;
   font-weight: 500;
-  color: #191b1f; }
+  color: #191b1f;
+  font-weight: 700; }
 
 .top-sec__item {
   -ms-display: flex;
@@ -1735,9 +1736,10 @@ footer {
     font-family: "Open Sans", sans-serif;
     font-weight: 500;
     color: #808080;
-    line-height: 26px; }
+    line-height: 36px; }
     .top-sec__mid h5 span {
-      color: #191b1f; }
+      color: #191b1f;
+      font-weight: 700; }
   .top-sec__mid h4 {
     font-size: 18px;
     line-height: 26px;

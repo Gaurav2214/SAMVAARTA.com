@@ -1596,6 +1596,7 @@ footer{
 .top-sec{
     h3{
         @include heading-3();
+        font-weight: 700;
     }
     &__item{
         @include set-flex-box($jc:flex-start);
@@ -1633,9 +1634,10 @@ footer{
         }
         h5{
             @include desc-10();
-            line-height: rem(26);
+            line-height: rem(36);
             span{
                 color: $clr-4;
+                font-weight: 700;
             }
         }
         h4{
