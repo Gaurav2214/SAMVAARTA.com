@@ -792,6 +792,7 @@ Samvaarta.system = (() => {
                 regForm;
         }
         showFormToggle();
+        $('.login-module__main--left .circle').removeClass('hide');
     };
 
     const userInfoDetail = () => {
@@ -918,6 +919,7 @@ Samvaarta.system = (() => {
             loginForm : '';
         showFormToggle();
         forgetPassModule();
+        $('.login-module__main--left .circle').addClass('hide');
     };
 
     const showFormToggle = () => {
@@ -1540,8 +1542,11 @@ Samvaarta.system = (() => {
                 window.location.href = "/";
             } else if(Samvaarta.common.getLocalStorage('showRegForm')){
                 Samvaarta.system.createRegForm();
+                $('.login-module__main--left .circle').removeClass('hide');
             } else {
                 Samvaarta.system.createLoginForm();
+                $('.login-module__main--left .circle').addClass('hide');
+
             }
         }
     };

@@ -637,6 +637,7 @@ Samvaarta.system = function () {
       document.querySelector(".login-module__main--right").innerHTML = regForm;
     }
     showFormToggle();
+    $('.login-module__main--left .circle').removeClass('hide');
   };
   var userInfoDetail = function userInfoDetail() {
     var name = document.getElementById("oauth_log_name").value;
@@ -692,6 +693,7 @@ Samvaarta.system = function () {
     $(".login-module__main--right").length ? document.querySelector(".login-module__main--right").innerHTML = loginForm : '';
     showFormToggle();
     forgetPassModule();
+    $('.login-module__main--left .circle').addClass('hide');
   };
   var showFormToggle = function showFormToggle() {
     var _document$querySelect, _document$querySelect2;
@@ -1034,8 +1036,10 @@ Samvaarta.system = function () {
         window.location.href = "/";
       } else if (Samvaarta.common.getLocalStorage('showRegForm')) {
         Samvaarta.system.createRegForm();
+        $('.login-module__main--left .circle').removeClass('hide');
       } else {
         Samvaarta.system.createLoginForm();
+        $('.login-module__main--left .circle').addClass('hide');
       }
     }
   };
