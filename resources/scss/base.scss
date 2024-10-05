@@ -1667,3 +1667,29 @@ footer{
     }
 }
 
+.sticky-container{
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    cursor: pointer;
+    .btn{
+        border-radius: 12px;
+        background: $clr-8;
+        border: 1px solid #ccc;
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: $clr-4;
+    }
+    @include breakpointmax($end-small){
+        right: rem(10);
+        bottom: rem(10);
+        .btn{
+            span{
+                margin-left: 0;
+            }
+        }
+    }
+}
+
