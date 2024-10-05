@@ -41,7 +41,7 @@
             <p>One of the greatest values of mentors is the ability to see ahead what others cannot see and to help them navigate a course to their destination. If you have it in you to inspire others, expand the horizon and equip others with tools and confidence to reach their potential, join in as a mentor.</p>
         </div>
         <div class="think-container__member-container">
-            <h3>Our new coaches</h3>
+            <h3>Our new Mentors</h3>
             <div class="think-container__img-container">
                 <img width="70" height="70" src="/images/user-img/goalsnu-default-user.svg" alt="" />
                 <img width="70" height="70" src="/images/user-img/goalsnu-default-user.svg" alt="" />
