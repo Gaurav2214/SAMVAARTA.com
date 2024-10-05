@@ -945,7 +945,7 @@ Samvaarta.system = function () {
     var token = Samvaarta.common.getLocalStorage("AccessToken");
     if (userData) {
       Samvaarta.globalVar.is_loggedin = 1;
-      if (window.location.pathname === "/") {
+      if (window.location.pathname === "/login") {
         window.location.href = "/dashboard";
       }
       displayUserInfo(userData);
