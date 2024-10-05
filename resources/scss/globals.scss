@@ -49,6 +49,10 @@
     @include container;
 }
 
+.containerMid {
+    @include containerMid;
+}
+
 .sprite-icon {
     width: rem(20);
     height: rem(20);

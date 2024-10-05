@@ -628,6 +628,47 @@ Samvaarta.system = function () {
     }
     showFormToggle();
   };
+  var userInfoDetail = function userInfoDetail() {
+    var name = document.getElementById("oauth_log_name").value;
+    var email = document.getElementById("oauth_log_email").value;
+    var phonenum = document.getElementById("oauth_log_number").value;
+    var msg = document.getElementById("oauth_log_msg").value;
+    var errorElements = document.querySelectorAll(".error");
+    errorElements.forEach(function (el) {
+      el.innerHTML = "";
+    });
+    var inputElements = document.querySelectorAll(".contact-form .input_txt_box");
+    for (var i = 0; i < inputElements.length; i++) {
+      if (inputElements[i].type !== "button" && inputElements[i].type !== "checkbox") {
+        Samvaarta.common.removeRequiredFields(inputElements[i]);
+        if (valError) {
+          return false;
+        }
+      }
+    }
+    if (valError) {
+      return false;
+    } else {
+      var ajaxSuccessCall = function ajaxSuccessCall(data) {
+        Samvaarta.model.showSuccessMessage("<h2>Thank You</h2><p>".concat(Samvaarta.messageLog[11], "</p>"), "y");
+      };
+      var ajaxErrorCall = function ajaxErrorCall(data) {};
+      var paramObject = {
+        url: apiUrl + "api/profile/update",
+        type: "POST",
+        data: {
+          name: name,
+          email: email,
+          number: phonenum,
+          message: msg
+        },
+        headers: {
+          Accept: "application/json"
+        }
+      };
+      Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
+    }
+  };
   var forgetPassModule = function forgetPassModule() {
     var forgetPass = "<div class=\"login-form\">\n        <div class=\"heading\" style=\"text-align:left\">\n            <h2>Reset your password</h2>\n            <p class=\"\">Enter the email used while creating your account.</p>\n        </div>\n        <form class=\"signin-form\">\n            <div class=\"form-elm-section input_sec \">\n                <label for=\"oauth_log_email\"> Email Id</label>\n                <input required=\"\" data-id=\"\" placeholder=\"\" name=\"\" type=\"text\" id=\"oauth_log_email\" class=\"input_txt_box\" value=\"\">\n                <p id=\"oauth_log_email_err\" class=\"validation error\"></p>\n            </div>           \n\n            <div class=\"form-elm-section input_sec_center btn-container \">\n                <button class=\"btn\" type=\"button\" onclick=\"Samvaarta.system.forgetPassword()\">Submit</button>\n            </div>\n        </form>\n        <p class=\"reg-login-toggle\">Already have the Goalsnu account?\n            <a role=\"button\" tabindex=\"0\" rel=\"noreferrer nofollow\" class=\"login-link\">Log in</a>\n        </p>\n    </div>\n\n        ";
     $('body').on('click', '.forget_password', function () {
@@ -1391,7 +1432,8 @@ Samvaarta.system = function () {
     activateDeactivateUser: activateDeactivateUser,
     adminDashboard: adminDashboard,
     adminReport: adminReport,
-    userReport: userReport
+    userReport: userReport,
+    userInfoDetail: userInfoDetail
   };
 }();
 Samvaarta.userDashboard = function () {

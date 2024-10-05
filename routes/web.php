@@ -20,6 +20,8 @@ Route::get('/about', 'UserController@about');
 Route::get('/sitemap', 'UserController@sitemap');
 Route::get('/upcomingEvents', 'UserController@upcomingEvents');
 Route::get('/sitemap.xml', 'UserController@sitemapXML');
+Route::get('/certifications', 'UserController@certifications');
+Route::get('/article-blogs', 'UserController@articleBlogs');
 Route::get('/report', 'UserController@report');
 Route::get('/dashboard', 'UserController@dashboard');
 Route::get('/myaccount', 'UserController@myaccount');

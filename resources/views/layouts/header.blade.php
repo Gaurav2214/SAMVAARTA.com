@@ -1,9 +1,9 @@
 <section class="dashboard">
     <header class="dashboard__header ">
         <div class="container">
-            <div class="dashboard__header--auth-detail">
+            <div class="dashboard__header--auth-detail" title="Goalsnu logo">
                 <a href="/dashboard">
-                    <img width="103" height="60" src="/images/goalnu-logo.png" alt="" />
+                    <img width="103" height="60" src="/images/goalnu-logo.png" alt="Goalsnu" />
                 </a>
                 <div class="dashboard__header--welcome hide">
                     Welcome <span>Admin</span> !

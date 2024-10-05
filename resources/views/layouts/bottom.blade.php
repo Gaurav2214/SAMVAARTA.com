@@ -1,5 +1,5 @@
         <?php
-            $fileVersion = 13;
+        $fileVersion = 13;
         ?>
         <footer>
             <div class="top-footer">
@@ -8,31 +8,32 @@
             <div class="container">
                 <div class="staticpage-section">
                     <div>
-                        <p><a href="" title="">About Us</a></p>
+                        <p><a href="/about" title="">About Us</a></p>
                         <p><a href="/contact" title="">Contact Us</a></p>
-                        <p><a href="" title="">Upcoming Events</a></p>
+                        <p><a href="/upcomingEvents" title="">Upcoming Events</a></p>
                     </div>
                     <ul class="desktop-view">
-                        <li><a href="" title="">Certifications</a></li>
-                        <li><a href="" title="">Developement</a></li>
-                        <li><a href="" title="">Articles & Blogs</a></li>
+                        <li><a href="/certifications" title="">Certifications</a></li>
+                        <li><a href="https://www.forbes.com/advisor/business/employee-development-plan/" title="">Developement</a></li>
+                        <li><a href="article-blogs" title="">Articles & Blogs</a></li>
                         <li><a href="/sitemap" title="">Sitemap</a></li>
                     </ul>
-                    <ul class="mobile-view">                
-                        <li><a href="" title="">Certifications</a></li>
-                        <li><a href="" title="">Developement</a></li>
-                        <li><a href="" title="">Articles & Blogs</a></li>
+                    <ul class="mobile-view">
+                        <li><a href="/certifications" title="">Certifications</a></li>
+                        <li><a href="https://www.forbes.com/advisor/business/employee-development-plan/" title="">Developement</a></li>
+                        <li><a href="/article-blogs" title="">Articles & Blogs</a></li>
                     </ul>
                 </div>
                 <div class="section-copyright">
                     <p>@2024 Goalsnu.com. All Right Reserved.</p>
                 </div>
-            </div> 
+            </div>
         </footer>
         <script>
             var Samvaarta = Samvaarta || {};
         </script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script src="{{ asset('js/common.js?mod='.$fileVersion)}}"></script>
-    </body>
-</html>
+        </body>
+
+        </html>

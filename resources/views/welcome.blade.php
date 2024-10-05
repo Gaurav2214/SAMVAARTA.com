@@ -26,11 +26,9 @@
         <div class="think-container__member-container">
             <h3>Our new members</h3>
             <div class="think-container__img-container">
-                <img width="70" height="70" src="/images/user-img/anurag.webp" alt="" />
-                <img width="70" height="70" src="/images/user-img/anurag.webp" alt="" />
-                <img width="70" height="70" src="/images/user-img/anurag.webp" alt="" />
-                <img width="70" height="70" src="/images/user-img/anurag.webp" alt="" />
-                <img width="70" height="70" src="/images/user-img/anurag.webp" alt="" />
+                <img width="70" height="70" src="/images/user-img/goalsnu-default-user.svg" alt="" />
+                <img width="70" height="70" src="/images/user-img/goalsnu-default-user.svg" alt="" />
+                <img width="70" height="70" src="/images/user-img/goalsnu-default-user.svg" alt="" />
             </div>
             <a href="/" class="btn">Start your Journey </a>
         </div>
@@ -45,7 +43,9 @@
         <div class="think-container__member-container">
             <h3>Our new coaches</h3>
             <div class="think-container__img-container">
-                <img width="150" height="150" src="/images/user-img/mentor-1.webp" alt="" />
+                <img width="70" height="70" src="/images/user-img/goalsnu-default-user.svg" alt="" />
+                <img width="70" height="70" src="/images/user-img/goalsnu-default-user.svg" alt="" />
+                <img width="70" height="70" src="/images/user-img/goalsnu-default-user.svg" alt="" />
             </div>
             <a href="/" class="btn">join as a mentor </a>
         </div>
