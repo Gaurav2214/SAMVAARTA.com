@@ -30,7 +30,7 @@
                 <img width="70" height="70" src="/images/user-img/goalsnu-default-user.svg" alt="" />
                 <img width="70" height="70" src="/images/user-img/goalsnu-default-user.svg" alt="" />
             </div>
-            <a href="/" class="btn">Start your Journey </a>
+            <a href="/login" class="join-here btn">Start your Journey </a>
         </div>
     </div>
     <div class="component-divider">
@@ -47,7 +47,7 @@
                 <img width="70" height="70" src="/images/user-img/goalsnu-default-user.svg" alt="" />
                 <img width="70" height="70" src="/images/user-img/goalsnu-default-user.svg" alt="" />
             </div>
-            <a href="/" class="btn">join as a mentor </a>
+            <a href="/login" class="join-here btn">join as a mentor </a>
         </div>
     </div>
 

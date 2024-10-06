@@ -2178,10 +2178,10 @@ var faqEventBind = function faqEventBind() {
   });
 };
 var joinHere = function joinHere() {
-  $('.non-login').on('click', '.join-here', function () {
+  $('body').on('click', '.join-here', function () {
     Samvaarta.common.setLocalStorage('showRegForm', true, expireTime);
   });
-  $('.non-login').on('click', '.login-here', function () {
+  $('body').on('click', '.login-here', function () {
     Samvaarta.common.deleteLocalStorage('showRegForm');
   });
 };

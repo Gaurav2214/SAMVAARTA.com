@@ -3601,10 +3601,10 @@ const faqEventBind = () => {
 }
 
 const joinHere = () => {
-    $('.non-login').on('click', '.join-here', () => {
+    $('body').on('click', '.join-here', () => {
         Samvaarta.common.setLocalStorage('showRegForm', true, expireTime);
     });
-    $('.non-login').on('click', '.login-here', () => {
+    $('body').on('click', '.login-here', () => {
         Samvaarta.common.deleteLocalStorage('showRegForm');
     });
 }

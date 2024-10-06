@@ -13,7 +13,7 @@
                         <td>S.No.</td>
                         <td>Date</td>
                         <td>Session Name</td>
-                        <td>During</td>
+                        <td>Duration</td>
                         <td>Trainer</td>
                     </tr>
                 </thead>
