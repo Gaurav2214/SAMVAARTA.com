@@ -12,5 +12,14 @@
 
     <loc>https://goalsnu.com/upcomingEvents</loc>
     <lastmod>2024-10-05</lastmod>
+
+    <loc>https://goalsnu.com/certifications</loc>
+    <lastmod>2024-10-06</lastmod>
+
+    <loc>https://goalsnu.com/article-blogs</loc>
+    <lastmod>2024-10-06</lastmod>
+
+    <loc>https://goalsnu.com/developments</loc>
+    <lastmod>2024-10-06</lastmod>
   </url>
 </urlset>
