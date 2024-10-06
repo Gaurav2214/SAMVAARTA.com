@@ -13,6 +13,7 @@ use Redirect;
 use Hash;
 use Illuminate\Validation\Rule;
 use Exception;
+use Helper;
 
 
 
@@ -130,6 +131,7 @@ class RegisterController extends Controller
 				$User->save();
 			}
 
+
             if($User->user_type=="user"){
                 $User->unique_number = "U-".$User->id;
             }else if($User->user_type=="trainer"){
@@ -140,6 +142,30 @@ class RegisterController extends Controller
             $User->save();
 			
 			if($User){
+
+                $from_name = \Setting::get('site_title');
+	 
+                $mail_to = \Setting::get('from_email');
+                $subject = "New ".$User->user_type." has been registered";
+
+                
+                $param = array(
+                        'to_email'  =>$mail_to,
+                        'from_email'=>\Setting::get('from_email'),
+                        'from_name' =>$from_name,
+                        'to_name' 	=>$from_name,
+                        'subject'   =>$subject,
+                        'email' =>$User->email,
+                        'user_type'=>$User->user_type,
+                        'member_name'=>"Admin",
+                        'site_name'=>$from_name,
+                        'phone'=>$User->phone,
+                        'mail_type'=>"register",
+                        "body_part"=>""
+                );					
+                Helper::send_mail($param);
+                
+
                 return response()->json(['success' =>'A Profile is under review. <br />A Confirmation will be sent to your email id on '.$request['email']]);
             }else{
                 return response()->json(['error' =>'Please try again','status'=>'false']);
