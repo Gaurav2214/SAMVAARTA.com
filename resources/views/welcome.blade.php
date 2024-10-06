@@ -7,7 +7,7 @@
     <div class="think-container__content">
         <p>“We can’t become what we need to be by remaining what we are.” - <strong>Oprah Winfrey</strong></p>
         <p>In the journey of life you realize that you are clear as to what you want. However, as you move ahead, you feel the need for clarity on what needs to be done and how you have progressed. At GOALS N U, you are mapping what you want to achieve, monitoring your progress over the weeks and months and sensing the impact it is has had. Discover the ecosystem of GOALS N U created to serve you on your journey to make a mark in your professional and personal life.</p>
-        <a href="/" class="btn">Learn More</a>
+        <a href="/about" class="btn">Learn More</a>
     </div>
     <div class="think-container__img-container">
         <img width="200" height="200" src="/images/user-img/grow-3.webp" alt="" />
