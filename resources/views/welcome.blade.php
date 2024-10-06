@@ -7,7 +7,7 @@
     <div class="think-container__content">
         <p>“We can’t become what we need to be by remaining what we are.” - <strong>Oprah Winfrey</strong></p>
         <p>In the journey of life you realize that you are clear as to what you want. However, as you move ahead, you feel the need for clarity on what needs to be done and how you have progressed. At GOALS N U, you are mapping what you want to achieve, monitoring your progress over the weeks and months and sensing the impact it is has had. Discover the ecosystem of GOALS N U created to serve you on your journey to make a mark in your professional and personal life.</p>
-        <a href="/" class="btn">Learn More</a>
+        <a href="/about" class="btn">Learn More</a>
     </div>
     <div class="think-container__img-container">
         <img width="200" height="200" src="/images/user-img/grow-3.webp" alt="" />
@@ -26,13 +26,11 @@
         <div class="think-container__member-container">
             <h3>Our new members</h3>
             <div class="think-container__img-container">
-                <img width="70" height="70" src="/images/user-img/anurag.webp" alt="" />
-                <img width="70" height="70" src="/images/user-img/anurag.webp" alt="" />
-                <img width="70" height="70" src="/images/user-img/anurag.webp" alt="" />
-                <img width="70" height="70" src="/images/user-img/anurag.webp" alt="" />
-                <img width="70" height="70" src="/images/user-img/anurag.webp" alt="" />
+                <img width="70" height="70" src="/images/user-img/goalsnu-default-user.svg" alt="" />
+                <img width="70" height="70" src="/images/user-img/goalsnu-default-user.svg" alt="" />
+                <img width="70" height="70" src="/images/user-img/goalsnu-default-user.svg" alt="" />
             </div>
-            <a href="/" class="btn">Start your Journey </a>
+            <a href="/login" class="join-here btn">Start your Journey </a>
         </div>
     </div>
     <div class="component-divider">
@@ -43,11 +41,13 @@
             <p>One of the greatest values of mentors is the ability to see ahead what others cannot see and to help them navigate a course to their destination. If you have it in you to inspire others, expand the horizon and equip others with tools and confidence to reach their potential, join in as a mentor.</p>
         </div>
         <div class="think-container__member-container">
-            <h3>Our new coaches</h3>
+            <h3>Our new Mentors</h3>
             <div class="think-container__img-container">
-                <img width="150" height="150" src="/images/user-img/mentor-1.webp" alt="" />
+                <img width="70" height="70" src="/images/user-img/goalsnu-default-user.svg" alt="" />
+                <img width="70" height="70" src="/images/user-img/goalsnu-default-user.svg" alt="" />
+                <img width="70" height="70" src="/images/user-img/goalsnu-default-user.svg" alt="" />
             </div>
-            <a href="/" class="btn">join as a mentor </a>
+            <a href="/login" class="join-here btn">join as a mentor </a>
         </div>
     </div>
 

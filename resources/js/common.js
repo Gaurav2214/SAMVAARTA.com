@@ -16,6 +16,7 @@ Samvaarta.messageLog = {
     15: "You have successfully submitted your desired objectives.",
     16: "You have successfully submitted your documenting conversions.",
     17: "You have successfully submitted your experience with Goalsnu.",
+    18: "We will get in touch with you soon",
 };
 
 var valError = true;
@@ -23,6 +24,7 @@ var apiUrl = typeof(appUrl) != "undefined" ? appUrl : "http://127.0.0.1:8000/";
 var expireTime = 10 / (24 * 60);
 var userType = '';
 var oauthUserData = '';
+var deviceType = ($(window).width() >= 780) ? 'desktop' : 'mobile';
 
 Samvaarta.globalVar = Samvaarta.globalVar || {
     errorValueInFlow: "",
@@ -312,6 +314,7 @@ Samvaarta.common = (() => {
             case "outcomes_desc_1":    
             case "outcomes_desc_2":    
             case "outcomes_desc_3":    
+            case "oauth_log_msg":
                 handleBlankNameVal(13);            
         }
         return error;
@@ -455,7 +458,8 @@ Samvaarta.common = (() => {
             outcomes_param_3: validateName,   
             outcomes_desc_1: validateName,   
             outcomes_desc_2: validateName,   
-            outcomes_desc_3: validateName,   
+            outcomes_desc_3: validateName, 
+            oauth_log_msg: validateName,
         };
 
         // Iterate through the validation functions
@@ -572,6 +576,12 @@ Samvaarta.common = (() => {
         $( "#datepicker" ).datepicker("option", "dateFormat", "yy-mm-dd");      
     }
 
+    const initWhatsApp = () => {
+        var mnum = '+918511044072';
+        var msg = `Hello, could you assist me in exploring opportunities with GOALSNU?`;
+        deviceType == 'desktop' ? window.open("https://web.whatsapp.com/send?phone=" + mnum + "&text=" + msg, "_blank", "noopener") : window.open("https://wa.me/" + mnum + "?text=" + msg, "_blank", "noopener");
+    }
+
     return {
         isNull: isNull,
         isBlank: isBlank,
@@ -588,6 +598,7 @@ Samvaarta.common = (() => {
         toastMsg: toastMsg,
         dataPicker: dataPicker,
         dayMonthNameYear: dayMonthNameYear,
+        initWhatsApp: initWhatsApp,
     };
 })();
 
@@ -781,7 +792,68 @@ Samvaarta.system = (() => {
                 regForm;
         }
         showFormToggle();
+        $('.login-module__main--left .circle').removeClass('hide');
     };
+
+    const userInfoDetail = () => {
+        var name = document.getElementById("oauth_log_name").value;
+        var email = document.getElementById("oauth_log_email").value;
+        var phonenum = document.getElementById("oauth_log_number").value;
+        var msg = document.getElementById("oauth_log_msg").value;
+        var errorElements = document.querySelectorAll(".error");
+        errorElements.forEach(function (el) {
+            el.innerHTML = "";
+        });
+
+        var inputElements = document.querySelectorAll(
+            ".contact-form .input_txt_box"
+        );
+        for (let i = 0; i < inputElements.length; i++) {
+            if (
+                inputElements[i].type !== "button" &&
+                inputElements[i].type !== "checkbox"
+            ) {
+                Samvaarta.common.removeRequiredFields(inputElements[i]);
+                if (valError) {
+                    return false;
+                }
+            }
+        }
+        if (valError) {
+            return false;
+        } else {
+            var paramObject = {
+                url: apiUrl + "api/enquiry",
+                type: "POST",
+                data: {
+                    name: name,
+                    email: email,
+                    mobile: phonenum,
+                    message: msg,
+                },
+                headers: {
+                    Accept: "application/json",
+                },
+            };
+
+            function ajaxSuccessCall(data) {
+                $(".contact-form .input_txt_box").val('');
+                Samvaarta.model.showSuccessMessage(
+                    `<img width="50" height="50" class="success-img-tick" src="/images/success-gif.gif" alt="">
+                    <h2>Thank You</h2><p>${Samvaarta.messageLog[18]}</p>`,
+                    "y"
+                );
+            }
+            function ajaxErrorCall(data) {
+                
+            }
+            Samvaarta.common.hitAjaxApi(
+                paramObject,
+                ajaxSuccessCall,
+                ajaxErrorCall
+            );
+        }
+    }
 
     const forgetPassModule = () => {
         let forgetPass = `<div class="login-form">
@@ -847,6 +919,7 @@ Samvaarta.system = (() => {
             loginForm : '';
         showFormToggle();
         forgetPassModule();
+        $('.login-module__main--left .circle').addClass('hide');
     };
 
     const showFormToggle = () => {
@@ -1431,11 +1504,13 @@ Samvaarta.system = (() => {
             
             displayUserInfo(userData);
             window.loginCallback ? loginCallback(response) : false;
-            setTimeout(() => {
-                if(Samvaarta.common.getLocalStorage('DocConversationDetail')){
-                    Samvaarta.setGetUserDashboard.previousTransactions(Samvaarta.common.getLocalStorage('DocConversationDetail'));
-                } else {
-                    Samvaarta.setGetUserDashboard.getDocConversation();
+            setTimeout(() => {                
+                if(oauthUserData?.user_type === 'user'){
+                    if(Samvaarta.common.getLocalStorage('DocConversationDetail')){
+                        Samvaarta.setGetUserDashboard.previousTransactions(Samvaarta.common.getLocalStorage('DocConversationDetail'));
+                    } else {
+                        Samvaarta.setGetUserDashboard.getDocConversation();
+                    }
                 }
             }, 1000);
         } else if(token){
@@ -1467,8 +1542,11 @@ Samvaarta.system = (() => {
                 window.location.href = "/";
             } else if(Samvaarta.common.getLocalStorage('showRegForm')){
                 Samvaarta.system.createRegForm();
+                $('.login-module__main--left .circle').removeClass('hide');
             } else {
                 Samvaarta.system.createLoginForm();
+                $('.login-module__main--left .circle').addClass('hide');
+
             }
         }
     };
@@ -1737,13 +1815,14 @@ Samvaarta.system = (() => {
     };
 
     const showUserInfo = (response) => {
+        var typeUser = Samvaarta.common.isOperatable(window.userDefineType) ? window.userDefineType : 'users';
         var coachInfo = '', cochees = '', trainer = '', plannedSess = '', 
         concluded = '', nextSession = '', completeSessCount = '', userExp = '', userFun = '', downloadReport = '';
         if (response.user_type === "admin") {
             cochees = `<li>No of Coachees: <span></span></li>`;
             trainer = `<li>No of Coaches: <span></span></li>`; 
             downloadReport = `<li class="download-report"><button class="btn" onclick="Samvaarta.system.adminReport()">Download Report</button></li>`;
-            adminDashboard('users');
+            adminDashboard(typeUser);
         } else if (response.user_type === "trainer") {
             cochees = `<li>No of Coachees: <span>${response?.users?.length}</span></li>`;
             completeSessCount = `<li>No of sessions completed: <span></span></li>`;
@@ -1903,6 +1982,11 @@ Samvaarta.system = (() => {
                     <a tabindex="0" role="button" href="/trainer-details">
                     <i class="fa fa-info-circle" aria-hidden="true"></i>Trainer Detail
                     </a>
+                </li>
+                <li>
+                    <a tabindex="0" role="button" href="/enquiries">
+                    <i class="fa fa-question-circle" aria-hidden="true"></i>Enquires
+                    </a>
                 </li>	
                 `;
                 Samvaarta.userDashboard.updateSessionForm();
@@ -2031,6 +2115,59 @@ Samvaarta.system = (() => {
         );
     }
 
+    const enquiriesDetail = () => {
+        var paramObject = {
+            url: apiUrl + "api/admin/enquiry",
+            type: "GET",            
+            headers: {
+                Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+                Accept: "application/json",
+            },
+        };
+
+        function ajaxSuccessCall(data) {
+            //console.log(data);
+            enquiryList(data?.data?.data);
+        }
+        function ajaxErrorCall(data) {
+            
+        }
+        Samvaarta.common.hitAjaxApi(
+            paramObject,
+            ajaxSuccessCall,
+            ajaxErrorCall
+        );
+    }
+
+    const enquiryList = (list) => {
+        let userList = '';
+        list.map((item, index) => {
+            userList += `<tr>
+                            <td>${index+1}</td>
+                            <td>${item.first_name}</td>
+                            <td>${item.email}</td>
+                            <td>${item.mobile_number}</td>
+                            <td>${item.message}</td>
+                        </tr>` 
+        })
+        let enqList = `           
+            <table>
+                <tbody>
+                    <tr class="user-dashboard-info__head-list">
+                        <td>SNO.</td>
+                        <td>Name</td>
+                        <td>Email</td>                
+                        <td>Contact</td>
+                        <td>Message</td>
+                    </tr>
+                    ${userList}
+                </tbody>
+            </table>
+            
+        `;
+        $('.enquiries-page .user-data-list').html(enqList);
+    }
+
     return {
         loginUser: loginUser,
         userRegistration: userRegistration,
@@ -2050,6 +2187,8 @@ Samvaarta.system = (() => {
         adminDashboard: adminDashboard,   
         adminReport: adminReport,    
         userReport: userReport, 
+        userInfoDetail: userInfoDetail,
+        enquiriesDetail: enquiriesDetail,
     };
 })();
 
@@ -3462,10 +3601,10 @@ const faqEventBind = () => {
 }
 
 const joinHere = () => {
-    $('.non-login').on('click', '.join-here', () => {
+    $('body').on('click', '.join-here', () => {
         Samvaarta.common.setLocalStorage('showRegForm', true, expireTime);
     });
-    $('.non-login').on('click', '.login-here', () => {
+    $('body').on('click', '.login-here', () => {
         Samvaarta.common.deleteLocalStorage('showRegForm');
     });
 }
@@ -3492,6 +3631,7 @@ document.addEventListener("readystatechange", (event) => {
 
         }
         joinHere();
+
     }
 
     if (event.target.readyState === "complete") {
@@ -3503,6 +3643,10 @@ document.addEventListener("readystatechange", (event) => {
                 } else {
                     Samvaarta.userDashboard.displaySessionList(Samvaarta.common.getLocalStorage('sessionList'));
                 } 
+
+                if(oauthUserData?.user_type === 'admin'){
+                    Samvaarta.system.enquiriesDetail();
+                }
             }
         }, 1000);
         

@@ -49,6 +49,25 @@ class UserController extends Controller
         return view('sitemapXML');
     }
 
+    public function certifications()
+    {   
+        return view('certifications');
+    }
+
+    public function articleBlogs()
+    {   
+        return view('articleBlogs');
+    }
+    public function developments()
+    {   
+        return view('developments');
+    }
+
+    public function enquiries()
+    {   
+        return view('enquiries');
+    }
+
     public function upcomingEvents()
     {   
         return view('upcomingEvents');
