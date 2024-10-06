@@ -22,5 +22,8 @@ class TrainingSession extends Pivot{
         return $this->hasOne(User::class,'id','trainer_id');
     }
 
+    public  function user(){
+        return $this->hasOne(User::class,'id','user_id');
+    }
 
 }

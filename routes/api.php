@@ -48,6 +48,10 @@ Route::group(['middleware' => ['auth:api']], function() {
 		Route::post('/add_comment', 'Resource\ProfileController@add_comment');
 		Route::get('/comments', 'Resource\ProfileController@comments');
 
+		Route::get('/documenting-conversations', 'Resource\ProfileController@documentingConversationsForTrainer');
+
+
+
 		Route::get('closing-of-intraction','Resource\ProfileController@trainerClosingOfIntraction');
 		Route::post('closing-of-intraction','Resource\ProfileController@addTrainerClosingOfIntraction');
 	});

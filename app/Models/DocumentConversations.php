@@ -42,6 +42,10 @@ class DocumentConversations extends Model
         return $this->hasOne(TrainingSession::class,'session_id','session_id');
     }
 
+    public  function user(){
+        return $this->hasOne(TrainingSession::class,'session_id','user_id');
+    }
+
     
 
     public function scopeTrainerComment($query){

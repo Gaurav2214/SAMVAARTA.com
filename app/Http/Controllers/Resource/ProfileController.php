@@ -400,7 +400,8 @@ class ProfileController extends Controller
 	{
 		$validator =Validator::make($request->all(), [
 			'comments' => 'required',
-			'user_id'=>'required'
+			'user_id'=>'required',
+			'document_conversion_id'=>'required'
 		]);    
 
 		if (!$validator->fails())
@@ -415,8 +416,15 @@ class ProfileController extends Controller
 				return response()->json(['data' => "You are not trainer.","success"=>"false"]);
 			}
 
+
+			$DocumentConversations= DocumentConversations::where('user_id', $request->user()->id)->where('id'=>$request->document_conversation_i)->orderBy('id','desc')->first();
+
+			if(empty($DocumentConversations)){
+				return response()->json(['data' => "Document User Conversation Not found for this user","success"=>"false"]);
+			}
+
 			
-			$TrainerComment = TrainerComment::create(['user_id'=>$user_id,'trainer_id'=>$trainer_id,'comments'=>$request->comments]);
+			$TrainerComment = TrainerComment::create(['user_id'=>$user_id,'trainer_id'=>$trainer_id,'comments'=>$request->comments,'document_conversation_id'=>$request->document_conversation_id]);
 			
 			$TrainerComment= TrainerComment::where('trainer_id', $trainer_id)->get()->toArray();
 
@@ -946,5 +954,35 @@ class ProfileController extends Controller
 
 	}
 	
+
+	public function documentingConversationsForTrainer(Request $request){
+
+
+		$User = User::with('users')->find($request->user()->id)->toArray();     
+
+		$user_ids = "";
+		if(!empty($User)){
+			$user_ids = array_column($User['users'],'id');
+		
+
+
+		$DocumentConversations= DocumentConversations::trainerComment()->with('session','user')->whereIn('document_conversations.user_id', $user_ids)->select('document_conversations.*','trainer_comments.comments');
+
+	
+		$DocumentConversations= $DocumentConversations->get()->toArray();
+
+		
+
+		if($DocumentConversations){
+			
+
+			return response()->json(['data' => $DocumentConversations,"success"=>"true","count"=>(count($DocumentConversations))]);
+		}else{
+			return response()->json(['data' =>[],"success"=>"false"]);
+		}
+	}else{
+		return response()->json(['data' =>[],"success"=>"false"]);
+	}
+	}
 	
 }
