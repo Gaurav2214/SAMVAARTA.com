@@ -417,7 +417,7 @@ class ProfileController extends Controller
 			}
 
 
-			$DocumentConversations= DocumentConversations::where('user_id', $request->user()->id)->where('id'=>$request->document_conversation_i)->orderBy('id','desc')->first();
+			$DocumentConversations= DocumentConversations::where('user_id', $request->user()->id)->where('id',$request->document_conversation_id)->orderBy('id','desc')->first();
 
 			if(empty($DocumentConversations)){
 				return response()->json(['data' => "Document User Conversation Not found for this user","success"=>"false"]);
