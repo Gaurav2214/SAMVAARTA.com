@@ -1496,6 +1496,7 @@ Samvaarta.system = (() => {
     var checkLoginStatus = () => {
         var userData = Samvaarta.common.getLocalStorage("oauthUserData");
         var token = Samvaarta.common.getLocalStorage("AccessToken");
+        const nonLogCase = ["/dashboard", "/user-details", "trainer-details", "/enquiries", "/change-password", "/myaccount"]; 
         if (userData) {
             Samvaarta.globalVar.is_loggedin = 1;
             if (window.location.pathname === "/login") {
@@ -1538,7 +1539,7 @@ Samvaarta.system = (() => {
                 ajaxErrorCall
             );
         } else {
-            if (window.location.pathname === "/dashboard") {
+            if (nonLogCase.includes(window.location.pathname)) {
                 window.location.href = "/";
             } else if(Samvaarta.common.getLocalStorage('showRegForm')){
                 Samvaarta.system.createRegForm();
