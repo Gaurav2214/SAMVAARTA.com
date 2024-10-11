@@ -960,11 +960,15 @@ class ProfileController extends Controller
 
 		$User = User::with('users')->find($request->user()->id)->toArray();     
 
-		$user_ids = "";
+		$user_ids = [];
 		if(!empty($User)){
-			$user_ids = array_column($User['users'],'id');
-		
 
+			if($request->user_id>0){
+				$user_ids [] =$request->user_id;
+			}else{
+				$user_ids = array_column($User['users'],'id');
+			}
+		
 
 		$DocumentConversations= DocumentConversations::trainerComment()->with('session','user')->whereIn('document_conversations.user_id', $user_ids)->select('document_conversations.*','trainer_comments.comments');
 
