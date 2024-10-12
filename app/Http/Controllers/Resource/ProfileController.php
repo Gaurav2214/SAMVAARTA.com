@@ -978,9 +978,42 @@ class ProfileController extends Controller
 		
 
 		if($DocumentConversations){
-			
 
-			return response()->json(['data' => $DocumentConversations,"success"=>"true","count"=>(count($DocumentConversations))]);
+			$LearningOutcomes= LearningOutcomes::whereIn('user_id', $user_ids)->get()->toArray();
+
+			if(!empty($LearningOutcomes)){
+				foreach($LearningOutcomes as $key=>$val){
+              	     $outcome_description = json_decode($val['outcome_description'],true);
+               		 $parameter = json_decode($val['parameter'],true);
+					 $LearningOutcomes[$key]['parameter']=$parameter;
+					 $LearningOutcomes[$key]['outcome_description']=$outcome_description;
+				}
+            }
+
+			$PerformanceData=PerformanceData::whereIn("user_id",$user_ids)->orderBy('id',"desc")->get()->toArray();
+			$temp=[];
+
+			if($PerformanceData){
+				foreach($PerformanceData as $val){
+					$val['unit_measurement']=json_decode($val['unit_measurement'],true);
+					$val['performance']=json_decode($val['performance'],true);
+					$val['parameter']=json_decode($val['parameter'],true);
+					$temp[]=($val);
+				}
+
+				$PerformanceDataOthers=PerformanceDataOthers::whereIn("user_id",$user_ids)->orderBy('id',"desc")->get()->toArray();
+
+				if(!empty($PerformanceDataOthers)){
+					foreach($PerformanceDataOthers as $key=>$val){
+
+						$PerformanceDataOthers[$key]['parameter']=json_decode($val['parameter'],true);
+						$PerformanceDataOthers[$key]['description']=json_decode($val['description'],true);
+
+					}
+				}
+			}
+
+			return response()->json(['data' => $DocumentConversations,'LearningOutcomes'=>$LearningOutcomes,'PerformanceData'=>$temp,'PerformanceDataOthers'=>$PerformanceDataOthers,"success"=>"true","count"=>(count($DocumentConversations))]);
 		}else{
 			return response()->json(['data' =>[],"success"=>"false"]);
 		}
