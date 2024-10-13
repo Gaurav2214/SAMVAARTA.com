@@ -26,6 +26,7 @@ Route::get('/developments', 'UserController@developments');
 Route::get('/enquiries', 'UserController@enquiries');
 Route::get('/report', 'UserController@report');
 Route::get('/dashboard', 'UserController@dashboard');
+Route::get('/dashboard/user-{id}', 'UserController@userDetail');
 Route::get('/myaccount', 'UserController@myaccount');
 Route::get('/change-password', 'UserController@change_password');
 Route::get('/user-details', 'UserController@user_details');
