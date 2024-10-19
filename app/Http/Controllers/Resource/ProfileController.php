@@ -1013,7 +1013,11 @@ class ProfileController extends Controller
 				}
 			}
 
-			return response()->json(['data' => $DocumentConversations,'LearningOutcomes'=>$LearningOutcomes,'PerformanceData'=>$temp,'PerformanceDataOthers'=>$PerformanceDataOthers,"success"=>"true","count"=>(count($DocumentConversations))]);
+			$ClosureUserExperinces=ClosureUserExperinces::whereIn("user_id",$user_ids)->orderBy('id',"desc")->get()->toArray();
+
+			$ClosureTrainerExperinces=ClosureTrainerExperinces::where("trainer_id",$request->user()->id)->whereIn('user_id',$user_ids)->orderBy('id',"desc")->get()->toArray();
+
+			return response()->json(['data' => $DocumentConversations,'LearningOutcomes'=>$LearningOutcomes,'PerformanceData'=>$temp,'PerformanceDataOthers'=>$PerformanceDataOthers,'ClosureUserExperinces'=>$ClosureUserExperinces,"ClosureTrainerExperinces"=>$ClosureTrainerExperinces,"success"=>"true","count"=>(count($DocumentConversations))]);
 		}else{
 			return response()->json(['data' =>[],"success"=>"false"]);
 		}
