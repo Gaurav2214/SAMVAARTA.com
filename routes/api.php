@@ -73,4 +73,6 @@ Route::group(['prefix' => 'admin','middleware' => ['auth:api']], function () {
 	
 	Route::get('download-report','Resource\UserResource@downloadReport');
 	Route::get('enquiry','Resource\UserResource@enquiry');
+
+	Route::get('/documenting-conversations', 'Resource\UserResource@documentingConversationsForTrainer');
 });
