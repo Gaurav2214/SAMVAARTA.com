@@ -1085,9 +1085,9 @@ Samvaarta.system = function () {
   var trainerDashboard = function trainerDashboard(response, trainerName) {
     var userList = '';
     response.map(function (item, index) {
-      userList += "<tr>\n                            <td>".concat(index + 1, "</td>\n                            <td>").concat(item.id, "</td>\n                            <td>").concat(item.name, "</td>\n                            <td>").concat(item.email, "</td>\n                            <td>").concat(item.status ? 'Approved' : 'Pending', "</td>\n                            <td style=\"text-transform:capitalize;\">").concat(trainerName, "</td>\n                        </tr>");
+      userList += "<tr>\n                            <td>".concat(index + 1, "</td>\n                            <td>").concat(item.id, "</td>\n                            <td>").concat(item.name, "</td>\n                            <td>").concat(item.email, "</td>\n                            <td>").concat(item.status ? 'Approved' : 'Pending', "</td>\n                            <td><a href=\"/dashboard/user-details/").concat(item.id, "\">View Detail</a></td>\n                        </a></tr>");
     });
-    var trainer = "           \n            <table>\n                <tbody>\n                    <tr class=\"user-dashboard-info__head-list\">\n                        <td>SNO.</td>\n                        <td>User Id</td>\n                        <td>Name</td>\n                        <td>Email</td>                \n                        <td>Status</td>\n                        <td>Assigned Trainer</td>\n                    </tr>\n                    ".concat(userList, "\n                </tbody>\n            </table>\n            \n        ");
+    var trainer = "           \n            <table>\n                <tbody>\n                    <tr class=\"user-dashboard-info__head-list\">\n                        <td>SNO.</td>\n                        <td>User Id</td>\n                        <td>Name</td>\n                        <td>Email</td>                \n                        <td>Status</td>\n                        <td>User Details</td>\n                    </tr>\n                    ".concat(userList, "\n                </tbody>\n            </table>\n            \n        ");
     $('.user-data-list').html(trainer);
   };
   var displayTypeWise = function displayTypeWise(response, type) {
@@ -2117,6 +2117,69 @@ Samvaarta.setGetUserDashboard = function () {
     getClosure: getClosure
   };
 }();
+Samvaarta.deepDisplayUser = function (_window$location, _window$location$path) {
+  var userId = parseFloat((_window$location = window.location) === null || _window$location === void 0 || (_window$location = _window$location.pathname) === null || _window$location === void 0 ? void 0 : _window$location.split('/')[((_window$location$path = window.location.pathname) === null || _window$location$path === void 0 || (_window$location$path = _window$location$path.split('/')) === null || _window$location$path === void 0 ? void 0 : _window$location$path.length) - 1]);
+  var displayUserDetails = function displayUserDetails() {
+    var _Samvaarta$common$get3;
+    var deepDis = '';
+    var usersData = (_Samvaarta$common$get3 = Samvaarta.common.getLocalStorage('oauthUserData')) === null || _Samvaarta$common$get3 === void 0 || (_Samvaarta$common$get3 = _Samvaarta$common$get3.data) === null || _Samvaarta$common$get3 === void 0 ? void 0 : _Samvaarta$common$get3.users;
+    usersData.map(function (response) {
+      if (response.id === userId) {
+        deepDis = "\n                <div class=\"show-user-details__inner\">\n                    <div class=\"show-user-details__inner--left detail-items\">\n                        <ul>\n                        <li>Code: <span>".concat(response !== null && response !== void 0 && response.unique_number ? response === null || response === void 0 ? void 0 : response.unique_number : response === null || response === void 0 ? void 0 : response.id, "</span></li>\n                        <li>Name: <span>").concat(response !== null && response !== void 0 && response.name ? response === null || response === void 0 ? void 0 : response.name : '', "</span></li>\n                            <li>Date of Joining: <span>").concat(Samvaarta.common.dateMonthYear(response.created_at), "</span></li>\n                            \n                            <li class=\"role\">Role: <span>").concat(response.user_type, "</span></li>\n                            <li>Location: <span>").concat(response.location ? response.location : '', "</span></li>\n                        </ul>\n                    </div>\n                    <div class=\"show-user-details__inner--mid detail-items\">\n                        <ul>\n                        ").concat(response !== null && response !== void 0 && response.vision ? '<li>Vision: <span>' + (response === null || response === void 0 ? void 0 : response.vision) + '</span></li>' : '', "\n                        ").concat(response !== null && response !== void 0 && response.description ? '<li>Brief Description: <span>' + response.description + '</span></li>' : '', "\n                                      \n                        </ul>\n                    </div>\n                    <div class=\"show-user-details__inner--right detail-items\">\n                        <ul>\n                            <li class=\"profile-img\"><img src=\"").concat(response !== null && response !== void 0 && response.avatar ? response.avatar : '/images/default-face.jpg', "\" width=\"100\" height=\"100\" alt=\"profile\"></li>\n                            <li>LinkedIn: <span>").concat(response === null || response === void 0 ? void 0 : response.linkedin_url, "</span></li>\n                            <li>Email Id: <span>").concat(response === null || response === void 0 ? void 0 : response.email, "</span></li>\n                            <li>Mobile No: <span>").concat(response === null || response === void 0 ? void 0 : response.phone, "</span></li>\n                            \n                        </ul>\n                    </div>\n                </div>\n                ");
+      }
+    });
+    $('.display-user-details').html(deepDis);
+  };
+  var displayDashInfo = function displayDashInfo() {
+    var paramObject = {
+      url: apiUrl + 'api/trainer/documenting-conversations',
+      type: "GET",
+      data: {
+        'user_id': userId
+      },
+      headers: {
+        Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
+        Accept: "application/json"
+      }
+    };
+    var ajaxSuccessCall = function ajaxSuccessCall(response) {
+      Samvaarta.common.setLocalStorage('deepUserData', response === null || response === void 0 ? void 0 : response.data, 1);
+    };
+    var ajaxErrorCall = function ajaxErrorCall(error) {
+      if (error.response) {
+        $("#oauth_log_email_err").html(error.response.data.message).show();
+      }
+    };
+    Samvaarta.common.hitAjaxApi(paramObject, ajaxSuccessCall, ajaxErrorCall);
+  };
+  var displayDocument = function displayDocument() {
+    var previous = '';
+    var supportDoc = '';
+    var interaction = '';
+    var response = Samvaarta.common.getLocalStorage('deepUserData');
+    interaction += "<table>\n            <tr class=\"user-dashboard-info__head-list\">\n                <td>S.No</td>\n                <td>Date</td>\n                <td>Transaction</td>\n                <td>Trainer</td>\n                <td>Edit/Update</td>\n            </tr>";
+    response === null || response === void 0 || response.data.map(function (item, index) {
+      if (item.doc_file) {
+        supportDoc = "                    \n                <a class=\"view-upload-docs\" href=\"".concat(item.doc_file, "\" target=\"_blank\">View Uploaded Doc</a>                   \n                <input type=\"file\" style=\"display:none;\" id=\"hiddenFileInput_").concat(item.id, "\" value=\"").concat(item.doc_file, "\" />");
+      }
+      interaction += "\n                <tr>\n                    <td>".concat(index + 1, "</td>\n                    <td>").concat(getDateFormat(item === null || item === void 0 ? void 0 : item.created_at), "</td>\n                    <td>").concat(index + 1, "</td>\n                    <td>").concat(index + 1, "</td>\n                    <td>").concat(index + 1, "</td>\n                </tr>\n            ");
+    });
+    previous += "<div class=\"details\">";
+    previous += "\n            <h3>Documenting Conversations</h3>\n            <p>They are filled in weekly ideally</p>\n            <p>Firstly \u2013 When a formal conversation with coach has taken place</p>\n            <p>Secondly \u2013 When you want to discuss any situation, share any development</p>\n            <p>You can upload a voice or video file, ppt, pdf, word or excel file</p>\n            <div id=\"\" class=\"details--items previous\">\n                <h3>Interactions</h3>\n                <div class=\"previous-transactions\">\n                    ".concat(interaction, "\n                </div>\n            </div>\n        ");
+    $('.user-activity-details__inner').html(previous);
+  };
+  var displayObjective = function displayObjective() {};
+  var displayOutcomes = function displayOutcomes() {};
+  var displayClosure = function displayClosure() {};
+  return {
+    displayUserDetails: displayUserDetails,
+    displayDashInfo: displayDashInfo,
+    displayDocument: displayDocument,
+    displayObjective: displayObjective,
+    displayOutcomes: displayOutcomes,
+    displayClosure: displayClosure
+  };
+}();
 var dashboardTab = function dashboardTab() {
   var elm = document.querySelector(".dashboard__elements--inner");
   Samvaarta.userDashboard.codeOfEthics();
@@ -2221,6 +2284,10 @@ document.addEventListener("readystatechange", function (event) {
         if (((_oauthUserData4 = oauthUserData) === null || _oauthUserData4 === void 0 ? void 0 : _oauthUserData4.user_type) === 'admin') {
           Samvaarta.system.enquiriesDetail();
         }
+      }
+      if ($('.deep-user-route').length) {
+        Samvaarta.deepDisplayUser.displayDashInfo();
+        Samvaarta.deepDisplayUser.displayUserDetails();
       }
     }, 1000);
     faqEventBind();

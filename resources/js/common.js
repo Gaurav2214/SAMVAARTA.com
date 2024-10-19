@@ -1653,8 +1653,8 @@ Samvaarta.system = (() => {
                             <td>${item.name}</td>
                             <td>${item.email}</td>
                             <td>${item.status ? 'Approved' : 'Pending'}</td>
-                            <td style="text-transform:capitalize;">${trainerName}</td>
-                        </tr>` 
+                            <td><a href="/dashboard/user-details/${item.id}">View Detail</a></td>
+                        </a></tr>`;
         })
         let trainer = `           
             <table>
@@ -1665,7 +1665,7 @@ Samvaarta.system = (() => {
                         <td>Name</td>
                         <td>Email</td>                
                         <td>Status</td>
-                        <td>Assigned Trainer</td>
+                        <td>User Details</td>
                     </tr>
                     ${userList}
                 </tbody>
@@ -3533,6 +3533,147 @@ Samvaarta.setGetUserDashboard = (() => {
     }
 })();
 
+Samvaarta.deepDisplayUser = (() => {
+    let userId = parseFloat(window.location?.pathname?.split('/')[window.location.pathname?.split('/')?.length - 1]);
+
+    const displayUserDetails = () => {
+        let deepDis = '';
+        let usersData = Samvaarta.common.getLocalStorage('oauthUserData')?.data?.users;
+        usersData.map((response)=>{
+            if(response.id === userId){
+                deepDis = `
+                <div class="show-user-details__inner">
+                    <div class="show-user-details__inner--left detail-items">
+                        <ul>
+                        <li>Code: <span>${response?.unique_number ? response?.unique_number : response?.id}</span></li>
+                        <li>Name: <span>${response?.name ? response?.name : ''}</span></li>
+                            <li>Date of Joining: <span>${Samvaarta.common.dateMonthYear(
+                                response.created_at
+                            )}</span></li>
+                            
+                            <li class="role">Role: <span>${
+                                response.user_type
+                            }</span></li>
+                            <li>Location: <span>${
+                                response.location
+                                    ? response.location
+                                    : ''
+                            }</span></li>
+                        </ul>
+                    </div>
+                    <div class="show-user-details__inner--mid detail-items">
+                        <ul>
+                        ${response?.vision ? '<li>Vision: <span>'+response?.vision+'</span></li>' : ''}
+                        ${response?.description ? '<li>Brief Description: <span>'+response.description+'</span></li>' : ''}
+                                      
+                        </ul>
+                    </div>
+                    <div class="show-user-details__inner--right detail-items">
+                        <ul>
+                            <li class="profile-img"><img src="${
+                                response?.avatar ? response.avatar : '/images/default-face.jpg'
+                            }" width="100" height="100" alt="profile"></li>
+                            <li>LinkedIn: <span>${response?.linkedin_url}</span></li>
+                            <li>Email Id: <span>${response?.email}</span></li>
+                            <li>Mobile No: <span>${response?.phone}</span></li>
+                            
+                        </ul>
+                    </div>
+                </div>
+                `;
+            }
+        })
+        
+        $('.display-user-details').html(deepDis);
+    }
+    const displayDashInfo = () => {
+        let paramObject = {
+            url: apiUrl + 'api/trainer/documenting-conversations',
+            type: "GET",
+            data:{'user_id': userId},
+            headers: {
+                Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+                Accept: "application/json",
+            },
+        };
+
+        const ajaxSuccessCall = (response) => {            
+            Samvaarta.common.setLocalStorage('deepUserData', response?.data, 1);
+        };
+
+        const ajaxErrorCall = (error) => {
+            if (error.response) {
+                $("#oauth_log_email_err")
+                    .html(error.response.data.message)
+                    .show();
+            }
+        };
+
+        Samvaarta.common.hitAjaxApi(
+            paramObject,
+            ajaxSuccessCall,
+            ajaxErrorCall
+        );
+    }
+    const displayDocument = () => {
+        let previous = '';
+        let supportDoc = '';
+        let interaction = '';
+        let response = Samvaarta.common.getLocalStorage('deepUserData');
+        interaction += `<table>
+            <tr class="user-dashboard-info__head-list">
+                <td>S.No</td>
+                <td>Date</td>
+                <td>Transaction</td>
+                <td>Trainer</td>
+                <td>Edit/Update</td>
+            </tr>`;
+        response?.data.map((item, index) => {
+            if(item.doc_file){
+                supportDoc = `                    
+                <a class="view-upload-docs" href="${item.doc_file}" target="_blank">View Uploaded Doc</a>                   
+                <input type="file" style="display:none;" id="hiddenFileInput_${item.id}" value="${item.doc_file}" />`;  
+            }
+            interaction += `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${getDateFormat(item?.created_at)}</td>
+                    <td>${index + 1}</td>
+                    <td>${index + 1}</td>
+                    <td>${index + 1}</td>
+                </tr>
+            `;
+        });
+        previous += `<div class="details">`;
+        previous += `
+            <h3>Documenting Conversations</h3>
+            <p>They are filled in weekly ideally</p>
+            <p>Firstly – When a formal conversation with coach has taken place</p>
+            <p>Secondly – When you want to discuss any situation, share any development</p>
+            <p>You can upload a voice or video file, ppt, pdf, word or excel file</p>
+            <div id="" class="details--items previous">
+                <h3>Interactions</h3>
+                <div class="previous-transactions">
+                    ${interaction}
+                </div>
+            </div>
+        `;
+           
+        $('.user-activity-details__inner').html(previous);
+    }
+    const displayObjective = () => {}
+    const displayOutcomes = () => {}
+    const displayClosure = () => {}
+    return {
+        displayUserDetails: displayUserDetails,
+        displayDashInfo: displayDashInfo,
+        displayDocument: displayDocument,
+        displayObjective: displayObjective, 
+        displayOutcomes: displayOutcomes,
+        displayClosure: displayClosure
+    }
+})();
+
 const dashboardTab = () => {
     const elm = document.querySelector(".dashboard__elements--inner");
     Samvaarta.userDashboard.codeOfEthics();
@@ -3632,7 +3773,7 @@ document.addEventListener("readystatechange", (event) => {
 
         }
         joinHere();
-
+        
     }
 
     if (event.target.readyState === "complete") {
@@ -3648,6 +3789,10 @@ document.addEventListener("readystatechange", (event) => {
                 if(oauthUserData?.user_type === 'admin'){
                     Samvaarta.system.enquiriesDetail();
                 }
+            }
+            if($('.deep-user-route').length){
+                Samvaarta.deepDisplayUser.displayDashInfo();
+                Samvaarta.deepDisplayUser.displayUserDetails();
             }
         }, 1000);
         
