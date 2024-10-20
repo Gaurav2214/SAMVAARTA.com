@@ -1153,6 +1153,8 @@ p {
             opacity: 1; }
     .dashboard__elements--inner table.complex-view tr:not(:first-of-type):hover, .dashboard__elements--inner table.complex-view tr:not(:first-of-type):focus {
       background: transparent; }
+    .dashboard__elements--inner table.complex-view tr.view-date-format td {
+      width: 100px; }
   .dashboard__elements--inner.sitemap table tr td:nth-child(2) {
     width: 30%; }
   .dashboard__elements--inner .upcoming-events {
@@ -1799,4 +1801,7 @@ footer {
       bottom: 10px; }
       .sticky-container .btn span {
         margin-left: 0; } }
+
+.view-date-format td {
+  width: 100px; }
 

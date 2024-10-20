@@ -936,6 +936,11 @@
                                 background: transparent;
                             }
                         }
+                        &.view-date-format{
+                            td{
+                                width: rem(100);
+                            }
+                        }
                     }
                 }                    
             }
@@ -1698,6 +1703,12 @@ footer{
                 margin-left: 0;
             }
         }
+    }
+}
+
+.view-date-format{
+    td{
+        width: rem(100);
     }
 }
 

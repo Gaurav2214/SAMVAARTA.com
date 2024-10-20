@@ -35,7 +35,8 @@ Samvaarta.messageLog = {
   15: "You have successfully submitted your desired objectives.",
   16: "You have successfully submitted your documenting conversions.",
   17: "You have successfully submitted your experience with Goalsnu.",
-  18: "We will get in touch with you soon"
+  18: "We will get in touch with you soon",
+  19: "You have successfully submitted your feedback."
 };
 var valError = true;
 var apiUrl = typeof appUrl != "undefined" ? appUrl : "http://127.0.0.1:8000/";
@@ -1097,17 +1098,21 @@ Samvaarta.system = function () {
       userList = '',
       adminList = '';
     var trainerdata = Samvaarta.common.getLocalStorage('trainer_data');
+    var viewDetail = '';
     if (type === 'users') {
       assignTrainer = "<td>Assign Trainer</td>";
+      viewDetail = "<td>User Details</td>";
     } else if (type === 'trainer') {
       userList = "<td>Assigned User</td>";
+      viewDetail = "<td>User Details</td>";
     } else {
       adminList = "<td></td>";
     }
     userInfo += "";
-    userInfo += "<tr class=\"user-dashboard-info__head-list\">\n            <td>SNO.</td>\n            <td>Name</td>\n            <td>Email</td>                \n            <td>Status</td>\n            ".concat(assignTrainer, "\n            ").concat(userList, "\n            ").concat(adminList, "\n        </tr>");
+    userInfo += "<tr class=\"user-dashboard-info__head-list\">\n            <td>SNO.</td>\n            <td>Name</td>\n            <td>Email</td>                \n            <td>Status</td>\n            ".concat(assignTrainer, "\n            ").concat(userList, "\n            ").concat(adminList, "\n            ").concat(viewDetail, "\n        </tr>");
     response.map(function (item, index) {
       var trainerList = '';
+      var viewDetails = '';
       if (type === 'users') {
         var _item$trainer;
         if (!((_item$trainer = item.trainer) !== null && _item$trainer !== void 0 && _item$trainer.length)) {
@@ -1119,6 +1124,7 @@ Samvaarta.system = function () {
         } else {
           trainerList = "".concat(item.trainer[0].name);
         }
+        viewDetails = "<a href=\"/dashboard/user-details/".concat(item.id, "\">View Details</a>");
       } else if (type === 'trainer') {
         if (item.users.length) {
           var _item$users;
@@ -1130,6 +1136,7 @@ Samvaarta.system = function () {
         } else {
           trainerList = 'No User';
         }
+        viewDetails = "<a href=\"/dashboard/user-details/".concat(item.id, "\">View Details</a>");
       }
       if (parseFloat(item.status) === 1) {
         statusInfo = "<span class=\"approved\">Approved</span> <span onclick=\"Samvaarta.system.activateDeactivateUser(".concat(item.id, ", '0')\">Undo</span>");
@@ -1144,6 +1151,7 @@ Samvaarta.system = function () {
       userInfo += "<td>".concat(item.email, "</td>");
       userInfo += "<td id=\"status_".concat(item.id, "\">").concat(statusInfo, "</td>");
       userInfo += "<td>".concat(trainerList, "</td>");
+      userInfo += "<td>".concat(viewDetails, "</td>");
       userInfo += "</tr>";
     });
     $(".user-dashboard-info").addClass('admin-info');
@@ -2120,19 +2128,23 @@ Samvaarta.setGetUserDashboard = function () {
 Samvaarta.deepDisplayUser = function (_window$location, _window$location$path) {
   var userId = parseFloat((_window$location = window.location) === null || _window$location === void 0 || (_window$location = _window$location.pathname) === null || _window$location === void 0 ? void 0 : _window$location.split('/')[((_window$location$path = window.location.pathname) === null || _window$location$path === void 0 || (_window$location$path = _window$location$path.split('/')) === null || _window$location$path === void 0 ? void 0 : _window$location$path.length) - 1]);
   var displayUserDetails = function displayUserDetails() {
-    var _Samvaarta$common$get3;
+    var _oauthUserData4, _oauthUserData5;
     var deepDis = '';
-    var usersData = (_Samvaarta$common$get3 = Samvaarta.common.getLocalStorage('oauthUserData')) === null || _Samvaarta$common$get3 === void 0 || (_Samvaarta$common$get3 = _Samvaarta$common$get3.data) === null || _Samvaarta$common$get3 === void 0 ? void 0 : _Samvaarta$common$get3.users;
-    usersData.map(function (response) {
-      if (response.id === userId) {
-        deepDis = "\n                <div class=\"show-user-details__inner\">\n                    <div class=\"show-user-details__inner--left detail-items\">\n                        <ul>\n                        <li>Code: <span>".concat(response !== null && response !== void 0 && response.unique_number ? response === null || response === void 0 ? void 0 : response.unique_number : response === null || response === void 0 ? void 0 : response.id, "</span></li>\n                        <li>Name: <span>").concat(response !== null && response !== void 0 && response.name ? response === null || response === void 0 ? void 0 : response.name : '', "</span></li>\n                            <li>Date of Joining: <span>").concat(Samvaarta.common.dateMonthYear(response.created_at), "</span></li>\n                            \n                            <li class=\"role\">Role: <span>").concat(response.user_type, "</span></li>\n                            <li>Location: <span>").concat(response.location ? response.location : '', "</span></li>\n                        </ul>\n                    </div>\n                    <div class=\"show-user-details__inner--mid detail-items\">\n                        <ul>\n                        ").concat(response !== null && response !== void 0 && response.vision ? '<li>Vision: <span>' + (response === null || response === void 0 ? void 0 : response.vision) + '</span></li>' : '', "\n                        ").concat(response !== null && response !== void 0 && response.description ? '<li>Brief Description: <span>' + response.description + '</span></li>' : '', "\n                                      \n                        </ul>\n                    </div>\n                    <div class=\"show-user-details__inner--right detail-items\">\n                        <ul>\n                            <li class=\"profile-img\"><img src=\"").concat(response !== null && response !== void 0 && response.avatar ? response.avatar : '/images/default-face.jpg', "\" width=\"100\" height=\"100\" alt=\"profile\"></li>\n                            <li>LinkedIn: <span>").concat(response === null || response === void 0 ? void 0 : response.linkedin_url, "</span></li>\n                            <li>Email Id: <span>").concat(response === null || response === void 0 ? void 0 : response.email, "</span></li>\n                            <li>Mobile No: <span>").concat(response === null || response === void 0 ? void 0 : response.phone, "</span></li>\n                            \n                        </ul>\n                    </div>\n                </div>\n                ");
-      }
-    });
+    if (((_oauthUserData4 = oauthUserData) === null || _oauthUserData4 === void 0 ? void 0 : _oauthUserData4.user_type) === 'trainer') {
+      var _Samvaarta$common$get3;
+      var usersData = (_Samvaarta$common$get3 = Samvaarta.common.getLocalStorage('oauthUserData')) === null || _Samvaarta$common$get3 === void 0 || (_Samvaarta$common$get3 = _Samvaarta$common$get3.data) === null || _Samvaarta$common$get3 === void 0 ? void 0 : _Samvaarta$common$get3.users;
+      usersData.map(function (response) {
+        if (response.id === userId) {
+          deepDis = "\n                    <div class=\"show-user-details__inner\">\n                        <div class=\"show-user-details__inner--left detail-items\">\n                            <ul>\n                            <li>Code: <span>".concat(response !== null && response !== void 0 && response.unique_number ? response === null || response === void 0 ? void 0 : response.unique_number : response === null || response === void 0 ? void 0 : response.id, "</span></li>\n                            <li>Name: <span>").concat(response !== null && response !== void 0 && response.name ? response === null || response === void 0 ? void 0 : response.name : '', "</span></li>\n                                <li>Date of Joining: <span>").concat(Samvaarta.common.dateMonthYear(response.created_at), "</span></li>\n                                \n                                <li class=\"role\">Role: <span>").concat(response.user_type, "</span></li>\n                                <li>Location: <span>").concat(response.location ? response.location : '', "</span></li>\n                            </ul>\n                        </div>\n                        <div class=\"show-user-details__inner--mid detail-items\">\n                            <ul>\n                            ").concat(response !== null && response !== void 0 && response.vision ? '<li>Vision: <span>' + (response === null || response === void 0 ? void 0 : response.vision) + '</span></li>' : '', "\n                            ").concat(response !== null && response !== void 0 && response.description ? '<li>Brief Description: <span>' + response.description + '</span></li>' : '', "\n                                        \n                            </ul>\n                        </div>\n                        <div class=\"show-user-details__inner--right detail-items\">\n                            <ul>\n                                <li class=\"profile-img\"><img src=\"").concat(response !== null && response !== void 0 && response.avatar ? response.avatar : '/images/default-face.jpg', "\" width=\"100\" height=\"100\" alt=\"profile\"></li>\n                                <li>LinkedIn: <span>").concat(response === null || response === void 0 ? void 0 : response.linkedin_url, "</span></li>\n                                <li>Email Id: <span>").concat(response === null || response === void 0 ? void 0 : response.email, "</span></li>\n                                <li>Mobile No: <span>").concat(response === null || response === void 0 ? void 0 : response.phone, "</span></li>\n                                \n                            </ul>\n                        </div>\n                    </div>\n                    ");
+        }
+      });
+    } else if (((_oauthUserData5 = oauthUserData) === null || _oauthUserData5 === void 0 ? void 0 : _oauthUserData5.user_type) === 'admin') {}
     $('.display-user-details').html(deepDis);
   };
   var displayDashInfo = function displayDashInfo() {
+    var _oauthUserData6;
     var paramObject = {
-      url: apiUrl + 'api/trainer/documenting-conversations/?user_id=' + userId,
+      url: apiUrl + 'api/' + ((_oauthUserData6 = oauthUserData) === null || _oauthUserData6 === void 0 ? void 0 : _oauthUserData6.user_type) + '/documenting-conversations/?user_id=' + userId,
       type: "GET",
       data: {
         'user_id': userId
@@ -2161,11 +2173,11 @@ Samvaarta.deepDisplayUser = function (_window$location, _window$location$path) {
     if (response !== null && response !== void 0 && (_response$data10 = response.data) !== null && _response$data10 !== void 0 && _response$data10.length) {
       interaction += "<table>\n            <tr class=\"user-dashboard-info__head-list\">\n                <td>S.No</td>\n                <td>Date</td>\n                <td>Transaction</td>\n                <td>Trainer</td>\n                <td>Edit/Update</td>\n            </tr>";
       response === null || response === void 0 || response.data.map(function (item, index) {
-        var _item$session8, _oauthUserData4, _oauthUserData5, _oauthUserData6, _item$session9;
+        var _item$session8, _oauthUserData7, _oauthUserData8, _oauthUserData9, _item$session9;
         if (item.doc_file) {
           supportDoc = " <li class=\"section_".concat(index + 1, "\">                   \n                <a class=\"view-upload-docs\" href=\"").concat(item.doc_file, "\" target=\"_blank\">View Uploaded Doc</a>                   \n                <input type=\"file\" style=\"display:none;\" id=\"hiddenFileInput_").concat(item.id, "\" value=\"").concat(item.doc_file, "\" /></li>");
         }
-        interaction += "\n                <tr>\n                    <td>".concat(index + 1, "</td>\n                    <td>").concat(getDateFormat(item === null || item === void 0 ? void 0 : item.created_at), "</td>\n                    <td>").concat(item === null || item === void 0 || (_item$session8 = item.session) === null || _item$session8 === void 0 ? void 0 : _item$session8.topic, "</td>\n                    <td style=\"text-transform:capitalize\">").concat(((_oauthUserData4 = oauthUserData) === null || _oauthUserData4 === void 0 ? void 0 : _oauthUserData4.user_type) == 'trainer' ? (_oauthUserData5 = oauthUserData) === null || _oauthUserData5 === void 0 ? void 0 : _oauthUserData5.name : (_oauthUserData6 = oauthUserData) === null || _oauthUserData6 === void 0 || (_oauthUserData6 = _oauthUserData6.trainer[0]) === null || _oauthUserData6 === void 0 ? void 0 : _oauthUserData6.name, "</td>\n                    <td class=\"edit-transaction\" onclick=\"Samvaarta.setGetUserDashboard.editTransaction(").concat(item === null || item === void 0 ? void 0 : item.id, ")\">View Interaction</td>\n                    <div class=\"update-transaction-container hide\" id=\"edit-doc-").concat(item === null || item === void 0 ? void 0 : item.id, "\" data-docId=\"").concat(item === null || item === void 0 ? void 0 : item.id, "\" data-session=\"").concat(item === null || item === void 0 || (_item$session9 = item.session) === null || _item$session9 === void 0 ? void 0 : _item$session9.session_id, "\">\n                        <ul class=\"details--items__topics\">\n                            <li class=\"section_").concat(index + 1, "\">\n                                <label for=\"user_focus_").concat(item.id, "\" class=\"topic\">Focus of the day</label>\n                                <textarea readonly rows=\"2\" cols=\"50\" type=\"text\" id=\"user_focus_").concat(item.id, "\" class=\"input_txt_box\"></textarea>\n                            </li>\n                            <li class=\"section_").concat(index + 1, "\">\n                                <label for=\"user_last_commitment_").concat(item.id, "\" class=\"topic\">Status of last week's commitment</label>\n                                <textarea readonly rows=\"2\" cols=\"50\" type=\"text\" id=\"user_last_commitment_").concat(item.id, "\" class=\"input_txt_box\"></textarea>\n                            </li>\n                            <li class=\"section_").concat(index + 1, "\">\n                                <label for=\"user_conversation_").concat(item.id, "\" class=\"topic\">Today\u2019s conversation</label>\n                                <textarea readonly rows=\"2\" cols=\"50\" type=\"text\" id=\"user_conversation_").concat(item.id, "\" class=\"input_txt_box\"></textarea>\n                            </li>\n                            <li class=\"section_").concat(index + 1, "\">\n                                <label for=\"user_week_commitment_").concat(item.id, "\" class=\"topic\">Commitment for the week</label>\n                                <textarea readonly rows=\"2\" cols=\"50\" type=\"text\" id=\"user_week_commitment_").concat(item.id, "\" class=\"input_txt_box\"></textarea>\n                            </li>\n                            <li class=\"section_").concat(index + 1, "\">\n                                <label for=\"coach_comment_").concat(item.id, "\" class=\"topic\">Coach's Comment</label>\n                                <textarea rows=\"2\" cols=\"50\" type=\"text\" id=\"coach_comment_").concat(item.id, "\" class=\"input_txt_box\"></textarea>\n                            </li>\n                            <li class=\"section_").concat(index + 1, "\">\n                                <label for=\"next_interaction_").concat(item.id, "\" class=\"topic\">Next Interaction Date - <span>").concat(item.next_date, "</span></label>\n                            </li>\n                            ").concat(supportDoc, "\n                        </ul>\n                        <button onclick=\"Samvaarta.deepDisplayUser.trainerDocComment(").concat(item === null || item === void 0 ? void 0 : item.user_id, ", ").concat(item.id, ", ").concat(item === null || item === void 0 ? void 0 : item.session_id, ")\" class=\"btn\">Update</button>\n                        <button style=\"margin-left:10px;\" class=\"btn close-transaction\">Close</button>\n                        <script>\n                            $('#user_focus_").concat(item.id, "').val(\"").concat(item === null || item === void 0 ? void 0 : item.focus_of_the_day, "\");\n                            $('#user_last_commitment_").concat(item.id, "').val(\"").concat(item === null || item === void 0 ? void 0 : item.last_week_comments, "\");\n                            $('#user_conversation_").concat(item.id, "').val(\"").concat(item === null || item === void 0 ? void 0 : item.today_conversion, "\");\n                            $('#user_week_commitment_").concat(item.id, "').val(\"").concat(item === null || item === void 0 ? void 0 : item.feedback, "\");\n                            $('body').on('click', '.close-transaction', ()=>{\n                                $('.update-transaction-container').addClass('hide');\n                            })\n                        </script>\n                    </div>\n                </tr>\n            ");
+        interaction += "\n                <tr>\n                    <td>".concat(index + 1, "</td>\n                    <td>").concat(getDateFormat(item === null || item === void 0 ? void 0 : item.created_at), "</td>\n                    <td>").concat(item === null || item === void 0 || (_item$session8 = item.session) === null || _item$session8 === void 0 ? void 0 : _item$session8.topic, "</td>\n                    <td style=\"text-transform:capitalize\">").concat(((_oauthUserData7 = oauthUserData) === null || _oauthUserData7 === void 0 ? void 0 : _oauthUserData7.user_type) == 'trainer' ? (_oauthUserData8 = oauthUserData) === null || _oauthUserData8 === void 0 ? void 0 : _oauthUserData8.name : (_oauthUserData9 = oauthUserData) === null || _oauthUserData9 === void 0 || (_oauthUserData9 = _oauthUserData9.trainer[0]) === null || _oauthUserData9 === void 0 ? void 0 : _oauthUserData9.name, "</td>\n                    <td class=\"edit-transaction\" onclick=\"Samvaarta.setGetUserDashboard.editTransaction(").concat(item === null || item === void 0 ? void 0 : item.id, ")\">View Interaction</td>\n                    <div class=\"update-transaction-container hide\" id=\"edit-doc-").concat(item === null || item === void 0 ? void 0 : item.id, "\" data-docId=\"").concat(item === null || item === void 0 ? void 0 : item.id, "\" data-session=\"").concat(item === null || item === void 0 || (_item$session9 = item.session) === null || _item$session9 === void 0 ? void 0 : _item$session9.session_id, "\">\n                        <ul class=\"details--items__topics\">\n                            <li class=\"section_").concat(index + 1, "\">\n                                <label for=\"user_focus_").concat(item.id, "\" class=\"topic\">Focus of the day</label>\n                                <textarea readonly rows=\"2\" cols=\"50\" type=\"text\" id=\"user_focus_").concat(item.id, "\" class=\"input_txt_box\"></textarea>\n                            </li>\n                            <li class=\"section_").concat(index + 1, "\">\n                                <label for=\"user_last_commitment_").concat(item.id, "\" class=\"topic\">Status of last week's commitment</label>\n                                <textarea readonly rows=\"2\" cols=\"50\" type=\"text\" id=\"user_last_commitment_").concat(item.id, "\" class=\"input_txt_box\"></textarea>\n                            </li>\n                            <li class=\"section_").concat(index + 1, "\">\n                                <label for=\"user_conversation_").concat(item.id, "\" class=\"topic\">Today\u2019s conversation</label>\n                                <textarea readonly rows=\"2\" cols=\"50\" type=\"text\" id=\"user_conversation_").concat(item.id, "\" class=\"input_txt_box\"></textarea>\n                            </li>\n                            <li class=\"section_").concat(index + 1, "\">\n                                <label for=\"user_week_commitment_").concat(item.id, "\" class=\"topic\">Commitment for the week</label>\n                                <textarea readonly rows=\"2\" cols=\"50\" type=\"text\" id=\"user_week_commitment_").concat(item.id, "\" class=\"input_txt_box\"></textarea>\n                            </li>\n                            <li class=\"section_").concat(index + 1, "\">\n                                <label for=\"coach_comment_").concat(item.id, "\" class=\"topic\">Coach's Comment</label>\n                                <textarea ").concat(item !== null && item !== void 0 && item.comments ? 'readonly' : '', " rows=\"2\" cols=\"50\" type=\"text\" id=\"coach_comment_").concat(item.id, "\" class=\"input_txt_box\"></textarea>\n                            </li>\n                            <li class=\"section_").concat(index + 1, "\">\n                                <label for=\"next_interaction_").concat(item.id, "\" class=\"topic\">Next Interaction Date - <span>").concat(item.next_date, "</span></label>\n                            </li>\n                            ").concat(supportDoc, "\n                        </ul>\n                        <button onclick=\"Samvaarta.deepDisplayUser.trainerDocComment(").concat(item === null || item === void 0 ? void 0 : item.user_id, ", ").concat(item.id, ", ").concat(item === null || item === void 0 ? void 0 : item.session_id, ")\" class=\"btn submit-comment ").concat(item !== null && item !== void 0 && item.comments ? 'hide' : '', "\">Update</button>\n                        <button style=\"margin-left:10px;\" class=\"btn close-transaction\">Close</button>\n                        <script>\n                            $('#user_focus_").concat(item.id, "').val(\"").concat(item === null || item === void 0 ? void 0 : item.focus_of_the_day, "\");\n                            $('#user_last_commitment_").concat(item.id, "').val(\"").concat(item === null || item === void 0 ? void 0 : item.last_week_comments, "\");\n                            $('#user_conversation_").concat(item.id, "').val(\"").concat(item === null || item === void 0 ? void 0 : item.today_conversion, "\");\n                            $('#user_week_commitment_").concat(item.id, "').val(\"").concat(item === null || item === void 0 ? void 0 : item.feedback, "\");\n                            $('#coach_comment_").concat(item.id, "').val(\"").concat(item !== null && item !== void 0 && item.comments ? item === null || item === void 0 ? void 0 : item.comments : '', "\");\n                            $('body').on('click', '.close-transaction', ()=>{\n                                $('.update-transaction-container').addClass('hide');\n                            })\n                        </script>\n                    </div>\n                </tr>\n            ");
       });
       previous += "<div class=\"details\">";
       previous += "\n            <h3>Documenting Conversations</h3>\n            <p>They are filled in weekly ideally</p>\n            <p>Firstly \u2013 When a formal conversation with coach has taken place</p>\n            <p>Secondly \u2013 When you want to discuss any situation, share any development</p>\n            <p>You can upload a voice or video file, ppt, pdf, word or excel file</p>\n            <div id=\"\" class=\"details--items previous\">\n                <h3>Interactions</h3>\n                <div class=\"previous-transactions\">\n                    ".concat(interaction, "\n                </div>\n            </div>\n        ");
@@ -2178,7 +2190,27 @@ Samvaarta.deepDisplayUser = function (_window$location, _window$location$path) {
     var _response$Performance;
     var response = Samvaarta.common.getLocalStorage('deepUserData');
     var objective = '';
-    if (response !== null && response !== void 0 && (_response$Performance = response.PerformanceData) !== null && _response$Performance !== void 0 && _response$Performance.length) {} else {
+    var quantitative = '';
+    var qualitative = '';
+    var performanceDataOther = '';
+    var date = '';
+    var pdata = '';
+    if (response !== null && response !== void 0 && (_response$Performance = response.PerformanceData) !== null && _response$Performance !== void 0 && _response$Performance.length) {
+      var _response$Performance2;
+      response === null || response === void 0 || (_response$Performance2 = response.PerformanceDataOthers) === null || _response$Performance2 === void 0 || _response$Performance2.map(function (item) {
+        performanceDataOther += "\n                    <tr>\n                        <td>".concat(item === null || item === void 0 ? void 0 : item.parameter[0], "</td>\n                        <td>").concat(item === null || item === void 0 ? void 0 : item.description[0], "</td>\n                    </tr>\n                    <tr>\n                        <td>").concat(item === null || item === void 0 ? void 0 : item.parameter[1], "</td>\n                        <td>").concat(item === null || item === void 0 ? void 0 : item.description[1], "</td>\n                    </tr>\n                    <tr>\n                        <td>").concat(item === null || item === void 0 ? void 0 : item.parameter[2], "</td>\n                        <td>").concat(item === null || item === void 0 ? void 0 : item.description[2], "</td>\n                    </tr>\n                ");
+      });
+      var perData = response === null || response === void 0 ? void 0 : response.PerformanceData;
+      for (var j = 0; j < 3; j++) {
+        pdata += "\n                    <tr>\n                        <td>".concat(perData[0].parameter[j], "</td>\n                        <td>").concat(perData[0].unit_measurement[j], "</td>\n                        <td>\n                            <table>\n                                <tr class=\"view-date-format\">\n                                    <td>").concat(perData[0].performance[j], "</td>\n                                    <td>").concat(perData[1].performance[j], "</td>\n                                </tr>\n                            </table>\n                        </td>                        \n                    </tr>\n                ");
+      }
+      for (var i = 0; i < (perData === null || perData === void 0 ? void 0 : perData.length); i++) {
+        date += "\n                    <td width=\"5%\">".concat(perData[i].performance_date, "</td>\n                ");
+      }
+      quantitative += "\n            <div class=\"details--items quantitative\">\n                <h3>Quantitative Parameters \u2013 <span>They refer to the past, current and future performance</span></h3>\n                <h4>The following details needs to be filled up</h4>\n                <ul class=\"details--items__topics\">\n                    <li>Measurable parameters \u2013 3</li>\n                    <li>Mention the units of measurement for example in% or unit</li>\n                    <li>Performance of the parameter over of last two month and current month Future months</li>\n                    <li>For example \u2013\n                        <ul>\n                            <li>Parameter - Emp attrition</li>\n                            <li>Measurement - %: Performance jun - 16%, Jul - 17%, Aug - 16%</li>\n                        </ul> \n                    </li>\n                </ul>\n                <div class=\"quantitative__data\">\n                    <table class=\"complex-view1\">\n                        <thead>\n                            <tr class=\"user-dashboard-info__head-list\">\n                                <td>Parameter</td>\n                                <td>Unit of Measurement</td>\n                                <td>Performance</td>\n                            </tr>                            \n                        </thead>\n                        <tbody>\n                        <tr>\n                            <td></td>\n                            <td></td>\n                            <td>\n                                <table class=\"\">\n                                    <tbody><tr class=\"view-date-format\">\n                                      ".concat(date, "\n                                    </tr>\n                                </tbody></table>\n                            </td>\n                        </tr>                        \n                        ").concat(pdata, "\n                        </tbody>\n                    </table>\n                </div>\n            </div>\n            ");
+      qualitative += "\n            <div class=\"details--items qualitative\">\n                <h3>Qualitative Parameters \u2013 <span>They refer to the behavioural shift you desire</span></h3>\n                <h4>The following details needs to be filled up</h4>\n                <ul class=\"details--items__topics\">\n                    <li>Mention the parameter</li>\n                    <li>Give a brief description of the parameter</li>\n                    <li>They should be influencing the quantitative parameter</li>\n                    <li>For Example \n                        <ul>\n                            <li>Parameter - Customer Relationship</li>\n                            <li>Brief Description - Develop and maintain strong relationships with key clients and accounts</li>\n                        </ul>\n                    </li>\n                </ul>\n                <div class=\"qualitative__data\">\n                    <table class=\"light-view\">\n                        <thead>\n                            <tr class=\"user-dashboard-info__head-list\">\n                                <td>Parameter</td>\n                                <td>Brief Description</td>\n                            </tr>\n                        </thead>\n                        <tbody>\n                            ".concat(performanceDataOther, "\n                        </tbody>\n                    </table>\n                </div>\n            </div>\n            ");
+      objective += "\n                ".concat(quantitative, "\n                ").concat(qualitative, "\n            ");
+    } else {
       objective = "<div class=\"details\">\n                <h4>It seems user did not update his Objectives and Performance.</h4>\n                </div>";
     }
     $('.user-activity-details__inner').html(objective);
@@ -2230,8 +2262,9 @@ Samvaarta.deepDisplayUser = function (_window$location, _window$location$path) {
       type: "POST",
       data: {
         'user_id': userId,
-        comments: comments,
-        document_conversion_id: itemid
+        'comments': comments,
+        'document_conversion_id': itemid,
+        'session_id': sessionid
       },
       headers: {
         Authorization: "Bearer ".concat(Samvaarta.globalVar.oauthToken.access_token),
@@ -2239,7 +2272,9 @@ Samvaarta.deepDisplayUser = function (_window$location, _window$location$path) {
       }
     };
     var ajaxSuccessCall = function ajaxSuccessCall(response) {
-      console.log(response);
+      Samvaarta.model.showSuccessMessage("<h2>Thank You</h2><p class=\"marg-t20\">".concat(Samvaarta.messageLog[19], "</p>"), "y");
+      $('#edit-doc-' + itemid + ' .submit-comment').addClass('hide');
+      displayDashInfo();
     };
     var ajaxErrorCall = function ajaxErrorCall(error) {
       if (error.response) {
@@ -2381,18 +2416,19 @@ document.addEventListener("readystatechange", function (event) {
   if (event.target.readyState === "complete") {
     unvielImg();
     setTimeout(function () {
+      var _oauthUserData11;
       if (Samvaarta.globalVar.is_loggedin) {
-        var _oauthUserData7;
+        var _oauthUserData10;
         if (!Samvaarta.common.getLocalStorage('sessionList')) {
           Samvaarta.userDashboard.getSessionList(userType === 'admin' ? "api/admin/sessions" : "api/profile/session-listing");
         } else {
           Samvaarta.userDashboard.displaySessionList(Samvaarta.common.getLocalStorage('sessionList'));
         }
-        if (((_oauthUserData7 = oauthUserData) === null || _oauthUserData7 === void 0 ? void 0 : _oauthUserData7.user_type) === 'admin') {
+        if (((_oauthUserData10 = oauthUserData) === null || _oauthUserData10 === void 0 ? void 0 : _oauthUserData10.user_type) === 'admin') {
           Samvaarta.system.enquiriesDetail();
         }
       }
-      if ($('.deep-user-route').length) {
+      if ($('.deep-user-route').length && ((_oauthUserData11 = oauthUserData) === null || _oauthUserData11 === void 0 ? void 0 : _oauthUserData11.user_type) !== 'user') {
         Samvaarta.deepDisplayUser.displayDashInfo();
         Samvaarta.deepDisplayUser.displayUserDetails();
       }
