@@ -2953,6 +2953,7 @@ Samvaarta.setGetUserDashboard = (() => {
                     </div>
                 </tr>`;
             })
+            previous += `</table>`;
             $('.previous-transactions').html(previous);
         } else {
             $('.previous-transactions').html('<p>No previous interactions</p>');
