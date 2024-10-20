@@ -17,6 +17,8 @@ Samvaarta.messageLog = {
     16: "You have successfully submitted your documenting conversions.",
     17: "You have successfully submitted your experience with Goalsnu.",
     18: "We will get in touch with you soon",
+    19: "You have successfully submitted your feedback.",
+
 };
 
 var valError = true;
@@ -1653,8 +1655,8 @@ Samvaarta.system = (() => {
                             <td>${item.name}</td>
                             <td>${item.email}</td>
                             <td>${item.status ? 'Approved' : 'Pending'}</td>
-                            <td style="text-transform:capitalize;">${trainerName}</td>
-                        </tr>` 
+                            <td><a href="/dashboard/user-details/${item.id}">View Detail</a></td>
+                        </a></tr>`;
         })
         let trainer = `           
             <table>
@@ -1665,7 +1667,7 @@ Samvaarta.system = (() => {
                         <td>Name</td>
                         <td>Email</td>                
                         <td>Status</td>
-                        <td>Assigned Trainer</td>
+                        <td>User Details</td>
                     </tr>
                     ${userList}
                 </tbody>
@@ -1679,10 +1681,13 @@ Samvaarta.system = (() => {
         let userInfo = '';
         let statusInfo = ``, assignTrainer = '', userList = '', adminList = '';
         var trainerdata = Samvaarta.common.getLocalStorage('trainer_data');
+        var viewDetail = '';
         if(type === 'users'){
             assignTrainer = `<td>Assign Trainer</td>`;
+            viewDetail = `<td>User Details</td>`;
         } else if(type === 'trainer'){
-            userList = `<td>Assigned User</td>`;
+            userList = `<td>Assigned User</td>`;            
+            viewDetail = `<td>User Details</td>`;
         } else {
             adminList = `<td></td>`;
         }
@@ -1695,9 +1700,11 @@ Samvaarta.system = (() => {
             ${assignTrainer}
             ${userList}
             ${adminList}
+            ${viewDetail}
         </tr>`;
         response.map((item, index) => {
             let trainerList = '';
+            let viewDetails = '';
             if(type === 'users'){  
                 if(!item.trainer?.length){      
                     trainerList += `<select class="input_txt_box select-box" onchange="Samvaarta.system.assignedTrainer(this);">
@@ -1710,6 +1717,7 @@ Samvaarta.system = (() => {
                 } else {
                     trainerList = `${item.trainer[0].name}`;
                 }
+                viewDetails = `<a href="/dashboard/user-details/${item.id}">View Details</a>`;
             } else if(type === 'trainer'){
                 if(item.users.length){
                 trainerList += `<div class="assigned-user-list">
@@ -1723,6 +1731,7 @@ Samvaarta.system = (() => {
                 } else {
                     trainerList = 'No User';
                 }
+                viewDetails = `<a href="/dashboard/user-details/${item.id}">View Details</a>`;
             }
             if(parseFloat(item.status) === 1){
                 statusInfo = `<span class="approved">Approved</span> <span onclick="Samvaarta.system.activateDeactivateUser(${item.id}, '0')">Undo</span>`;
@@ -1737,6 +1746,7 @@ Samvaarta.system = (() => {
             userInfo += `<td>${item.email}</td>`;
             userInfo += `<td id="status_${item.id}">${statusInfo}</td>`;
             userInfo += `<td>${trainerList}</td>`;
+            userInfo += `<td>${viewDetails}</td>`;
             userInfo += `</tr>`;
         });
         $(".user-dashboard-info").addClass('admin-info');
@@ -3533,6 +3543,551 @@ Samvaarta.setGetUserDashboard = (() => {
     }
 })();
 
+Samvaarta.deepDisplayUser = (() => {
+    let userId = parseFloat(window.location?.pathname?.split('/')[window.location.pathname?.split('/')?.length - 1]);
+
+    const displayUserDetails = () => {
+        let deepDis = '';
+        if(oauthUserData?.user_type === 'trainer'){
+            let usersData = Samvaarta.common.getLocalStorage('oauthUserData')?.data?.users;
+            usersData.map((response)=>{
+                if(response.id === userId){
+                    deepDis = `
+                    <div class="show-user-details__inner">
+                        <div class="show-user-details__inner--left detail-items">
+                            <ul>
+                            <li>Code: <span>${response?.unique_number ? response?.unique_number : response?.id}</span></li>
+                            <li>Name: <span>${response?.name ? response?.name : ''}</span></li>
+                                <li>Date of Joining: <span>${Samvaarta.common.dateMonthYear(
+                                    response.created_at
+                                )}</span></li>
+                                
+                                <li class="role">Role: <span>${
+                                    response.user_type
+                                }</span></li>
+                                <li>Location: <span>${
+                                    response.location
+                                        ? response.location
+                                        : ''
+                                }</span></li>
+                            </ul>
+                        </div>
+                        <div class="show-user-details__inner--mid detail-items">
+                            <ul>
+                            ${response?.vision ? '<li>Vision: <span>'+response?.vision+'</span></li>' : ''}
+                            ${response?.description ? '<li>Brief Description: <span>'+response.description+'</span></li>' : ''}
+                                        
+                            </ul>
+                        </div>
+                        <div class="show-user-details__inner--right detail-items">
+                            <ul>
+                                <li class="profile-img"><img src="${
+                                    response?.avatar ? response.avatar : '/images/default-face.jpg'
+                                }" width="100" height="100" alt="profile"></li>
+                                <li>LinkedIn: <span>${response?.linkedin_url}</span></li>
+                                <li>Email Id: <span>${response?.email}</span></li>
+                                <li>Mobile No: <span>${response?.phone}</span></li>
+                                
+                            </ul>
+                        </div>
+                    </div>
+                    `;
+                }
+            })
+        } else if(oauthUserData?.user_type === 'admin'){
+
+        }
+        
+        $('.display-user-details').html(deepDis);
+    }
+    const displayDashInfo = () => {
+
+        let paramObject = {
+            url: apiUrl + 'api/'+oauthUserData?.user_type+'/documenting-conversations/?user_id='+userId,
+            type: "GET",
+            data:{'user_id': userId},
+            headers: {
+                Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+                Accept: "application/json",
+            },
+        };
+
+        const ajaxSuccessCall = (response) => {            
+            Samvaarta.common.setLocalStorage('deepUserData', response?.data, 1);
+        };
+
+        const ajaxErrorCall = (error) => {
+            if (error.response) {
+                $("#oauth_log_email_err")
+                    .html(error.response.data.message)
+                    .show();
+            }
+        };
+
+        Samvaarta.common.hitAjaxApi(
+            paramObject,
+            ajaxSuccessCall,
+            ajaxErrorCall
+        );
+    }
+    const displayDocument = () => {
+        let previous = '';
+        let supportDoc = '';
+        let interaction = '';
+        let response = Samvaarta.common.getLocalStorage('deepUserData');
+        if(response?.data?.length){
+        interaction += `<table>
+            <tr class="user-dashboard-info__head-list">
+                <td>S.No</td>
+                <td>Date</td>
+                <td>Transaction</td>
+                <td>Trainer</td>
+                <td>Edit/Update</td>
+            </tr>`;
+        response?.data.map((item, index) => {
+            if(item.doc_file){
+                supportDoc = ` <li class="section_${index+1}">                   
+                <a class="view-upload-docs" href="${item.doc_file}" target="_blank">View Uploaded Doc</a>                   
+                <input type="file" style="display:none;" id="hiddenFileInput_${item.id}" value="${item.doc_file}" /></li>`;  
+            }
+            interaction += `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${getDateFormat(item?.created_at)}</td>
+                    <td>${item?.session?.topic}</td>
+                    <td style="text-transform:capitalize">${oauthUserData?.user_type == 'trainer' ? oauthUserData?.name : oauthUserData?.trainer[0]?.name}</td>
+                    <td class="edit-transaction" onclick="Samvaarta.setGetUserDashboard.editTransaction(${item?.id})">View Interaction</td>
+                    <div class="update-transaction-container hide" id="edit-doc-${item?.id}" data-docId="${item?.id}" data-session="${item?.session?.session_id}">
+                        <ul class="details--items__topics">
+                            <li class="section_${index+1}">
+                                <label for="user_focus_${item.id}" class="topic">Focus of the day</label>
+                                <textarea readonly rows="2" cols="50" type="text" id="user_focus_${item.id}" class="input_txt_box"></textarea>
+                            </li>
+                            <li class="section_${index+1}">
+                                <label for="user_last_commitment_${item.id}" class="topic">Status of last week's commitment</label>
+                                <textarea readonly rows="2" cols="50" type="text" id="user_last_commitment_${item.id}" class="input_txt_box"></textarea>
+                            </li>
+                            <li class="section_${index+1}">
+                                <label for="user_conversation_${item.id}" class="topic">Today’s conversation</label>
+                                <textarea readonly rows="2" cols="50" type="text" id="user_conversation_${item.id}" class="input_txt_box"></textarea>
+                            </li>
+                            <li class="section_${index+1}">
+                                <label for="user_week_commitment_${item.id}" class="topic">Commitment for the week</label>
+                                <textarea readonly rows="2" cols="50" type="text" id="user_week_commitment_${item.id}" class="input_txt_box"></textarea>
+                            </li>
+                            <li class="section_${index+1}">
+                                <label for="coach_comment_${item.id}" class="topic">Coach's Comment</label>
+                                <textarea ${item?.comments ? 'readonly' : ''} rows="2" cols="50" type="text" id="coach_comment_${item.id}" class="input_txt_box"></textarea>
+                            </li>
+                            <li class="section_${index+1}">
+                                <label for="next_interaction_${item.id}" class="topic">Next Interaction Date - <span>${item.next_date}</span></label>
+                            </li>
+                            ${supportDoc}
+                        </ul>
+                        <button onclick="Samvaarta.deepDisplayUser.trainerDocComment(${item?.user_id}, ${item.id}, ${item?.session_id})" class="btn submit-comment ${item?.comments ? 'hide' : ''}">Update</button>
+                        <button style="margin-left:10px;" class="btn close-transaction">Close</button>
+                        <script>
+                            $('#user_focus_${item.id}').val("${item?.focus_of_the_day}");
+                            $('#user_last_commitment_${item.id}').val("${item?.last_week_comments}");
+                            $('#user_conversation_${item.id}').val("${item?.today_conversion}");
+                            $('#user_week_commitment_${item.id}').val("${item?.feedback}");
+                            $('#coach_comment_${item.id}').val("${item?.comments ? item?.comments : ''}");
+                            $('body').on('click', '.close-transaction', ()=>{
+                                $('.update-transaction-container').addClass('hide');
+                            })
+                        </script>
+                    </div>
+                </tr>
+            `;
+        });
+        previous += `<div class="details">`;
+        previous += `
+            <h3>Documenting Conversations</h3>
+            <p>They are filled in weekly ideally</p>
+            <p>Firstly – When a formal conversation with coach has taken place</p>
+            <p>Secondly – When you want to discuss any situation, share any development</p>
+            <p>You can upload a voice or video file, ppt, pdf, word or excel file</p>
+            <div id="" class="details--items previous">
+                <h3>Interactions</h3>
+                <div class="previous-transactions">
+                    ${interaction}
+                </div>
+            </div>
+        `;
+    } else {
+        previous = `<div class="details">
+                <h4>It seems user did not update his Documenting Conversations.</h4>
+                </div>`;
+    }
+           
+        $('.user-activity-details__inner').html(previous);
+    }
+    const displayObjective = () => {
+        let response = Samvaarta.common.getLocalStorage('deepUserData');   
+        let objective = '';
+        let quantitative = '';
+        let qualitative = ''; 
+        let performanceDataOther = ''; 
+        let date = '';
+        let pdata = '';
+        
+        if(response?.PerformanceData?.length){
+            response?.PerformanceDataOthers?.map((item) => {
+                performanceDataOther += `
+                    <tr>
+                        <td>${item?.parameter[0]}</td>
+                        <td>${item?.description[0]}</td>
+                    </tr>
+                    <tr>
+                        <td>${item?.parameter[1]}</td>
+                        <td>${item?.description[1]}</td>
+                    </tr>
+                    <tr>
+                        <td>${item?.parameter[2]}</td>
+                        <td>${item?.description[2]}</td>
+                    </tr>
+                `;
+            });
+            let perData = response?.PerformanceData;
+            for(let j=0;j<3;j++){     
+                pdata += `
+                    <tr>
+                        <td>${perData[0].parameter[j]}</td>
+                        <td>${perData[0].unit_measurement[j]}</td>
+                        <td>
+                            <table>
+                                <tr class="view-date-format">
+                                    <td>${perData[0].performance[j]}</td>
+                                    <td>${perData[1].performance[j]}</td>
+                                </tr>
+                            </table>
+                        </td>                        
+                    </tr>
+                `;
+            }
+            for(let i=0;i<perData?.length;i++){
+                date += `
+                    <td width="5%">${perData[i].performance_date}</td>
+                `;                
+            }
+
+            quantitative += `
+            <div class="details--items quantitative">
+                <h3>Quantitative Parameters – <span>They refer to the past, current and future performance</span></h3>
+                <h4>The following details needs to be filled up</h4>
+                <ul class="details--items__topics">
+                    <li>Measurable parameters – 3</li>
+                    <li>Mention the units of measurement for example in% or unit</li>
+                    <li>Performance of the parameter over of last two month and current month Future months</li>
+                    <li>For example –
+                        <ul>
+                            <li>Parameter - Emp attrition</li>
+                            <li>Measurement - %: Performance jun - 16%, Jul - 17%, Aug - 16%</li>
+                        </ul> 
+                    </li>
+                </ul>
+                <div class="quantitative__data">
+                    <table class="complex-view1">
+                        <thead>
+                            <tr class="user-dashboard-info__head-list">
+                                <td>Parameter</td>
+                                <td>Unit of Measurement</td>
+                                <td>Performance</td>
+                            </tr>                            
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <table class="">
+                                    <tbody><tr class="view-date-format">
+                                      ${date}
+                                    </tr>
+                                </tbody></table>
+                            </td>
+                        </tr>                        
+                        ${pdata}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            `;
+            qualitative += `
+            <div class="details--items qualitative">
+                <h3>Qualitative Parameters – <span>They refer to the behavioural shift you desire</span></h3>
+                <h4>The following details needs to be filled up</h4>
+                <ul class="details--items__topics">
+                    <li>Mention the parameter</li>
+                    <li>Give a brief description of the parameter</li>
+                    <li>They should be influencing the quantitative parameter</li>
+                    <li>For Example 
+                        <ul>
+                            <li>Parameter - Customer Relationship</li>
+                            <li>Brief Description - Develop and maintain strong relationships with key clients and accounts</li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="qualitative__data">
+                    <table class="light-view">
+                        <thead>
+                            <tr class="user-dashboard-info__head-list">
+                                <td>Parameter</td>
+                                <td>Brief Description</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${performanceDataOther}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            `;
+            objective += `
+                ${quantitative}
+                ${qualitative}
+            `;
+        } else {
+            objective = `<div class="details">
+                <h4>It seems user did not update his Objectives and Performance.</h4>
+                </div>`;
+        }
+        $('.user-activity-details__inner').html(objective);
+    }
+    const displayOutcomes = () => {
+        let response = Samvaarta.common.getLocalStorage('deepUserData');
+        let outcomesData = '';
+        let outcome = '';
+        if(response?.LearningOutcomes?.length){
+        response?.LearningOutcomes?.map((item) => {
+            outcomesData += `
+                <tr>
+                    <td>${item.parameter[0]}</td>
+                    <td>${item.outcome_description[0]}</td>                    
+                </tr>
+                <tr>
+                    <td>${item.parameter[1]}</td>
+                    <td>${item.outcome_description[1]}</td>
+                </tr>
+                <tr>
+                    <td>${item.parameter[2]}</td>
+                    <td>${item.outcome_description[2]}</td>
+                </tr>
+            `;
+        })
+        outcome = `
+        <div class="details">
+            <h3>Desired Outcomes</h3>
+            <p>Desired outcomes refers to the state you desire at the end of the period                    </p>
+            <div class="details--items outcomes">
+                <h4>The following details needs to be filled up</h4>
+                <ul class="details--items__topics">
+                    <li>Mention the parameter</li>
+                    <li>Describe the outcome you like. This will include the way you will feel, hear, say and do after a desired a period of time</li>
+                    <li>For example
+                        <ul>
+                            <li>Parameter – Manager Relationship</li>
+                            <li>Brief Description – My manager is talking is trusting me by giving important tasks beyond the KRAs</li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="outcomes__data">
+                    <table class="light-view">
+                        <thead>
+                            <tr class="user-dashboard-info__head-list">
+                                <td>Parameter</td>
+                                <td>Brief Description</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${outcomesData}
+                        </tbody>
+                    </table>
+                    <div class="form-elm-section marg-t10 hide">
+                        <button onclick="Samvaarta.setGetUserDashboard.setDesiredOutcomes()" class="btn">Submit</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        `;
+        } else {
+            outcome = `<div class="details">
+                <h4>It seems user did not update his Outcomes.</h4>
+                </div>`;
+        }
+        $('.user-activity-details__inner').html(outcome);
+    }
+    const displayClosure = () => {
+        let response = Samvaarta.common.getLocalStorage('deepUserData');
+        let closure = '';
+        let closureUser = '';
+        let closureTrainer = '';
+        if(response?.ClosureUserExperinces?.length){
+            closureUser += `<div class="details">
+                    <h3>Closure</h3>
+                    <p>Please document your experience on your journey </p>
+                </div>`;
+            response?.ClosureUserExperinces?.map((item) => {
+                closureUser += `<div class="details--items user-closure-input">
+                    <h3>User Experience</h3>
+                    <ul class="list-view">
+                        <li>
+                            <label for="outcomes_param_1">I enjoyed....</label>
+                            <textarea readonly="" rows="2" cols="50" type="text" id="outcomes_param_1" value="" class="input_txt_box"></textarea>
+                            <p id="outcomes_param_1_err" class="error"></p>
+                        </li>
+                        <li>
+                            <label for="outcomes_param_2">I wish....</label>
+                            <textarea readonly="" rows="2" cols="50" type="text" id="outcomes_param_2" value="" class="input_txt_box"></textarea>
+                            <p id="outcomes_param_2_err" class="error"></p>
+                        </li>
+                        <li>
+                            <label for="outcomes_param_3">I gained by way of....</label>
+                            <textarea readonly="" rows="2" cols="50" type="text" id="outcomes_param_3" value="" class="input_txt_box"></textarea>
+                            <p id="outcomes_param_3_err" class="error"></p>
+                        </li>
+                    </ul>
+                </div>
+                <script>
+                    $('#outcomes_param_1').val("${item?.experience_enjoyed}");
+                    $('#outcomes_param_2').val("${item?.experience_wish}");
+                    $('#outcomes_param_3').val("${item?.experience_gained}");                   
+                </script>
+                `;                
+            });
+
+            closureTrainer += `
+                <div class="details--items manager-closure-input">
+                <h3>Manager Experience</h3>`;
+
+            closureTrainer += `
+                    <ul class="list-view">
+                        <li>
+                            <label for="manager_enjoyed">I enjoyed....</label>
+                            <textarea rows="2" cols="50" type="text" id="manager_enjoyed" value="" class="input_txt_box"></textarea>
+                        </li>
+                        <li>
+                            <label for="manager_wished">I wish....</label>
+                            <textarea rows="2" cols="50" type="text" id="manager_wished" value="" class="input_txt_box"></textarea>
+                        </li>
+                    </ul>
+                </div>
+                <div class="form-elm-section">
+                    <button class="btn" onclick="Samvaarta.deepDisplayUser.trainerClosureComment(${userId})">Submit</button>         
+                </div>
+            `;
+            response?.ClosureTrainerExperinces?.map((item) => {
+                closureTrainer +=`
+                <script>
+                    $('#manager_enjoyed').val("${item?.experience_enjoyed}");
+                    $('#manager_wished').val("${item?.experience_wish}");
+                    $('.form-elm-section').addClass('hide');
+                </script>`;
+            })
+             
+            closure = `
+                ${closureUser}
+                ${closureTrainer}
+            `;
+        } else {
+            closure = `<div class="details">
+                <h4>It seems user did not update his Closure.</h4>
+                </div>`;
+        }
+        
+        $('.user-activity-details__inner').html(closure);
+    }
+    const trainerDocComment = (userId, itemid, sessionid) => {
+        let comments = document.getElementById("coach_comment_"+itemid).value;;
+        let paramObject = {
+            url: apiUrl + 'api/trainer/add_comment',
+            type: "POST",
+            data:{  
+                'user_id': userId, 
+                'comments': comments, 
+                'document_conversion_id': itemid,
+                'session_id': sessionid,
+            },
+            headers: {
+                Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+                Accept: "application/json",
+            },
+        };
+
+        const ajaxSuccessCall = (response) => {            
+            Samvaarta.model.showSuccessMessage(
+                `<h2>Thank You</h2><p class="marg-t20">${Samvaarta.messageLog[19]}</p>`,
+                "y"
+            );
+            $('#edit-doc-'+itemid+' .submit-comment').addClass('hide');
+            displayDashInfo();
+        };
+
+        const ajaxErrorCall = (error) => {
+            if (error.response) {
+                $("#oauth_log_email_err")
+                    .html(error.response.data.message)
+                    .show();
+            }
+        };
+        Samvaarta.common.hitAjaxApi(
+            paramObject,
+            ajaxSuccessCall,
+            ajaxErrorCall
+        );
+    }
+    const trainerClosureComment = (userId) => {
+        let manager_enjoyed = document.getElementById("manager_enjoyed").value;
+        let manager_wished = document.getElementById("manager_wished").value;
+        let paramObject = {
+            url: apiUrl + 'api/trainer/closing-of-intraction',
+            type: "POST",
+            data:{  
+                'user_id': userId, 
+                'experience_enjoyed': manager_enjoyed, 
+                'experience_wish': manager_wished
+            },
+            headers: {
+                Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+                Accept: "application/json",
+            },
+        };
+
+        const ajaxSuccessCall = (response) => {            
+            Samvaarta.model.showSuccessMessage(
+                `<h2>Thank You</h2><p class="marg-t20">${Samvaarta.messageLog[17]}</p>`,
+                "y"
+            );
+            $('.user-activity-details__inner .form-elm-section').addClass('hide');
+            displayDashInfo();
+        };
+
+        const ajaxErrorCall = (error) => {
+            if (error.response) {
+                $("#oauth_log_email_err")
+                    .html(error.response.data.message)
+                    .show();
+            }
+        };
+        Samvaarta.common.hitAjaxApi(
+            paramObject,
+            ajaxSuccessCall,
+            ajaxErrorCall
+        );
+    }
+    return {
+        displayUserDetails: displayUserDetails,
+        displayDashInfo: displayDashInfo,
+        displayDocument: displayDocument,
+        displayObjective: displayObjective, 
+        displayOutcomes: displayOutcomes,
+        displayClosure: displayClosure,
+        trainerDocComment: trainerDocComment,
+        trainerClosureComment: trainerClosureComment,
+    }
+})();
+
 const dashboardTab = () => {
     const elm = document.querySelector(".dashboard__elements--inner");
     Samvaarta.userDashboard.codeOfEthics();
@@ -3632,7 +4187,7 @@ document.addEventListener("readystatechange", (event) => {
 
         }
         joinHere();
-
+        
     }
 
     if (event.target.readyState === "complete") {
@@ -3648,6 +4203,10 @@ document.addEventListener("readystatechange", (event) => {
                 if(oauthUserData?.user_type === 'admin'){
                     Samvaarta.system.enquiriesDetail();
                 }
+            }
+            if($('.deep-user-route').length && oauthUserData?.user_type !== 'user'){
+                Samvaarta.deepDisplayUser.displayDashInfo();
+                Samvaarta.deepDisplayUser.displayUserDetails();
             }
         }, 1000);
         
