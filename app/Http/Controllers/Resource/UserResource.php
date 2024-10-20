@@ -394,6 +394,8 @@ class UserResource extends Controller
 			$PerformanceData=PerformanceData::whereIn("user_id",$user_ids)->orderBy('id',"desc")->get()->toArray();
 			$temp=[];
 
+            $PerformanceDataOthers=[];
+
 			if($PerformanceData){
 				foreach($PerformanceData as $val){
 					$val['unit_measurement']=json_decode($val['unit_measurement'],true);
