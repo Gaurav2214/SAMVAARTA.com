@@ -3808,7 +3808,12 @@ Samvaarta.deepDisplayUser = (() => {
                 `;
             });
             let perData = response?.PerformanceData;
-            for(let j=0;j<3;j++){     
+
+            for(let j=0;j<3;j++){  
+                let ppdata = '';   
+                for(let i=0;i<perData?.length;i++){
+                    ppdata += `<td>${perData[i].performance[j]}</td>`; 
+                }
                 pdata += `
                     <tr>
                         <td>${perData[0].parameter[j]}</td>
@@ -3816,8 +3821,7 @@ Samvaarta.deepDisplayUser = (() => {
                         <td>
                             <table>
                                 <tr class="view-date-format">
-                                    <td>${perData[0].performance[j]}</td>
-                                    <td>${perData[1].performance[j]}</td>
+                                    ${ppdata}
                                 </tr>
                             </table>
                         </td>                        
@@ -4024,15 +4028,15 @@ Samvaarta.deepDisplayUser = (() => {
                     <ul class="list-view">
                         <li>
                             <label for="manager_enjoyed">I enjoyed....</label>
-                            <textarea rows="2" cols="50" type="text" id="manager_enjoyed" value="" class="input_txt_box"></textarea>
+                            <textarea ${oauthUserData?.user_type === 'admin' ? 'readonly' : ''} rows="2" cols="50" type="text" id="manager_enjoyed" value="" class="input_txt_box"></textarea>
                         </li>
                         <li>
                             <label for="manager_wished">I wish....</label>
-                            <textarea rows="2" cols="50" type="text" id="manager_wished" value="" class="input_txt_box"></textarea>
+                            <textarea ${oauthUserData?.user_type === 'admin' ? 'readonly' : ''} rows="2" cols="50" type="text" id="manager_wished" value="" class="input_txt_box"></textarea>
                         </li>
                     </ul>
                 </div>
-                <div class="form-elm-section">
+                <div class="form-elm-section ${oauthUserData?.user_type === 'admin' ? 'hide' : ''}">
                     <button class="btn" onclick="Samvaarta.deepDisplayUser.trainerClosureComment(${userId})">Submit</button>         
                 </div>
             `;
