@@ -2928,8 +2928,11 @@ Samvaarta.setGetUserDashboard = (() => {
                                 <textarea rows="2" cols="50" type="text" id="user_week_commitment_${item.id}" class="input_txt_box"></textarea>
                             </li>
                             <li class="section_${index+1}">
-                                ${supportDoc}
-                                
+                                <label for="coach_comment_${item.id}" class="topic">Coach's Comment</label>
+                                <textarea readonly rows="2" cols="50" type="text" id="coach_comment_${item.id}" class="input_txt_box"></textarea>
+                            </li>
+                            <li class="section_${index+1}">
+                                ${supportDoc}                                
                                 <input type="hidden" id="hiddenFileInputValue_${item.id}" value="${item.doc_file}" />
                             </li>
                         </ul>
@@ -2942,6 +2945,7 @@ Samvaarta.setGetUserDashboard = (() => {
                             $('#user_last_commitment_${item.id}').val("${item?.last_week_comments}");
                             $('#user_conversation_${item.id}').val("${item?.today_conversion}");
                             $('#user_week_commitment_${item.id}').val("${item?.feedback}");
+                            $('#coach_comment_${item.id}').val("${item?.comments ? item?.comments : ''}");
                             $('body').on('click', '.close-transaction', ()=>{
                                 $('.update-transaction-container').addClass('hide');
                             })
