@@ -3595,7 +3595,53 @@ Samvaarta.deepDisplayUser = (() => {
                 }
             })
         } else if(oauthUserData?.user_type === 'admin'){
-
+            let userData = Samvaarta.common.getLocalStorage('deepUserData');
+            let response = userData?.data;
+            if(response?.name){
+                deepDis = `
+                        <div class="show-user-details__inner">
+                            <div class="show-user-details__inner--left detail-items">
+                                <ul>
+                                <li>Code: <span>${response?.unique_number ? response?.unique_number : response?.id}</span></li>
+                                <li>Name: <span>${response?.name ? response?.name : ''}</span></li>
+                                    <li>Date of Joining: <span>${Samvaarta.common.dateMonthYear(
+                                        response.created_at
+                                    )}</span></li>
+                                    
+                                    <li class="role">Role: <span>${
+                                        response.user_type
+                                    }</span></li>
+                                    <li class="role">Coach: <span>${
+                                        response?.trainer[0]?.name
+                                    }</span></li>
+                                    <li>Location: <span>${
+                                        response.location
+                                            ? response.location
+                                            : ''
+                                    }</span></li>
+                                </ul>
+                            </div>
+                            <div class="show-user-details__inner--mid detail-items">
+                                <ul>
+                                ${response?.vision ? '<li>Vision: <span>'+response?.vision+'</span></li>' : ''}
+                                ${response?.description ? '<li>Brief Description: <span>'+response.description+'</span></li>' : ''}
+                                            
+                                </ul>
+                            </div>
+                            <div class="show-user-details__inner--right detail-items">
+                                <ul>
+                                    <li class="profile-img"><img src="${
+                                        response?.avatar ? response.avatar : '/images/default-face.jpg'
+                                    }" width="100" height="100" alt="profile"></li>
+                                    <li>LinkedIn: <span>${response?.linkedin_url}</span></li>
+                                    <li>Email Id: <span>${response?.email}</span></li>
+                                    <li>Mobile No: <span>${response?.phone}</span></li>
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                        `;
+            }
         }
         
         $('.display-user-details').html(deepDis);
@@ -3614,6 +3660,7 @@ Samvaarta.deepDisplayUser = (() => {
 
         const ajaxSuccessCall = (response) => {            
             Samvaarta.common.setLocalStorage('deepUserData', response?.data, 1);
+            displayUserDetails();
         };
 
         const ajaxErrorCall = (error) => {
@@ -3634,8 +3681,16 @@ Samvaarta.deepDisplayUser = (() => {
         let previous = '';
         let supportDoc = '';
         let interaction = '';
-        let response = Samvaarta.common.getLocalStorage('deepUserData');
-        if(response?.data?.length){
+        let response = '';
+        let userInfo = Samvaarta.common.getLocalStorage('deepUserData')?.data;
+
+        if(oauthUserData?.user_type === 'admin'){
+            response = Samvaarta.common.getLocalStorage('deepUserData')?.DocumentConversations;
+        } else {
+            response = Samvaarta.common.getLocalStorage('deepUserData')?.data;
+        }
+        
+        if(response?.length){
         interaction += `<table>
             <tr class="user-dashboard-info__head-list">
                 <td>S.No</td>
@@ -3644,7 +3699,7 @@ Samvaarta.deepDisplayUser = (() => {
                 <td>Trainer</td>
                 <td>Edit/Update</td>
             </tr>`;
-        response?.data.map((item, index) => {
+        response?.map((item, index) => {
             if(item.doc_file){
                 supportDoc = ` <li class="section_${index+1}">                   
                 <a class="view-upload-docs" href="${item.doc_file}" target="_blank">View Uploaded Doc</a>                   
@@ -3655,7 +3710,7 @@ Samvaarta.deepDisplayUser = (() => {
                     <td>${index + 1}</td>
                     <td>${getDateFormat(item?.created_at)}</td>
                     <td>${item?.session?.topic}</td>
-                    <td style="text-transform:capitalize">${oauthUserData?.user_type == 'trainer' ? oauthUserData?.name : oauthUserData?.trainer[0]?.name}</td>
+                    <td style="text-transform:capitalize">${oauthUserData?.user_type == 'trainer' ? oauthUserData?.name : userInfo?.trainer[0]?.name}</td>
                     <td class="edit-transaction" onclick="Samvaarta.setGetUserDashboard.editTransaction(${item?.id})">View Interaction</td>
                     <div class="update-transaction-container hide" id="edit-doc-${item?.id}" data-docId="${item?.id}" data-session="${item?.session?.session_id}">
                         <ul class="details--items__topics">
@@ -3677,14 +3732,14 @@ Samvaarta.deepDisplayUser = (() => {
                             </li>
                             <li class="section_${index+1}">
                                 <label for="coach_comment_${item.id}" class="topic">Coach's Comment</label>
-                                <textarea ${item?.comments ? 'readonly' : ''} rows="2" cols="50" type="text" id="coach_comment_${item.id}" class="input_txt_box"></textarea>
+                                <textarea ${item?.comments || oauthUserData?.user_type === 'admin' ? 'readonly' : ''} rows="2" cols="50" type="text" id="coach_comment_${item.id}" class="input_txt_box"></textarea>
                             </li>
                             <li class="section_${index+1}">
                                 <label for="next_interaction_${item.id}" class="topic">Next Interaction Date - <span>${item.next_date}</span></label>
                             </li>
                             ${supportDoc}
                         </ul>
-                        <button onclick="Samvaarta.deepDisplayUser.trainerDocComment(${item?.user_id}, ${item.id}, ${item?.session_id})" class="btn submit-comment ${item?.comments ? 'hide' : ''}">Update</button>
+                        <button onclick="Samvaarta.deepDisplayUser.trainerDocComment(${item?.user_id}, ${item.id}, ${item?.session_id})" class="btn submit-comment ${item?.comments || oauthUserData?.user_type === 'admin' ? 'hide' : ''}">Update</button>
                         <button style="margin-left:10px;" class="btn close-transaction">Close</button>
                         <script>
                             $('#user_focus_${item.id}').val("${item?.focus_of_the_day}");
@@ -4206,7 +4261,6 @@ document.addEventListener("readystatechange", (event) => {
             }
             if($('.deep-user-route').length && oauthUserData?.user_type !== 'user'){
                 Samvaarta.deepDisplayUser.displayDashInfo();
-                Samvaarta.deepDisplayUser.displayUserDetails();
             }
         }, 1000);
         
