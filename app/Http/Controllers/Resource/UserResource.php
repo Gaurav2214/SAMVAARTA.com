@@ -369,6 +369,15 @@ class UserResource extends Controller
 
         $User = User::with('trainer')->find($request->user_id);  
 
+        if(empty($User)){
+            return response()->json(['success' =>'false','message'=>"User Id is not found"]);
+         }
+
+         if($User->user_type!="user"){
+            return response()->json(['success' =>'false','message'=>"User Id is not valid"]);
+         }
+
+
         $user_ids=[];
 		$user_ids[] =$request->user_id;
 
@@ -377,55 +386,48 @@ class UserResource extends Controller
 
 		$DocumentConversations= $DocumentConversations->get()->toArray();
 
-		
-		if($DocumentConversations){
+		$LearningOutcomes= LearningOutcomes::whereIn('user_id', $user_ids)->get()->toArray();
 
-			$LearningOutcomes= LearningOutcomes::whereIn('user_id', $user_ids)->get()->toArray();
+        if(!empty($LearningOutcomes)){
+            foreach($LearningOutcomes as $key=>$val){
+                $outcome_description = json_decode($val['outcome_description'],true);
+                $parameter = json_decode($val['parameter'],true);
+                $LearningOutcomes[$key]['parameter']=$parameter;
+                $LearningOutcomes[$key]['outcome_description']=$outcome_description;
+            }
+        }
 
-			if(!empty($LearningOutcomes)){
-				foreach($LearningOutcomes as $key=>$val){
-              	     $outcome_description = json_decode($val['outcome_description'],true);
-               		 $parameter = json_decode($val['parameter'],true);
-					 $LearningOutcomes[$key]['parameter']=$parameter;
-					 $LearningOutcomes[$key]['outcome_description']=$outcome_description;
-				}
+        $PerformanceData=PerformanceData::whereIn("user_id",$user_ids)->orderBy('id',"desc")->get()->toArray();
+        $temp=[];
+
+        $PerformanceDataOthers=[];
+
+        if($PerformanceData){
+            foreach($PerformanceData as $val){
+                $val['unit_measurement']=json_decode($val['unit_measurement'],true);
+                $val['performance']=json_decode($val['performance'],true);
+                $val['parameter']=json_decode($val['parameter'],true);
+                $temp[]=($val);
             }
 
-			$PerformanceData=PerformanceData::whereIn("user_id",$user_ids)->orderBy('id',"desc")->get()->toArray();
-			$temp=[];
+            $PerformanceDataOthers=PerformanceDataOthers::whereIn("user_id",$user_ids)->orderBy('id',"desc")->get()->toArray();
 
-            $PerformanceDataOthers=[];
+            if(!empty($PerformanceDataOthers)){
+                foreach($PerformanceDataOthers as $key=>$val){
 
-			if($PerformanceData){
-				foreach($PerformanceData as $val){
-					$val['unit_measurement']=json_decode($val['unit_measurement'],true);
-					$val['performance']=json_decode($val['performance'],true);
-					$val['parameter']=json_decode($val['parameter'],true);
-					$temp[]=($val);
-				}
+                    $PerformanceDataOthers[$key]['parameter']=json_decode($val['parameter'],true);
+                    $PerformanceDataOthers[$key]['description']=json_decode($val['description'],true);
 
-				$PerformanceDataOthers=PerformanceDataOthers::whereIn("user_id",$user_ids)->orderBy('id',"desc")->get()->toArray();
+                }
+            }
+        }
 
-				if(!empty($PerformanceDataOthers)){
-					foreach($PerformanceDataOthers as $key=>$val){
+        $ClosureUserExperinces=ClosureUserExperinces::whereIn("user_id",$user_ids)->orderBy('id',"desc")->get()->toArray();
 
-						$PerformanceDataOthers[$key]['parameter']=json_decode($val['parameter'],true);
-						$PerformanceDataOthers[$key]['description']=json_decode($val['description'],true);
+        $trainer_id = isset($User->trainer[0]->id)?$User->trainer[0]->id:0;
 
-					}
-				}
-			}
+        $ClosureTrainerExperinces=ClosureTrainerExperinces::where("trainer_id",$trainer_id)->whereIn('user_id',$user_ids)->orderBy('id',"desc")->get()->toArray();
 
-            $ClosureUserExperinces=ClosureUserExperinces::whereIn("user_id",$user_ids)->orderBy('id',"desc")->get()->toArray();
-
-            $trainer_id = isset($User->trainer[0]->id)?$User->trainer[0]->id:0;
-
-            $ClosureTrainerExperinces=ClosureTrainerExperinces::where("trainer_id",$trainer_id)->whereIn('user_id',$user_ids)->orderBy('id',"desc")->get()->toArray();
-
-			return response()->json(['data'=>$User,'DocumentConversations' => $DocumentConversations,'LearningOutcomes'=>$LearningOutcomes,'PerformanceData'=>$temp,'PerformanceDataOthers'=>$PerformanceDataOthers,"success"=>"true","ClosureUserExperinces"=>$ClosureUserExperinces,"ClosureTrainerExperinces"=>$ClosureTrainerExperinces]);
-		}else{
-			return response()->json(['data' =>[],"success"=>"false"]);
-		}
-	
+        return response()->json(['data'=>$User,'DocumentConversations' => $DocumentConversations,'LearningOutcomes'=>$LearningOutcomes,'PerformanceData'=>$temp,'PerformanceDataOthers'=>$PerformanceDataOthers,"success"=>"true","ClosureUserExperinces"=>$ClosureUserExperinces,"ClosureTrainerExperinces"=>$ClosureTrainerExperinces]);
 	}
 }

@@ -425,7 +425,13 @@ class ProfileController extends Controller
 			}
 
 			
-			$TrainerComment = TrainerComment::create(['user_id'=>$user_id,'trainer_id'=>$trainer_id,'comments'=>$request->comments,'document_conversation_id'=>$request->document_conversation_id]);
+			$TrainerComment = TrainerComment::create([
+				'user_id'=>$user_id,
+				'trainer_id'=>$trainer_id,
+				'comments'=>$request->comments,
+				'document_conversation_id'=>$request->document_conversion_id,
+				'session_id'=>$DocumentConversations->session_id
+			]);
 			
 			$TrainerComment= TrainerComment::where('trainer_id', $trainer_id)->get()->toArray();
 
@@ -971,10 +977,10 @@ class ProfileController extends Controller
 			}
 		
 
-		$DocumentConversations= DocumentConversations::trainerComment()->with('session','user')->whereIn('document_conversations.user_id', $user_ids)->select('document_conversations.*','trainer_comments.comments');
+			$DocumentConversations= DocumentConversations::trainerComment()->with('session','user')->whereIn('document_conversations.user_id', $user_ids)->select('document_conversations.*','trainer_comments.comments');
 
-	
-		$DocumentConversations= $DocumentConversations->get()->toArray();
+		
+			$DocumentConversations= $DocumentConversations->get()->toArray();
 
 		
 
