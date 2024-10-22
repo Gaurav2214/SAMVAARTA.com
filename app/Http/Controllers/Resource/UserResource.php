@@ -42,10 +42,21 @@ class UserResource extends Controller
         return response()->json(['success' =>'true','data'=>$Users,'count'=>count($Users)]);
     }
 
-    public function trainer_listing()
+    public function trainer_listing(Request $request)
     {
-        $Users = User::with(['users'])->where(['user_type'=>'trainer'])->orderBy('id', 'DESC')->get();
-        return response()->json(['success' =>'true','data'=>$Users,'count'=>count($Users)]);
+
+        if(isset($request->trainer_id) && $request->trainer_id>0){
+            $Users = User::with(['users'])->where(['user_type'=>'trainer'])->where('id',$request->trainer_id)->orderBy('id', 'DESC')->first();
+            if(empty($Users)){
+                return response()->json(['success' =>'false','data'=>[]]);
+            }
+            return response()->json(['success' =>'true','data'=>$Users]);
+        }else{
+            $Users = User::with(['users'])->where(['user_type'=>'trainer'])->orderBy('id', 'DESC')->get();
+
+            return response()->json(['success' =>'true','data'=>$Users,'count'=>count($Users)]);
+        }
+       
     }
 
     public function admin_listing()
