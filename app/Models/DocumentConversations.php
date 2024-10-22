@@ -49,7 +49,7 @@ class DocumentConversations extends Model
     
 
     public function scopeTrainerComment($query){
-        return $query->join('trainer_comments', 'trainer_comments.session_id', '=', 'document_conversations.session_id','left');
+        return $query->join('trainer_comments', 'trainer_comments.document_conversation_id', '=', 'document_conversations.id','left');
     }
 
 }
