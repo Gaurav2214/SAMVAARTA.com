@@ -29,6 +29,11 @@ class UserController extends Controller
         return view('userDetail');
     }
 
+    public function trainerDetail()
+    {   
+        return view('trainerDetail');
+    }
+
     public function login()
     {   
         return view('login');

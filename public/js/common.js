@@ -1731,7 +1731,7 @@ Samvaarta.system = (() => {
               } else {
                   trainerList = 'No User';
               }
-              viewDetails = `<a href="/dashboard/user-details/${item.id}">View Details</a>`;
+              viewDetails = `<a href="/dashboard/trainer-details/${item.id}">View Details</a>`;
           }
           if(parseFloat(item.status) === 1){
               statusInfo = `<span class="approved">Approved</span> <span onclick="Samvaarta.system.activateDeactivateUser(${item.id}, '0')">Undo</span>`;
@@ -3602,26 +3602,26 @@ Samvaarta.deepDisplayUser = (() => {
       } else if(oauthUserData?.user_type === 'admin'){
           let userData = Samvaarta.common.getLocalStorage('deepUserData');
           let response = userData?.data;
-          if(response?.name){
+          if(response?.user_type === 'user'){
               deepDis = `
                       <div class="show-user-details__inner">
                           <div class="show-user-details__inner--left detail-items">
                               <ul>
                               <li>Code: <span>${response?.unique_number ? response?.unique_number : response?.id}</span></li>
                               <li>Name: <span>${response?.name ? response?.name : ''}</span></li>
-                                  <li>Date of Joining: <span>${Samvaarta.common.dateMonthYear(
-                                      response.created_at
+                                  <li>Date of Joining: <span>${Samvaarta?.common?.dateMonthYear(
+                                      response?.created_at
                                   )}</span></li>
                                   
                                   <li class="role">Role: <span>${
-                                      response.user_type
+                                      response?.user_type
                                   }</span></li>
                                   <li class="role">Coach: <span>${
                                       response?.trainer[0]?.name
                                   }</span></li>
                                   <li>Location: <span>${
-                                      response.location
-                                          ? response.location
+                                      response?.location
+                                          ? response?.location
                                           : ''
                                   }</span></li>
                               </ul>
@@ -3646,6 +3646,48 @@ Samvaarta.deepDisplayUser = (() => {
                           </div>
                       </div>
                       `;
+          }
+          if(response?.user_type === 'trainer'){
+            deepDis = `
+                      <div class="show-user-details__inner">
+                          <div class="show-user-details__inner--left detail-items">
+                            <ul>
+                            <li>Code: <span>${response?.unique_number ? response?.unique_number : response?.id}</span></li>
+                              <li>Name: <span>${response?.name ? response?.name : ''}</span></li>
+                                  <li>Date of Joining: <span>${Samvaarta?.common?.dateMonthYear(
+                                      response?.created_at
+                                  )}</span></li>
+                                  
+                                  <li class="role">Role: <span>${
+                                      response?.user_type
+                                  }</span></li>                                  
+                                  <li>Location: <span>${
+                                      response?.location
+                                          ? response?.location
+                                          : ''
+                                  }</span></li>
+                              </ul>
+                          </div>
+                          <div class="show-user-details__inner--mid detail-items">
+                              <ul>
+                              ${response?.vision ? '<li>Vision: <span>'+response?.vision+'</span></li>' : ''}
+                              ${response?.description ? '<li>Brief Description: <span>'+response.description+'</span></li>' : ''}
+                                          
+                              </ul>
+                          </div>
+                          <div class="show-user-details__inner--right detail-items">
+                              <ul>
+                                  <li class="profile-img"><img src="${
+                                      response?.avatar ? response.avatar : '/images/default-face.jpg'
+                                  }" width="100" height="100" alt="profile"></li>
+                                  <li>LinkedIn: <span>${response?.linkedin_url}</span></li>
+                                  <li>Email Id: <span>${response?.email}</span></li>
+                                  <li>Mobile No: <span>${response?.phone}</span></li>
+                                  
+                              </ul>
+                          </div>
+                      </div>
+                    `;
           }
       }
       
@@ -4140,6 +4182,37 @@ Samvaarta.deepDisplayUser = (() => {
           ajaxErrorCall
       );
   }
+  const displayTrainerDashInfo = () =>{
+    let paramObject = {
+      url: apiUrl + 'api/admin/trainer/listing?trainer_id='+userId,
+      type: "GET",
+      data:{'user_id': userId},
+      headers: {
+          Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+          Accept: "application/json",
+      },
+    };
+
+    const ajaxSuccessCall = (response) => {            
+        Samvaarta.common.setLocalStorage('deepUserData', response?.data, 1);
+        displayUserDetails();
+    };
+
+    const ajaxErrorCall = (error) => {
+        if (error.response) {
+            $("#oauth_log_email_err")
+                .html(error.response.data.message)
+                .show();
+        }
+    };
+
+    Samvaarta.common.hitAjaxApi(
+        paramObject,
+        ajaxSuccessCall,
+        ajaxErrorCall
+    );
+  }
+
   return {
       displayUserDetails: displayUserDetails,
       displayDashInfo: displayDashInfo,
@@ -4149,6 +4222,7 @@ Samvaarta.deepDisplayUser = (() => {
       displayClosure: displayClosure,
       trainerDocComment: trainerDocComment,
       trainerClosureComment: trainerClosureComment,
+      displayTrainerDashInfo: displayTrainerDashInfo,
   }
 })();
 
@@ -4271,6 +4345,9 @@ document.addEventListener("readystatechange", (event) => {
           if($('.deep-user-route').length && oauthUserData?.user_type !== 'user'){
               Samvaarta.deepDisplayUser.displayDashInfo();
           }
+          if($('.deep-trainer-route').length && oauthUserData?.user_type !== 'user'){
+            Samvaarta.deepDisplayUser.displayTrainerDashInfo();
+        }
       }, 1000);
       
       faqEventBind();       
