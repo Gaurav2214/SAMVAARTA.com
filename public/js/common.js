@@ -2231,7 +2231,7 @@ Samvaarta.userDashboard = (() => {
       `;
       $('.user-activity-details__inner').html(codeOfEthics);
   }
-  const closureInteraction = (response) => {
+  const closureInteraction = (response, trainerRes) => {
       let closure = `
       <div class="details codeofethics">
           <h3>Closure</h3>
@@ -2278,6 +2278,8 @@ Samvaarta.userDashboard = (() => {
       $('#outcomes_param_1').val(response[0]?.experience_enjoyed);
       $('#outcomes_param_2').val(response[0]?.experience_wish);
       $('#outcomes_param_3').val(response[0]?.experience_gained);
+      $('#manager_enjoyed').val(trainerRes[0]?.experience_enjoyed);
+      $('#manager_wished').val(trainerRes[0]?.experience_wish);
   }    
   const trainerOptionList = () => {
       var trainerdata = Samvaarta.common.getLocalStorage('trainer_data');
@@ -3514,7 +3516,7 @@ Samvaarta.setGetUserDashboard = (() => {
 
       const ajaxSuccessCall = (response) => {
           let closureData = response.data.data;
-          Samvaarta.userDashboard.closureInteraction(closureData);   
+          Samvaarta.userDashboard.closureInteraction(closureData, response.data.traienr_data);   
           if(closureData.length){         
               $('.user-activity-details__inner .btn').addClass('disabled');
           }
