@@ -2200,6 +2200,7 @@ Samvaarta.system = (() => {
       userReport: userReport, 
       userInfoDetail: userInfoDetail,
       enquiriesDetail: enquiriesDetail,
+      trainerDashboard: trainerDashboard,
   };
 })();
 
@@ -3688,9 +3689,9 @@ Samvaarta.deepDisplayUser = (() => {
                           </div>
                       </div>
                     `;
+                    Samvaarta.system.trainerDashboard(response?.users);
           }
-      }
-      
+      }      
       $('.display-user-details').html(deepDis);
   }
   const displayDashInfo = () => {

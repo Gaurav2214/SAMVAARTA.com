@@ -25,7 +25,7 @@
         </div>        
     </div>
     <div class="user-dashboard-info component-divider">
-        
+        <div class="user-data-list"></div>
     </div>
 </div>
 
