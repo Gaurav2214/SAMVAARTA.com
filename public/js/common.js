@@ -1731,7 +1731,7 @@ Samvaarta.system = (() => {
               } else {
                   trainerList = 'No User';
               }
-              viewDetails = `<a href="/dashboard/user-details/${item.id}">View Details</a>`;
+              viewDetails = `<a href="/dashboard/trainer-details/${item.id}">View Details</a>`;
           }
           if(parseFloat(item.status) === 1){
               statusInfo = `<span class="approved">Approved</span> <span onclick="Samvaarta.system.activateDeactivateUser(${item.id}, '0')">Undo</span>`;
@@ -2200,6 +2200,7 @@ Samvaarta.system = (() => {
       userReport: userReport, 
       userInfoDetail: userInfoDetail,
       enquiriesDetail: enquiriesDetail,
+      trainerDashboard: trainerDashboard,
   };
 })();
 
@@ -2211,7 +2212,7 @@ Samvaarta.userDashboard = (() => {
           <h3>Code of ethics</h3>
           <p>CoE refers to the responsible behavior that will be displayed by partied involved during the interaction period</p>
           <div class="details--items">
-              <h3>Coachee’s Code of Ethics</h3>
+              <h3>Coacheeâ€™s Code of Ethics</h3>
               <ul class="list-view">
                   <li>I shall be sharing the details truthfully without any fear</li>
                   <li>I commit to implement my commitments made in the interaction</li>
@@ -2222,7 +2223,7 @@ Samvaarta.userDashboard = (() => {
               <h3>The coach / Mentor has agreed to the following</h3>
               <ul class="list-view">
                   <li>The coach will be 100% invested in you during the interaction</li>
-                  <li>The coach’s role will be to ask you question to help you explore</li>
+                  <li>The coachâ€™s role will be to ask you question to help you explore</li>
                   <li>The coach maintain the confidentiality of the interaction.</li>
               </ul>
           </div>            
@@ -2230,7 +2231,7 @@ Samvaarta.userDashboard = (() => {
       `;
       $('.user-activity-details__inner').html(codeOfEthics);
   }
-  const closureInteraction = (response) => {
+  const closureInteraction = (response, trainerRes) => {
       let closure = `
       <div class="details codeofethics">
           <h3>Closure</h3>
@@ -2277,6 +2278,8 @@ Samvaarta.userDashboard = (() => {
       $('#outcomes_param_1').val(response[0]?.experience_enjoyed);
       $('#outcomes_param_2').val(response[0]?.experience_wish);
       $('#outcomes_param_3').val(response[0]?.experience_gained);
+      $('#manager_enjoyed').val(trainerRes[0]?.experience_enjoyed);
+      $('#manager_wished').val(trainerRes[0]?.experience_wish);
   }    
   const trainerOptionList = () => {
       var trainerdata = Samvaarta.common.getLocalStorage('trainer_data');
@@ -2495,8 +2498,8 @@ Samvaarta.userDashboard = (() => {
       <div class="details">
           <h3>Documenting Conversations</h3>
           <p>They are filled in weekly ideally</p>
-          <p>Firstly – When a formal conversation with coach has taken place</p>
-          <p>Secondly – When you want to discuss any situation, share any development</p>
+          <p>Firstly â€“ When a formal conversation with coach has taken place</p>
+          <p>Secondly â€“ When you want to discuss any situation, share any development</p>
           <p>You can upload a voice or video file, ppt, pdf, word or excel file</p>
           <div id="" class="details--items previous">
               <h3>Previous Interactions</h3>
@@ -2517,7 +2520,7 @@ Samvaarta.userDashboard = (() => {
                       <p id="user_last_commitment_err" class="error"></p>
                   </li>
                   <li>
-                      <label for="user_conversation" class="topic">Today’s conversation</label>
+                      <label for="user_conversation" class="topic">Todayâ€™s conversation</label>
                       <textarea rows="2" cols="50" type="text" id="user_conversation" value="" class="input_txt_box" ></textarea>
                       <p id="user_conversation_err" class="error"></p>
                   </li>
@@ -2527,7 +2530,7 @@ Samvaarta.userDashboard = (() => {
                       <p id="user_week_commitment_err" class="error"></p>
                   </li>
                   <li>
-                      <label for="user_comments" class="topic">Coach’s Comments</label>
+                      <label for="user_comments" class="topic">Coachâ€™s Comments</label>
                       <input readonly type="text" id="user_comments" value="" class="input_txt_box" />
                   </li>
                   <li>
@@ -2585,13 +2588,13 @@ Samvaarta.userDashboard = (() => {
           <h3>Desired Objective</h3>
           
           <div class="details--items quantitative">
-              <h3>Quantitative Parameters – <span>They refer to the past, current and future performance</span></h3>
+              <h3>Quantitative Parameters â€“ <span>They refer to the past, current and future performance</span></h3>
               <h4>The following details needs to be filled up</h4>
               <ul class="details--items__topics">
-                  <li>Measurable parameters – 3</li>
+                  <li>Measurable parameters â€“ 3</li>
                   <li>Mention the units of measurement for example in% or unit</li>
                   <li>Performance of the parameter over of last two month and current month Future months</li>
-                  <li>For example –
+                  <li>For example â€“
                       <ul>
                           <li>Parameter - Emp attrition</li>
                           <li>Measurement - %: Performance jun - 16%, Jul - 17%, Aug - 16%</li>
@@ -2700,7 +2703,7 @@ Samvaarta.userDashboard = (() => {
               </div>
           </div>
           <div class="details--items qualitative">
-              <h3>Qualitative Parameters – <span>They refer to the behavioural shift you desire</span></h3>
+              <h3>Qualitative Parameters â€“ <span>They refer to the behavioural shift you desire</span></h3>
               <h4>The following details needs to be filled up</h4>
               <ul class="details--items__topics">
                   <li>Mention the parameter</li>
@@ -2748,8 +2751,8 @@ Samvaarta.userDashboard = (() => {
                   <li>Describe the outcome you like. This will include the way you will feel, hear, say and do after a desired a period of time</li>
                   <li>For example
                       <ul>
-                          <li>Parameter – Manager Relationship</li>
-                          <li>Brief Description – My manager is talking is trusting me by giving important tasks beyond the KRAs</li>
+                          <li>Parameter â€“ Manager Relationship</li>
+                          <li>Brief Description â€“ My manager is talking is trusting me by giving important tasks beyond the KRAs</li>
                       </ul>
                   </li>
               </ul>
@@ -2920,7 +2923,7 @@ Samvaarta.setGetUserDashboard = (() => {
                               <textarea rows="2" cols="50" type="text" id="user_last_commitment_${item.id}" class="input_txt_box"></textarea>
                           </li>
                           <li class="section_${index+1}">
-                              <label for="user_conversation_${item.id}" class="topic">Today’s conversation</label>
+                              <label for="user_conversation_${item.id}" class="topic">Todayâ€™s conversation</label>
                               <textarea rows="2" cols="50" type="text" id="user_conversation_${item.id}" class="input_txt_box"></textarea>
                           </li>
                           <li class="section_${index+1}">
@@ -3513,7 +3516,7 @@ Samvaarta.setGetUserDashboard = (() => {
 
       const ajaxSuccessCall = (response) => {
           let closureData = response.data.data;
-          Samvaarta.userDashboard.closureInteraction(closureData);   
+          Samvaarta.userDashboard.closureInteraction(closureData, response.data.traienr_data);   
           if(closureData.length){         
               $('.user-activity-details__inner .btn').addClass('disabled');
           }
@@ -3602,26 +3605,26 @@ Samvaarta.deepDisplayUser = (() => {
       } else if(oauthUserData?.user_type === 'admin'){
           let userData = Samvaarta.common.getLocalStorage('deepUserData');
           let response = userData?.data;
-          if(response?.name){
+          if(response?.user_type === 'user'){
               deepDis = `
                       <div class="show-user-details__inner">
                           <div class="show-user-details__inner--left detail-items">
                               <ul>
                               <li>Code: <span>${response?.unique_number ? response?.unique_number : response?.id}</span></li>
                               <li>Name: <span>${response?.name ? response?.name : ''}</span></li>
-                                  <li>Date of Joining: <span>${Samvaarta.common.dateMonthYear(
-                                      response.created_at
+                                  <li>Date of Joining: <span>${Samvaarta?.common?.dateMonthYear(
+                                      response?.created_at
                                   )}</span></li>
                                   
                                   <li class="role">Role: <span>${
-                                      response.user_type
+                                      response?.user_type
                                   }</span></li>
                                   <li class="role">Coach: <span>${
                                       response?.trainer[0]?.name
                                   }</span></li>
                                   <li>Location: <span>${
-                                      response.location
-                                          ? response.location
+                                      response?.location
+                                          ? response?.location
                                           : ''
                                   }</span></li>
                               </ul>
@@ -3647,8 +3650,50 @@ Samvaarta.deepDisplayUser = (() => {
                       </div>
                       `;
           }
-      }
-      
+          if(response?.user_type === 'trainer'){
+            deepDis = `
+                      <div class="show-user-details__inner">
+                          <div class="show-user-details__inner--left detail-items">
+                            <ul>
+                            <li>Code: <span>${response?.unique_number ? response?.unique_number : response?.id}</span></li>
+                              <li>Name: <span>${response?.name ? response?.name : ''}</span></li>
+                                  <li>Date of Joining: <span>${Samvaarta?.common?.dateMonthYear(
+                                      response?.created_at
+                                  )}</span></li>
+                                  
+                                  <li class="role">Role: <span>${
+                                      response?.user_type
+                                  }</span></li>                                  
+                                  <li>Location: <span>${
+                                      response?.location
+                                          ? response?.location
+                                          : ''
+                                  }</span></li>
+                              </ul>
+                          </div>
+                          <div class="show-user-details__inner--mid detail-items">
+                              <ul>
+                              ${response?.vision ? '<li>Vision: <span>'+response?.vision+'</span></li>' : ''}
+                              ${response?.description ? '<li>Brief Description: <span>'+response.description+'</span></li>' : ''}
+                                          
+                              </ul>
+                          </div>
+                          <div class="show-user-details__inner--right detail-items">
+                              <ul>
+                                  <li class="profile-img"><img src="${
+                                      response?.avatar ? response.avatar : '/images/default-face.jpg'
+                                  }" width="100" height="100" alt="profile"></li>
+                                  <li>LinkedIn: <span>${response?.linkedin_url}</span></li>
+                                  <li>Email Id: <span>${response?.email}</span></li>
+                                  <li>Mobile No: <span>${response?.phone}</span></li>
+                                  
+                              </ul>
+                          </div>
+                      </div>
+                    `;
+                    Samvaarta.system.trainerDashboard(response?.users);
+          }
+      }      
       $('.display-user-details').html(deepDis);
   }
   const displayDashInfo = () => {
@@ -3728,7 +3773,7 @@ Samvaarta.deepDisplayUser = (() => {
                               <textarea readonly rows="2" cols="50" type="text" id="user_last_commitment_${item.id}" class="input_txt_box"></textarea>
                           </li>
                           <li class="section_${index+1}">
-                              <label for="user_conversation_${item.id}" class="topic">Today’s conversation</label>
+                              <label for="user_conversation_${item.id}" class="topic">Todayâ€™s conversation</label>
                               <textarea readonly rows="2" cols="50" type="text" id="user_conversation_${item.id}" class="input_txt_box"></textarea>
                           </li>
                           <li class="section_${index+1}">
@@ -3764,8 +3809,8 @@ Samvaarta.deepDisplayUser = (() => {
       previous += `
           <h3>Documenting Conversations</h3>
           <p>They are filled in weekly ideally</p>
-          <p>Firstly – When a formal conversation with coach has taken place</p>
-          <p>Secondly – When you want to discuss any situation, share any development</p>
+          <p>Firstly â€“ When a formal conversation with coach has taken place</p>
+          <p>Secondly â€“ When you want to discuss any situation, share any development</p>
           <p>You can upload a voice or video file, ppt, pdf, word or excel file</p>
           <div id="" class="details--items previous">
               <h3>Interactions</h3>
@@ -3837,13 +3882,13 @@ Samvaarta.deepDisplayUser = (() => {
 
           quantitative += `
           <div class="details--items quantitative">
-              <h3>Quantitative Parameters – <span>They refer to the past, current and future performance</span></h3>
+              <h3>Quantitative Parameters â€“ <span>They refer to the past, current and future performance</span></h3>
               <h4>The following details needs to be filled up</h4>
               <ul class="details--items__topics">
-                  <li>Measurable parameters – 3</li>
+                  <li>Measurable parameters â€“ 3</li>
                   <li>Mention the units of measurement for example in% or unit</li>
                   <li>Performance of the parameter over of last two month and current month Future months</li>
-                  <li>For example –
+                  <li>For example â€“
                       <ul>
                           <li>Parameter - Emp attrition</li>
                           <li>Measurement - %: Performance jun - 16%, Jul - 17%, Aug - 16%</li>
@@ -3879,7 +3924,7 @@ Samvaarta.deepDisplayUser = (() => {
           `;
           qualitative += `
           <div class="details--items qualitative">
-              <h3>Qualitative Parameters – <span>They refer to the behavioural shift you desire</span></h3>
+              <h3>Qualitative Parameters â€“ <span>They refer to the behavioural shift you desire</span></h3>
               <h4>The following details needs to be filled up</h4>
               <ul class="details--items__topics">
                   <li>Mention the parameter</li>
@@ -3950,8 +3995,8 @@ Samvaarta.deepDisplayUser = (() => {
                   <li>Describe the outcome you like. This will include the way you will feel, hear, say and do after a desired a period of time</li>
                   <li>For example
                       <ul>
-                          <li>Parameter – Manager Relationship</li>
-                          <li>Brief Description – My manager is talking is trusting me by giving important tasks beyond the KRAs</li>
+                          <li>Parameter â€“ Manager Relationship</li>
+                          <li>Brief Description â€“ My manager is talking is trusting me by giving important tasks beyond the KRAs</li>
                       </ul>
                   </li>
               </ul>
@@ -4140,6 +4185,37 @@ Samvaarta.deepDisplayUser = (() => {
           ajaxErrorCall
       );
   }
+  const displayTrainerDashInfo = () =>{
+    let paramObject = {
+      url: apiUrl + 'api/admin/trainer/listing?trainer_id='+userId,
+      type: "GET",
+      data:{'user_id': userId},
+      headers: {
+          Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+          Accept: "application/json",
+      },
+    };
+
+    const ajaxSuccessCall = (response) => {            
+        Samvaarta.common.setLocalStorage('deepUserData', response?.data, 1);
+        displayUserDetails();
+    };
+
+    const ajaxErrorCall = (error) => {
+        if (error.response) {
+            $("#oauth_log_email_err")
+                .html(error.response.data.message)
+                .show();
+        }
+    };
+
+    Samvaarta.common.hitAjaxApi(
+        paramObject,
+        ajaxSuccessCall,
+        ajaxErrorCall
+    );
+  }
+
   return {
       displayUserDetails: displayUserDetails,
       displayDashInfo: displayDashInfo,
@@ -4149,6 +4225,7 @@ Samvaarta.deepDisplayUser = (() => {
       displayClosure: displayClosure,
       trainerDocComment: trainerDocComment,
       trainerClosureComment: trainerClosureComment,
+      displayTrainerDashInfo: displayTrainerDashInfo,
   }
 })();
 
@@ -4271,6 +4348,9 @@ document.addEventListener("readystatechange", (event) => {
           if($('.deep-user-route').length && oauthUserData?.user_type !== 'user'){
               Samvaarta.deepDisplayUser.displayDashInfo();
           }
+          if($('.deep-trainer-route').length && oauthUserData?.user_type !== 'user'){
+            Samvaarta.deepDisplayUser.displayTrainerDashInfo();
+        }
       }, 1000);
       
       faqEventBind();       
