@@ -18,31 +18,31 @@ Samvaarta.messageLog = {
     17: "You have successfully submitted your experience with Goalsnu.",
     18: "We will get in touch with you soon",
     19: "You have successfully submitted your feedback.",
-
-};
-
-var valError = true;
-var apiUrl = typeof(appUrl) != "undefined" ? appUrl : "http://127.0.0.1:8000/";
-var expireTime = 10 / (24 * 60);
-var userType = '';
-var oauthUserData = '';
-var deviceType = ($(window).width() >= 780) ? 'desktop' : 'mobile';
-
-Samvaarta.globalVar = Samvaarta.globalVar || {
+  
+  };
+  
+  var valError = true;
+  var apiUrl = typeof(appUrl) != "undefined" ? appUrl : "http://127.0.0.1:8000/";
+  var expireTime = 10 / (24 * 60);
+  var userType = '';
+  var oauthUserData = '';
+  var deviceType = ($(window).width() >= 780) ? 'desktop' : 'mobile';
+  
+  Samvaarta.globalVar = Samvaarta.globalVar || {
     errorValueInFlow: "",
     is_loggedin: 0,
     oauthToken: "",
     currlocation: "",
     userType: userType,
-};
-
-var sessionStatus = {
+  };
+  
+  var sessionStatus = {
     'completed': 'Completed',
     'scheduled': 'Scheduled',
     'cancelled': 'Cancelled',
     'postponed': 'Postponed',
-};
-const debounce = (fn, delay) => {
+  };
+  const debounce = (fn, delay) => {
     let timer;
     return (...args) => {
         clearTimeout(timer);
@@ -50,45 +50,45 @@ const debounce = (fn, delay) => {
             fn(...args);
         }, delay);
     }
-}
-
-const getDateFormat = (validDate) => {
+  }
+  
+  const getDateFormat = (validDate) => {
     let formattedDate = '';
     if(validDate){
         const date = new Date(validDate);
         formattedDate = date.toISOString().split('T')[0];
         return formattedDate;
     }
-}
-const generateOptions = (response) => {
+  }
+  const generateOptions = (response) => {
     let options = '';
     for (const [key, value] of Object.entries(response)) {
         options += `<option value="${value}">${value}</option>`;
     }
     return options;
   }
-
-
-const elementInViewport = (el) => {
+  
+  
+  const elementInViewport = (el) => {
     var top = el.offsetTop;
     var left = el.offsetLeft;
     var width = el.offsetWidth;
     var height = el.offsetHeight;
-
+  
     while (el.offsetParent) {
         el = el.offsetParent;
         top += el.offsetTop;
         left += el.offsetLeft;
     }
-
+  
     return (
         top < window.pageYOffset + window.innerHeight &&
         left < window.pageXOffset + window.innerWidth &&
         top + height > window.pageYOffset &&
         left + width > window.pageXOffset
     );
-};
-const unvielImg = (selector, unveilSelector) => {
+  };
+  const unvielImg = (selector, unveilSelector) => {
     var selector = selector || "body";
     $(selector)
         .find("img.unveil")
@@ -98,7 +98,7 @@ const unvielImg = (selector, unveilSelector) => {
             var isTheImgEscaped = $(this).parents(escapedWithParents).length;
             var unveilSelect =
                 unveilSelector || elementInViewport(v) || isTheImgEscaped;
-
+  
             if (unveilSelect) {
                 $this = $(this);
                 try {
@@ -120,12 +120,12 @@ const unvielImg = (selector, unveilSelector) => {
                 } catch (e) {}
             }
         });
-};
-
-const checkIfImageExists = (url, callback) => {
+  };
+  
+  const checkIfImageExists = (url, callback) => {
     const img = new Image();
     img.src = url;
-
+  
     if (url != "") {
         if (img.complete) {
             callback(true);
@@ -133,7 +133,7 @@ const checkIfImageExists = (url, callback) => {
             img.onload = () => {
                 callback(true);
             };
-
+  
             img.onerror = () => {
                 callback(false);
             };
@@ -141,17 +141,17 @@ const checkIfImageExists = (url, callback) => {
     } else {
         callback(false);
     }
-};
-
-Samvaarta.common = (() => {
+  };
+  
+  Samvaarta.common = (() => {
     var isNull = function (obj) {
         return obj == null || obj == "null";
     };
-
+  
     var isUndefined = function (obj) {
         return obj == undefined;
     };
-
+  
     var isBlank = function (obj) {
         return typeof obj == "undefined" || obj == "";
     };
@@ -213,15 +213,15 @@ Samvaarta.common = (() => {
         
         var src_alphanumeric = src.replace(/[^a-zA-Z0-9]+/g, '-');
         src_alphanumeric = src_alphanumeric.toLowerCase();
-
+  
         var skip = 1;
-
+  
         if (async == false && !(document.readyState == 'interactive' || document.readyState == 'complete')) {
             document.write('<script type="text/javascript" src="' + src + '"></script>');
             callback(params);
             return;
         }
-
+  
         if (!(document.getElementById(src_alphanumeric)) && skip == 1) {
             s = document.createElement('script');
             s.type = 'text/javascript';
@@ -253,23 +253,23 @@ Samvaarta.common = (() => {
                     //callback.apply(null, Array.prototype.slice.call(params instanceof Array?params:[]));
                     callback(params);
                 }
-
+  
             }
-
+  
         }
     }
-
+  
     const dayMonthNameYear = (dateString) => {
         const date = new Date(dateString);
         formattedDate = date.toUTCString().split(' ');
         let acDate = formattedDate[1] +' '+ formattedDate[2] +' '+ formattedDate[3];
         return acDate;
     }
-
+  
     var validateName = (name, key) => {
         var error = "";
         name = name.replace(/ /g, "");
-
+  
         function handleBlankNameVal(msgkey1, msgkey2) {
             if (name == "") {
                 error = Samvaarta.messageLog[msgkey1];
@@ -277,7 +277,7 @@ Samvaarta.common = (() => {
                 error = Samvaarta.messageLog[msgkey2];
             }
         }
-
+  
         switch (key) {
             case "oauth_log_name":
                 handleBlankNameVal(3, 4);
@@ -321,7 +321,7 @@ Samvaarta.common = (() => {
         }
         return error;
     };
-
+  
     const validatePhone = (value, key) => {
         var phonePattern = /^\d{10}$/;
         if (!phonePattern.test(value)) {
@@ -329,7 +329,7 @@ Samvaarta.common = (() => {
         }
         return "";
     };
-
+  
     const validatePassword = (password, key) => {
         var error = "";
         password = password.replace(/ /g, "");
@@ -366,7 +366,7 @@ Samvaarta.common = (() => {
         }
         return error;
     };
-
+  
     const isValidEmail = (email) => {
         var pattern = new RegExp(
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -377,7 +377,7 @@ Samvaarta.common = (() => {
             return true;
         }
     };
-
+  
     const validateEmail = (email) => {
         var error = "";
         email = email.replace(/^\s+|\s+$/gm, "");
@@ -388,7 +388,7 @@ Samvaarta.common = (() => {
         }
         return error;
     };
-
+  
     const removeRequiredFields = (e) => {
         var id, value;
         if (e.type != "blur") {
@@ -398,7 +398,7 @@ Samvaarta.common = (() => {
             id = $(e.target).attr("id");
             value = $("#" + id).val();
         }
-
+  
         if (value) {
             value = encodeHTML(value);
             $("#" + id + "_err")
@@ -412,12 +412,12 @@ Samvaarta.common = (() => {
             validateFields(id, value);
         }
     };
-
+  
     const validateFields = (id, value) => {
         var error_val = true;
         valError = false;
         Samvaarta.globalVar.errorValueInFlow = "";
-
+  
         // Mapping of field IDs to validation functions
         var valParam = {
             oauth_log_name: validateName,
@@ -463,7 +463,7 @@ Samvaarta.common = (() => {
             outcomes_desc_3: validateName, 
             oauth_log_msg: validateName,
         };
-
+  
         // Iterate through the validation functions
         for (var key in valParam) {
             if (valParam.hasOwnProperty(key)) {
@@ -477,7 +477,7 @@ Samvaarta.common = (() => {
                             "block";
                         valError = true;
                         Samvaarta.globalVar.errorValueInFlow = error_val;
-
+  
                         // Remove autocomplete items if they exist
                         var autocompleteItems = document.querySelectorAll(
                             ".autocomplete-items"
@@ -487,7 +487,7 @@ Samvaarta.common = (() => {
                                 item.remove();
                             });
                         }
-
+  
                         return false;
                     }
                 }
@@ -495,7 +495,7 @@ Samvaarta.common = (() => {
         }
         return true;
     };
-
+  
     const hitAjaxApi = async (requestSet, ajaxSuccess, ajaxError) => {
         if (isOperatable(requestSet)) {
             requestSet = requestSet || {};
@@ -515,23 +515,23 @@ Samvaarta.common = (() => {
                 });
         }
     };
-
+  
     const dateMonthYear = (timestampVal) => {
         const timestamp = timestampVal;
-
+  
         // Create a Date object
         const date = new Date(timestamp);
-
+  
         // Extract year, month, and day
         const year = date.getFullYear();
         const month = date.toLocaleString("default", { month: "long" }); // 'long' for full month name
         const day = date.getDate();
-
+  
         // Format the date as "Month Day, Year"
         const formattedDate = `${month} ${day}, ${year}`;
         return formattedDate;
     };
-
+  
     const getLocation = () => {
         var paramObject = {
             url: "https://st.etb2bimg.com/locinfo",
@@ -541,7 +541,7 @@ Samvaarta.common = (() => {
                 Accept: "application/json",
             },
         };
-
+  
         function ajaxSuccessCall(data) {
             Samvaarta.common.setLocalStorage("location", data, 1);
         }
@@ -557,7 +557,7 @@ Samvaarta.common = (() => {
             Samvaarta.globalVar.currlocation = loc.data.city;
         }
     };
-
+  
     const toastMsg = (tmsg) => {
         $('.info_consentmsg').remove();
         let cnsetMsg = `<div class="info_success info_consentmsg">
@@ -577,13 +577,13 @@ Samvaarta.common = (() => {
     const dataPicker = () => {
         $( "#datepicker" ).datepicker("option", "dateFormat", "yy-mm-dd");      
     }
-
+  
     const initWhatsApp = () => {
         var mnum = '+918511044072';
         var msg = `Hello, could you assist me in exploring opportunities with GOALSNU?`;
         deviceType == 'desktop' ? window.open("https://web.whatsapp.com/send?phone=" + mnum + "&text=" + msg, "_blank", "noopener") : window.open("https://wa.me/" + mnum + "?text=" + msg, "_blank", "noopener");
     }
-
+  
     return {
         isNull: isNull,
         isBlank: isBlank,
@@ -602,13 +602,13 @@ Samvaarta.common = (() => {
         dayMonthNameYear: dayMonthNameYear,
         initWhatsApp: initWhatsApp,
     };
-})();
-
-Samvaarta.model = (() => {
+  })();
+  
+  Samvaarta.model = (() => {
     const open_pop = (custom_function, add_class, head, close, href) => {
         var modelBoxes = document.querySelectorAll(".model-box");
         var model_id = modelBoxes.length === 0 ? 1 : modelBoxes.length + 1;
-
+  
         var obj_id = "model_" + head;
         var xtra_cls = " ";
         if (add_class) {
@@ -617,10 +617,10 @@ Samvaarta.model = (() => {
         if (!href) {
             href = "";
         }
-
+  
         var append_str = "";
         var close_txt = "";
-
+  
         close_txt =
             close === "N"
                 ? ""
@@ -637,23 +637,23 @@ Samvaarta.model = (() => {
             '"><span class="pre_loader" id="pre_loader_' +
             model_id +
             '"><span class="loader">&nbsp;</span>Loading...</span></div></div></div>';
-
+  
         document.body.insertAdjacentHTML("beforeend", append_str);
-
+  
         var popupElement = document.getElementById(obj_id);
         popupElement.style.display = "block";
-
+  
         document.body.insertAdjacentHTML(
             "beforeend",
             '<div id="l2_overlay_bx_' + model_id + '" class="model-bg "></div>'
         );
-
+  
         var wrapperDiv = document.createElement("div");
         wrapperDiv.className = "model-box";
         wrapperDiv.id = "wrapper_" + model_id;
         popupElement.parentNode.insertBefore(wrapperDiv, popupElement);
         wrapperDiv.appendChild(popupElement);
-
+  
         var modelElement = document.getElementById(obj_id);
         if (modelElement) {
             modelElement.style.display = "table";
@@ -665,10 +665,10 @@ Samvaarta.model = (() => {
                 custom_function(model_id);
             }
         } catch (e) {}
-
+  
         return model_id;
     };
-
+  
     const close_pop = (obj) => {
         if (obj) {
             var popupElement = document.getElementById("model_" + obj);
@@ -677,7 +677,7 @@ Samvaarta.model = (() => {
                     "l2_overlay_bx_" + obj
                 );
                 var wrapperElement = document.getElementById("wrapper_" + obj);
-
+  
                 if (
                     document
                         .getElementById("model_" + obj)
@@ -694,7 +694,7 @@ Samvaarta.model = (() => {
             }
         }
     };
-
+  
     var showSuccessMessage = function (msg, commonStyle, popupClass = "") {
         Samvaarta.model.close_pop(1);
         if (!msg) {
@@ -705,7 +705,7 @@ Samvaarta.model = (() => {
             extraMsg = msg;
             msg = "";
         }
-
+  
         Samvaarta.model.open_pop(
             "",
             "modal-confirm layer-out " + popupClass,
@@ -718,15 +718,15 @@ Samvaarta.model = (() => {
             }
         }, 25000);
     };
-
+  
     return {
         open_pop: open_pop,
         close_pop: close_pop,
         showSuccessMessage: showSuccessMessage,
     };
-})();
-
-Samvaarta.system = (() => {
+  })();
+  
+  Samvaarta.system = (() => {
     const createRegForm = () => {
         const regForm = `
         <div class="reg-form">
@@ -738,7 +738,7 @@ Samvaarta.system = (() => {
                 <div class="form-elm-section input_sec ">
                     <label for="oauth_log_name"> Name</label>
                     <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_name" class="input_txt_box" value="">
-
+  
                     <p id="oauth_log_name_err" class="validation error"></p>
                 </div>
                 <div class="form-elm-section input_sec ">
@@ -796,7 +796,7 @@ Samvaarta.system = (() => {
         showFormToggle();
         $('.login-module__main--left .circle').removeClass('hide');
     };
-
+  
     const userInfoDetail = () => {
         var name = document.getElementById("oauth_log_name").value;
         var email = document.getElementById("oauth_log_email").value;
@@ -806,7 +806,7 @@ Samvaarta.system = (() => {
         errorElements.forEach(function (el) {
             el.innerHTML = "";
         });
-
+  
         var inputElements = document.querySelectorAll(
             ".contact-form .input_txt_box"
         );
@@ -837,7 +837,7 @@ Samvaarta.system = (() => {
                     Accept: "application/json",
                 },
             };
-
+  
             function ajaxSuccessCall(data) {
                 $(".contact-form .input_txt_box").val('');
                 Samvaarta.model.showSuccessMessage(
@@ -856,7 +856,7 @@ Samvaarta.system = (() => {
             );
         }
     }
-
+  
     const forgetPassModule = () => {
         let forgetPass = `<div class="login-form">
         <div class="heading" style="text-align:left">
@@ -869,7 +869,7 @@ Samvaarta.system = (() => {
                 <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_email" class="input_txt_box" value="">
                 <p id="oauth_log_email_err" class="validation error"></p>
             </div>           
-
+  
             <div class="form-elm-section input_sec_center btn-container ">
                 <button class="btn" type="button" onclick="Samvaarta.system.forgetPassword()">Submit</button>
             </div>
@@ -878,7 +878,7 @@ Samvaarta.system = (() => {
             <a role="button" tabindex="0" rel="noreferrer nofollow" class="login-link">Log in</a>
         </p>
     </div>
-
+  
         `;
         $('body').on('click', '.forget_password', () => {
             $(".login-module__main--right").length ? document.querySelector(".login-module__main--right").innerHTML =
@@ -886,7 +886,7 @@ Samvaarta.system = (() => {
             showFormToggle();
         });
     }
-
+  
     const createLoginForm = () => {
         const loginForm = `
         <div class="login-form">
@@ -895,7 +895,7 @@ Samvaarta.system = (() => {
                 <p class="hide">Kindly fill in your details to create an account</p>
             </div>
             <form class="signin-form">
-
+  
                 <div class="form-elm-section input_sec ">
                     <label for="oauth_log_email"> Email Id</label>
                     <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_email" class="input_txt_box" value="">
@@ -907,7 +907,7 @@ Samvaarta.system = (() => {
                     <p id="oauth_log_password_err" class="validation error"></p>
                     <div class="forget_password">Forgot your password?</div>
                 </div>
-
+  
                 <div class="form-elm-section input_sec_center btn-container ">
                     <button class="btn" type="button" onclick="Samvaarta.system.loginUser()">Submit</button>
                 </div>
@@ -923,7 +923,7 @@ Samvaarta.system = (() => {
         forgetPassModule();
         $('.login-module__main--left .circle').addClass('hide');
     };
-
+  
     const showFormToggle = () => {
         document
             .querySelector(".signup-link")
@@ -934,7 +934,7 @@ Samvaarta.system = (() => {
             createLoginForm();
         });
     };
-
+  
     var showChangePassword = function (lid) {
         let changePwd = `
             <div id="reset-pwd" class="password-change">
@@ -950,33 +950,33 @@ Samvaarta.system = (() => {
                                 Current Password
                             </label>
                             <input required="" data-id="" placeholder="" name="" type="password" id="oauth_curr_password" class="input_txt_box " value=""> 
-							
-									<p id="oauth_curr_password_err" class="error validation">
-									</p>
-								</div> <div class="form-elm-section input_sec ">
-									
-									<i class="lg_sprite oauth-eye-slash show-pwd" aria-hidden="true" data-testid="show-password">
-									</i>
+              
+                  <p id="oauth_curr_password_err" class="error validation">
+                  </p>
+                </div> <div class="form-elm-section input_sec ">
+                  
+                  <i class="lg_sprite oauth-eye-slash show-pwd" aria-hidden="true" data-testid="show-password">
+                  </i>
                                     <label for="oauth_new_password1">
                                         New Password
                                     </label>
-									<input required="" data-id="" placeholder="" name="" type="password" id="oauth_new_password1" class="input_txt_box " value=""> 
-									<p id="oauth_new_password1_err" class="error validation"></p>
-								</div> 
+                  <input required="" data-id="" placeholder="" name="" type="password" id="oauth_new_password1" class="input_txt_box " value=""> 
+                  <p id="oauth_new_password1_err" class="error validation"></p>
+                </div> 
                                 <div class="form-elm-section input_sec ">									
-									<i class="lg_sprite oauth-eye-slash show-pwd" aria-hidden="true" data-testid="show-password">
-									</i>
+                  <i class="lg_sprite oauth-eye-slash show-pwd" aria-hidden="true" data-testid="show-password">
+                  </i>
                                     <label for="oauth_new_password2">
                                         Confirm New Password
                                     </label>
-									<input required="" data-id="" placeholder="" name="" type="password" id="oauth_new_password2" class="input_txt_box " value=""> 
-									<p id="oauth_new_password2_err" class="error validation"></p>
-								</div>
+                  <input required="" data-id="" placeholder="" name="" type="password" id="oauth_new_password2" class="input_txt_box " value=""> 
+                  <p id="oauth_new_password2_err" class="error validation"></p>
+                </div>
                                 <p class="error" id="main_password_err"></p><div class="form-elm-section"><input type="button" onclick="Samvaarta.system.passwordUpdated(1);" class="btn submit-button2" name="submit_new_password" value="Continue"></div></form></div></div></div>
         `;
         $("#model_content_" + lid).html(changePwd);
     };
-
+  
     const changePassword = () => {
         Samvaarta.model.open_pop(showChangePassword, "", 1);
     };
@@ -988,7 +988,7 @@ Samvaarta.system = (() => {
         errorElements.forEach(function (el) {
             el.innerHTML = "";
         });
-
+  
         var inputElements = document.querySelectorAll(
             "#reset-pwd .input_txt_box"
         );
@@ -1020,7 +1020,7 @@ Samvaarta.system = (() => {
                     Accept: "application/json",
                 },
             };
-
+  
             function ajaxSuccessCall(data) {
                 Samvaarta.model.close_pop(1);
                 Samvaarta.model.showSuccessMessage(
@@ -1060,14 +1060,14 @@ Samvaarta.system = (() => {
                                 ? getOuathData.avatar
                                 : "/images/default-face.jpg"
                         }">
-
+  
                     </div>
                     <div class="p-image">
                         <i class="fa fa-camera upload-button"></i>
                         <input class="file-upload" type="file" accept="image/*" />
                     </div>
                 </div>
-
+  
                 <div class="edit-profile__inner--right">
                     <div class="form-elm-section input_sec ">
                         <label for="oauth_log_email">
@@ -1078,7 +1078,7 @@ Samvaarta.system = (() => {
                         }" readonly="true" title="">
                         <p id="oauth_log_email_err" class="error"></p>
                     </div>
-
+  
                     <div class="input-section-main">
                         <div class="form-elm-section input_sec ">
                             <label for="oauth_log_name">
@@ -1134,11 +1134,11 @@ Samvaarta.system = (() => {
                             <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_description" class="input_txt_box" value="${
                                 getOuathData?.description ? getOuathData?.description : ''
                             }">
-
+  
                             <p id="oauth_log_description_err" class="validation error"></p>
                         </div>
                     </div>
-
+  
                     <div class="input-section-main">
                         <div class="form-elm-section input_sec ">
                             <label for="oauth_log_lnurl"> LinkedIn URL</label>
@@ -1152,7 +1152,7 @@ Samvaarta.system = (() => {
                             <input required="" data-id="" placeholder="" name="" type="text" id="oauth_log_role" class="input_txt_box" value="${
                                 getOuathData?.user_type
                             }">
-
+  
                             <p id="oauth_log_role_err" class="validation error"></p>
                         </div>
                     </div>
@@ -1189,7 +1189,7 @@ Samvaarta.system = (() => {
         document.querySelector("#edit-profile").innerHTML = profileDetail;
         photoUploadView();
     };
-
+  
     const userEditProfileUpdated = () => {
         var reg_name = document.getElementById("oauth_log_name").value;
         var reg_email = document.getElementById("oauth_log_email").value;
@@ -1206,7 +1206,7 @@ Samvaarta.system = (() => {
         errorElements.forEach(function (el) {
             el.innerHTML = "";
         });
-
+  
         var inputElements = document.querySelectorAll(
             ".edit-profile__inner .input_txt_box"
         );
@@ -1221,7 +1221,7 @@ Samvaarta.system = (() => {
                 }
             }
         }
-
+  
         if (valError) {
             return false;
         } else {
@@ -1247,7 +1247,7 @@ Samvaarta.system = (() => {
                     Accept: "application/json",
                 },
             };
-
+  
             const ajaxSuccessCall = (response) => {
                 Samvaarta.model.showSuccessMessage(
                     `<h2>Thank You</h2><p class="marg-t20">${Samvaarta.messageLog[12]}</p>`,
@@ -1255,11 +1255,11 @@ Samvaarta.system = (() => {
                 );
                 Samvaarta.common.setLocalStorage("oauthUserData", response, expireTime);
             };
-
+  
             const ajaxErrorCall = (response) => {
                 console.log(response);
             };
-
+  
             Samvaarta.common.hitAjaxApi(
                 paramObject,
                 ajaxSuccessCall,
@@ -1267,7 +1267,7 @@ Samvaarta.system = (() => {
             );
         }
     };
-
+  
     const logout = () => {
         Samvaarta.common.deleteLocalStorage("oauthUserData");
         Samvaarta.common.deleteLocalStorage("AccessToken");
@@ -1277,7 +1277,7 @@ Samvaarta.system = (() => {
         Samvaarta.globalVar.is_loggedin = 0;
         window.location.href = "/";
     };
-
+  
     const successReg = (id) => {
         const msg = `
             <figure class="">
@@ -1289,7 +1289,7 @@ Samvaarta.system = (() => {
         //document.querySelector('model_content_1').innerHTML = msg;
         return msg;
     };
-
+  
     const getUserData = (response) => {
         var paramObject = {
             url: apiUrl + "api/profile",
@@ -1301,18 +1301,18 @@ Samvaarta.system = (() => {
             Samvaarta.common.setLocalStorage("oauthUserData", response, expireTime);
             window.location.href = "/dashboard";
         };
-
+  
         var ajaxErrorCall = (response) => {
             console.log(response);
         };
-
+  
         Samvaarta.common.hitAjaxApi(
             paramObject,
             ajaxSuccessCall,
             ajaxErrorCall
         );
     };
-
+  
     const loginUser = () => {
         var reg_email = document.getElementById("oauth_log_email").value;
         var reg_pwd = document.getElementById("oauth_log_password").value;
@@ -1320,7 +1320,7 @@ Samvaarta.system = (() => {
         errorElements.forEach(function (el) {
             el.innerHTML = "";
         });
-
+  
         var inputElements = document.querySelectorAll(
             ".signin-form .input_txt_box"
         );
@@ -1335,7 +1335,7 @@ Samvaarta.system = (() => {
                 }
             }
         }
-
+  
         if (valError) {
             return false;
         } else {
@@ -1361,7 +1361,7 @@ Samvaarta.system = (() => {
                     getUserData(response.data);
                 }
             };
-
+  
             var ajaxErrorCall = (response) => {
                 if (response.response) {
                     $("#oauth_log_password_err").html(
@@ -1369,7 +1369,7 @@ Samvaarta.system = (() => {
                     );
                 }
             };
-
+  
             Samvaarta.common.hitAjaxApi(
                 paramObject,
                 ajaxSuccessCall,
@@ -1377,7 +1377,7 @@ Samvaarta.system = (() => {
             );
         }
     };
-
+  
     const verifyEmail = () => {
         const urlParams = new URLSearchParams(window.location.search);
         let verify_token = urlParams.get("token");
@@ -1392,11 +1392,11 @@ Samvaarta.system = (() => {
             const ajaxSuccessCall = (response) => {
                 console.log(response);
             };
-
+  
             const ajaxErrorCall = (error) => {
                 console.log(error);
             };
-
+  
             Samvaarta.common.hitAjaxApi(
                 paramObject,
                 ajaxSuccessCall,
@@ -1404,7 +1404,7 @@ Samvaarta.system = (() => {
             );
         }
     };
-
+  
     var sendVerificationMail = (response) => {
         let paramObject = {
             url: apiUrl + "auth/send-verification-email",
@@ -1414,22 +1414,22 @@ Samvaarta.system = (() => {
                 "Content-Type": "application/json",
             },
         };
-
+  
         const ajaxSuccessCall = (response) => {
             console.log(response);
         };
-
+  
         const ajaxErrorCall = (error) => {
             console.log(error);
         };
-
+  
         Samvaarta.common.hitAjaxApi(
             paramObject,
             ajaxSuccessCall,
             ajaxErrorCall
         );
     };
-
+  
     var userRegistration = function () {
         var reg_name = document.getElementById("oauth_log_name").value;
         var reg_email = document.getElementById("oauth_log_email").value;
@@ -1442,7 +1442,7 @@ Samvaarta.system = (() => {
         errorElements.forEach(function (el) {
             el.innerHTML = "";
         });
-
+  
         var inputElements = document.querySelectorAll(
             ".authentication-form .input_txt_box"
         );
@@ -1457,7 +1457,7 @@ Samvaarta.system = (() => {
                 }
             }
         }
-
+  
         if (valError) {
             return false;
         } else {
@@ -1477,16 +1477,16 @@ Samvaarta.system = (() => {
                     //avatar: reg_avatar,
                 },
             };
-
+  
             const ajaxSuccessCall = (response) => {
                 console.log(response);
                 Samvaarta.model.showSuccessMessage(successReg(reg_email));
             };
-
+  
             const ajaxErrorCall = (response) => {
                 console.log(response);
             };
-
+  
             Samvaarta.common.hitAjaxApi(
                 paramObject,
                 ajaxSuccessCall,
@@ -1494,7 +1494,7 @@ Samvaarta.system = (() => {
             );
         }
     };
-
+  
     var checkLoginStatus = () => {
         var userData = Samvaarta.common.getLocalStorage("oauthUserData");
         var token = Samvaarta.common.getLocalStorage("AccessToken");
@@ -1525,16 +1525,16 @@ Samvaarta.system = (() => {
                     Accept: "application/json",
                 },                
             };
-
+  
             const ajaxSuccessCall = (response) => {
                 Samvaarta.common.setLocalStorage("oauthUserData", response, expireTime);
                 displayUserInfo(response);
             };
-
+  
             const ajaxErrorCall = (response) => {
                 console.log(response);
             };
-
+  
             Samvaarta.common.hitAjaxApi(
                 paramObject,
                 ajaxSuccessCall,
@@ -1549,11 +1549,11 @@ Samvaarta.system = (() => {
             } else {
                 Samvaarta.system.createLoginForm();
                 $('.login-module__main--left .circle').addClass('hide');
-
+  
             }
         }
     };
-
+  
     const activateDeactivateUser = (id, status) => {
         var paramObject = {
             url: apiUrl + "api/admin/user/activate/"+id+"?status="+status,
@@ -1564,7 +1564,7 @@ Samvaarta.system = (() => {
                 Accept: "application/json",
             },
         };
-
+  
         const ajaxSuccessCall = (response) => {
             console.log(response);                
             let statusInfo = ''; 
@@ -1580,7 +1580,7 @@ Samvaarta.system = (() => {
             Samvaarta.common.deleteLocalStorage('trainer_data');
             adminDashboard('users');
         };
-
+  
         const ajaxErrorCall = (response) => {
             console.log(response);
         };
@@ -1592,7 +1592,7 @@ Samvaarta.system = (() => {
             );
         }
     }
-
+  
     const userDashboard = () => {
         var userdashInfo = `
         <ul>
@@ -1645,7 +1645,7 @@ Samvaarta.system = (() => {
         `;
         $(".user-dashboard-info").html(userdashInfo);
     };
-
+  
     const trainerDashboard = (response, trainerName) => {
         let userList = '';
         response.map((item, index) => {
@@ -1676,7 +1676,7 @@ Samvaarta.system = (() => {
         `;
         $('.user-data-list').html(trainer);
     };
-
+  
     const displayTypeWise = (response, type) => {
         let userInfo = '';
         let statusInfo = ``, assignTrainer = '', userList = '', adminList = '';
@@ -1731,7 +1731,7 @@ Samvaarta.system = (() => {
                 } else {
                     trainerList = 'No User';
                 }
-                viewDetails = `<a href="/dashboard/user-details/${item.id}">View Details</a>`;
+                viewDetails = `<a href="/dashboard/trainer-details/${item.id}">View Details</a>`;
             }
             if(parseFloat(item.status) === 1){
                 statusInfo = `<span class="approved">Approved</span> <span onclick="Samvaarta.system.activateDeactivateUser(${item.id}, '0')">Undo</span>`;
@@ -1754,7 +1754,7 @@ Samvaarta.system = (() => {
         $('.show-role-tab').removeClass('hide');
         showRoleTab();
     }
-
+  
     const getTrainerData = (type) => {
         var paramObject = {
             url: apiUrl + "api/admin/"+type+"/listing",
@@ -1765,7 +1765,7 @@ Samvaarta.system = (() => {
                 Accept: "application/json",
             },
         };
-
+  
         const ajaxSuccessCall = async(response) => {
             response = response.data.data;
             Samvaarta.common.setLocalStorage(type+'_data', response, expireTime);
@@ -1773,11 +1773,11 @@ Samvaarta.system = (() => {
                 Samvaarta.userDashboard.trainerOptionList();
             }, 1000);
         };
-
+  
         const ajaxErrorCall = (response) => {
             console.log(response);
         };
-
+  
         Samvaarta.common.hitAjaxApi(
             paramObject,
             ajaxSuccessCall,
@@ -1796,7 +1796,7 @@ Samvaarta.system = (() => {
                 Accept: "application/json",
             },
         };
-
+  
         const ajaxSuccessCall = async(response) => {
             response = response.data.data;
             Samvaarta.common.setLocalStorage(type+'_data', response, expireTime);
@@ -1806,11 +1806,11 @@ Samvaarta.system = (() => {
                 displayTypeWise(response, type);
             },1000);       
         };
-
+  
         const ajaxErrorCall = (response) => {
             console.log(response);
         };
-
+  
         if(!typeWisedata){
             Samvaarta.common.hitAjaxApi(
                 paramObject,
@@ -1824,7 +1824,7 @@ Samvaarta.system = (() => {
             }, 1000);
         }
     };
-
+  
     const showUserInfo = (response) => {
         var typeUser = Samvaarta.common.isOperatable(window.userDefineType) ? window.userDefineType : 'users';
         var coachInfo = '', cochees = '', trainer = '', plannedSess = '', 
@@ -1848,7 +1848,7 @@ Samvaarta.system = (() => {
             userExp = response?.experience ? `<li>Experience in Years: <span>${response.experience}</span></li>` : '';
             userFun = response?.user_function ? `<li>Function: <span>${response.user_function}</span></li>` : '';
             downloadReport = `<li class="download-report"><button class="btn" onclick="Samvaarta.system.userReport()">Download Report</button></li>`;
-
+  
         }
         const userInfo = `
         <h3 class="userName">Welcome ${response.name.split(" ")[0]} </h3>
@@ -1901,7 +1901,7 @@ Samvaarta.system = (() => {
         `;
         $(".show-user-details").html(userInfo);
     };
-
+  
     const adminReport = () => {
         $('.download-report .btn').addClass('disabled');
         var paramObject = {
@@ -1912,7 +1912,7 @@ Samvaarta.system = (() => {
                 Accept: "application/json",
             },
         };
-
+  
         const ajaxSuccessCall = async(response) => {
             response = response.data.data;
             setTimeout(()=>{
@@ -1920,11 +1920,11 @@ Samvaarta.system = (() => {
             }, 5000);
             window.open(response);            
         };
-
+  
         const ajaxErrorCall = (response) => {
             console.log(response);
         };
-
+  
         Samvaarta.common.hitAjaxApi(
             paramObject,
             ajaxSuccessCall,
@@ -1941,7 +1941,7 @@ Samvaarta.system = (() => {
                 Accept: "application/json",
             },
         };
-
+  
         const ajaxSuccessCall = async(response) => {
             response = response.data.data;
             setTimeout(()=>{
@@ -1949,18 +1949,18 @@ Samvaarta.system = (() => {
             }, 5000);
             window.open(response);            
         };
-
+  
         const ajaxErrorCall = (response) => {
             console.log(response);
         };
-
+  
         Samvaarta.common.hitAjaxApi(
             paramObject,
             ajaxSuccessCall,
             ajaxErrorCall
         );
     }
-
+  
     var displayUserInfo = (data) => {
         oauthUserData = data.data;
         let userDetails = data.data.data?.name ? data.data.data : data.data;
@@ -2004,49 +2004,49 @@ Samvaarta.system = (() => {
             } else {
             }
             let userData = `
-				<div class="d-flex align-items-center">
-					<div class="flex-shrink-0">
-					<img width="20" height="20" data-src="${userDetails.avatar}" src="/images/user-default.svg" class="unveil avatar" alt="${username}" />
-					</div>					
-				</div>
-				
-				<div class="header-user-nav">
-					<div class="hvr_bx">
-						<ul>
+        <div class="d-flex align-items-center">
+          <div class="flex-shrink-0">
+          <img width="20" height="20" data-src="${userDetails.avatar}" src="/images/user-default.svg" class="unveil avatar" alt="${username}" />
+          </div>					
+        </div>
+        
+        <div class="header-user-nav">
+          <div class="hvr_bx">
+            <ul>
                             <li>
                                 <a tabindex="0" role="button" href="/dashboard">
                                 <i class="fa fa-tachometer" aria-hidden="true"></i>Dashboard
                                 </a>
                             </li>	
-							<li>
-								<a tabindex="0" role="button" href="/myaccount">
-									<i class="fa fa-pencil"></i>Edit Profile
-								</a>
-							</li>							
-							<li class="change-password">
-								<a href="/change-password" tabindex="0" role="button">
-									<i class="fa fa-key"></i>Change Password
-								</a>
-							</li>
+              <li>
+                <a tabindex="0" role="button" href="/myaccount">
+                  <i class="fa fa-pencil"></i>Edit Profile
+                </a>
+              </li>							
+              <li class="change-password">
+                <a href="/change-password" tabindex="0" role="button">
+                  <i class="fa fa-key"></i>Change Password
+                </a>
+              </li>
                             ${userTypreDescription}
-							<li>
-								<a href="javascript:void(0);" tabindex="0" role="button" onclick="Samvaarta.system.logout()">
-									<i class="fa fa-power-off"></i>Logout
-								</a>
-							</li>
-						</ul>
-					</div>
-				</div>
-			`;
-
+              <li>
+                <a href="javascript:void(0);" tabindex="0" role="button" onclick="Samvaarta.system.logout()">
+                  <i class="fa fa-power-off"></i>Logout
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      `;
+  
             $(".dashboard__header--loggedin-user").html(userData).addClass('oauth');
         }
     };
-
+  
     var forgetPassword = () => {
         let reg_email = $("#oauth_log_email").val();
         $(".error").html("");
-
+  
         $(".signin-form input").each(function () {
             if (
                 $(this).attr("type") != "button" &&
@@ -2058,7 +2058,7 @@ Samvaarta.system = (() => {
                 }
             }
         });
-
+  
         if (valError) {
             return false;
         } else {
@@ -2067,7 +2067,7 @@ Samvaarta.system = (() => {
                 type: "POST",
                 data: { email: reg_email },
             };
-
+  
             const ajaxSuccessCall = (response) => {
                 Samvaarta.model.showSuccessMessage(
                     `<h2>Thank You</h2><p class="marg-t20">We have sent a new password at
@@ -2075,7 +2075,7 @@ Samvaarta.system = (() => {
                     "y"
                 );
             };
-
+  
             const ajaxErrorCall = (error) => {
                 if (error.response) {
                     $("#oauth_log_email_err")
@@ -2083,7 +2083,7 @@ Samvaarta.system = (() => {
                         .show();
                 }
             };
-
+  
             Samvaarta.common.hitAjaxApi(
                 paramObject,
                 ajaxSuccessCall,
@@ -2091,7 +2091,7 @@ Samvaarta.system = (() => {
             );
         }
     };
-
+  
     const assignedTrainer = (event) => {
         let trainerid = $(event)[0].options[$(event)[0].options.selectedIndex].getAttribute('value');
         let userId = $(event)[0].options[$(event)[0].options.selectedIndex].getAttribute('userid');
@@ -2104,7 +2104,7 @@ Samvaarta.system = (() => {
                 Accept: "application/json",
             },
         };
-
+  
         const ajaxSuccessCall = async(response) => {
             if(response.data?.success === 'true'){
                 Samvaarta.common.deleteLocalStorage('users_data');
@@ -2114,18 +2114,18 @@ Samvaarta.system = (() => {
                 Samvaarta.common.toastMsg('User is not activate yet, Please activate first.');
             }
         };
-
+  
         const ajaxErrorCall = (response) => {
             console.log(response);
         };
-
+  
         Samvaarta.common.hitAjaxApi(
             paramObject,
             ajaxSuccessCall,
             ajaxErrorCall
         );
     }
-
+  
     const enquiriesDetail = () => {
         var paramObject = {
             url: apiUrl + "api/admin/enquiry",
@@ -2135,7 +2135,7 @@ Samvaarta.system = (() => {
                 Accept: "application/json",
             },
         };
-
+  
         function ajaxSuccessCall(data) {
             //console.log(data);
             enquiryList(data?.data?.data);
@@ -2149,7 +2149,7 @@ Samvaarta.system = (() => {
             ajaxErrorCall
         );
     }
-
+  
     const enquiryList = (list) => {
         let userList = '';
         list.map((item, index) => {
@@ -2178,7 +2178,7 @@ Samvaarta.system = (() => {
         `;
         $('.enquiries-page .user-data-list').html(enqList);
     }
-
+  
     return {
         loginUser: loginUser,
         userRegistration: userRegistration,
@@ -2200,10 +2200,11 @@ Samvaarta.system = (() => {
         userReport: userReport, 
         userInfoDetail: userInfoDetail,
         enquiriesDetail: enquiriesDetail,
+        trainerDashboard: trainerDashboard,
     };
-})();
-
-Samvaarta.userDashboard = (() => {
+  })();
+  
+  Samvaarta.userDashboard = (() => {
     
     const codeOfEthics = () => {
         let codeOfEthics = `
@@ -2211,7 +2212,7 @@ Samvaarta.userDashboard = (() => {
             <h3>Code of ethics</h3>
             <p>CoE refers to the responsible behavior that will be displayed by partied involved during the interaction period</p>
             <div class="details--items">
-                <h3>Coachee’s Code of Ethics</h3>
+                <h3>Coacheeâ€™s Code of Ethics</h3>
                 <ul class="list-view">
                     <li>I shall be sharing the details truthfully without any fear</li>
                     <li>I commit to implement my commitments made in the interaction</li>
@@ -2222,7 +2223,7 @@ Samvaarta.userDashboard = (() => {
                 <h3>The coach / Mentor has agreed to the following</h3>
                 <ul class="list-view">
                     <li>The coach will be 100% invested in you during the interaction</li>
-                    <li>The coach’s role will be to ask you question to help you explore</li>
+                    <li>The coachâ€™s role will be to ask you question to help you explore</li>
                     <li>The coach maintain the confidentiality of the interaction.</li>
                 </ul>
             </div>            
@@ -2230,7 +2231,7 @@ Samvaarta.userDashboard = (() => {
         `;
         $('.user-activity-details__inner').html(codeOfEthics);
     }
-    const closureInteraction = (response) => {
+    const closureInteraction = (response, trainerRes) => {
         let closure = `
         <div class="details codeofethics">
             <h3>Closure</h3>
@@ -2277,6 +2278,8 @@ Samvaarta.userDashboard = (() => {
         $('#outcomes_param_1').val(response[0]?.experience_enjoyed);
         $('#outcomes_param_2').val(response[0]?.experience_wish);
         $('#outcomes_param_3').val(response[0]?.experience_gained);
+        $('#manager_enjoyed').val(trainerRes[0]?.experience_enjoyed);
+        $('#manager_wished').val(trainerRes[0]?.experience_wish);
     }    
     const trainerOptionList = () => {
         var trainerdata = Samvaarta.common.getLocalStorage('trainer_data');
@@ -2375,7 +2378,7 @@ Samvaarta.userDashboard = (() => {
         errorElements.forEach(function (el) {
             el.innerHTML = "";
         });
-
+  
         var inputElements = document.querySelectorAll(
             ".upcoming_session_container .input_txt_box"
         );
@@ -2390,7 +2393,7 @@ Samvaarta.userDashboard = (() => {
                 }
             }
         }
-
+  
         if (valError) {
             return false;
         } else {
@@ -2410,12 +2413,12 @@ Samvaarta.userDashboard = (() => {
                     session_status: session_status,
                 },
             };
-
+  
             const ajaxSuccessCall = (response) => {
                 $('.upcoming_session_container input').val('');
                 getSessionList("api/admin/sessions");
             };
-
+  
             const ajaxErrorCall = (error) => {
                 if (error.response) {
                     $("#oauth_log_email_err")
@@ -2423,7 +2426,7 @@ Samvaarta.userDashboard = (() => {
                         .show();
                 }
             };
-
+  
             Samvaarta.common.hitAjaxApi(
                 paramObject,
                 ajaxSuccessCall,
@@ -2455,7 +2458,7 @@ Samvaarta.userDashboard = (() => {
                 Accept: "application/json",
             },
         };
-
+  
         const ajaxSuccessCall = (response) => {            
             if(response?.data?.data?.length){                
                 Samvaarta.common.setLocalStorage('sessionList', response, expireTime);
@@ -2464,7 +2467,7 @@ Samvaarta.userDashboard = (() => {
                 $('.upcoming_session_list').html('<h2>No upcoming session available.</h2>');
             }            
         };
-
+  
         const ajaxErrorCall = (error) => {
             if (error.response) {
                 $("#oauth_log_email_err")
@@ -2472,7 +2475,7 @@ Samvaarta.userDashboard = (() => {
                     .show();
             }
         };
-
+  
         Samvaarta.common.hitAjaxApi(
             paramObject,
             ajaxSuccessCall,
@@ -2495,8 +2498,8 @@ Samvaarta.userDashboard = (() => {
         <div class="details">
             <h3>Documenting Conversations</h3>
             <p>They are filled in weekly ideally</p>
-            <p>Firstly – When a formal conversation with coach has taken place</p>
-            <p>Secondly – When you want to discuss any situation, share any development</p>
+            <p>Firstly â€“ When a formal conversation with coach has taken place</p>
+            <p>Secondly â€“ When you want to discuss any situation, share any development</p>
             <p>You can upload a voice or video file, ppt, pdf, word or excel file</p>
             <div id="" class="details--items previous">
                 <h3>Previous Interactions</h3>
@@ -2517,7 +2520,7 @@ Samvaarta.userDashboard = (() => {
                         <p id="user_last_commitment_err" class="error"></p>
                     </li>
                     <li>
-                        <label for="user_conversation" class="topic">Today’s conversation</label>
+                        <label for="user_conversation" class="topic">Todayâ€™s conversation</label>
                         <textarea rows="2" cols="50" type="text" id="user_conversation" value="" class="input_txt_box" ></textarea>
                         <p id="user_conversation_err" class="error"></p>
                     </li>
@@ -2527,7 +2530,7 @@ Samvaarta.userDashboard = (() => {
                         <p id="user_week_commitment_err" class="error"></p>
                     </li>
                     <li>
-                        <label for="user_comments" class="topic">Coach’s Comments</label>
+                        <label for="user_comments" class="topic">Coachâ€™s Comments</label>
                         <input readonly type="text" id="user_comments" value="" class="input_txt_box" />
                     </li>
                     <li>
@@ -2585,13 +2588,13 @@ Samvaarta.userDashboard = (() => {
             <h3>Desired Objective</h3>
             
             <div class="details--items quantitative">
-                <h3>Quantitative Parameters – <span>They refer to the past, current and future performance</span></h3>
+                <h3>Quantitative Parameters â€“ <span>They refer to the past, current and future performance</span></h3>
                 <h4>The following details needs to be filled up</h4>
                 <ul class="details--items__topics">
-                    <li>Measurable parameters – 3</li>
+                    <li>Measurable parameters â€“ 3</li>
                     <li>Mention the units of measurement for example in% or unit</li>
                     <li>Performance of the parameter over of last two month and current month Future months</li>
-                    <li>For example –
+                    <li>For example â€“
                         <ul>
                             <li>Parameter - Emp attrition</li>
                             <li>Measurement - %: Performance jun - 16%, Jul - 17%, Aug - 16%</li>
@@ -2700,7 +2703,7 @@ Samvaarta.userDashboard = (() => {
                 </div>
             </div>
             <div class="details--items qualitative">
-                <h3>Qualitative Parameters – <span>They refer to the behavioural shift you desire</span></h3>
+                <h3>Qualitative Parameters â€“ <span>They refer to the behavioural shift you desire</span></h3>
                 <h4>The following details needs to be filled up</h4>
                 <ul class="details--items__topics">
                     <li>Mention the parameter</li>
@@ -2748,8 +2751,8 @@ Samvaarta.userDashboard = (() => {
                     <li>Describe the outcome you like. This will include the way you will feel, hear, say and do after a desired a period of time</li>
                     <li>For example
                         <ul>
-                            <li>Parameter – Manager Relationship</li>
-                            <li>Brief Description – My manager is talking is trusting me by giving important tasks beyond the KRAs</li>
+                            <li>Parameter â€“ Manager Relationship</li>
+                            <li>Brief Description â€“ My manager is talking is trusting me by giving important tasks beyond the KRAs</li>
                         </ul>
                     </li>
                 </ul>
@@ -2788,9 +2791,9 @@ Samvaarta.userDashboard = (() => {
         displaySessionList: displaySessionList,
         closureInteraction: closureInteraction,
     }
-})();
-
-Samvaarta.setGetUserDashboard = (() => {
+  })();
+  
+  Samvaarta.setGetUserDashboard = (() => {
     const setDocConversation = () => {
         var user_focus = document.getElementById("user_focus").value;
         var last_commitment = document.getElementById("user_last_commitment").value;
@@ -2818,7 +2821,7 @@ Samvaarta.setGetUserDashboard = (() => {
         errorElements.forEach(function (el) {
             el.innerHTML = "";
         });
-
+  
         var inputElements = document.querySelectorAll(
             ".details--items__topics .input_txt_box"
         );
@@ -2833,7 +2836,7 @@ Samvaarta.setGetUserDashboard = (() => {
                 }
             }
         }
-
+  
         if (valError) {
             return false;
         } else {
@@ -2847,7 +2850,7 @@ Samvaarta.setGetUserDashboard = (() => {
                 "mimeType": "multipart/form-data",
                 data: formData                
             };
-
+  
             const ajaxSuccessCall = (response) => {
                 $('.details_set_conversion .input_txt_box').val('');
                 if(response?.data?.success === 'true'){
@@ -2862,7 +2865,7 @@ Samvaarta.setGetUserDashboard = (() => {
                         .show();
                 }
             };
-
+  
             const ajaxErrorCall = (error) => {
                 if (error.response) {
                     $("#interaction_name_err")
@@ -2870,7 +2873,7 @@ Samvaarta.setGetUserDashboard = (() => {
                         .show();
                 }
             };
-
+  
             Samvaarta.common.hitAjaxApi(
                 paramObject,
                 ajaxSuccessCall,
@@ -2907,7 +2910,7 @@ Samvaarta.setGetUserDashboard = (() => {
                     <td doc-id="${item?.id}">${index+1}</td>
                     <td>${getDateFormat(item?.created_at)}</td>
                     <td session-id="${item?.session?.session_id}">${item.session?.topic}</td>
-                    <td trainer-id="${item?.session?.trainer?.id ? item?.session?.trainer?.id : oauthUserData?.trainer[0]?.id}">${item.session?.trainer?.name ? item.session?.trainer?.name : oauthUserData?.trainer[0]?.name}</td>
+                    <td trainer-id="${item?.session?.trainer?.id ? item?.session?.trainer?.id : oauthUserData?.trainer ? oauthUserData?.trainer[0]?.id : oauthUserData?.data?.trainer[0]?.id}">${item.session?.trainer?.name ? item.session?.trainer?.name : oauthUserData?.trainer ? oauthUserData?.trainer[0]?.name : oauthUserData?.data?.trainer[0].name}</td>
                     <td class="edit-transaction" onclick="Samvaarta.setGetUserDashboard.editTransaction(${item?.id})">Edit</td>
                     <div class="update-transaction-container hide" id="edit-doc-${item?.id}" data-docId="${item?.id}" data-session="${item?.session?.session_id}">
                         <ul class="details--items__topics">
@@ -2920,7 +2923,7 @@ Samvaarta.setGetUserDashboard = (() => {
                                 <textarea rows="2" cols="50" type="text" id="user_last_commitment_${item.id}" class="input_txt_box"></textarea>
                             </li>
                             <li class="section_${index+1}">
-                                <label for="user_conversation_${item.id}" class="topic">Today’s conversation</label>
+                                <label for="user_conversation_${item.id}" class="topic">Todayâ€™s conversation</label>
                                 <textarea rows="2" cols="50" type="text" id="user_conversation_${item.id}" class="input_txt_box"></textarea>
                             </li>
                             <li class="section_${index+1}">
@@ -2979,7 +2982,7 @@ Samvaarta.setGetUserDashboard = (() => {
             const date = new Date(next_interaction_date);
             formattedDate = date.toISOString().split('T')[0];
         }
-
+  
         let formData = new FormData();
         formData.append("doc_file", filesdata);
         formData.append("focus_of_the_day", user_focus);
@@ -2989,11 +2992,11 @@ Samvaarta.setGetUserDashboard = (() => {
         formData.append("last_week_comments", last_commitment);
         formData.append("session_id", sesId);
         formData.append("document_conversation_id", docId);
-
+  
         errorElements.forEach(function (el) {
             el.innerHTML = "";
         });
-
+  
         var inputElements = document.querySelectorAll(
             "#edit-doc-"+docId+" .input_txt_box"
         );
@@ -3008,7 +3011,7 @@ Samvaarta.setGetUserDashboard = (() => {
                 }
             }
         }
-
+  
         if (valError) {
             return false;
         } else {
@@ -3022,7 +3025,7 @@ Samvaarta.setGetUserDashboard = (() => {
                 "mimeType": "multipart/form-data",
                 data: formData,
             };
-
+  
             const ajaxSuccessCall = (response) => {
                 if(response?.data?.success === 'true'){
                     $('.update-transaction-container').addClass('hide');
@@ -3033,7 +3036,7 @@ Samvaarta.setGetUserDashboard = (() => {
                         .show();
                 }
             };
-
+  
             const ajaxErrorCall = (error) => {
                 if (error.response) {
                     $("#interaction_name_err")
@@ -3041,7 +3044,7 @@ Samvaarta.setGetUserDashboard = (() => {
                         .show();
                 }
             };
-
+  
             Samvaarta.common.hitAjaxApi(
                 paramObject,
                 ajaxSuccessCall,
@@ -3058,7 +3061,7 @@ Samvaarta.setGetUserDashboard = (() => {
                 Accept: "application/json",
             },            
         };
-
+  
         const ajaxSuccessCall = (response) => {
             if(response?.data?.success === 'true'){
                 previousTransactions(response?.data);
@@ -3067,7 +3070,7 @@ Samvaarta.setGetUserDashboard = (() => {
                 $('.previous-transactions').html('<p>No previous interactions</p>');                
             }
         };
-
+  
         const ajaxErrorCall = (error) => {
             if (error.response) {
                 $("#interaction_name_err")
@@ -3075,7 +3078,7 @@ Samvaarta.setGetUserDashboard = (() => {
                     .show();
             }
         };
-
+  
         Samvaarta.common.hitAjaxApi(
             paramObject,
             ajaxSuccessCall,
@@ -3100,7 +3103,7 @@ Samvaarta.setGetUserDashboard = (() => {
         var cperf3 = document.getElementById("c_performance_3").value;
         // var interaction_name = document.getElementById("interaction_name").value;
         var pDate = document.getElementById("next_interaction_date").getAttribute('data-date');
-
+  
         var errorElements = document.querySelectorAll(".error");        
         errorElements.forEach(function (el) {
             el.innerHTML = "";
@@ -3119,7 +3122,7 @@ Samvaarta.setGetUserDashboard = (() => {
                 }
             }
         }
-
+  
         if (valError) {
             return false;
         } else {
@@ -3140,7 +3143,7 @@ Samvaarta.setGetUserDashboard = (() => {
                     performance_date: pDate,
                 },
             };
-
+  
             const ajaxSuccessCall = (response) => {
                 getDesiredObjective();
                 Samvaarta.model.showSuccessMessage(
@@ -3148,7 +3151,7 @@ Samvaarta.setGetUserDashboard = (() => {
                     "y"
                 );
             };
-
+  
             const ajaxErrorCall = (error) => {
                 if (error.response) {
                     $("#interaction_name_err")
@@ -3156,7 +3159,7 @@ Samvaarta.setGetUserDashboard = (() => {
                         .show();
                 }
             };
-
+  
             Samvaarta.common.hitAjaxApi(
                 paramObject,
                 ajaxSuccessCall,
@@ -3173,14 +3176,14 @@ Samvaarta.setGetUserDashboard = (() => {
                 Accept: "application/json",
             },            
         };
-
+  
         const ajaxSuccessCall = (response) => {
             if(response.data){
                 quantitativeData(response.data.data);
                 qualitativeData(response.data.odata);
             }
         };
-
+  
         const ajaxErrorCall = (error) => {
             if (error.response) {
                 $("#interaction_name_err")
@@ -3188,7 +3191,7 @@ Samvaarta.setGetUserDashboard = (() => {
                     .show();
             }
         };
-
+  
         Samvaarta.common.hitAjaxApi(
             paramObject,
             ajaxSuccessCall,
@@ -3260,7 +3263,7 @@ Samvaarta.setGetUserDashboard = (() => {
                                     }
                                 </script>
                                 <p id="next_interaction_date_err" style="width: 150px;top: 39px; left: 0;" class="error"></p>
-
+  
                             </td>
                         </tr>
                     </table>
@@ -3281,7 +3284,7 @@ Samvaarta.setGetUserDashboard = (() => {
                 }
             })
         } else {
-
+  
         }
     }
     const qualitativeData = (response) => {
@@ -3312,7 +3315,7 @@ Samvaarta.setGetUserDashboard = (() => {
         var qparam4 = document.getElementById("outcomes_desc_1").value;
         var qparam5 = document.getElementById("outcomes_desc_2").value;
         var qparam6 = document.getElementById("outcomes_desc_3").value;
-
+  
         var errorElements = document.querySelectorAll(".error");        
         errorElements.forEach(function (el) {
             el.innerHTML = "";
@@ -3331,7 +3334,7 @@ Samvaarta.setGetUserDashboard = (() => {
                 }
             }
         }
-
+  
         if (valError) {
             return false;
         } else {
@@ -3347,7 +3350,7 @@ Samvaarta.setGetUserDashboard = (() => {
                     outcome_description: [qparam4, qparam5, qparam6],
                 },
             };
-
+  
             const ajaxSuccessCall = (response) => {
                 getDesiredOutcomes();
                 Samvaarta.model.showSuccessMessage(
@@ -3355,7 +3358,7 @@ Samvaarta.setGetUserDashboard = (() => {
                     "y"
                 );
             };
-
+  
             const ajaxErrorCall = (error) => {
                 if (error.response) {
                     $("#interaction_name_err")
@@ -3363,7 +3366,7 @@ Samvaarta.setGetUserDashboard = (() => {
                         .show();
                 }
             };
-
+  
             Samvaarta.common.hitAjaxApi(
                 paramObject,
                 ajaxSuccessCall,
@@ -3380,11 +3383,11 @@ Samvaarta.setGetUserDashboard = (() => {
                 Accept: "application/json",
             },            
         };
-
+  
         const ajaxSuccessCall = (response) => {
             desiredData(response);
         };
-
+  
         const ajaxErrorCall = (error) => {
             if (error.response) {
                 $("#interaction_name_err")
@@ -3440,7 +3443,7 @@ Samvaarta.setGetUserDashboard = (() => {
         var qparam1 = document.getElementById("outcomes_param_1").value;
         var qparam2 = document.getElementById("outcomes_param_2").value;
         var qparam3 = document.getElementById("outcomes_param_3").value;
-
+  
         var errorElements = document.querySelectorAll(".error");        
         errorElements.forEach(function (el) {
             el.innerHTML = "";
@@ -3459,7 +3462,7 @@ Samvaarta.setGetUserDashboard = (() => {
                 }
             }
         }
-
+  
         if (valError) {
             return false;
         } else {
@@ -3476,7 +3479,7 @@ Samvaarta.setGetUserDashboard = (() => {
                     experience_gained: qparam3,
                 },
             };
-
+  
             const ajaxSuccessCall = (response) => {
                 getClosure();
                 Samvaarta.model.showSuccessMessage(
@@ -3485,7 +3488,7 @@ Samvaarta.setGetUserDashboard = (() => {
                 );
                 $('.user-activity-details__inner .btn').addClass('disabled');
             };
-
+  
             const ajaxErrorCall = (error) => {
                 if (error.response) {
                     $("#interaction_name_err")
@@ -3493,7 +3496,7 @@ Samvaarta.setGetUserDashboard = (() => {
                         .show();
                 }
             };
-
+  
             Samvaarta.common.hitAjaxApi(
                 paramObject,
                 ajaxSuccessCall,
@@ -3510,15 +3513,15 @@ Samvaarta.setGetUserDashboard = (() => {
                 Accept: "application/json",
             },            
         };
-
+  
         const ajaxSuccessCall = (response) => {
             let closureData = response.data.data;
-            Samvaarta.userDashboard.closureInteraction(closureData);   
+            Samvaarta.userDashboard.closureInteraction(closureData, response.data.traienr_data);   
             if(closureData.length){         
                 $('.user-activity-details__inner .btn').addClass('disabled');
             }
         };
-
+  
         const ajaxErrorCall = (error) => {
             if (error.response) {
                 $("#interaction_name_err")
@@ -3526,7 +3529,7 @@ Samvaarta.setGetUserDashboard = (() => {
                     .show();
             }
         };
-
+  
         Samvaarta.common.hitAjaxApi(
             paramObject,
             ajaxSuccessCall,
@@ -3546,11 +3549,11 @@ Samvaarta.setGetUserDashboard = (() => {
         setClosure: setClosure,
         getClosure: getClosure,
     }
-})();
-
-Samvaarta.deepDisplayUser = (() => {
+  })();
+  
+  Samvaarta.deepDisplayUser = (() => {
     let userId = parseFloat(window.location?.pathname?.split('/')[window.location.pathname?.split('/')?.length - 1]);
-
+  
     const displayUserDetails = () => {
         let deepDis = '';
         if(oauthUserData?.user_type === 'trainer'){
@@ -3602,26 +3605,26 @@ Samvaarta.deepDisplayUser = (() => {
         } else if(oauthUserData?.user_type === 'admin'){
             let userData = Samvaarta.common.getLocalStorage('deepUserData');
             let response = userData?.data;
-            if(response?.name){
+            if(response?.user_type === 'user'){
                 deepDis = `
                         <div class="show-user-details__inner">
                             <div class="show-user-details__inner--left detail-items">
                                 <ul>
                                 <li>Code: <span>${response?.unique_number ? response?.unique_number : response?.id}</span></li>
                                 <li>Name: <span>${response?.name ? response?.name : ''}</span></li>
-                                    <li>Date of Joining: <span>${Samvaarta.common.dateMonthYear(
-                                        response.created_at
+                                    <li>Date of Joining: <span>${Samvaarta?.common?.dateMonthYear(
+                                        response?.created_at
                                     )}</span></li>
                                     
                                     <li class="role">Role: <span>${
-                                        response.user_type
+                                        response?.user_type
                                     }</span></li>
                                     <li class="role">Coach: <span>${
                                         response?.trainer[0]?.name
                                     }</span></li>
                                     <li>Location: <span>${
-                                        response.location
-                                            ? response.location
+                                        response?.location
+                                            ? response?.location
                                             : ''
                                     }</span></li>
                                 </ul>
@@ -3647,12 +3650,54 @@ Samvaarta.deepDisplayUser = (() => {
                         </div>
                         `;
             }
-        }
-        
+            if(response?.user_type === 'trainer'){
+              deepDis = `
+                        <div class="show-user-details__inner">
+                            <div class="show-user-details__inner--left detail-items">
+                              <ul>
+                              <li>Code: <span>${response?.unique_number ? response?.unique_number : response?.id}</span></li>
+                                <li>Name: <span>${response?.name ? response?.name : ''}</span></li>
+                                    <li>Date of Joining: <span>${Samvaarta?.common?.dateMonthYear(
+                                        response?.created_at
+                                    )}</span></li>
+                                    
+                                    <li class="role">Role: <span>${
+                                        response?.user_type
+                                    }</span></li>                                  
+                                    <li>Location: <span>${
+                                        response?.location
+                                            ? response?.location
+                                            : ''
+                                    }</span></li>
+                                </ul>
+                            </div>
+                            <div class="show-user-details__inner--mid detail-items">
+                                <ul>
+                                ${response?.vision ? '<li>Vision: <span>'+response?.vision+'</span></li>' : ''}
+                                ${response?.description ? '<li>Brief Description: <span>'+response.description+'</span></li>' : ''}
+                                            
+                                </ul>
+                            </div>
+                            <div class="show-user-details__inner--right detail-items">
+                                <ul>
+                                    <li class="profile-img"><img src="${
+                                        response?.avatar ? response.avatar : '/images/default-face.jpg'
+                                    }" width="100" height="100" alt="profile"></li>
+                                    <li>LinkedIn: <span>${response?.linkedin_url}</span></li>
+                                    <li>Email Id: <span>${response?.email}</span></li>
+                                    <li>Mobile No: <span>${response?.phone}</span></li>
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                      `;
+                      Samvaarta.system.trainerDashboard(response?.users);
+            }
+        }      
         $('.display-user-details').html(deepDis);
     }
     const displayDashInfo = () => {
-
+  
         let paramObject = {
             url: apiUrl + 'api/'+oauthUserData?.user_type+'/documenting-conversations/?user_id='+userId,
             type: "GET",
@@ -3662,12 +3707,12 @@ Samvaarta.deepDisplayUser = (() => {
                 Accept: "application/json",
             },
         };
-
+  
         const ajaxSuccessCall = (response) => {            
             Samvaarta.common.setLocalStorage('deepUserData', response?.data, 1);
             displayUserDetails();
         };
-
+  
         const ajaxErrorCall = (error) => {
             if (error.response) {
                 $("#oauth_log_email_err")
@@ -3675,7 +3720,7 @@ Samvaarta.deepDisplayUser = (() => {
                     .show();
             }
         };
-
+  
         Samvaarta.common.hitAjaxApi(
             paramObject,
             ajaxSuccessCall,
@@ -3688,7 +3733,7 @@ Samvaarta.deepDisplayUser = (() => {
         let interaction = '';
         let response = '';
         let userInfo = Samvaarta.common.getLocalStorage('deepUserData')?.data;
-
+  
         if(oauthUserData?.user_type === 'admin'){
             response = Samvaarta.common.getLocalStorage('deepUserData')?.DocumentConversations;
         } else {
@@ -3728,7 +3773,7 @@ Samvaarta.deepDisplayUser = (() => {
                                 <textarea readonly rows="2" cols="50" type="text" id="user_last_commitment_${item.id}" class="input_txt_box"></textarea>
                             </li>
                             <li class="section_${index+1}">
-                                <label for="user_conversation_${item.id}" class="topic">Today’s conversation</label>
+                                <label for="user_conversation_${item.id}" class="topic">Todayâ€™s conversation</label>
                                 <textarea readonly rows="2" cols="50" type="text" id="user_conversation_${item.id}" class="input_txt_box"></textarea>
                             </li>
                             <li class="section_${index+1}">
@@ -3764,8 +3809,8 @@ Samvaarta.deepDisplayUser = (() => {
         previous += `
             <h3>Documenting Conversations</h3>
             <p>They are filled in weekly ideally</p>
-            <p>Firstly – When a formal conversation with coach has taken place</p>
-            <p>Secondly – When you want to discuss any situation, share any development</p>
+            <p>Firstly â€“ When a formal conversation with coach has taken place</p>
+            <p>Secondly â€“ When you want to discuss any situation, share any development</p>
             <p>You can upload a voice or video file, ppt, pdf, word or excel file</p>
             <div id="" class="details--items previous">
                 <h3>Interactions</h3>
@@ -3809,7 +3854,7 @@ Samvaarta.deepDisplayUser = (() => {
                 `;
             });
             let perData = response?.PerformanceData;
-
+  
             for(let j=0;j<3;j++){  
                 let ppdata = '';   
                 for(let i=0;i<perData?.length;i++){
@@ -3834,16 +3879,16 @@ Samvaarta.deepDisplayUser = (() => {
                     <td width="5%">${perData[i].performance_date}</td>
                 `;                
             }
-
+  
             quantitative += `
             <div class="details--items quantitative">
-                <h3>Quantitative Parameters – <span>They refer to the past, current and future performance</span></h3>
+                <h3>Quantitative Parameters â€“ <span>They refer to the past, current and future performance</span></h3>
                 <h4>The following details needs to be filled up</h4>
                 <ul class="details--items__topics">
-                    <li>Measurable parameters – 3</li>
+                    <li>Measurable parameters â€“ 3</li>
                     <li>Mention the units of measurement for example in% or unit</li>
                     <li>Performance of the parameter over of last two month and current month Future months</li>
-                    <li>For example –
+                    <li>For example â€“
                         <ul>
                             <li>Parameter - Emp attrition</li>
                             <li>Measurement - %: Performance jun - 16%, Jul - 17%, Aug - 16%</li>
@@ -3879,7 +3924,7 @@ Samvaarta.deepDisplayUser = (() => {
             `;
             qualitative += `
             <div class="details--items qualitative">
-                <h3>Qualitative Parameters – <span>They refer to the behavioural shift you desire</span></h3>
+                <h3>Qualitative Parameters â€“ <span>They refer to the behavioural shift you desire</span></h3>
                 <h4>The following details needs to be filled up</h4>
                 <ul class="details--items__topics">
                     <li>Mention the parameter</li>
@@ -3950,8 +3995,8 @@ Samvaarta.deepDisplayUser = (() => {
                     <li>Describe the outcome you like. This will include the way you will feel, hear, say and do after a desired a period of time</li>
                     <li>For example
                         <ul>
-                            <li>Parameter – Manager Relationship</li>
-                            <li>Brief Description – My manager is talking is trusting me by giving important tasks beyond the KRAs</li>
+                            <li>Parameter â€“ Manager Relationship</li>
+                            <li>Brief Description â€“ My manager is talking is trusting me by giving important tasks beyond the KRAs</li>
                         </ul>
                     </li>
                 </ul>
@@ -4020,11 +4065,11 @@ Samvaarta.deepDisplayUser = (() => {
                 </script>
                 `;                
             });
-
+  
             closureTrainer += `
                 <div class="details--items manager-closure-input">
                 <h3>Manager Experience</h3>`;
-
+  
             closureTrainer += `
                     <ul class="list-view">
                         <li>
@@ -4078,7 +4123,7 @@ Samvaarta.deepDisplayUser = (() => {
                 Accept: "application/json",
             },
         };
-
+  
         const ajaxSuccessCall = (response) => {            
             Samvaarta.model.showSuccessMessage(
                 `<h2>Thank You</h2><p class="marg-t20">${Samvaarta.messageLog[19]}</p>`,
@@ -4087,7 +4132,7 @@ Samvaarta.deepDisplayUser = (() => {
             $('#edit-doc-'+itemid+' .submit-comment').addClass('hide');
             displayDashInfo();
         };
-
+  
         const ajaxErrorCall = (error) => {
             if (error.response) {
                 $("#oauth_log_email_err")
@@ -4117,7 +4162,7 @@ Samvaarta.deepDisplayUser = (() => {
                 Accept: "application/json",
             },
         };
-
+  
         const ajaxSuccessCall = (response) => {            
             Samvaarta.model.showSuccessMessage(
                 `<h2>Thank You</h2><p class="marg-t20">${Samvaarta.messageLog[17]}</p>`,
@@ -4126,7 +4171,7 @@ Samvaarta.deepDisplayUser = (() => {
             $('.user-activity-details__inner .form-elm-section').addClass('hide');
             displayDashInfo();
         };
-
+  
         const ajaxErrorCall = (error) => {
             if (error.response) {
                 $("#oauth_log_email_err")
@@ -4140,6 +4185,37 @@ Samvaarta.deepDisplayUser = (() => {
             ajaxErrorCall
         );
     }
+    const displayTrainerDashInfo = () =>{
+      let paramObject = {
+        url: apiUrl + 'api/admin/trainer/listing?trainer_id='+userId,
+        type: "GET",
+        data:{'user_id': userId},
+        headers: {
+            Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+            Accept: "application/json",
+        },
+      };
+  
+      const ajaxSuccessCall = (response) => {            
+          Samvaarta.common.setLocalStorage('deepUserData', response?.data, 1);
+          displayUserDetails();
+      };
+  
+      const ajaxErrorCall = (error) => {
+          if (error.response) {
+              $("#oauth_log_email_err")
+                  .html(error.response.data.message)
+                  .show();
+          }
+      };
+  
+      Samvaarta.common.hitAjaxApi(
+          paramObject,
+          ajaxSuccessCall,
+          ajaxErrorCall
+      );
+    }
+  
     return {
         displayUserDetails: displayUserDetails,
         displayDashInfo: displayDashInfo,
@@ -4149,10 +4225,11 @@ Samvaarta.deepDisplayUser = (() => {
         displayClosure: displayClosure,
         trainerDocComment: trainerDocComment,
         trainerClosureComment: trainerClosureComment,
+        displayTrainerDashInfo: displayTrainerDashInfo,
     }
-})();
-
-const dashboardTab = () => {
+  })();
+  
+  const dashboardTab = () => {
     const elm = document.querySelector(".dashboard__elements--inner");
     Samvaarta.userDashboard.codeOfEthics();
     if (elm) {
@@ -4163,31 +4240,31 @@ const dashboardTab = () => {
             }
         });
     }
-};
-
-const photoUploadView = () => {
+  };
+  
+  const photoUploadView = () => {
     var readURL = function (input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
-
+  
             reader.onload = function (e) {
                 $(".profile-pic").attr("src", e.target.result);
             };
-
+  
             reader.readAsDataURL(input.files[0]);
         }
     };
-
+  
     $(".file-upload").on("change", function () {
         readURL(this);
     });
-
+  
     $(".upload-button").on("click", function () {
         $(".file-upload").click();
     });
-};
-
-const showRoleTab = () => {
+  };
+  
+  const showRoleTab = () => {
     const elm = document.querySelector(".show-role-tab");
     if (elm) {
         $("body").on("click", ".show-role-tab button", (event) => {
@@ -4198,38 +4275,38 @@ const showRoleTab = () => {
             }
         });
     }
-}
-
-const faqEventBind = () => {
+  }
+  
+  const faqEventBind = () => {
     const main = document.querySelector('.faq-panel__lists');
     main?.addEventListener('click', event => {
       if (event.target.className.includes('question')) {
         const isActive = event.target.classList.contains('active');
-
+  
         const questions = main.querySelectorAll('.question');
         const answers = main.querySelectorAll('.answer');
-
+  
         questions.forEach(q => q.classList.remove('active'));
         answers.forEach(a => a.classList.remove('opend'));
-
+  
         if (!isActive) {
           event.target.classList.add('active');
           event.target.nextElementSibling.classList.add('opend');
         }
       }
     });
-}
-
-const joinHere = () => {
+  }
+  
+  const joinHere = () => {
     $('body').on('click', '.join-here', () => {
         Samvaarta.common.setLocalStorage('showRegForm', true, expireTime);
     });
     $('body').on('click', '.login-here', () => {
         Samvaarta.common.deleteLocalStorage('showRegForm');
     });
-}
-
-document.addEventListener("readystatechange", (event) => {
+  }
+  
+  document.addEventListener("readystatechange", (event) => {
     // When HTML/DOM elements are ready:
     if (event.target.readyState === "interactive") {
         Samvaarta.system.checkLoginStatus();
@@ -4248,12 +4325,12 @@ document.addEventListener("readystatechange", (event) => {
                 Samvaarta.system.adminDashboard('trainer');
             }
         } else if(getOuathData?.data?.data?.user_type === 'trainer'){
-
+  
         }
         joinHere();
         
     }
-
+  
     if (event.target.readyState === "complete") {
         unvielImg();   
         setTimeout(() => {
@@ -4263,7 +4340,7 @@ document.addEventListener("readystatechange", (event) => {
                 } else {
                     Samvaarta.userDashboard.displaySessionList(Samvaarta.common.getLocalStorage('sessionList'));
                 } 
-
+  
                 if(oauthUserData?.user_type === 'admin'){
                     Samvaarta.system.enquiriesDetail();
                 }
@@ -4271,17 +4348,20 @@ document.addEventListener("readystatechange", (event) => {
             if($('.deep-user-route').length && oauthUserData?.user_type !== 'user'){
                 Samvaarta.deepDisplayUser.displayDashInfo();
             }
+            if($('.deep-trainer-route').length && oauthUserData?.user_type !== 'user'){
+              Samvaarta.deepDisplayUser.displayTrainerDashInfo();
+          }
         }, 1000);
         
         faqEventBind();       
     }
-});
-
-
-// const people = [
-//     {name:'john', hobbies:['cricket', 'javascript']},
-//     {name:'ajay', hobbies:'singing'},
-//     {name:'akhil', hobbies:['running', 'food']}
-// ]
-// const hobby = people.flatMap((p) => p.hobbies);
-// console.log(hobby);
+  });
+  
+  
+  // const people = [
+  //     {name:'john', hobbies:['cricket', 'javascript']},
+  //     {name:'ajay', hobbies:'singing'},
+  //     {name:'akhil', hobbies:['running', 'food']}
+  // ]
+  // const hobby = people.flatMap((p) => p.hobbies);
+  // console.log(hobby);

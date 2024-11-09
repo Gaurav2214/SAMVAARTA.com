@@ -2212,7 +2212,7 @@ Samvaarta.userDashboard = (() => {
           <h3>Code of ethics</h3>
           <p>CoE refers to the responsible behavior that will be displayed by partied involved during the interaction period</p>
           <div class="details--items">
-              <h3>Coachee’s Code of Ethics</h3>
+              <h3>Coachee's Code of Ethics</h3>
               <ul class="list-view">
                   <li>I shall be sharing the details truthfully without any fear</li>
                   <li>I commit to implement my commitments made in the interaction</li>
@@ -2223,7 +2223,7 @@ Samvaarta.userDashboard = (() => {
               <h3>The coach / Mentor has agreed to the following</h3>
               <ul class="list-view">
                   <li>The coach will be 100% invested in you during the interaction</li>
-                  <li>The coach’s role will be to ask you question to help you explore</li>
+                  <li>The coach's role will be to ask you question to help you explore</li>
                   <li>The coach maintain the confidentiality of the interaction.</li>
               </ul>
           </div>            
@@ -2498,8 +2498,8 @@ Samvaarta.userDashboard = (() => {
       <div class="details">
           <h3>Documenting Conversations</h3>
           <p>They are filled in weekly ideally</p>
-          <p>Firstly – When a formal conversation with coach has taken place</p>
-          <p>Secondly – When you want to discuss any situation, share any development</p>
+          <p>Firstly - When a formal conversation with coach has taken place</p>
+          <p>Secondly - When you want to discuss any situation, share any development</p>
           <p>You can upload a voice or video file, ppt, pdf, word or excel file</p>
           <div id="" class="details--items previous">
               <h3>Previous Interactions</h3>
@@ -2520,7 +2520,7 @@ Samvaarta.userDashboard = (() => {
                       <p id="user_last_commitment_err" class="error"></p>
                   </li>
                   <li>
-                      <label for="user_conversation" class="topic">Today’s conversation</label>
+                      <label for="user_conversation" class="topic">Today's conversation</label>
                       <textarea rows="2" cols="50" type="text" id="user_conversation" value="" class="input_txt_box" ></textarea>
                       <p id="user_conversation_err" class="error"></p>
                   </li>
@@ -2530,7 +2530,7 @@ Samvaarta.userDashboard = (() => {
                       <p id="user_week_commitment_err" class="error"></p>
                   </li>
                   <li>
-                      <label for="user_comments" class="topic">Coach’s Comments</label>
+                      <label for="user_comments" class="topic">Coach's Comments</label>
                       <input readonly type="text" id="user_comments" value="" class="input_txt_box" />
                   </li>
                   <li>
@@ -2588,13 +2588,13 @@ Samvaarta.userDashboard = (() => {
           <h3>Desired Objective</h3>
           
           <div class="details--items quantitative">
-              <h3>Quantitative Parameters – <span>They refer to the past, current and future performance</span></h3>
+              <h3>Quantitative Parameters - <span>They refer to the past, current and future performance</span></h3>
               <h4>The following details needs to be filled up</h4>
               <ul class="details--items__topics">
-                  <li>Measurable parameters – 3</li>
+                  <li>Measurable parameters - 3</li>
                   <li>Mention the units of measurement for example in% or unit</li>
                   <li>Performance of the parameter over of last two month and current month Future months</li>
-                  <li>For example –
+                  <li>For example -
                       <ul>
                           <li>Parameter - Emp attrition</li>
                           <li>Measurement - %: Performance jun - 16%, Jul - 17%, Aug - 16%</li>
@@ -2703,7 +2703,7 @@ Samvaarta.userDashboard = (() => {
               </div>
           </div>
           <div class="details--items qualitative">
-              <h3>Qualitative Parameters – <span>They refer to the behavioural shift you desire</span></h3>
+              <h3>Qualitative Parameters - <span>They refer to the behavioural shift you desire</span></h3>
               <h4>The following details needs to be filled up</h4>
               <ul class="details--items__topics">
                   <li>Mention the parameter</li>
@@ -2751,8 +2751,8 @@ Samvaarta.userDashboard = (() => {
                   <li>Describe the outcome you like. This will include the way you will feel, hear, say and do after a desired a period of time</li>
                   <li>For example
                       <ul>
-                          <li>Parameter – Manager Relationship</li>
-                          <li>Brief Description – My manager is talking is trusting me by giving important tasks beyond the KRAs</li>
+                          <li>Parameter - Manager Relationship</li>
+                          <li>Brief Description - My manager is talking is trusting me by giving important tasks beyond the KRAs</li>
                       </ul>
                   </li>
               </ul>
@@ -2910,7 +2910,7 @@ Samvaarta.setGetUserDashboard = (() => {
                   <td doc-id="${item?.id}">${index+1}</td>
                   <td>${getDateFormat(item?.created_at)}</td>
                   <td session-id="${item?.session?.session_id}">${item.session?.topic}</td>
-                  <td trainer-id="${item?.session?.trainer?.id ? item?.session?.trainer?.id : oauthUserData?.trainer[0]?.id}">${item.session?.trainer?.name ? item.session?.trainer?.name : oauthUserData?.trainer[0]?.name}</td>
+                  <td trainer-id="${item?.session?.trainer?.id ? item?.session?.trainer?.id : oauthUserData?.trainer ? oauthUserData?.trainer[0]?.id : oauthUserData?.data?.trainer[0]?.id}">${item.session?.trainer?.name ? item.session?.trainer?.name : oauthUserData?.trainer ? oauthUserData?.trainer[0]?.name : oauthUserData?.data?.trainer[0].name}</td>
                   <td class="edit-transaction" onclick="Samvaarta.setGetUserDashboard.editTransaction(${item?.id})">Edit</td>
                   <div class="update-transaction-container hide" id="edit-doc-${item?.id}" data-docId="${item?.id}" data-session="${item?.session?.session_id}">
                       <ul class="details--items__topics">
@@ -2923,7 +2923,7 @@ Samvaarta.setGetUserDashboard = (() => {
                               <textarea rows="2" cols="50" type="text" id="user_last_commitment_${item.id}" class="input_txt_box"></textarea>
                           </li>
                           <li class="section_${index+1}">
-                              <label for="user_conversation_${item.id}" class="topic">Today’s conversation</label>
+                              <label for="user_conversation_${item.id}" class="topic">Today's conversation</label>
                               <textarea rows="2" cols="50" type="text" id="user_conversation_${item.id}" class="input_txt_box"></textarea>
                           </li>
                           <li class="section_${index+1}">
@@ -3773,7 +3773,7 @@ Samvaarta.deepDisplayUser = (() => {
                               <textarea readonly rows="2" cols="50" type="text" id="user_last_commitment_${item.id}" class="input_txt_box"></textarea>
                           </li>
                           <li class="section_${index+1}">
-                              <label for="user_conversation_${item.id}" class="topic">Today’s conversation</label>
+                              <label for="user_conversation_${item.id}" class="topic">Today's conversation</label>
                               <textarea readonly rows="2" cols="50" type="text" id="user_conversation_${item.id}" class="input_txt_box"></textarea>
                           </li>
                           <li class="section_${index+1}">
@@ -3809,8 +3809,8 @@ Samvaarta.deepDisplayUser = (() => {
       previous += `
           <h3>Documenting Conversations</h3>
           <p>They are filled in weekly ideally</p>
-          <p>Firstly – When a formal conversation with coach has taken place</p>
-          <p>Secondly – When you want to discuss any situation, share any development</p>
+          <p>Firstly - When a formal conversation with coach has taken place</p>
+          <p>Secondly - When you want to discuss any situation, share any development</p>
           <p>You can upload a voice or video file, ppt, pdf, word or excel file</p>
           <div id="" class="details--items previous">
               <h3>Interactions</h3>
@@ -3882,13 +3882,13 @@ Samvaarta.deepDisplayUser = (() => {
 
           quantitative += `
           <div class="details--items quantitative">
-              <h3>Quantitative Parameters – <span>They refer to the past, current and future performance</span></h3>
+              <h3>Quantitative Parameters - <span>They refer to the past, current and future performance</span></h3>
               <h4>The following details needs to be filled up</h4>
               <ul class="details--items__topics">
-                  <li>Measurable parameters – 3</li>
+                  <li>Measurable parameters - 3</li>
                   <li>Mention the units of measurement for example in% or unit</li>
                   <li>Performance of the parameter over of last two month and current month Future months</li>
-                  <li>For example –
+                  <li>For example -
                       <ul>
                           <li>Parameter - Emp attrition</li>
                           <li>Measurement - %: Performance jun - 16%, Jul - 17%, Aug - 16%</li>
@@ -3924,7 +3924,7 @@ Samvaarta.deepDisplayUser = (() => {
           `;
           qualitative += `
           <div class="details--items qualitative">
-              <h3>Qualitative Parameters – <span>They refer to the behavioural shift you desire</span></h3>
+              <h3>Qualitative Parameters - <span>They refer to the behavioural shift you desire</span></h3>
               <h4>The following details needs to be filled up</h4>
               <ul class="details--items__topics">
                   <li>Mention the parameter</li>
@@ -3995,8 +3995,8 @@ Samvaarta.deepDisplayUser = (() => {
                   <li>Describe the outcome you like. This will include the way you will feel, hear, say and do after a desired a period of time</li>
                   <li>For example
                       <ul>
-                          <li>Parameter – Manager Relationship</li>
-                          <li>Brief Description – My manager is talking is trusting me by giving important tasks beyond the KRAs</li>
+                          <li>Parameter - Manager Relationship</li>
+                          <li>Brief Description - My manager is talking is trusting me by giving important tasks beyond the KRAs</li>
                       </ul>
                   </li>
               </ul>
