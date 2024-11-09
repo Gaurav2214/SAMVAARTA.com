@@ -1,5 +1,5 @@
 <?php
-    $fileVersion = 27;
+    $fileVersion = 28;
 ?>
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -18,7 +18,7 @@
     <meta property="og:image" content="https://goalsnu.com/images/goalnu-logo.png" />
     <link rel="image_src" href="https://goalsnu.com/images/goalnu-logo.png" />
     <meta itemprop="image" content="https://goalsnu.com/images/goalnu-logo.png" />
-    <meta name="keywords" content="goals, goal, goalsnu, mentor, user, grow, reports" />
+    <meta name="keywords" content="goals, goal, goalsnu, mentor, user, grow, reports, hr, hrtech, Startupindia, mentors, employees, startups, leadership, leaders, goals, SaaS, selfdevelopment" />
     <meta itemprop="description" content="In the journey of life you realize that you are clear as to what you want. However, as you move ahead, you feel the need for clarity on what needs to be done and how you have progressed. At GOALS N U, you are mapping what you want to achieve, monitoring your progress over the weeks and months and sensing the impact it is has had. Discover the ecosystem of GOALS N U created to serve you on your journey to make a mark in your professional and personal life." />
     <link rel="canonical" href="https://goalsnu.com/" />
     <meta itemprop="url" content="https://goalsnu.com/" />

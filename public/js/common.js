@@ -1731,7 +1731,7 @@ Samvaarta.system = (() => {
               } else {
                   trainerList = 'No User';
               }
-              viewDetails = `<a href="/dashboard/trainer-details/${item.id}">View Details</a>`;
+              viewDetails = `<a href="/dashboard/user-details/${item.id}">View Details</a>`;
           }
           if(parseFloat(item.status) === 1){
               statusInfo = `<span class="approved">Approved</span> <span onclick="Samvaarta.system.activateDeactivateUser(${item.id}, '0')">Undo</span>`;
@@ -2200,7 +2200,6 @@ Samvaarta.system = (() => {
       userReport: userReport, 
       userInfoDetail: userInfoDetail,
       enquiriesDetail: enquiriesDetail,
-      trainerDashboard: trainerDashboard,
   };
 })();
 
@@ -2231,7 +2230,7 @@ Samvaarta.userDashboard = (() => {
       `;
       $('.user-activity-details__inner').html(codeOfEthics);
   }
-  const closureInteraction = (response, trainerRes) => {
+  const closureInteraction = (response) => {
       let closure = `
       <div class="details codeofethics">
           <h3>Closure</h3>
@@ -2278,8 +2277,6 @@ Samvaarta.userDashboard = (() => {
       $('#outcomes_param_1').val(response[0]?.experience_enjoyed);
       $('#outcomes_param_2').val(response[0]?.experience_wish);
       $('#outcomes_param_3').val(response[0]?.experience_gained);
-      $('#manager_enjoyed').val(trainerRes[0]?.experience_enjoyed);
-      $('#manager_wished').val(trainerRes[0]?.experience_wish);
   }    
   const trainerOptionList = () => {
       var trainerdata = Samvaarta.common.getLocalStorage('trainer_data');
@@ -2910,7 +2907,7 @@ Samvaarta.setGetUserDashboard = (() => {
                   <td doc-id="${item?.id}">${index+1}</td>
                   <td>${getDateFormat(item?.created_at)}</td>
                   <td session-id="${item?.session?.session_id}">${item.session?.topic}</td>
-                  <td trainer-id="${item?.session?.trainer?.id ? item?.session?.trainer?.id : oauthUserData?.trainer[0]?.id}">${item.session?.trainer?.name ? item.session?.trainer?.name : oauthUserData?.trainer[0]?.name}</td>
+                  <td trainer-id="${item?.session?.trainer?.id ? item?.session?.trainer?.id : oauthUserData?.trainer ? oauthUserData?.trainer[0]?.id : oauthUserData?.data?.trainer[0]?.id}">${item.session?.trainer?.name ? item.session?.trainer?.name : oauthUserData?.trainer ? oauthUserData?.trainer[0]?.name : oauthUserData?.data?.trainer[0].name}</td>
                   <td class="edit-transaction" onclick="Samvaarta.setGetUserDashboard.editTransaction(${item?.id})">Edit</td>
                   <div class="update-transaction-container hide" id="edit-doc-${item?.id}" data-docId="${item?.id}" data-session="${item?.session?.session_id}">
                       <ul class="details--items__topics">
@@ -3516,7 +3513,7 @@ Samvaarta.setGetUserDashboard = (() => {
 
       const ajaxSuccessCall = (response) => {
           let closureData = response.data.data;
-          Samvaarta.userDashboard.closureInteraction(closureData, response.data.traienr_data);   
+          Samvaarta.userDashboard.closureInteraction(closureData);   
           if(closureData.length){         
               $('.user-activity-details__inner .btn').addClass('disabled');
           }
@@ -3605,26 +3602,26 @@ Samvaarta.deepDisplayUser = (() => {
       } else if(oauthUserData?.user_type === 'admin'){
           let userData = Samvaarta.common.getLocalStorage('deepUserData');
           let response = userData?.data;
-          if(response?.user_type === 'user'){
+          if(response?.name){
               deepDis = `
                       <div class="show-user-details__inner">
                           <div class="show-user-details__inner--left detail-items">
                               <ul>
                               <li>Code: <span>${response?.unique_number ? response?.unique_number : response?.id}</span></li>
                               <li>Name: <span>${response?.name ? response?.name : ''}</span></li>
-                                  <li>Date of Joining: <span>${Samvaarta?.common?.dateMonthYear(
-                                      response?.created_at
+                                  <li>Date of Joining: <span>${Samvaarta.common.dateMonthYear(
+                                      response.created_at
                                   )}</span></li>
                                   
                                   <li class="role">Role: <span>${
-                                      response?.user_type
+                                      response.user_type
                                   }</span></li>
                                   <li class="role">Coach: <span>${
                                       response?.trainer[0]?.name
                                   }</span></li>
                                   <li>Location: <span>${
-                                      response?.location
-                                          ? response?.location
+                                      response.location
+                                          ? response.location
                                           : ''
                                   }</span></li>
                               </ul>
@@ -3650,50 +3647,8 @@ Samvaarta.deepDisplayUser = (() => {
                       </div>
                       `;
           }
-          if(response?.user_type === 'trainer'){
-            deepDis = `
-                      <div class="show-user-details__inner">
-                          <div class="show-user-details__inner--left detail-items">
-                            <ul>
-                            <li>Code: <span>${response?.unique_number ? response?.unique_number : response?.id}</span></li>
-                              <li>Name: <span>${response?.name ? response?.name : ''}</span></li>
-                                  <li>Date of Joining: <span>${Samvaarta?.common?.dateMonthYear(
-                                      response?.created_at
-                                  )}</span></li>
-                                  
-                                  <li class="role">Role: <span>${
-                                      response?.user_type
-                                  }</span></li>                                  
-                                  <li>Location: <span>${
-                                      response?.location
-                                          ? response?.location
-                                          : ''
-                                  }</span></li>
-                              </ul>
-                          </div>
-                          <div class="show-user-details__inner--mid detail-items">
-                              <ul>
-                              ${response?.vision ? '<li>Vision: <span>'+response?.vision+'</span></li>' : ''}
-                              ${response?.description ? '<li>Brief Description: <span>'+response.description+'</span></li>' : ''}
-                                          
-                              </ul>
-                          </div>
-                          <div class="show-user-details__inner--right detail-items">
-                              <ul>
-                                  <li class="profile-img"><img src="${
-                                      response?.avatar ? response.avatar : '/images/default-face.jpg'
-                                  }" width="100" height="100" alt="profile"></li>
-                                  <li>LinkedIn: <span>${response?.linkedin_url}</span></li>
-                                  <li>Email Id: <span>${response?.email}</span></li>
-                                  <li>Mobile No: <span>${response?.phone}</span></li>
-                                  
-                              </ul>
-                          </div>
-                      </div>
-                    `;
-                    Samvaarta.system.trainerDashboard(response?.users);
-          }
-      }      
+      }
+      
       $('.display-user-details').html(deepDis);
   }
   const displayDashInfo = () => {
@@ -4185,37 +4140,6 @@ Samvaarta.deepDisplayUser = (() => {
           ajaxErrorCall
       );
   }
-  const displayTrainerDashInfo = () =>{
-    let paramObject = {
-      url: apiUrl + 'api/admin/trainer/listing?trainer_id='+userId,
-      type: "GET",
-      data:{'user_id': userId},
-      headers: {
-          Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
-          Accept: "application/json",
-      },
-    };
-
-    const ajaxSuccessCall = (response) => {            
-        Samvaarta.common.setLocalStorage('deepUserData', response?.data, 1);
-        displayUserDetails();
-    };
-
-    const ajaxErrorCall = (error) => {
-        if (error.response) {
-            $("#oauth_log_email_err")
-                .html(error.response.data.message)
-                .show();
-        }
-    };
-
-    Samvaarta.common.hitAjaxApi(
-        paramObject,
-        ajaxSuccessCall,
-        ajaxErrorCall
-    );
-  }
-
   return {
       displayUserDetails: displayUserDetails,
       displayDashInfo: displayDashInfo,
@@ -4225,7 +4149,6 @@ Samvaarta.deepDisplayUser = (() => {
       displayClosure: displayClosure,
       trainerDocComment: trainerDocComment,
       trainerClosureComment: trainerClosureComment,
-      displayTrainerDashInfo: displayTrainerDashInfo,
   }
 })();
 
@@ -4348,9 +4271,6 @@ document.addEventListener("readystatechange", (event) => {
           if($('.deep-user-route').length && oauthUserData?.user_type !== 'user'){
               Samvaarta.deepDisplayUser.displayDashInfo();
           }
-          if($('.deep-trainer-route').length && oauthUserData?.user_type !== 'user'){
-            Samvaarta.deepDisplayUser.displayTrainerDashInfo();
-        }
       }, 1000);
       
       faqEventBind();       
