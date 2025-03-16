@@ -46,11 +46,7 @@ class SendWeeklyGoalsCheckIn extends Command
                 "description3"=>isset($outcome_description[2])??'',
             ];
 
-            $mail_data['email']="abhishek.checkmail@yopmail.com";
-
             Mail::to($mail_data['email'])->send(new WeeklyGoalsCheckInMail($mail_data));
-
-            exit;
         }
 
         $this->info('Weekly goals emails sent successfully.');
