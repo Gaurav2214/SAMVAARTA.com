@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WeeklyGoalsCheckInMail;
 
 /*
 |--------------------------------------------------------------------------
@@ -84,4 +86,21 @@ Route::group(['prefix' => 'user'], function () {
   Route::post('/password/reset', 'Auth\ResetPasswordController@reset')->name('password.email');
   Route::get('/password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.reset');
   Route::get('/password/reset/{token}', 'Auth\ResetPasswordController@showResetForm');
+});
+
+Route::get('/send-mail', function () {
+  $user = [
+      'name' => 'Yash Srivastava',
+      'email' => 'abhishek.checkmail@yopmail.com',
+      'parameter1' => 'Goal 1',
+      'description1' => 'Complete 5 workouts',
+      'parameter2' => 'Goal 2',
+      'description2' => 'Read 2 books',
+      'parameter3' => 'Goal 3',
+      'description3' => 'Improve diet'
+  ];
+
+  Mail::to($user['email'])->send(new WeeklyGoalsCheckInMail($user));
+
+  return "Email sent successfully!";
 });

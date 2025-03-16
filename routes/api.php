@@ -51,6 +51,10 @@ Route::group(['middleware' => ['auth:api']], function() {
 		Route::get('/documenting-conversations', 'Resource\ProfileController@documentingConversationsForTrainer');
 
 
+		Route::get('/learning-outcome', 'Resource\ProfileController@learningOutcomeForTrainer');
+		Route::post('/approve-learning-outcome/{learning_outcome_id}', 'Resource\ProfileController@approveLearningOutcome');
+
+
 
 		Route::get('closing-of-intraction','Resource\ProfileController@trainerClosingOfIntraction');
 		Route::post('closing-of-intraction','Resource\ProfileController@addTrainerClosingOfIntraction');
