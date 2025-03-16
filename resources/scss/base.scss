@@ -318,15 +318,17 @@
         background: #fff;
         box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
         padding: rem(30);
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        -webkit-transform: translate(-50%, -50%);
+        position: absolute;        
         -webkit-transition: 1s ease-in-out;
         line-height: 1.4em;
         border-radius: rem(4);
         min-height: rem(220);
+        @include breakpoint($end-small){
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+        }
         &.modal-confirm {
             display: flex;
             justify-content: center;
@@ -363,6 +365,10 @@
                     margin-top: rem(20);
                 }
             }
+        }
+        @include breakpointmax($end-small){
+            bottom: 0;
+            max-width: -webkit-fill-available;
         }
     }
     .model-container .close {
@@ -487,12 +493,15 @@
                 max-width: rem(600);
             }
             ul {
-                @include set-flex-box($jc:center);
                 position: relative;
-                gap: rem(32);
+                @include breakpoint($end-small){
+                    @include set-flex-box($jc:center);
+                    gap: rem(32);
+                }  
                 @include breakpointmax($end-small){
-                    justify-content: flex-start;
-                    gap: rem(24);
+                    display: flex;
+                    flex-direction: column;
+                    gap: rem(8);              
                 }
                 li {
                     .dashboard__elements--item {
@@ -523,6 +532,16 @@
                         &:hover {
                             @include insert-box-shadow();
                             background: rgb(250, 235, 215);
+                        }
+                        @include breakpointmax($end-small){
+                            width: 100%;
+                            max-width: -webkit-fill-available;
+                            padding: rem(10) rem(15);
+                            align-items: flex-start;
+                            h2{
+                                flex-direction: row;
+                                max-width: 100%;
+                            }
                         }
                     }
                     
@@ -589,6 +608,9 @@
                         &.quantitative, &.qualitative, &.outcomes{      
                             .qualitative__data, .outcomes__data, .quantitative__data{
                                 margin-top: rem(20);
+                                @include breakpointmax($end-small){
+                                    overflow-x: auto;
+                                }
                             }                          
                             h4{
                                 @include desc-5();
@@ -610,6 +632,9 @@
                         }
                         .previous-transactions{
                             margin-top: rem(12);
+                            @include breakpointmax($end-small){
+                                overflow-x: auto;
+                            }
                         }
                     }
                     textarea {
@@ -936,6 +961,11 @@
                                 background: transparent;
                             }
                         }
+                        &.view-date-format{
+                            td{
+                                width: rem(100);
+                            }
+                        }
                     }
                 }                    
             }
@@ -946,6 +976,9 @@
             }
             .upcoming-events{
                 margin-top: rem(30);
+                @include breakpointmax($end-small){
+                    overflow-x: auto;
+                }
             }
         }
     }
@@ -976,6 +1009,10 @@
         .login-module__main & {
             border: none;
             box-shadow: none;
+        }
+        @include breakpointmax($end-small){
+            margin-left: auto;
+            margin-right: auto;
         }
     }
     img {
@@ -1025,6 +1062,15 @@
         }
         &--right {
             width: 70%;
+        }
+        @include breakpointmax($end-small){
+            flex-direction: column;
+            &--left, &--right {
+                width: 100%;
+            }
+            &--right {
+                margin-top: rem(24);
+            }
         }
     }
 }
@@ -1698,6 +1744,12 @@ footer{
                 margin-left: 0;
             }
         }
+    }
+}
+
+.view-date-format{
+    td{
+        width: rem(100);
     }
 }
 
