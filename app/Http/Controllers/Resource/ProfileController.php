@@ -377,7 +377,7 @@ class ProfileController extends Controller
 				$LearningOutcomes->save();
 
 			}else{
-				$LearningOutcomes = LearningOutcomes::create(['user_id'=>$user_id,'outcome_description'=>json_encode($request->outcome_description),'parameter'=>json_encode($request->parameter)]);
+				$LearningOutcomes = LearningOutcomes::create(['user_id'=>$user_id,'outcome_description'=>json_encode($request->outcome_description),'parameter'=>json_encode($request->parameter),'status'=>0]);
 			}
 
 			$LearningOutcomes= LearningOutcomes::where('user_id', $request->user()->id)->first();
@@ -1031,6 +1031,84 @@ class ProfileController extends Controller
 	}else{
 		return response()->json(['data' =>[],"success"=>"false"]);
 	}
+	}
+
+	public function learningOutcomeForTrainer(Request $request){
+
+
+		$User = User::with('users')->find($request->user()->id)->toArray();     
+
+		$user_ids = [];
+		if(!empty($User)){
+
+			if($request->user_id>0){
+				$user_ids [] =$request->user_id;
+			}else{
+				$user_ids = array_column($User['users'],'id');
+			}
+
+			$LearningOutcomes= LearningOutcomes::whereIn('user_id', $user_ids)->get();
+
+			if(!empty($LearningOutcomes)){
+				foreach($LearningOutcomes as $key=>$LearningOutcome){
+					$LearningOutcomes[$key]->outcome_description=json_decode($LearningOutcome->outcome_description,true);
+					$LearningOutcomes[$key]->parameter=json_decode($LearningOutcome->parameter,true);
+				}
+			}
+			return response()->json(['data' => $LearningOutcomes]);
+				
+		}else{
+			return response()->json(['data' =>[],"success"=>"false"]);
+		}
+	
+	}
+
+	public function approveLearningOutcome(Request $request){
+
+		if(empty($request->learning_outcome_id)){
+			return response()->json(['message' =>"Learning Outcome Id is required","success"=>"false"]);
+		}
+
+		$User = User::with('users')->find($request->user()->id)->toArray();     
+
+		$user_ids = [];
+		if(!empty($User)){
+
+			if($request->user_id>0){
+				$user_ids [] =$request->user_id;
+			}else{
+				$user_ids = array_column($User['users'],'id');
+			}
+
+			$LearningOutcome= LearningOutcomes::whereIn('user_id', $user_ids)->where('id',$request->learning_outcome_id)->first();
+
+			if(!empty($LearningOutcome)){
+
+				if($LearningOutcome->status=="1"){
+					$LearningOutcome->outcome_description=json_decode($LearningOutcome->outcome_description,true);
+					$LearningOutcome->parameter=json_decode($LearningOutcome->parameter,true);
+
+					return response()->json(['data' =>$LearningOutcome,"success"=>"false","message"=>"Already Approved"]);
+				}else{
+
+					$LearningOutcome->status = 1;
+					$LearningOutcome->save();
+
+					$LearningOutcome->outcome_description=json_decode($LearningOutcome->outcome_description,true);
+					$LearningOutcome->parameter=json_decode($LearningOutcome->parameter,true);
+
+					return response()->json(['data' =>$LearningOutcome,"success"=>"true"]);
+				}
+
+			}else{
+				return response()->json(['data' =>[],"success"=>"false","messsage"=>"No Record Found"]);
+			}
+
+		}else{
+			return response()->json(['data' =>[],"success"=>"false"]);
+		}
+
+
 	}
 	
 }
