@@ -2539,15 +2539,7 @@ Samvaarta.userDashboard = (() => {
                       <script>$('#next_interaction_date').datepicker();</script>
                       <p id="next_interaction_date_err" class="error"></p>
                   </li>
-                  <li>
-                      <label for="interaction_name" class="topic">Interaction Name</label>                        
-                      <div class="interaction_name">
-                          <select id="interaction_name" class="input_txt_box">
-                              
-                          </select>
-                          <p id="interaction_name_err" class="error"></p>
-                      </div>
-                  </li>
+                  
               </ul>
           </div>
           <div class="form-elm-section btn-container marg-t10">
@@ -2800,12 +2792,18 @@ Samvaarta.setGetUserDashboard = (() => {
       var user_conversation = document.getElementById("user_conversation").value;
       var week_commitment = document.getElementById("user_week_commitment").value;
       var next_interaction_date = document.getElementById("next_interaction_date").value;
-      var interaction_name = document.getElementById("interaction_name").value;
+      var interaction_name = 1; //document.getElementById("interaction_name").value;
       var fileupload = document.getElementById("hiddenFileInput").files[0];
       var formattedDate = '';
       if(next_interaction_date){
-          const date = new Date(next_interaction_date);
-          formattedDate = date.toISOString().split('T')[0];
+          const selectedDate = new Date(next_interaction_date);
+          const currentDate = new Date();
+          if(selectedDate <= currentDate){
+            $('#next_interaction_date_err').html('The next date must be a date after today.').show();
+            return false;
+          } else {
+            formattedDate = selectedDate.toISOString().split('T')[0];
+          }
       }
       let formData = new FormData();
       formData.append("doc_file", fileupload);

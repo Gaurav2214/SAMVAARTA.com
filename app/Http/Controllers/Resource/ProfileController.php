@@ -511,7 +511,7 @@ class ProfileController extends Controller
 			'focus_of_the_day' => 'required|max:255',
 			'today_conversion'=>'required|max:255',
 			'feedback'=>'required|max:2000',
-			'next_date'=>'required|date_format:Y-m-d|after:today',
+			'next_date'=>'required|date_format:Y-m-d',
 			'session_id'=>'required',
 			"last_week_comments"=>'required|max:500',
 			//"document_conversation_date"=>'required|date_format:Y-m-d|after:today',
