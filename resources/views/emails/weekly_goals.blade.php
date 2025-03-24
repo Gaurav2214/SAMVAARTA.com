@@ -54,7 +54,7 @@
         <div class="header">Staying on Track – Your Weekly Goals N U Check-In</div>
         <div class="content">
             <p>Dear {{ $data['name'] }},</p>
-            <p>Hope you’re doing well! Here’s a quick check-in to keep you focused on your Goals N U journey.</p>
+            <p>Hope you’re doing well! Here’s a quick check-in to keep you focused on your <em>Goals N U</em> journey.</p>
             <div class="goals">
                 <p><strong>Your three key outcomes:</strong></p>
                 <p><strong>{{ $data['parameter1'] }}</strong> – {{ $data['description1'] }}</p>
@@ -69,7 +69,7 @@
             </ul>
         </div>
         <div class="footer">
-            <p>Stay committed, and keep striving for your goals!</p>
+            <p>Your commitment makes all the difference. If you need any support, feel free to reach out!</p>
         </div>
     </div>
 </body>
