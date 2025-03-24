@@ -32,18 +32,20 @@ class SendWeeklyGoalsCheckIn extends Command
             if(!empty($LearningOutcomes)){
                 $outcome_description = json_decode($LearningOutcomes->outcome_description,true);
                 $parameter = json_decode($LearningOutcomes->parameter,true);
+            }else{
+               continue;
             }
 
         
             $mail_data=[
                 "name"=>$user['name'],
                 "email"=>$user['email'],
-                "parameter1"=>isset($parameter[0])??'',
-                "parameter2"=>isset($parameter[1])??'',
-                "parameter3"=>isset($parameter[2])??'',
-                "description1"=>isset($outcome_description[0])??'',
-                "description2"=>isset($outcome_description[1])??'',
-                "description3"=>isset($outcome_description[2])??'',
+                "parameter1"=>isset($parameter[0])?$parameter[0]:'',
+                "parameter2"=>isset($parameter[1])?$parameter[1]:'',
+                "parameter3"=>isset($parameter[2])?$parameter[2]:'',
+                "description1"=>isset($outcome_description[0])?$outcome_description[0]:'',
+                "description2"=>isset($outcome_description[1])?$outcome_description[1]:'',
+                "description3"=>isset($outcome_description[2])?$outcome_description[2]:'',
             ];
 
             Mail::to($mail_data['email'])->send(new WeeklyGoalsCheckInMail($mail_data));
