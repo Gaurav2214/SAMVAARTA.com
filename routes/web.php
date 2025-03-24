@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WeeklyGoalsCheckInMail;
+use App\User;
+use App\Models\LearningOutcomes;
 
 /*
 |--------------------------------------------------------------------------
@@ -89,18 +91,38 @@ Route::group(['prefix' => 'user'], function () {
 });
 
 Route::get('/send-mail', function () {
-  $user = [
-      'name' => 'Yash Srivastava',
-      'email' => 'abhishek.checkmail@yopmail.com',
-      'parameter1' => 'Goal 1',
-      'description1' => 'Complete 5 workouts',
-      'parameter2' => 'Goal 2',
-      'description2' => 'Read 2 books',
-      'parameter3' => 'Goal 3',
-      'description3' => 'Improve diet'
-  ];
+  $Users = User::with(['trainer'])->where(['user_type'=>'user'])->where('status','1')->orderBy('id', 'DESC')->get();
 
-  Mail::to($user['email'])->send(new WeeklyGoalsCheckInMail($user));
+
+        foreach ($Users as $user) {
+
+            $LearningOutcomes= LearningOutcomes::where('user_id', $user['id'])->first();
+            $outcome_description = $parameter =[];
+            
+            if(empty($LearningOutcomes))continue;
+            
+
+            if(!empty($LearningOutcomes)){
+                $outcome_description = json_decode($LearningOutcomes->outcome_description,true);
+                $parameter = json_decode($LearningOutcomes->parameter,true);
+            }
+    
+
+            $mail_data=[
+                "name"=>$user['name'],
+                "email"=>$user['email'],
+                "parameter1"=>isset($parameter[0])?$parameter[0]:'',
+                "parameter2"=>isset($parameter[1])?$parameter[1]:'',
+                "parameter3"=>isset($parameter[2])?$parameter[2]:'',
+                "description1"=>isset($outcome_description[0])?$outcome_description[0]:'',
+                "description2"=>isset($outcome_description[1])?$outcome_description[1]:'',
+                "description3"=>isset($outcome_description[2])?$outcome_description[2]:'',
+            ];
+            
+           Mail::to($mail_data['email'])->send(new WeeklyGoalsCheckInMail($mail_data));
+        }
+
+  //Mail::to($user['email'])->send(new WeeklyGoalsCheckInMail($user));
 
   return "Email sent successfully!";
 });
