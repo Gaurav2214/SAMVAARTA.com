@@ -25,7 +25,7 @@
                     </ul>
                 </div>
                 <div class="section-copyright">
-                    <p>@2024 Goalsnu.com. All Right Reserved.</p>
+                    <p>Copyright ©2025 Goalsnu.com. All Right Reserved.</p>
                 </div>
             </div>
             <div class="sticky-container">
