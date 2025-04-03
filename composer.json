@@ -18,7 +18,6 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
         "league/oauth2-server": "*",
-        "opis/closure": "^3.6",
         "spatie/laravel-permission": "^6.9",
         "symfony/psr-http-message-bridge": "^2.3"
     },
