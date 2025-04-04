@@ -574,6 +574,11 @@ p {
       background: #808080; }
   .upcoming_session_container .form-elm-section .error.validation {
     top: 64px; }
+  .form-elm-section.btn-center-align {
+    display: flex;
+    gap: 15px;
+    flex-direction: row;
+    justify-content: flex-start; }
 
 .model-bg {
   position: fixed;
