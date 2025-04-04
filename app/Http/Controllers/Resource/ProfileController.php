@@ -1121,7 +1121,10 @@ class ProfileController extends Controller
 
 		if(empty($request->status)){
 			return response()->json(['message' =>"Status is required","success"=>"false"]);
+		}else if(!in_array($request->status,[1,2])){
+			return response()->json(['message' =>"Status value is only required 1 or 2","success"=>"false"]);
 		}
+
 
 		$User = User::with('users')->find($request->user()->id)->toArray();     
 
@@ -1139,7 +1142,7 @@ class ProfileController extends Controller
 			
 			if(!empty($PerformanceDataOthers)){
 
-				if($PerformanceDataOthers->status=="1"){
+				if($PerformanceDataOthers['status']==$request->status){
 					
 
 					$PerformanceDataOthers['parameter']=json_decode($PerformanceDataOthers['parameter'],true);
@@ -1148,8 +1151,8 @@ class ProfileController extends Controller
 					return response()->json(['data' =>$PerformanceDataOthers,"success"=>"false","message"=>"Already Approved"]);
 				}else{
 
-					$LearningOutcome->status = $request->status;
-					$LearningOutcome->save();
+					$PerformanceDataOthers->status = $request->status;
+					$PerformanceDataOthers->save();
 
 					$PerformanceDataOthers['parameter']=json_decode($PerformanceDataOthers['parameter'],true);
 					$PerformanceDataOthers['description']=json_decode($PerformanceDataOthers['description'],true);
