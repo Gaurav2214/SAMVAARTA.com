@@ -759,7 +759,7 @@ class ProfileController extends Controller
 						'user_id'=>$user_id,
 						'parameter'=>json_encode($other_parameter),
 						'description'=>json_encode($description),
-						'status'=>'1',
+						'status'=>'0',
 					]);
 			}
 			
@@ -1100,6 +1100,61 @@ class ProfileController extends Controller
 					$LearningOutcome->parameter=json_decode($LearningOutcome->parameter,true);
 
 					return response()->json(['data' =>$LearningOutcome,"success"=>"true"]);
+				}
+
+			}else{
+				return response()->json(['data' =>[],"success"=>"false","messsage"=>"No Record Found"]);
+			}
+
+		}else{
+			return response()->json(['data' =>[],"success"=>"false"]);
+		}
+
+
+	}
+
+	public function approvePerformanceParameter(Request $request){
+
+		if(empty($request->user_id)){
+			return response()->json(['message' =>"User Id is required","success"=>"false"]);
+		}
+
+		if(empty($request->status)){
+			return response()->json(['message' =>"Status is required","success"=>"false"]);
+		}
+
+		$User = User::with('users')->find($request->user()->id)->toArray();     
+
+		$user_ids = [];
+		if(!empty($User)){
+
+			if($request->user_id>0){
+				$user_ids [] =$request->user_id;
+			}else{
+				$user_ids = array_column($User['users'],'id');
+			}
+
+			$PerformanceDataOthers=PerformanceDataOthers::whereIn("user_id",$user_ids)->orderBy('id',"desc")->get()->first();
+
+			
+			if(!empty($PerformanceDataOthers)){
+
+				if($PerformanceDataOthers->status=="1"){
+					
+
+					$PerformanceDataOthers['parameter']=json_decode($PerformanceDataOthers['parameter'],true);
+					$PerformanceDataOthers['description']=json_decode($PerformanceDataOthers['description'],true);
+
+					return response()->json(['data' =>$PerformanceDataOthers,"success"=>"false","message"=>"Already Approved"]);
+				}else{
+
+					$LearningOutcome->status = $request->status;
+					$LearningOutcome->save();
+
+					$PerformanceDataOthers['parameter']=json_decode($PerformanceDataOthers['parameter'],true);
+					$PerformanceDataOthers['description']=json_decode($PerformanceDataOthers['description'],true);
+
+					return response()->json(['data' =>$PerformanceDataOthers,"success"=>"true"]);
 				}
 
 			}else{
