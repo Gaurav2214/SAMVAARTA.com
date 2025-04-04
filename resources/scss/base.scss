@@ -292,6 +292,12 @@
             }
         }
     }
+    &.btn-center-align{
+        display: flex;
+        gap: rem(15);
+        flex-direction: row;
+        justify-content: flex-start;
+    }
 }
 .model-bg {
     position: fixed;

@@ -52,6 +52,8 @@ Samvaarta.messageLog = {
     }
   }
   
+  const getFullYear = () => new Date().getFullYear();
+  
   const getDateFormat = (validDate) => {
     let formattedDate = '';
     if(validDate){
@@ -2212,7 +2214,7 @@ Samvaarta.messageLog = {
             <h3>Code of ethics</h3>
             <p>CoE refers to the responsible behavior that will be displayed by partied involved during the interaction period</p>
             <div class="details--items">
-                <h3>Coacheeâ€™s Code of Ethics</h3>
+                <h3>Coachee's Code of Ethics</h3>
                 <ul class="list-view">
                     <li>I shall be sharing the details truthfully without any fear</li>
                     <li>I commit to implement my commitments made in the interaction</li>
@@ -2223,7 +2225,7 @@ Samvaarta.messageLog = {
                 <h3>The coach / Mentor has agreed to the following</h3>
                 <ul class="list-view">
                     <li>The coach will be 100% invested in you during the interaction</li>
-                    <li>The coachâ€™s role will be to ask you question to help you explore</li>
+                    <li>The coach's role will be to ask you question to help you explore</li>
                     <li>The coach maintain the confidentiality of the interaction.</li>
                 </ul>
             </div>            
@@ -2498,8 +2500,8 @@ Samvaarta.messageLog = {
         <div class="details">
             <h3>Documenting Conversations</h3>
             <p>They are filled in weekly ideally</p>
-            <p>Firstly â€“ When a formal conversation with coach has taken place</p>
-            <p>Secondly â€“ When you want to discuss any situation, share any development</p>
+            <p>Firstly - When a formal conversation with coach has taken place</p>
+            <p>Secondly - When you want to discuss any situation, share any development</p>
             <p>You can upload a voice or video file, ppt, pdf, word or excel file</p>
             <div id="" class="details--items previous">
                 <h3>Previous Interactions</h3>
@@ -2520,7 +2522,7 @@ Samvaarta.messageLog = {
                         <p id="user_last_commitment_err" class="error"></p>
                     </li>
                     <li>
-                        <label for="user_conversation" class="topic">Todayâ€™s conversation</label>
+                        <label for="user_conversation" class="topic">Today's conversation</label>
                         <textarea rows="2" cols="50" type="text" id="user_conversation" value="" class="input_txt_box" ></textarea>
                         <p id="user_conversation_err" class="error"></p>
                     </li>
@@ -2530,7 +2532,7 @@ Samvaarta.messageLog = {
                         <p id="user_week_commitment_err" class="error"></p>
                     </li>
                     <li>
-                        <label for="user_comments" class="topic">Coachâ€™s Comments</label>
+                        <label for="user_comments" class="topic">Coach's Comments</label>
                         <input readonly type="text" id="user_comments" value="" class="input_txt_box" />
                     </li>
                     <li>
@@ -2539,15 +2541,7 @@ Samvaarta.messageLog = {
                         <script>$('#next_interaction_date').datepicker();</script>
                         <p id="next_interaction_date_err" class="error"></p>
                     </li>
-                    <li>
-                        <label for="interaction_name" class="topic">Interaction Name</label>                        
-                        <div class="interaction_name">
-                            <select id="interaction_name" class="input_txt_box">
-                                
-                            </select>
-                            <p id="interaction_name_err" class="error"></p>
-                        </div>
-                    </li>
+                    
                 </ul>
             </div>
             <div class="form-elm-section btn-container marg-t10">
@@ -2588,13 +2582,13 @@ Samvaarta.messageLog = {
             <h3>Desired Objective</h3>
             
             <div class="details--items quantitative">
-                <h3>Quantitative Parameters â€“ <span>They refer to the past, current and future performance</span></h3>
+                <h3>Quantitative Parameters - <span>They refer to the past, current and future performance</span></h3>
                 <h4>The following details needs to be filled up</h4>
                 <ul class="details--items__topics">
-                    <li>Measurable parameters â€“ 3</li>
+                    <li>Measurable parameters - 3</li>
                     <li>Mention the units of measurement for example in% or unit</li>
                     <li>Performance of the parameter over of last two month and current month Future months</li>
-                    <li>For example â€“
+                    <li>For example -
                         <ul>
                             <li>Parameter - Emp attrition</li>
                             <li>Measurement - %: Performance jun - 16%, Jul - 17%, Aug - 16%</li>
@@ -2703,7 +2697,7 @@ Samvaarta.messageLog = {
                 </div>
             </div>
             <div class="details--items qualitative">
-                <h3>Qualitative Parameters â€“ <span>They refer to the behavioural shift you desire</span></h3>
+                <h3>Qualitative Parameters - <span>They refer to the behavioural shift you desire</span></h3>
                 <h4>The following details needs to be filled up</h4>
                 <ul class="details--items__topics">
                     <li>Mention the parameter</li>
@@ -2751,8 +2745,8 @@ Samvaarta.messageLog = {
                     <li>Describe the outcome you like. This will include the way you will feel, hear, say and do after a desired a period of time</li>
                     <li>For example
                         <ul>
-                            <li>Parameter â€“ Manager Relationship</li>
-                            <li>Brief Description â€“ My manager is talking is trusting me by giving important tasks beyond the KRAs</li>
+                            <li>Parameter - Manager Relationship</li>
+                            <li>Brief Description - My manager is talking is trusting me by giving important tasks beyond the KRAs</li>
                         </ul>
                     </li>
                 </ul>
@@ -2800,12 +2794,18 @@ Samvaarta.messageLog = {
         var user_conversation = document.getElementById("user_conversation").value;
         var week_commitment = document.getElementById("user_week_commitment").value;
         var next_interaction_date = document.getElementById("next_interaction_date").value;
-        var interaction_name = document.getElementById("interaction_name").value;
+        var interaction_name = 1; //document.getElementById("interaction_name").value;
         var fileupload = document.getElementById("hiddenFileInput").files[0];
         var formattedDate = '';
         if(next_interaction_date){
-            const date = new Date(next_interaction_date);
-            formattedDate = date.toISOString().split('T')[0];
+            const selectedDate = new Date(next_interaction_date);
+            const currentDate = new Date();
+            if(selectedDate <= currentDate){
+              $('#next_interaction_date_err').html('The next date must be a date after today.').show();
+              return false;
+            } else {
+              formattedDate = selectedDate.toISOString().split('T')[0];
+            }
         }
         let formData = new FormData();
         formData.append("doc_file", fileupload);
@@ -2923,7 +2923,7 @@ Samvaarta.messageLog = {
                                 <textarea rows="2" cols="50" type="text" id="user_last_commitment_${item.id}" class="input_txt_box"></textarea>
                             </li>
                             <li class="section_${index+1}">
-                                <label for="user_conversation_${item.id}" class="topic">Todayâ€™s conversation</label>
+                                <label for="user_conversation_${item.id}" class="topic">Today's conversation</label>
                                 <textarea rows="2" cols="50" type="text" id="user_conversation_${item.id}" class="input_txt_box"></textarea>
                             </li>
                             <li class="section_${index+1}">
@@ -3293,11 +3293,11 @@ Samvaarta.messageLog = {
             qualityData += `
             <tr>
                 <td>
-                    <input ${response?.parameter ? 'readonly' : ''} id="qualitative_param_${i+1}" class="input_txt_box" type="text" value="${response?.parameter ? response?.parameter[i] : ''}" />
+                    <input ${response?.parameter && response?.status !==2 ? 'readonly' : ''} id="qualitative_param_${i+1}" class="input_txt_box" type="text" value="${response?.parameter ? response?.parameter[i] : ''}" />
                     <p id="qualitative_param_${i+1}_err" class="error"></p>
                 </td>
                 <td>
-                    <textarea ${response?.description ? 'readonly' : ''} id="qualitative_desc_${i+1}" class="input_txt_box" type="text" value="" ></textarea>
+                    <textarea ${response?.description && response?.status !==2 ? 'readonly' : ''} id="qualitative_desc_${i+1}" class="input_txt_box" type="text" value="" ></textarea>
                     <p id="qualitative_desc_${i+1}_err" class="error"></p>
                 </td>
             </tr>
@@ -3536,6 +3536,66 @@ Samvaarta.messageLog = {
             ajaxErrorCall
         );
     }
+    const desiredOutcomesStatus = (status, id) => {
+      let paramObject = {
+          url: apiUrl + "api/trainer/approve-learning-outcome/"+id,
+          type: "POST",
+          data: {status: status},
+          headers: {
+              Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+              Accept: "application/json",
+          },            
+      };
+  
+      const ajaxSuccessCall = (response) => {
+          Samvaarta.model.showSuccessMessage(
+                    `<h2>Thank You</h2><p class="marg-t20">${Samvaarta.messageLog[19]}</p>`,
+                    "y"
+                );
+      };
+  
+      const ajaxErrorCall = (error) => {
+          if (error.response) {
+          }
+      };
+  
+      Samvaarta.common.hitAjaxApi(
+          paramObject,
+          ajaxSuccessCall,
+          ajaxErrorCall
+      );
+    }
+  
+    const desiredObjectiveStatus = (status, id) => {
+      let paramObject = {
+          url: apiUrl + "api/trainer/approve-performance-parameter/",
+          type: "POST",
+          data: {status: status, user_id: id},
+          headers: {
+              Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+              Accept: "application/json",
+          },            
+      };
+  
+      const ajaxSuccessCall = (response) => {
+          Samvaarta.model.showSuccessMessage(
+                    `<h2>Thank You</h2><p class="marg-t20">${Samvaarta.messageLog[19]}</p>`,
+                    "y"
+                );
+      };
+  
+      const ajaxErrorCall = (error) => {
+          if (error.response) {
+          }
+      };
+  
+      Samvaarta.common.hitAjaxApi(
+          paramObject,
+          ajaxSuccessCall,
+          ajaxErrorCall
+      );
+    }
+  
     return{
         setDocConversation: setDocConversation, 
         getDocConversation: getDocConversation,
@@ -3548,6 +3608,8 @@ Samvaarta.messageLog = {
         getDesiredOutcomes: getDesiredOutcomes,
         setClosure: setClosure,
         getClosure: getClosure,
+        desiredOutcomesStatus: desiredOutcomesStatus,
+        desiredObjectiveStatus: desiredObjectiveStatus,
     }
   })();
   
@@ -3773,7 +3835,7 @@ Samvaarta.messageLog = {
                                 <textarea readonly rows="2" cols="50" type="text" id="user_last_commitment_${item.id}" class="input_txt_box"></textarea>
                             </li>
                             <li class="section_${index+1}">
-                                <label for="user_conversation_${item.id}" class="topic">Todayâ€™s conversation</label>
+                                <label for="user_conversation_${item.id}" class="topic">Today's conversation</label>
                                 <textarea readonly rows="2" cols="50" type="text" id="user_conversation_${item.id}" class="input_txt_box"></textarea>
                             </li>
                             <li class="section_${index+1}">
@@ -3809,8 +3871,8 @@ Samvaarta.messageLog = {
         previous += `
             <h3>Documenting Conversations</h3>
             <p>They are filled in weekly ideally</p>
-            <p>Firstly â€“ When a formal conversation with coach has taken place</p>
-            <p>Secondly â€“ When you want to discuss any situation, share any development</p>
+            <p>Firstly - When a formal conversation with coach has taken place</p>
+            <p>Secondly - When you want to discuss any situation, share any development</p>
             <p>You can upload a voice or video file, ppt, pdf, word or excel file</p>
             <div id="" class="details--items previous">
                 <h3>Interactions</h3>
@@ -3882,13 +3944,13 @@ Samvaarta.messageLog = {
   
             quantitative += `
             <div class="details--items quantitative">
-                <h3>Quantitative Parameters â€“ <span>They refer to the past, current and future performance</span></h3>
+                <h3>Quantitative Parameters - <span>They refer to the past, current and future performance</span></h3>
                 <h4>The following details needs to be filled up</h4>
                 <ul class="details--items__topics">
-                    <li>Measurable parameters â€“ 3</li>
+                    <li>Measurable parameters - 3</li>
                     <li>Mention the units of measurement for example in% or unit</li>
                     <li>Performance of the parameter over of last two month and current month Future months</li>
-                    <li>For example â€“
+                    <li>For example -
                         <ul>
                             <li>Parameter - Emp attrition</li>
                             <li>Measurement - %: Performance jun - 16%, Jul - 17%, Aug - 16%</li>
@@ -3924,7 +3986,7 @@ Samvaarta.messageLog = {
             `;
             qualitative += `
             <div class="details--items qualitative">
-                <h3>Qualitative Parameters â€“ <span>They refer to the behavioural shift you desire</span></h3>
+                <h3>Qualitative Parameters - <span>They refer to the behavioural shift you desire</span></h3>
                 <h4>The following details needs to be filled up</h4>
                 <ul class="details--items__topics">
                     <li>Mention the parameter</li>
@@ -3950,6 +4012,10 @@ Samvaarta.messageLog = {
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class="form-elm-section btn-center-align marg-t10">
+                <button onclick="Samvaarta.setGetUserDashboard.desiredObjectiveStatus(1, ${response?.PerformanceData[0]?.user_id})" class="btn">Approve</button>
+                <button onclick="Samvaarta.setGetUserDashboard.desiredObjectiveStatus(2, ${response?.PerformanceData[0]?.user_id})" class="btn">Reject</button>
             </div>
             `;
             objective += `
@@ -3995,8 +4061,8 @@ Samvaarta.messageLog = {
                     <li>Describe the outcome you like. This will include the way you will feel, hear, say and do after a desired a period of time</li>
                     <li>For example
                         <ul>
-                            <li>Parameter â€“ Manager Relationship</li>
-                            <li>Brief Description â€“ My manager is talking is trusting me by giving important tasks beyond the KRAs</li>
+                            <li>Parameter - Manager Relationship</li>
+                            <li>Brief Description - My manager is talking is trusting me by giving important tasks beyond the KRAs</li>
                         </ul>
                     </li>
                 </ul>
@@ -4012,8 +4078,9 @@ Samvaarta.messageLog = {
                             ${outcomesData}
                         </tbody>
                     </table>
-                    <div class="form-elm-section marg-t10 hide">
-                        <button onclick="Samvaarta.setGetUserDashboard.setDesiredOutcomes()" class="btn">Submit</button>
+                    <div class="form-elm-section btn-center-align marg-t10 ">
+                        <button onclick="Samvaarta.setGetUserDashboard.desiredOutcomesStatus(1, ${response?.LearningOutcomes[0]?.id})" class="btn">Approve</button>
+                        <button onclick="Samvaarta.setGetUserDashboard.desiredOutcomesStatus(2, ${response?.LearningOutcomes[0]?.id})" class="btn">Reject</button>
                     </div>
                 </div>
             </div>
@@ -4356,12 +4423,3 @@ Samvaarta.messageLog = {
         faqEventBind();       
     }
   });
-  
-  
-  // const people = [
-  //     {name:'john', hobbies:['cricket', 'javascript']},
-  //     {name:'ajay', hobbies:'singing'},
-  //     {name:'akhil', hobbies:['running', 'food']}
-  // ]
-  // const hobby = people.flatMap((p) => p.hobbies);
-  // console.log(hobby);
