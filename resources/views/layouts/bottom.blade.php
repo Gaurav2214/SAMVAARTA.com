@@ -25,7 +25,7 @@
                     </ul>
                 </div>
                 <div class="section-copyright">
-                    <p>@2024 Goalsnu.com. All Right Reserved.</p>
+                    <p>Copyright ©2025 Goalsnu.com. All Right Reserved.</p>
                 </div>
             </div>
             <div class="sticky-container">
@@ -38,7 +38,7 @@
         <script>
             var Samvaarta = Samvaarta || {};
         </script>
-        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="https://unpkg.com/axios@1.8.4/dist/axios.min.js"></script>
         <script src="{{ asset('js/common.js?mod='.$fileVersion)}}"></script>
         </body>
 

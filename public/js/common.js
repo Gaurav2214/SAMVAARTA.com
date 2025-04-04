@@ -52,6 +52,8 @@ const debounce = (fn, delay) => {
   }
 }
 
+const getFullYear = () => new Date().getFullYear();
+
 const getDateFormat = (validDate) => {
   let formattedDate = '';
   if(validDate){
