@@ -2041,12 +2041,14 @@ Samvaarta.setGetUserDashboard = function () {
       outcome_description = '',
       parameter = '';
     if ((_response$data9 = response.data) !== null && _response$data9 !== void 0 && (_response$data9 = _response$data9.data) !== null && _response$data9 !== void 0 && _response$data9.outcome_description) {
+      var _response$data12;
       outcome_description = JSON.parse(response.data.data.outcome_description);
       parameter = JSON.parse(response.data.data.parameter);
       for (var i = 0; i < 3; i++) {
-        desieredData += "\n                <tr>\n                    <td>\n                        <input readonly id=\"outcomes_param_".concat(i + 1, "\" class=\"input_txt_box\" type=\"text\" value=\"").concat(parameter[i], "\" />\n                    </td>\n                    <td>\n                        <textarea readonly rows=\"2\" cols=\"50\" type=\"text\" id=\"outcomes_desc_").concat(i + 1, "\" value=\"").concat(outcome_description[i], "\" class=\"input_txt_box\"></textarea>                        \n                        <script>\n                            $('#outcomes_desc_").concat(i + 1, "').val(\"").concat(outcome_description[i], "\");                            \n                        </script>\n                    </td>\n                </tr>");
+        var _response$data10, _response$data11;
+        desieredData += "\n                <tr>\n                    <td>\n                        <input ".concat(((_response$data10 = response.data) === null || _response$data10 === void 0 || (_response$data10 = _response$data10.data) === null || _response$data10 === void 0 ? void 0 : _response$data10.status) !== 2 ? 'readonly' : '', " id=\"outcomes_param_").concat(i + 1, "\" class=\"input_txt_box\" type=\"text\" value=\"").concat(parameter[i], "\" />\n                    </td>\n                    <td>\n                        <textarea ").concat(((_response$data11 = response.data) === null || _response$data11 === void 0 || (_response$data11 = _response$data11.data) === null || _response$data11 === void 0 ? void 0 : _response$data11.status) !== 2 ? 'readonly' : '', " rows=\"2\" cols=\"50\" type=\"text\" id=\"outcomes_desc_").concat(i + 1, "\" value=\"").concat(outcome_description[i], "\" class=\"input_txt_box\"></textarea>                        \n                        <script>\n                            $('#outcomes_desc_").concat(i + 1, "').val(\"").concat(outcome_description[i], "\");                            \n                        </script>\n                    </td>\n                </tr>");
       }
-      $('.outcomes__data .form-elm-section .btn').addClass('disabled');
+      $('.outcomes__data .form-elm-section .btn').addClass("".concat(((_response$data12 = response.data) === null || _response$data12 === void 0 || (_response$data12 = _response$data12.data) === null || _response$data12 === void 0 ? void 0 : _response$data12.status) !== 2 ? 'disabled' : ''));
     } else {
       response = [1, 2, 3];
       response.map(function (item, index) {

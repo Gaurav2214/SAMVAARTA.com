@@ -3410,17 +3410,17 @@ Samvaarta.messageLog = {
                 desieredData += `
                 <tr>
                     <td>
-                        <input readonly id="outcomes_param_${i+1}" class="input_txt_box" type="text" value="${parameter[i]}" />
+                        <input ${response.data?.data?.status !== 2 ? 'readonly' : ''} id="outcomes_param_${i+1}" class="input_txt_box" type="text" value="${parameter[i]}" />
                     </td>
                     <td>
-                        <textarea readonly rows="2" cols="50" type="text" id="outcomes_desc_${i+1}" value="${outcome_description[i]}" class="input_txt_box"></textarea>                        
+                        <textarea ${response.data?.data?.status !== 2 ? 'readonly' : ''} rows="2" cols="50" type="text" id="outcomes_desc_${i+1}" value="${outcome_description[i]}" class="input_txt_box"></textarea>                        
                         <script>
                             $('#outcomes_desc_${i+1}').val("${outcome_description[i]}");                            
                         </script>
                     </td>
                 </tr>`;
             }
-            $('.outcomes__data .form-elm-section .btn').addClass('disabled');
+            $('.outcomes__data .form-elm-section .btn').addClass(`${response.data?.data?.status !== 2 ? 'disabled' : ''}`);
         } else {
             response = [1, 2, 3];
             response.map((item, index) => {
