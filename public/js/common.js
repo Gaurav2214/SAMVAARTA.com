@@ -3536,6 +3536,36 @@ Samvaarta.setGetUserDashboard = (() => {
           ajaxErrorCall
       );
   }
+  const desiredOutcomesStatus = (status, id) => {
+    debugger;
+    let paramObject = {
+        url: apiUrl + "api/trainer/approve-learning-outcome/"+id,
+        type: "GET",
+        data: {"status": status},
+        headers: {
+            Authorization: `Bearer ${Samvaarta.globalVar.oauthToken.access_token}`,
+            Accept: "application/json",
+        },            
+    };
+
+    const ajaxSuccessCall = (response) => {
+        Samvaarta.model.showSuccessMessage(
+                  `<h2>Thank You</h2><p class="marg-t20">${Samvaarta.messageLog[19]}</p>`,
+                  "y"
+              );
+    };
+
+    const ajaxErrorCall = (error) => {
+        if (error.response) {
+        }
+    };
+
+    Samvaarta.common.hitAjaxApi(
+        paramObject,
+        ajaxSuccessCall,
+        ajaxErrorCall
+    );
+  }
   return{
       setDocConversation: setDocConversation, 
       getDocConversation: getDocConversation,
@@ -3548,6 +3578,7 @@ Samvaarta.setGetUserDashboard = (() => {
       getDesiredOutcomes: getDesiredOutcomes,
       setClosure: setClosure,
       getClosure: getClosure,
+      desiredOutcomesStatus: desiredOutcomesStatus,
   }
 })();
 
@@ -4012,8 +4043,9 @@ Samvaarta.deepDisplayUser = (() => {
                           ${outcomesData}
                       </tbody>
                   </table>
-                  <div class="form-elm-section marg-t10 hide">
-                      <button onclick="Samvaarta.setGetUserDashboard.setDesiredOutcomes()" class="btn">Submit</button>
+                  <div class="form-elm-section marg-t10">
+                      <button onclick="Samvaarta.setGetUserDashboard.desiredOutcomesStatus(1, ${response?.LearningOutcomes[0]?.id})" class="btn">Approve</button>
+                      <button onclick="Samvaarta.setGetUserDashboard.desiredOutcomesStatus(2, ${response?.LearningOutcomes[0]?.id})" class="btn">Reject</button>
                   </div>
               </div>
           </div>
