@@ -984,7 +984,7 @@ class ProfileController extends Controller
 
 		
 
-		if($DocumentConversations){
+		//if($DocumentConversations){
 
 			$LearningOutcomes= LearningOutcomes::whereIn('user_id', $user_ids)->get()->toArray();
 
@@ -999,6 +999,8 @@ class ProfileController extends Controller
 
 			$PerformanceData=PerformanceData::whereIn("user_id",$user_ids)->orderBy('id',"desc")->get()->toArray();
 			$temp=[];
+
+			$PerformanceDataOthers =[];
 
 			if($PerformanceData){
 				foreach($PerformanceData as $val){
@@ -1025,9 +1027,9 @@ class ProfileController extends Controller
 			$ClosureTrainerExperinces=ClosureTrainerExperinces::where("trainer_id",$request->user()->id)->whereIn('user_id',$user_ids)->orderBy('id',"desc")->get()->toArray();
 
 			return response()->json(['data' => $DocumentConversations,'LearningOutcomes'=>$LearningOutcomes,'PerformanceData'=>$temp,'PerformanceDataOthers'=>$PerformanceDataOthers,'ClosureUserExperinces'=>$ClosureUserExperinces,"ClosureTrainerExperinces"=>$ClosureTrainerExperinces,"success"=>"true","count"=>(count($DocumentConversations))]);
-		}else{
-			return response()->json(['data' =>[],"success"=>"false"]);
-		}
+		//}else{
+		//	return response()->json(['data' =>[],"success"=>"false"]);
+		//}
 	}else{
 		return response()->json(['data' =>[],"success"=>"false"]);
 	}
