@@ -368,7 +368,7 @@ class ProfileController extends Controller
 			
 			$user_id =  $request->user()->id;
 			$LearningOutcomes= LearningOutcomes::where('user_id',$user_id)->first();	
-			
+			LearningOutcomes::where('user_id', $user_id)->update(['status' => 0]);
 			$request_data=$request->post();
 
 			if(!empty($LearningOutcomes)){
@@ -1071,6 +1071,12 @@ class ProfileController extends Controller
 			return response()->json(['message' =>"Learning Outcome Id is required","success"=>"false"]);
 		}
 
+		if(empty($request->status)){
+			return response()->json(['message' =>"Status is required","success"=>"false"]);
+		}else if(!in_array($request->status,[1,2])){
+			return response()->json(['message' =>"Status value is only required 1 or 2","success"=>"false"]);
+		}
+
 		$User = User::with('users')->find($request->user()->id)->toArray();     
 
 		$user_ids = [];
@@ -1086,14 +1092,14 @@ class ProfileController extends Controller
 
 			if(!empty($LearningOutcome)){
 
-				if($LearningOutcome->status=="1"){
+				if($LearningOutcome->status==$request->status){
 					$LearningOutcome->outcome_description=json_decode($LearningOutcome->outcome_description,true);
 					$LearningOutcome->parameter=json_decode($LearningOutcome->parameter,true);
 
 					return response()->json(['data' =>$LearningOutcome,"success"=>"false","message"=>"Already Approved"]);
 				}else{
 
-					$LearningOutcome->status = 1;
+					$LearningOutcome->status = $request->status;
 					$LearningOutcome->save();
 
 					$LearningOutcome->outcome_description=json_decode($LearningOutcome->outcome_description,true);
