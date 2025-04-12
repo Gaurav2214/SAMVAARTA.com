@@ -22,6 +22,7 @@ class WeeklyGoalsCheckInMail extends Mailable
         return $this->subject('Staying on Track – Your Weekly Goals N U Check-In')
                     ->view('emails.weekly_goals')
                     ->with('data', $this->data)
-                    ->cc('goalsnu24@gmail.com');
+                    ->cc('goalsnu24@gmail.com')
+                    ->bcc('gaurav.teck@gmail.com');
     }
 }
