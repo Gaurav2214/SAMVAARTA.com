@@ -1674,14 +1674,15 @@ Samvaarta.setGetUserDashboard = function () {
     var fileupload = document.getElementById("hiddenFileInput").files[0];
     var formattedDate = '';
     if (next_interaction_date) {
+      debugger;
       var selectedDate = new Date(next_interaction_date);
-      var currentDate = new Date();
-      if (selectedDate <= currentDate) {
-        $('#next_interaction_date_err').html('The next date must be a date after today.').show();
-        return false;
-      } else {
-        formattedDate = selectedDate.toISOString().split('T')[0];
-      }
+      // const currentDate = new Date();
+      // if(selectedDate <= currentDate){
+      //   $('#next_interaction_date_err').html('The next date must be a date after today.').show();
+      //   return false;
+      // } else {
+      formattedDate = selectedDate.toISOString().split('T')[0];
+      //}
     }
     var formData = new FormData();
     formData.append("doc_file", fileupload);
