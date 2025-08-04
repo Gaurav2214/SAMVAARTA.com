@@ -71,24 +71,23 @@ Samvaarta.messageLog = {
   }
 
   function convertTextWithLineBreaks(text) {
-    // Escape HTML special characters to prevent XSS
-    const escapeHTML = (str) => {
-      return str.replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-    };
-  
-    // Escape HTML first
-    let safeText = escapeHTML(text);
-  
-    // Replace line breaks with <br> tags
-    safeText = safeText.replace(/(\r\n|\n|\r)/g, "<br>");
-  
-    return safeText;
-  }
-  
+  // Escape HTML special characters to prevent XSS
+  const escapeHTML = (str) => {
+    return str.replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;")
+              .replace(/"/g, "&quot;")
+              .replace(/'/g, "&#039;");
+  };
+
+  // Escape HTML first
+  let safeText = escapeHTML(text);
+
+  // Replace line breaks with <br> tags
+  safeText = safeText.replace(/(\r\n|\n|\r)/g, "<br>");
+
+  return safeText;
+}
   
   
   const elementInViewport = (el) => {
@@ -2964,10 +2963,12 @@ Samvaarta.messageLog = {
                         <button onclick="Samvaarta.setGetUserDashboard.updateTransaction(${item.id}, ${item?.session_id})" class="btn">Update</button>
                         <button style="margin-left:10px;" class="btn close-transaction">Close</button>
                         <script>
-                            $('#user_focus_${item.id}').val('${item?.focus_of_the_day}');
-                            $('#user_last_commitment_${item.id}').val('${item?.last_week_comments}');
-                            $('#user_conversation_${item.id}').val('${item?.today_conversion}');
-                            $('#user_week_commitment_${item.id}').val('${item?.feedback}');
+
+                            document.getElementById('user_focus_${item.id}').value = ${item?.focus_of_the_day};
+                            document.getElementById('user_last_commitment_${item.id}').value = ${item?.last_week_comments};
+                            document.getElementById('user_conversation_${item.id}').value = ${item?.today_conversion};
+                            document.getElementById('user_week_commitment_${item.id}').value = ${item?.feedback};
+
                             $('#coach_comment_${item.id}').val("${item?.comments ? item?.comments : ''}");
                             $('body').on('click', '.close-transaction', ()=>{
                                 $('.update-transaction-container').addClass('hide');
@@ -3874,10 +3875,11 @@ Samvaarta.messageLog = {
                         <button onclick="Samvaarta.deepDisplayUser.trainerDocComment(${item?.user_id}, ${item.id}, ${item?.session_id})" class="btn submit-comment ${item?.comments || oauthUserData?.user_type === 'admin' ? 'hide' : ''}">Update</button>
                         <button style="margin-left:10px;" class="btn close-transaction">Close</button>
                         <script>
-                            $('#user_focus_${item.id}').val('${item?.focus_of_the_day}');
-                            $('#user_last_commitment_${item.id}').val('${item?.last_week_comments}');
-                            $('#user_conversation_${item.id}').val('${item?.today_conversion}');
-                            $('#user_week_commitment_${item.id}').val('${item?.feedback}');
+                            document.getElementById('user_focus_${item.id}').value = ${item?.focus_of_the_day};
+                            document.getElementById('user_last_commitment_${item.id}').value = ${item?.last_week_comments};
+                            document.getElementById('user_conversation_${item.id}').value = ${item?.today_conversion};
+                            document.getElementById('user_week_commitment_${item.id}').value = ${item?.feedback};
+
                             $('#coach_comment_${item.id}').val("${item?.comments ? item?.comments : ''}");
                             $('body').on('click', '.close-transaction', ()=>{
                                 $('.update-transaction-container').addClass('hide');
