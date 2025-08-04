@@ -3697,7 +3697,6 @@ Samvaarta.deepDisplayUser = (() => {
       $('.display-user-details').html(deepDis);
   }
   const displayDashInfo = () => {
-
       let paramObject = {
           url: apiUrl + 'api/'+oauthUserData?.user_type+'/documenting-conversations/?user_id='+userId,
           type: "GET",
