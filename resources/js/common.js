@@ -2964,10 +2964,10 @@ Samvaarta.messageLog = {
                         <button style="margin-left:10px;" class="btn close-transaction">Close</button>
                         <script>
 
-                            document.getElementById('user_focus_${item.id}').value = ${item?.focus_of_the_day};
-                            document.getElementById('user_last_commitment_${item.id}').value = ${item?.last_week_comments};
-                            document.getElementById('user_conversation_${item.id}').value = ${item?.today_conversion};
-                            document.getElementById('user_week_commitment_${item.id}').value = ${item?.feedback};
+                            document.getElementById('user_focus_${item.id}').value = '${item?.focus_of_the_day}';
+                            document.getElementById('user_last_commitment_${item.id}').value = '${item?.last_week_comments}';
+                            document.getElementById('user_conversation_${item.id}').value = '${item?.today_conversion}';
+                            document.getElementById('user_week_commitment_${item.id}').value = '${item?.feedback}';
 
                             $('#coach_comment_${item.id}').val("${item?.comments ? item?.comments : ''}");
                             $('body').on('click', '.close-transaction', ()=>{
@@ -3875,10 +3875,10 @@ Samvaarta.messageLog = {
                         <button onclick="Samvaarta.deepDisplayUser.trainerDocComment(${item?.user_id}, ${item.id}, ${item?.session_id})" class="btn submit-comment ${item?.comments || oauthUserData?.user_type === 'admin' ? 'hide' : ''}">Update</button>
                         <button style="margin-left:10px;" class="btn close-transaction">Close</button>
                         <script>
-                            document.getElementById('user_focus_${item.id}').value = ${item?.focus_of_the_day};
-                            document.getElementById('user_last_commitment_${item.id}').value = ${item?.last_week_comments};
-                            document.getElementById('user_conversation_${item.id}').value = ${item?.today_conversion};
-                            document.getElementById('user_week_commitment_${item.id}').value = ${item?.feedback};
+                            document.getElementById('user_focus_${item.id}').value = '${item?.focus_of_the_day}';
+                            document.getElementById('user_last_commitment_${item.id}').value = '${item?.last_week_comments}';
+                            document.getElementById('user_conversation_${item.id}').value = '${item?.today_conversion}';
+                            document.getElementById('user_week_commitment_${item.id}').value = '${item?.feedback}';
 
                             $('#coach_comment_${item.id}').val("${item?.comments ? item?.comments : ''}");
                             $('body').on('click', '.close-transaction', ()=>{
