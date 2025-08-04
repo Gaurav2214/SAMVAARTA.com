@@ -1,5 +1,5 @@
         <?php
-        $fileVersion = 35;
+        $fileVersion = 36;
         ?>
         <footer>
             <div class="top-footer">
