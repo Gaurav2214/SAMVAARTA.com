@@ -1674,7 +1674,6 @@ Samvaarta.setGetUserDashboard = function () {
     var fileupload = document.getElementById("hiddenFileInput").files[0];
     var formattedDate = '';
     if (next_interaction_date) {
-      debugger;
       var selectedDate = new Date(next_interaction_date);
       // const currentDate = new Date();
       // if(selectedDate <= currentDate){
@@ -2690,7 +2689,7 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 			return __webpack_require__.O(result);
 /******/ 		}
 /******/ 		
-/******/ 		var chunkLoadingGlobal = self["webpackChunk"] = self["webpackChunk"] || [];
+/******/ 		var chunkLoadingGlobal = globalThis["webpackChunk"] = globalThis["webpackChunk"] || [];
 /******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
 /******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
 /******/ 	})();

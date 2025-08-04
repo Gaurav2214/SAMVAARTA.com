@@ -2798,7 +2798,6 @@ Samvaarta.messageLog = {
         var fileupload = document.getElementById("hiddenFileInput").files[0];
         var formattedDate = '';
         if(next_interaction_date){
-            debugger;
             const selectedDate = new Date(next_interaction_date);
             // const currentDate = new Date();
             // if(selectedDate <= currentDate){

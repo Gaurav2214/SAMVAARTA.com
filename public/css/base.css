@@ -226,10 +226,6 @@ button,
 [role="button"] {
   cursor: pointer; }
 
-::-moz-selection {
-  background: #ED1C24;
-  color: #FFF; }
-
 ::selection {
   background: #ED1C24;
   color: #FFF; }
@@ -1174,9 +1170,6 @@ p {
         .dashboard__elements--inner table.complex-view tr td .table-layer-2 tr td .input_txt_box.sdate {
           background: #d5d5d5;
           text-align: center; }
-          .dashboard__elements--inner table.complex-view tr td .table-layer-2 tr td .input_txt_box.sdate::-moz-placeholder {
-            color: #191b1f;
-            opacity: 1; }
           .dashboard__elements--inner table.complex-view tr td .table-layer-2 tr td .input_txt_box.sdate::placeholder {
             color: #191b1f;
             opacity: 1; }
@@ -1193,8 +1186,7 @@ p {
         overflow-x: auto; } }
 
 .component-divider {
-  -o-border-image: linear-gradient(90deg, #fff, #ccc, #fff);
-     border-image: linear-gradient(90deg, #fff, #ccc, #fff);
+  border-image: linear-gradient(90deg, #fff, #ccc, #fff);
   border-image-slice: 1;
   border-top: 1px solid #ccc;
   padding-top: 28px;
@@ -1465,8 +1457,7 @@ p {
       .navigation ul {
         display: none; } }
   .navigation .component-divider {
-    -o-border-image: linear-gradient(178deg, #fff, #ccc, #fff);
-       border-image: linear-gradient(178deg, #fff, #ccc, #fff);
+    border-image: linear-gradient(178deg, #fff, #ccc, #fff);
     border-image-slice: 1;
     margin-top: 16px; }
   .navigation__more {
